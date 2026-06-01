@@ -1,8 +1,12 @@
-# etoe
-Ether Theory of Everything (aka Ether Theory) is 
-Ether Theory of Relativity of Gravity and Magnetism,
-HyperAtomic Model,
-Ether Quantum Mechanics,
-Ether Cosmology,
-HyperAtomic Reactor,
-Ether Neural Network.
+# Ether Theory of Everything (EToE)
+
+## Quick Start for AI
+
+**Start here:** [Core Concepts Seed Document](docs/seed/en/EToE.md)
+
+This document contains the foundational understanding of EToE and serves as 
+the initial prompt for AI collaborators. Russian version available [here](docs/seed/ru/EToE.md).
+
+## For Humans
+
+...
