@@ -39,10 +39,11 @@ Ether Theory of Matter uses the "Ether System of Units". In the English version,
 The unit of measurement of discrete quantity in the ether system of units is "æn". The reference discrete quantity is expressed by an even natural number and is denoted by $N_Æ$. When modeling for a 64-bit signed integer data type, the maximum $N_Æ$ is two to the sixty-third power: $N_Æ=2^{63}$. For a 32-bit signed integer data type, the maximum $N_Æ$ is two to the thirty-first power: $N_Æ=2^{31}$. For a 16-bit signed integer data type, the maximum $N_Æ$ is two to the fifteenth power: $N_Æ=2^{15}$:
 
 $$
-\begin{matrix}
-N_{Æ} \in 2\mathbb{Z}^{+} \\
+N_{Æ} \in 2\mathbb{Z}^{+} 
+$$
+
+$$
 N_{Æ} = 2^{n}
-\end{matrix}
 $$
 
 The space $S_Æ$ consists of identical "cells".
@@ -61,17 +62,24 @@ $$
 
 "Space wrapping function" $WS_Æ(n)$, which maps any integer $n$ into the interval $[ -L_Æ/2, L_Æ/2 - 1 )$ taking into account the cyclic nature of the space:
 
-$$WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}$$
+$$
+WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}
+$$
 
 The unit of measurement of the extent of space in the ether system of units is "æl". The size of a space cell is 1 æl:
+
 $$l_æ = 1 æl$$
 
 The unit of measurement of the volume of space in the ether system of units is "æs".
 
-The reference distance is denoted by $D_Æ$. In the simplest model, the reference distance is one less than the reference quantity: $$D_Æ = N_Æ -1$$
+The reference distance is denoted by $D_Æ$. In the simplest model, the reference distance is one less than the reference quantity:
+
+$$D_Æ = N_Æ -1$$
 
 The coordinate of absolute position ($p_A$) in absolute space has a range from $-L_Æ/2$ to $L_Æ/2-1$. The coordinate of relative position ($p_R$) in absolute space has a range from $-D_Æ$ to $D_Æ$:
+
 $$p_A = (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_Æ}{2} \le x, y, z \le \frac{L_Æ}{2} $$
+
 $$p_R = (x, y, z) \in \mathbb{Z}^3 \mid  -D_Æ \le x, y, z \le D_Æ$$
 
 $V_Æ$ is the discrete volume of the entire space. Formula for the discrete volume of the entire space:
