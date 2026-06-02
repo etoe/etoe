@@ -42,7 +42,7 @@ $$
 N_Æ &\in 2\mathbb{Z}^+ \\
 N_Æ &= 2^{n}
 \end{aligned}
-$$$$
+$$
 
 The space $S_Æ$ consists of identical "cells".
 
