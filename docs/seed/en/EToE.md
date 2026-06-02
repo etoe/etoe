@@ -56,7 +56,7 @@ L_{Æ} = N_{Æ}
 $$
 
 $$
-S_{Æ} = \left\{ (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_{Æ}}{2} \le x, y, z \lt \frac{L_{Æ}}{2} \right\}
+S_{Æ} = \left\lbrace (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_{Æ}}{2} \le x, y, z \lt \frac{L_{Æ}}{2} \right\rbrace
 $$
 
 "Space wrapping function" $WS_Æ(n)$, which maps any integer $n$ into the interval $[ -L_Æ/2, L_Æ/2 - 1 )$ taking into account the cyclic nature of the space:
