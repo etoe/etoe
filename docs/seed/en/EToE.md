@@ -57,7 +57,7 @@ S_Æ &= \left\{ (x, y, z) \in \mathbb{Z}^3 \middle| -\frac{L_Æ}{2} \le x, y, z 
 $$
 
 "Space wrapping function" $WS_Æ(n)$, which maps any integer $n$ into the interval $[ -L_Æ/2, L_Æ/2 - 1 )$ taking into account the cyclic nature of the space:
-$$WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}$$
+$$\\\\ WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}$$
 
 The unit of measurement of the extent of space in the ether system of units is "æl". The size of a space cell is 1 æl:
 $$l_æ = 1 æl$$
