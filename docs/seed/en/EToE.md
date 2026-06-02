@@ -54,7 +54,7 @@ The number of cells in the space can be finite. In the case of a finite space, t
 $$
 \begin{matrix}
 L_{Æ} = N_{Æ} \\
-S_{Æ} = \left\{ (x, y, z) \in \mathbb{Z}^3 \ \middle|\ -\frac{L_{Æ}}{2} \le x, y, z \lt \frac{L_{Æ}}{2} \right\}
+S_{Æ} = \Big\{ (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_{Æ}}{2} \le x, y, z \lt \frac{L_{Æ}}{2} \Big\}
 \end{matrix}
 $$
 
