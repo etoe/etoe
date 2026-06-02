@@ -52,10 +52,11 @@ The unit of measurement for the number of space cells in the ether system of uni
 The number of cells in the space can be finite. In the case of a finite space, the overflow of the absolute space coordinate does not affect physical laws. In the simplest model, the "number of cells in the space on each coordinate axis" $L_Æ$ is equal to the "standard discrete quantity" $N_Æ$. The space $S_Æ$ is a three-dimensional integer lattice with a toroidal topology:
 
 $$
-\begin{matrix}
-L_{Æ} = N_{Æ} \\
-S_{Æ} = \Big\{ (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_{Æ}}{2} \le x, y, z \lt \frac{L_{Æ}}{2} \Big\}
-\end{matrix}
+L_{Æ} = N_{Æ}
+$$
+
+$$
+S_{Æ} = \left\{ (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_{Æ}}{2} \le x, y, z \lt \frac{L_{Æ}}{2} \right\}
 $$
 
 "Space wrapping function" $WS_Æ(n)$, which maps any integer $n$ into the interval $[ -L_Æ/2, L_Æ/2 - 1 )$ taking into account the cyclic nature of the space:
