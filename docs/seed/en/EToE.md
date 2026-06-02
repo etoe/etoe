@@ -53,7 +53,7 @@ The number of cells in the space can be finite. In the case of a finite space, t
 
 $$
 \begin{aligned}
-L_Æ &= N_Æ \\\\
+L_Æ &= N_Æ \\
 S_Æ &= \left\{ (x, y, z) \in \mathbb{Z}^3 \middle| -\frac{L_Æ}{2} \le x, y, z \lt \frac{L_Æ}{2} \right\}
 \end{aligned}
 $$
