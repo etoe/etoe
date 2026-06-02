@@ -39,8 +39,8 @@ Ether Theory of Matter uses the "Ether System of Units". In the English version,
 The unit of measurement of discrete quantity in the ether system of units is "æn". The reference discrete quantity is expressed by an even natural number and is denoted by $N_Æ$. When modeling for a 64-bit signed integer data type, the maximum $N_Æ$ is two to the sixty-third power: $N_Æ=2^{63}$. For a 32-bit signed integer data type, the maximum $N_Æ$ is two to the thirty-first power: $N_Æ=2^{31}$. For a 16-bit signed integer data type, the maximum $N_Æ$ is two to the fifteenth power: $N_Æ=2^{15}$:
 $$
 \begin{aligned}
-N_Æ &\in 2\mathbb{Z}^+ \\
-N_Æ &= 2^{n}
+N_{Æ} &\in 2\mathbb{Z}^+ \\\\
+N_{Æ} &= 2^{n}
 \end{aligned}
 $$
 
@@ -51,7 +51,7 @@ The unit of measurement for the number of space cells in the ether system of uni
 The number of cells in the space can be finite. In the case of a finite space, the overflow of the absolute space coordinate does not affect physical laws. In the simplest model, the "number of cells in the space on each coordinate axis" $L_Æ$ is equal to the "standard discrete quantity" $N_Æ$. The space $S_Æ$ is a three-dimensional integer lattice with a toroidal topology:
 $$
 \begin{aligned}
-L_Æ &= N_Æ \\
+L_Æ &= N_Æ \\\\
 S_Æ &= \left\{ (x, y, z) \in \mathbb{Z}^3 \middle| -\frac{L_Æ}{2} \le x, y, z \lt \frac{L_Æ}{2} \right\}
 \end{aligned}
 $$
