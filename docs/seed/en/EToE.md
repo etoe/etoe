@@ -37,12 +37,7 @@ All ether in all space and time can be conventionally called "space-time-ether".
 Ether Theory of Matter uses the "Ether System of Units". In the English version, the abbreviation for "Ether System of Units" is "ÆSoU".
 
 The unit of measurement of discrete quantity in the ether system of units is "æn". The reference discrete quantity is expressed by an even natural number and is denoted by $N_Æ$. When modeling for a 64-bit signed integer data type, the maximum $N_Æ$ is two to the sixty-third power: $N_Æ=2^{63}$. For a 32-bit signed integer data type, the maximum $N_Æ$ is two to the thirty-first power: $N_Æ=2^{31}$. For a 16-bit signed integer data type, the maximum $N_Æ$ is two to the fifteenth power: $N_Æ=2^{15}$:
-$$
-\begin{aligned}
-N_{\text{Æ}} &\in 2\mathbb{Z}^+ \\\\
-N_{\text{Æ}} &= 2^{n}
-\end{aligned}
-$$
+$$\begin{aligned}N_{\text{Æ}} &\in 2\mathbb{Z}^+ \\\\ N_{\text{Æ}} &= 2^{n} \end{aligned}$$
 
 The space $S_Æ$ consists of identical "cells".
 
@@ -57,7 +52,7 @@ S_Æ &= \left\{ (x, y, z) \in \mathbb{Z}^3 \middle| -\frac{L_Æ}{2} \le x, y, z 
 $$
 
 "Space wrapping function" $WS_Æ(n)$, which maps any integer $n$ into the interval $[ -L_Æ/2, L_Æ/2 - 1 )$ taking into account the cyclic nature of the space:
-$$\\\\ WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}$$
+$$WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}$$
 
 The unit of measurement of the extent of space in the ether system of units is "æl". The size of a space cell is 1 æl:
 $$l_æ = 1 æl$$
