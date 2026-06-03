@@ -83,6 +83,7 @@ $$p_A = (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_Æ}{2} \le x, y, z \le \frac{L_
 $$p_R = (x, y, z) \in \mathbb{Z}^3 \mid  -D_Æ \le x, y, z \le D_Æ$$
 
 $V_Æ$ is the discrete volume of the entire space. Formula for the discrete volume of the entire space:
+
 $$V_Æ = L_Æ \cdot L_Æ \cdot L_Æ$$
 
 Neighboring cells are considered to be the nearest orthogonal cells. In the simplest model, the nearest diagonal cells are not considered neighboring cells. This definition of neighboring cells can be argued by the absence of diagonal cells in one-dimensional space.
@@ -94,13 +95,17 @@ The number of time ticks can be finite. In the case of finite time, the overflow
 The unit of measurement for time in the ether system of units is "æt".
 
 $T_Æ$ is the discrete size of all time. In the simplest model, the discrete size of all time is equal to the "standard discrete quantity" $N_Æ$. Therefore, in the simplest model, the discrete size of all time is equal to the discrete size of all space:
+
 $$T_Æ=N_Æ$$
+
 $$T_Æ=L_Æ$$
 
 $T_Æ=L_Æ$ is a conditional formula for the principle of numerical equivalence of all time and the size of all space.
 
 The current time tick is denoted by $t_Æ$. Time ticks are numbered from $0$ to $T_Æ-1$. The tick with the number $0$ is called the "zero tick". The zero tick at the "start of time" is called the "start tick". After the tick with the number $T_Æ-1$, there is another tick with the number $0$. The "time wrapping function" $WT_{Æ}(n)$, which maps any integer $n$ to the interval $[ 0, T_Æ)$, taking into account the cyclic nature of time:
+
 $$WT_{Æ}(n) = \left( n \right)\pmod{T_Æ}$$
+
 $$t_Æ = WT_{Æ}(t_Æ+1)$$
 
 Each ether object is conventionally assigned to one of eight levels of matter. For brevity, the level of matter can be denoted by the capital letter $Æ$ with a number corresponding to the level of matter. Æ1 is the designation for the first level of matter, Æ2 for the second, Æ3 for the third, Æ4 for the fourth, Æ5 for the fifth, Æ6 for the sixth, Æ7 for the seventh, Æ8 for the eighth.
@@ -147,7 +152,9 @@ The unit of measurement for mass in the ether system of units is "æm".
 
 $m_Æ$ is the discrete mass of the entire ether, measured in æm.
 
-$ρ_Æ$ is the discrete density of ether, measured in æm/æs and equal to the ratio of the discrete mass of ether $m_Æ$ to the discrete volume of space $V_Æ$: $ρ_Æ=m_Æ/V_Æ$.
+$ρ_Æ$ is the discrete density of ether, measured in æm/æs and equal to the ratio of the discrete mass of ether $m_Æ$ to the discrete volume of space $V_Æ$: 
+
+$$ρ_Æ=m_Æ/V_Æ$$
 
 The mass of an etheron is 1 æm.
 
@@ -174,13 +181,18 @@ Each etheron stores information about its state and about the parameters determi
 The parameters of an etheron can change upon interaction with other etherons that are in the same space cell as the etheron itself.
 
 The "state" of an etheron is denoted by $s_æ$. Each etheron can be in one of four states:
+
 $$s_æ \in \{1, 2, 3, 4\}$$
 
 In the simplest STÆ model, each state of an etheron lasts for at least one time tick and is processed only once during the current time tick. Therefore, in general, in a computer simulation, each etheron may need a "counter of ticks of the time an etheron is in its state" - $t_æ$, as well as a "flag for processing the current state in the current time tick" - $f_æ$. At the beginning of each time tick, the flags of all etherons are reset to zero, and after processing ($F_æ$) in the current time tick ($t_Æ$) by an etheron of its state, the etheron's flag is set to one, and the etheron can no longer process its state in the current time tick again:
+
 $$\forall æ \quad f_{æ}^{(t_Æ+1)} = 0$$
+
 $$f_{æ}^{(t_Æ)} = \Phi(\, f_{æ}^{(t_Æ)} \lor F_{æ}^{(t_Æ)} \,)$$
 
-The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ1_æ$. The duration of the first state of the etheron is at least one tick of time. The first tick in the "rest" state is conventionally called the "tick of the basic delay". The duration of the "basic delay" of the etheron is denoted by $τ1b_æ$. If the etheron spontaneously remains in the first state for one more tick when it should have passed to the third state, then such a tick is conventionally called the "tick of the spontaneous delay". The duration of the "spontaneous delay" of the etheron is denoted by $τ1r_æ$. If the etheron remains in the first state for one more tick to compensate for the deficit of jumps in the direction of its continuous movement, then such a tick is conventionally called the "tick of the compensatory delay". The duration of the "compensatory delay" of the etheron is denoted by $τ1c_æ$. If the etheron remains in the first state for one more tick to implement a decrease in the continuous speed in the direction of its continuous movement in accordance with the fifth parameter of the etheron, then such a tick is called the "tick of the additional delay". The duration of the "additional delay" of the etheron is denoted by $τ1a_æ$. The duration of the first state of the etheron consists of the duration of the "basic delay", the duration of the "compensatory delay", the duration of the "additional delay" and the duration of the "spontaneous delay": $$τ1_æ = τ1b_æ + τ1c_æ + τ1a_æ + τ1r_æ$$
+The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ1_æ$. The duration of the first state of the etheron is at least one tick of time. The first tick in the "rest" state is conventionally called the "tick of the basic delay". The duration of the "basic delay" of the etheron is denoted by $τ1b_æ$. If the etheron spontaneously remains in the first state for one more tick when it should have passed to the third state, then such a tick is conventionally called the "tick of the spontaneous delay". The duration of the "spontaneous delay" of the etheron is denoted by $τ1r_æ$. If the etheron remains in the first state for one more tick to compensate for the deficit of jumps in the direction of its continuous movement, then such a tick is conventionally called the "tick of the compensatory delay". The duration of the "compensatory delay" of the etheron is denoted by $τ1c_æ$. If the etheron remains in the first state for one more tick to implement a decrease in the continuous speed in the direction of its continuous movement in accordance with the fifth parameter of the etheron, then such a tick is called the "tick of the additional delay". The duration of the "additional delay" of the etheron is denoted by $τ1a_æ$. The duration of the first state of the etheron consists of the duration of the "basic delay", the duration of the "compensatory delay", the duration of the "additional delay" and the duration of the "spontaneous delay": 
+
+$$τ1_æ = τ1b_æ + τ1c_æ + τ1a_æ + τ1r_æ$$
 
 The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_æ$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ2_æ$. The duration of the second state of the etheron is at least one tick of time.
 
@@ -189,17 +201,26 @@ The third state of an etheron is "movement from the cell" in which the etheron i
 The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_æ$. The etheron moves to the fourth state from the third state. The duration of the fourth state of the etheron is denoted by $τ4_æ$. The duration of the fourth state of the etheron is at least one tick of time. The etheron moves to the first state from the fourth state.
 
 The third state of the etheron and the fourth state of the etheron together constitute the "etheron jump" from the cell in which the etheron is located to the neighboring cell in which the etheron will be located, in accordance with the parameters of the etheron's movement. The duration of the etheron jump is denoted by $τj_æ$. The duration of the etheron jump is at least two time ticks:
+
 $$τj_æ = τ3_æ + τ4_æ$$
 
-The duration of the basic delay of the etheron in the resting state $τ1b_æ$ together with the duration of the etheron jump $τj_æ$ make up the basic duration of the etheron movement $τb_æ$: $$τb_æ = τ1b_æ + τ3_æ + τ4_æ = τ1b_æ + τj_æ$$
+The duration of the basic delay of the etheron in the resting state $τ1b_æ$ together with the duration of the etheron jump $τj_æ$ make up the basic duration of the etheron movement $τb_æ$: 
 
-The relative number of time ticks after which an etheron, which is in a state of rest at a given time tick, will be in the next cell of space in a state of rest is called the duration of the etheron step $τs_æ$: $$τs_æ = 1 + τ3_æ + τ4_æ = 1 + τj_æ$$
+$$τb_æ = τ1b_æ + τ3_æ + τ4_æ = τ1b_æ + τj_æ$$
+
+The relative number of time ticks after which an etheron, which is in a state of rest at a given time tick, will be in the next cell of space in a state of rest is called the duration of the etheron step $τs_æ$: 
+
+$$τs_æ = 1 + τ3_æ + τ4_æ = 1 + τj_æ$$
 
 The cycle of an etheron is a sequence of states starting with the first state and ending with the fourth state. The duration of the etheron cycle is denoted by $τ_æ$.
 
-An etheron cycle without the second state of the etheron is called a "free cycle". The duration of the free cycle of etheron is denoted by $τf_æ$. The duration of the free cycle of etheron is made up of the duration of the first state, the duration of the third state, and the duration of the fourth state: $$τf_æ = τ1_æ + τ3_æ + τ4_æ$$
+An etheron cycle without the second state of the etheron is called a "free cycle". The duration of the free cycle of etheron is denoted by $τf_æ$. The duration of the free cycle of etheron is made up of the duration of the first state, the duration of the third state, and the duration of the fourth state: 
 
-An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τc_æ$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: $$τc_æ = τ1_æ + τ2_æ + τ3_æ + τ4_æ$$
+$$τf_æ = τ1_æ + τ3_æ + τ4_æ$$
+
+An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τc_æ$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
+
+$$τc_æ = τ1_æ + τ2_æ + τ3_æ + τ4_æ$$
 
 Velocity relative to absolute space is called "absolute velocity".
 
@@ -246,17 +267,23 @@ The second parameter of an etheron is the absolute position of the cell in which
 The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $tc_æ$. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At every zero tick of time in the simplest model, the third parameter of the etheron is reset to zero.
 
 The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of an etheron is called "direction". The fourth parameter of an etheron is denoted by $\vec{d}_æ$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from -$D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
+
 $$\vec{d}_æ = (D_Æ \cdot \sin\theta \cdot \cos\varphi, D_Æ \cdot \sin\theta \cdot \sin\varphi, D_Æ \cdot \cos\theta)$$
+
 where:
 - $\theta \sim U[0, \pi]$ is the zenith angle, uniformly distributed on $[0, \pi]$
 - $\varphi \sim U[0, 2\pi]$ is the azimuth angle, uniformly distributed on $[0, 2\pi]$
 
-The fifth parameter of the etheron is the "total additional delay" of the etheron in ticks of time in the "rest" state, with which the etheron, when moving freely, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called "delay". The fifth parameter of the etheron is designated $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from "0" to "$D_Æ$", where "$D_Æ$" is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" in the Euclidean free continuous displacement of the etheron over the Euclidean reference distance "$D_Æ$". The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous velocities of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous velocities of the etheron. The average value of the fifth parameter of the etheron in the simplest model is equal to half of $D_Æ$: $$a_{æavg}= \frac{D_Æ}{2}$$
+The fifth parameter of the etheron is the "total additional delay" of the etheron in ticks of time in the "rest" state, with which the etheron, when moving freely, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called "delay". The fifth parameter of the etheron is designated $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from "0" to "$D_Æ$", where "$D_Æ$" is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" in the Euclidean free continuous displacement of the etheron over the Euclidean reference distance "$D_Æ$". The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous velocities of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous velocities of the etheron. The average value of the fifth parameter of the etheron in the simplest model is equal to half of $D_Æ$: 
+
+$$a_{æavg}= \frac{D_Æ}{2}$$
 
 The fifth parameter of the etheron is the "total additional delay" of the etheron in time ticks in the "rest" state, with which the etheron, in free movement, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called the "delay". The fifth parameter of the etheron is denoted by $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" during the Euclidean free continuous movement of the etheron by the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous speeds of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous speeds of the etheron.
 
-In the simplest model, copying the "position" parameter ($\vec{r}_{æ}$) of each etheron into the "collision position" parameter ($\vec{rc}_{æ}$) of that etheron and zeroing the "collision tick" parameter ($tc_{æ}$) of each etheron at every zero tick of time ($t_Æ=0$) prevents uncertainty in the time elapsed since collisions:
+In the simplest model, copying the "position" parameter ($\vec{r}_{ \text{æ} }$) of each etheron into the "collision position" parameter ($\vec{rc}_{æ}$) of that etheron and zeroing the "collision tick" parameter ($tc_{æ}$) of each etheron at every zero tick of time ($t_Æ=0$) prevents uncertainty in the time elapsed since collisions:
+
 $$\forall æ \quad \vec{rc}_{æ}^{(t_Æ=0)} = \vec{r}_{æ}$$
+
 $$\forall æ \quad tc_{æ}^{(t_Æ=0)} = 0$$
 
 In the fourth state of the etheron, the absolute position of the space cell to which the etheron has arrived is entered into the first parameter of this etheron.
@@ -266,7 +293,9 @@ The free motion of an etheron is always calculated based on the current time tic
 The trajectory of the etheron jumps always approximates a straight line, and the Euclidean speed of movement along this straight line is approximately constant. Etherons with different directions of movement, but with the same "delay" parameters, move with the same Euclidean speed due to a different number of their "compensatory delay ticks" at rest. The number of jumps to the target cell depending on the direction of movement is determined by the "Manhattan distance" to the target cell in this direction. The greater the number of jumps in the direction of movement, the fewer "compensatory delay ticks" at rest. The smaller the number of jumps in the direction of movement, the more "compensatory delay ticks" at rest. Etherons with the same directions of movement, but with different "delay" parameters, with the same number of "compensatory delay ticks" move with different Euclidean speeds due to a different number of "additional delay ticks".
 
 Compensatory delay ticks are necessary to ensure that the total time of movement over the reference Euclidean distance ($D_Æ$) remains constant, regardless of direction. This time is calibrated by the "slowest" direction — the diagonal in space where the number of jumps is maximum. The number of compensatory delay ticks depends on the Manhattan distance for the direction vector $\vec{d_æ} = (d_{æx}, d_{æy}, d_{æz})$ and is calculated by the formula:
+
 $$T_{æc} = τb_æ \cdot (D_Æ\cdot\sqrt{3} - (|d_{æx}| + |d_{æy}| + |d_{æz}|))$$
+
 where:
 * $D_Æ$ is the number of cells in one direction.
 * $d_{æx}, d_{æy}, d_{æz}$ are the coordinates of the direction vector.
@@ -274,6 +303,7 @@ where:
 * The coefficient $τb_æ$ arises because each etheron cycle takes several ticks of time, and the compensating delay ticks must compensate for the difference in time, not just in the number of jumps.
 
 "Reference ether delay" is the number of time ticks required to perform the maximum number of jumps over the reference Euclidean distance $D_Æ$:
+
 $$τ_Æ = τb_æ \cdot D_Æ \cdot \sqrt{3}$$
 
 The total time ($T_æ$) spent by the etheron on Euclidean motion over a distance of $D_Æ$ is made up of the base time ($T_{æb}$), the time for compensatory delays ($T_{æc}$), and the time for additional delays ($T_{æa}$):
