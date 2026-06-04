@@ -321,7 +321,7 @@ The number of etherons in the "rest" state ($s1_æ$) in a cell of space with pos
 
 $$N_{s1æ}(\vec{p}) = \sum_{æ \in Æ} \delta(\vec{r}_{\text{æ}}, \vec{p}) \cdot \delta(s_{\text{æ}}, 1)$$
 
-The transition of an etheron from the "rest" state ($s1_æ$) to the "moving from the cell" state ($s3_æ$), provided that there are no other etherons in the "rest" state in the cell, occurs if its position in space ($\vec{r}_æ$) at the current time tick ($t_Æ$) does not coincide with the position $\vec{p}_{\text{æ}}(t_{\text{Æ}})$, where the etheron should be:
+The transition of an etheron from the "rest" state ($s1_æ$) to the "moving from the cell" state ($s3_æ$), provided that there are no other etherons in the "rest" state in the cell, occurs if its position in space ( $\vec{r}_{\text{æ}}$ ) at the current time tick ( $t_{\text{Æ}}$ ) does not coincide with the position $\vec{p}_{\text{æ}}(t_{\text{Æ}})$, where the etheron should be:
 
 $$s_{\text{æ}}: s_{\text{æ}}^{(1)} \xrightarrow{ ( N_{s1æ}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}}))} s_{\text{æ}}^{(3)}$$
 
