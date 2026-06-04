@@ -323,7 +323,7 @@ $$N_{s1æ}(\vec{p}) = \sum_{æ \in Æ} \delta(\vec{r}_{\text{æ}}, \vec{p}) \cdo
 
 The transition of an etheron from the "rest" state ( $s1_æ$ ) to the "moving from the cell" state ( $s3_æ$ ), provided that there are no other etherons in the "rest" state in the cell, occurs if its position in space ( $\vec{r}$<sub>æ</sub> ) at the current time tick ( $t$<sub>Æ</sub> ) does not coincide with the position $\vec{p}$<sub>æ</sub>$(t$<sub>Æ</sub>$)$, where the etheron should be:
 
-$$s_{\text{æ}}: s_{\text{æ}}^{(1)} \xrightarrow{\ ( N_{s1æ}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}}))\ } s_{\text{æ}}^{(3)}$$
+$$s_{\text{æ}}: s_{\text{æ}}^{(1)} \ \frac{\quad ( N_{s1æ}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}})) \quad}{\longrightarrow} \ s_{\text{æ}}^{(3)}$$
 
 In the "moving out of cell" state ($s3_æ$), the etheron determines which neighboring cell $\vec{p}_{n}$ it must go to in order to get to the cell $\vec{p}_{t}$ where it should be. In a computer simulation, an algorithm similar to a digital differential analyzer (DDA) adapted to toroidal space can be used to find the next neighboring cell $\vec{p}_{n}$ on the way from the current cell $\vec{r}_{æ}$ to the cell $\vec{p}_{t}$ where the etheron should be:
 $$\vec{r}_æ = (x_æ, y_æ, z_æ) \in S$$
