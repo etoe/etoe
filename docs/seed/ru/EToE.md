@@ -332,7 +332,7 @@ $$\vec{\delta} = \vec{p}_t - \vec{r}_æ = (\delta_x, \delta_y, \delta_z)$$
 
 $$\vec{\delta'} = (W_{\text{Æ}}(\delta_x), W_{\text{Æ}}(\delta_y), W_{\text{Æ}}(\delta_z)) = (\delta'_x, \delta'_y, \delta'_z)$$
 
-$$i_{dom} = \mathop{\text{argmax}}_{i \in \{x, y, z\}} |\delta'_i|$$
+$$i_{dom} = \mathop{\text{argmax}}\limits_{i \in \{x, y, z\}} |\delta'_i|$$
 
 $$\vec{e}_x = (1, 0, 0) ; \vec{e}_y = (0, 1, 0) ; \vec{e}_z = (0, 0, 1)$$
 
