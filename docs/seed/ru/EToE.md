@@ -371,10 +371,12 @@ $$v_{æmin} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + D_Æ}= \frac{1}{ τ
 $${v_{æavg}} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + \frac{D_Æ}{2}}= \frac{1}{ τb_æ\cdot\sqrt{3}+\frac{1}{2}}$$
 
 Отношение модуля максимальной непрерывной скорости эфирона к модулю минимальной непрерывной скорости эфирона:
-$$\frac{v_{æmax}}{v_{æmin}} = \frac{{ τb_æ\cdot\sqrt{3}+1} }{τb_æ\cdot\sqrt{3}} = 1 + \frac{1}{ τb_æ\cdot\sqrt{3}} = 1+ v_{æmax} $$
+
+$$\frac{v_{æmax}}{v_{æmin}} = \frac{ τb_æ\cdot\sqrt{3}+1 }{τb_æ\cdot\sqrt{3}} = 1 + \frac{1}{ τb_æ\cdot\sqrt{3}} = 1+ v_{æmax} $$
 
 Отношение модуля максимальной непрерывной скорости эфирона к модулю средней непрерывной скорости эфирона:
-$$\frac{v_{æmax}}{v_{æavg}} = \frac{{ τb_æ\cdot\sqrt{3}+\frac{1}{2}} }{τb_æ\cdot\sqrt{3} + 1}$$
+
+$$\frac{v_{æmax}}{v_{æavg}} = \frac{ τb_æ\cdot\sqrt{3}+\frac{1}{2} }{τb_æ\cdot\sqrt{3} + 1}$$
 
 Разница между модулем максимальной непрерывной скорости эфирона и модулем минимальной непрерывной скорости эфирона:
 $${v_{æmax}}-{v_{æmin}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}$$
