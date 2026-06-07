@@ -451,8 +451,10 @@ Etherons in a group of etherons, relative to the trajectory of which other ether
 In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that one etheron, whose "inertness vector modulus" ($|\vec{i}$<sub>æ</sub>$|$) is greater than the "inertness vector moduli" of the other etherons in the collision, becomes a substantial etheron ($æs$), while all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($|\vec{i}$<sub>æf</sub>$|$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector moduli" do not go beyond the range of the "inertness vector moduli", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are obtained. The new "delay" and "direction" for the substantial etheron will compensate for changes in the "inertness vector magnitudes" of the field etherons.
 
 The first version of the algorithm for selecting a substantial etheron in the "group of collision etherons in a cell of space" ($Æ_c$) comes down to finding the "etheron index" ($æ_s$) with the maximum value of the inertness vector modulus ($|\vec{i}$<sub>æ</sub>$|$), which is equivalent to finding the "etheron index" ($æ_s$) with the maximum value of the "delay" parameter ($a_æ$):
-$$æ_s = \arg\max_{æ \in Æ_c} (|\vec{i}_æ|)$$
-$$æ_s = \arg\max_{æ \in Æ_c} (a_æ)$$
+
+$$æ_s = \arg\max_{æ \in Æ_c} (|\vec{i}_\text{æ}|)$$
+
+$$æ_s = \arg\max_{æ \in Æ_c} (a_\text{æ})$$
 
 The second variant of the algorithm for selecting a substantial etheron in the "group of collision etherons in a cell of space" ($Æ_c$) comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the modulus of the inertness vector ($|\vec{i}$<sub>æ</sub>$|$) and the "average value from the range for the moduli of the inertness vectors" ($\frac{1}{2}$), which is equivalent to finding the "etheron index" ($æ_s$) with the value of the "delay" parameter ($a_æ$) closest to $\frac{D_Æ}{2}$:
 $$æ_s = \arg\min_{æ \in Æ_c} (||\vec{i}_æ| - \frac{1}{2}|)$$
