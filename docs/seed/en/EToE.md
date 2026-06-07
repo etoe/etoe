@@ -457,8 +457,10 @@ $$æ_s = \arg\max_{æ \in Æ_c} (|\vec{i}_\text{æ}|)$$
 $$æ_s = \arg\max_{æ \in Æ_c} (a_\text{æ})$$
 
 The second variant of the algorithm for selecting a substantial etheron in the "group of collision etherons in a cell of space" ($Æ_c$) comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the modulus of the inertness vector ($|\vec{i}$<sub>æ</sub>$|$) and the "average value from the range for the moduli of the inertness vectors" ($\frac{1}{2}$), which is equivalent to finding the "etheron index" ($æ_s$) with the value of the "delay" parameter ($a_æ$) closest to $\frac{D_Æ}{2}$:
-$$æ_s = \arg\min_{æ \in Æ_c} (||\vec{i}_æ| - \frac{1}{2}|)$$
-$$æ_s = \arg\min_{æ \in Æ_c} (|a_æ - \frac{D_Æ}{2}|)$$
+
+$$æ_s = \arg\min_{æ \in Æ_c} (||\vec{i}_\text{æ}| - \frac{1}{2}|)$$
+
+$$æ_s = \arg\min_{æ \in Æ_c} (|a_æ - \frac{D_\text{Æ}}{2}|)$$
 
 The third version of the algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}_æ$) and the "sum of the inertness vectors of all collision etherons in a cell":
 $$æ_s = \arg\min_{æ \in Æ_c} (| \vec{i}_æ - \sum_{æ \in Æ_c} \vec{i}_æ |)$$
