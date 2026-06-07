@@ -403,7 +403,7 @@ $$\vec{d}_æ = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ|}$$
 
 $$\vec{v_æ} = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ| \cdot (τ_Æ + |\vec{i}_æ| \cdot D_Æ)}= -\frac{\vec{i}_æ}{ |\vec{i}_æ| \cdot (τb_æ\cdot\sqrt{3} + |\vec{i}_æ|)}$$
 
-The modulus of the inertness vector of the etheron $|\vec{i}_æ|$ is equal to zero at the maximum continuous velocity of the etheron $v_{æmax}$ and is maximum at the minimum continuous velocity of the etheron $v_{æmin}$.
+The modulus of the inertness vector of the etheron $|\vec{i}_{\text{æ}}|$ is equal to zero at the maximum continuous velocity of the etheron $v_{æmax}$ and is maximum at the minimum continuous velocity of the etheron $v_{æmin}$.
 
 The unit of measurement for inertness in the ether system of units is "æi".
 
