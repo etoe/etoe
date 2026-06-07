@@ -342,7 +342,8 @@ $$\Delta\vec{p} = \mathop {\text{sgn}(\delta'_{i_{dom}})} \cdot \vec{e}_{i_{dom}
 $$\vec{p}_{n} = (W_{\text{Æ}}(x_æ + \Delta p_x), W_{\text{Æ}}(y_æ + \Delta p_y), W_{\text{Æ}}(z_æ + \Delta p_z))$$
 
 In the state of "moving to a cell" ($s4_æ$), the etheron's "position" parameter $\vec{r}_æ$ becomes equal to the position of the cell $\vec{p}$<sub>n</sub> it arrived at:
-$$s_æ = s^{(4)} \implies \vec{r}_æ = \vec{p}_{n}$$
+
+$$s_{\text{æ}} = s^{(4)} \implies \vec{r}_{\text{æ}} = \vec{p}_{n}$$
 
 The modulus of the Euclidean continuous velocity of an etheron $v_æ=|\vec{v_æ}|$ is the ratio of the Euclidean distance traveled to the time spent on its passage. The modulus of the maximum continuous velocity of an etheron does not depend on the direction of movement, since the difference in time arising from a different number of jumps is completely compensated by a different number of ticks of the compensatory delay. The modulus of the continuous velocity of an etheron $v_æ$ is determined only by its "delay" parameter $a_æ$.
 
