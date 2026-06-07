@@ -427,8 +427,10 @@ During the interaction of three or more etherons in a space cell, the fourth and
 When three or more etherons interact in a cell of space, the fourth and fifth parameters of each of these etherons can change in accordance with the "substance-field pattern" of the distribution of continuous velocities of etherons in a group of etherons, as well as in accordance with the "law of conservation of inertness" and in accordance with the range of absolute continuous velocities of etherons. If there is no satisfactory solution to the problem of distributing continuous velocities for the parameters of the interacting etherons, then after the interaction, the velocities and directions of the interacting etherons remain unchanged, and the interaction itself is considered transit.
 
 The "law of conservation of inertness" during the interaction of three or more etherons in a cell of space consists in the fact that for collision etherons in a cell of space, the "sum of their inertness vectors" ($\vec{I_c}$) before the collision is equal to the "sum of their inertness vectors" after the collision, and also the "sum of their inertness vector moduli" (${A_c}$) before the collision is equal to the "sum of their inertness vector moduli" after the collision:
-$$\vec{I_c} = \sum_{i=1}^{N} \vec{i}{_æ}{_i} = const$$
-$${A_c} = \sum_{i=1}^{N}{i}{_æ}{_i} = const$$
+
+$$\vec{I_c} = \sum_{i=1}^{N} \vec{i}_\text{æi} = const$$
+
+$${A_c} = \sum_{i=1}^{N}{i}_\text{æi} = const$$
 
 In the simplest model, the "amount of inertness" in the Universe is constant. "Σiæ=const" is a conventional notation for the constancy of the Universe's inertness. $\vec{I}{_Æ}$ is the "sum of the inertness vectors" of all etherons. ${A_Æ}$ is the "sum of the inertness vector modules" of all etherons. Formulas for the constancy of the Universe's inertness:
 $$Σiæ=const$$
