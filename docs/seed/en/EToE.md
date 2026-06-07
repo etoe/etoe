@@ -382,15 +382,25 @@ $${v_{æmax}}-{v_{æmin}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cd
 
 At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{æavg}$ to $1.1 \cdot v_{æavg}$.
 
-The inertness vector of the etheron $\vec{i}_æ$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}_æ$ and having a modulus equal to the ratio of the "total additional delay" of the etheron $a_æ$ to the reference distance $D_Æ$:
+The inertness vector of the etheron $\vec{i}_æ$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}$<sub>æ</sub> and having a modulus equal to the ratio of the "total additional delay" of the etheron $a_æ$ to the reference distance $D_Æ$:
+
+
 $$i_æ=|\vec{i}_æ|=\frac{a_æ}{D_Æ}$$
+
 $$i_{æavg}=\frac{a_{æavg}}{D_Æ}=\frac{1}{2}$$
+
 $$a_æ=i_æ \cdot D_Æ$$
+
 $$v_æ=\frac{D_Æ }{ τ_Æ + i_æ \cdot D_Æ }= \frac{1}{ τb_æ\cdot\sqrt{3} + i_æ }$$
+
 $$i_æ=\frac{1}{v_æ}-τb_æ\cdot\sqrt{3}$$
+
 $$\hat{i}_æ=-\hat{v}_æ = -\frac{\vec{d_æ}}{D_Æ}$$
+
 $$\vec{i}_æ = \hat{i}_æ \cdot |\vec{i}_æ| = -\hat{v}_æ \cdot \frac{a_æ}{D_Æ}=-\frac{\vec{d_æ}}{D_Æ} \cdot \frac{a_æ}{D_Æ} = -\frac{\vec{d_æ}\cdot{a_æ}}{D_Æ^2}$$
+
 $$\vec{d}_æ = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ|}$$
+
 $$\vec{v_æ} = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ| \cdot (τ_Æ + |\vec{i}_æ| \cdot D_Æ)}= -\frac{\vec{i}_æ}{ |\vec{i}_æ| \cdot (τb_æ\cdot\sqrt{3} + |\vec{i}_æ|)}$$
 
 The modulus of the inertness vector of the etheron $|\vec{i}_æ|$ is equal to zero at the maximum continuous velocity of the etheron $v_{æmax}$ and is maximum at the minimum continuous velocity of the etheron $v_{æmin}$.
