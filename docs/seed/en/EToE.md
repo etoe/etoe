@@ -501,13 +501,21 @@ $$a_{æs} = |\vec{i}_{æs}| \cdot D_Æ$$
 $$\vec{d}_{æs} = -\frac{\vec{i}_{æs} \cdot D_Æ }{ |\vec{i}_{æs}|}$$
 
 In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $|\vec{V}^{(k)}| = 0$, then use the bisection method. If $i_{æf}^{(k)} \notin [0, 1]$, then project onto the permissible range.
+
 $$i_{æf}^{(0)} = \frac{A_{\text{old}}}{N}, \quad k = 0$$
-$$\vec{U} = \sum_{j=1}^{N-1} \hat{\vec{i}}_{æj}$$
-$$NEXT: \vec{V}^{(k)} = \vec{I}_{\text{old}} - i_{æf}^{(k)} \cdot \vec{U}$$
+
+$$\vec{U} = \sum_{j=1}^{N-1} \hat{\vec{i}}_\text{æj}$$
+
+$$NEXT: \vec{V}^{(k)} = \vec{I}_\text{old} - i_{æf}^{(k)} \cdot \vec{U}$$
+
 $$F(i_{æf}^{(k)}) = (N-1) \cdot i_{æf}^{(k)} + |\vec{V}^{(k)}| - A_{\text{old}}$$
+
 $$F'(i_{æf}^{(k)}) = (N-1) - \frac{\vec{V}^{(k)} \cdot \vec{U}}{|\vec{V}^{(k)}|}$$
+
 $$i_{æf}^{(k+1)} = i_{æf}^{(k)} - \frac{F(i_{æf}^{(k)})}{F'(i_{æf}^{(k)})}$$
+
 $$\text{IF } (|i_{æf}^{(k+1)} - i_{æf}^{(k)}| < \varepsilon) \text{ THEN } i_{æf} = i_{æf}^{(k+1)}$$
+
 $$\text{ELSE } \{ k = k + 1; \text{GOTO NEXT} \}$$
 
 The interaction of etherons in a cell of space, as a result of which the modules of continuous velocities and reference directions of etherons have changed, is called synthesizing due to the synthesis from this group of etherons of an etheric object of the second level of matter, consisting of substantial and field etherons.
