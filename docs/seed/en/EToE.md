@@ -325,16 +325,23 @@ The transition of an etheron from the "rest" state ( $s1_æ$ ) to the "moving fr
 
 $$s_{\text{æ}}^{(1)} \longrightarrow s_{\text{æ}}^{(3)}, \quad \text{for} \quad ( N_{s1æ}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}}))$$
 
-In the "moving out of cell" state ($s3_æ$), the etheron determines which neighboring cell $\vec{p}_{n}$ it must go to in order to get to the cell $\vec{p}_{t}$ where it should be. In a computer simulation, an algorithm similar to a digital differential analyzer (DDA) adapted to toroidal space can be used to find the next neighboring cell $\vec{p}_{n}$ on the way from the current cell $\vec{r}_{æ}$ to the cell $\vec{p}_{t}$ where the etheron should be:
-$$\vec{r}_æ = (x_æ, y_æ, z_æ) \in S$$
-$$\vec{\delta} = \vec{p}_t - \vec{r}_æ = (\delta_x, \delta_y, \delta_z)$$
-$$\vec{\delta'} = (W_Æ(\delta_x), W_Æ(\delta_y), W_Æ(\delta_z)) = (\delta'_x, \delta'_y, \delta'_z)$$
-$$i_{dom} = \underset{i \in \{x, y, z\}}{\operatorname{argmax}} |\delta'_i|$$
-$$\vec{e}_x = (1, 0, 0) ; \vec{e}_y = (0, 1, 0) ; \vec{e}_z = (0, 0, 1)$$
-$$\Delta\vec{p} = \operatorname{sgn}(\delta'_{i_{dom}}) \cdot \vec{e}_{i_{dom}}$$
-$$\vec{p}_{n} = (W_Æ(x_æ + \Delta p_x), W_Æ(y_æ + \Delta p_y), W_Æ(z_æ + \Delta p_z))$$
+In the "moving out of cell" state ($s3_æ$), the etheron determines which neighboring cell $\vec{p}$<sub>n</sub> it must go to in order to get to the cell $\vec{p}$<sub>t</sub> where it should be. In a computer simulation, an algorithm similar to a digital differential analyzer (DDA) adapted to toroidal space can be used to find the next neighboring cell $\vec{p}$<sub>n</sub> on the way from the current cell $\vec{r}$<sub>æ</sub> to the cell $\vec{p}$<sub>t</sub> where the etheron should be:
 
-In the state of "moving to a cell" ($s4_æ$), the etheron's "position" parameter $\vec{r}_æ$ becomes equal to the position of the cell $\vec{p}_{n}$ it arrived at:
+$$\vec{r}_æ = (x_æ, y_æ, z_æ) \in S$$
+
+$$\vec{\delta} = \vec{p}_t - \vec{r}_æ = (\delta_x, \delta_y, \delta_z)$$
+
+$$\vec{\delta'} = (W_{\text{Æ}}(\delta_x), W_{\text{Æ}}(\delta_y), W_{\text{Æ}}(\delta_z)) = (\delta'_x, \delta'_y, \delta'_z)$$
+
+$$i_{dom} = \underset{i \in \{x, y, z\}}{\operatorname{argmax}} |\delta'_i|$$
+
+$$\vec{e}_x = (1, 0, 0) ; \vec{e}_y = (0, 1, 0) ; \vec{e}_z = (0, 0, 1)$$
+
+$$\Delta\vec{p} = \operatorname{sgn}(\delta'_{i_{dom}}) \cdot \vec{e}_{i_{dom}}$$
+
+$$\vec{p}_{n} = (W_{\text{Æ}}(x_æ + \Delta p_x), W_{\text{Æ}}(y_æ + \Delta p_y), W_{\text{Æ}}(z_æ + \Delta p_z))$$
+
+In the state of "moving to a cell" ($s4_æ$), the etheron's "position" parameter $\vec{r}_æ$ becomes equal to the position of the cell $\vec{p}$<sub>n</sub> it arrived at:
 $$s_æ = s^{(4)} \implies \vec{r}_æ = \vec{p}_{n}$$
 
 The modulus of the Euclidean continuous velocity of an etheron $v_æ=|\vec{v_æ}|$ is the ratio of the Euclidean distance traveled to the time spent on its passage. The modulus of the maximum continuous velocity of an etheron does not depend on the direction of movement, since the difference in time arising from a different number of jumps is completely compensated by a different number of ticks of the compensatory delay. The modulus of the continuous velocity of an etheron $v_æ$ is determined only by its "delay" parameter $a_æ$.
