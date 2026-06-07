@@ -432,10 +432,13 @@ $$\vec{I_c} = \sum_{i=1}^{N} \vec{i}_\text{æi} = const$$
 
 $${A_c} = \sum_{i=1}^{N}{i}_\text{æi} = const$$
 
-In the simplest model, the "amount of inertness" in the Universe is constant. "Σiæ=const" is a conventional notation for the constancy of the Universe's inertness. $\vec{I}{_Æ}$ is the "sum of the inertness vectors" of all etherons. ${A_Æ}$ is the "sum of the inertness vector modules" of all etherons. Formulas for the constancy of the Universe's inertness:
+In the simplest model, the "amount of inertness" in the Universe is constant. "Σiæ=const" is a conventional notation for the constancy of the Universe's inertness. $\vec{I}$<sub>Æ</sub> is the "sum of the inertness vectors" of all etherons. ${A}$<sub>Æ</sub> is the "sum of the inertness vector modules" of all etherons. Formulas for the constancy of the Universe's inertness:
+
 $$Σiæ=const$$
-$$\vec{I}{_Æ} = \sum_{i=1}^{m{_Æ}} \vec{i}{_æ}{_i} = \vec{0}$$
-$${A_Æ} = \sum_{i=1}^{m{_Æ}}{i}{_æ}{_i} = \frac{m{_Æ}}{2} $$
+
+$$\vec{I}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}} \vec{i}_\text{æi} = \vec{0}$$
+
+$${A}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}}{i}_\text{æi} = \frac{m_\text{Æ}}{2} $$
 
 The interaction of three or more etherons in a cell of space with a change in the speeds and directions of the interacting etherons is called "synthesizing interaction" of etherons.
 
