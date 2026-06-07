@@ -466,22 +466,38 @@ The third version of the algorithm for selecting a substantial etheron in a "gro
 
 $$æ_s = \arg\min_{æ \in Æ_c} (| \vec{i}_\text{æ} - \sum_{æ \in Æ_c} \vec{i}_\text{æ} |)$$
 
-The algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in the amount equal to $N$, in the analytical version is reduced to solving the quadratic equation $ax²+bx+c=0$, where $x=i_{æf}$ is the modulus of the inertness vector of each field etheron after the collision. The formulas of the algorithm contain the following notations. Vectors are denoted by symbols with an arrow on top. Unit vectors are denoted by symbols with a cap on top. Vector moduli are denoted either by simple symbols or by symbols with an arrow on top in two vertical lines around the symbols. The number of a substantial etheron is equal to $N$. Field etheron numbers start with $1$ and end with $N-1$. $\vec{i}_{æs}$ is the inertness vector of a substantial etheron after the collision. $\vec{i}_{æj}$ is the inertness vector of an etheron with the number $j$ before the collision. $\vec{I}_{\text{old}}$ is the sum of the inertness vectors of all etherons before the collision. $\vec{I}_{\text{new}}$ is the sum of the inertness vectors of all etherons after the collision. $A_{\text{old}}$ is the sum of the moduli of the inertness vectors of all etherons before the collision. $A_{\text{new}}$ is the sum of the moduli of the inertness vectors of all etherons after the collision. Formulas for the calculation algorithm of the simplest version of the substance-field pattern:
+The algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in the amount equal to $N$, in the analytical version is reduced to solving the quadratic equation $ax²+bx+c=0$, where $x=i_{æf}$ is the modulus of the inertness vector of each field etheron after the collision. The formulas of the algorithm contain the following notations. Vectors are denoted by symbols with an arrow on top. Unit vectors are denoted by symbols with a cap on top. Vector moduli are denoted either by simple symbols or by symbols with an arrow on top in two vertical lines around the symbols. The number of a substantial etheron is equal to $N$. Field etheron numbers start with $1$ and end with $N-1$. $\vec{i}$<sub>æs</sub> is the inertness vector of a substantial etheron after the collision. $\vec{i}$<sub>æj</sub> is the inertness vector of an etheron with the number $j$ before the collision. $\vec{I}_{\text{old}}$ is the sum of the inertness vectors of all etherons before the collision. $\vec{I}_{\text{new}}$ is the sum of the inertness vectors of all etherons after the collision. $A_{\text{old}}$ is the sum of the moduli of the inertness vectors of all etherons before the collision. $A_{\text{new}}$ is the sum of the moduli of the inertness vectors of all etherons after the collision. Formulas for the calculation algorithm of the simplest version of the substance-field pattern:
+
 $$\vec{I}_{\text{old}} = \sum_{j=1}^N \vec{i}_{æj}$$
+
 $$\vec{I}_{\text{new}} = \sum_{j=1}^{N-1} i_{æf} \cdot \hat{i}_{æj} + \vec{i}_{æs}$$
+
 $$\vec{I}_{\text{new}} = \vec{I}_{\text{old}}$$
+
 $$A_{\text{old}} = \sum_{j=1}^N {i}_{æj}$$
+
 $$A_{\text{new}} = (N-1)\cdot i_{æf} + i_{æs}$$
+
 $$A_{\text{new}} = A_{\text{old}}$$
+
 $$\vec{i}_{æs} = \sum_{j=1}^N \vec{i}_{æj} - i_{æf}\cdot \sum_{j=1}^{N-1} \hat{i}_{æj}$$
+
 $$(N-1) \cdot i_{æf} +  |\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \sum_{j=1}^{N-1} \hat{i}_{æj}| = \sum_{j=1}^N {i}_{æj}$$
+
 $$|\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \cdot\sum_{j=1}^{N-1} \hat{i}_{æj}|^2 = (\sum_{j=1}^N {i}_{æj} - (N-1) \cdot i_{æf})^2 $$
+
 $$|\sum_{j=1}^N \vec{i}_{æj}|^2 + i_{æf} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2 - 2\cdot i_{æf} \cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj})=\\ = (\sum_{j=1}^N {i}_{æj})^2 + ((N-1) \cdot i_{æf})^2 - 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot ((N-1) \cdot i_{æf})$$
+
 $$i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) +  \\ + i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\ + (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0$$
+
 $$a \cdot i_{æf}^2 + b \cdot i_{æf} + c = 0$$
+
 $$i_{æf} = \frac{-b \pm \sqrt{b^2 - 4\cdot a \cdot c}}{2\cdot a}$$
+
 $$a_{æf} = i_{æf} \cdot D_Æ$$
+
 $$a_{æs} = |\vec{i}_{æs}| \cdot D_Æ$$
+
 $$\vec{d}_{æs} = -\frac{\vec{i}_{æs} \cdot D_Æ }{ |\vec{i}_{æs}|}$$
 
 In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $|\vec{V}^{(k)}| = 0$, then use the bisection method. If $i_{æf}^{(k)} \notin [0, 1]$, then project onto the permissible range.
