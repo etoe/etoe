@@ -333,11 +333,11 @@ $$\vec{\delta} = \vec{p}_t - \vec{r}_æ = (\delta_x, \delta_y, \delta_z)$$
 
 $$\vec{\delta'} = (W_{\text{Æ}}(\delta_x), W_{\text{Æ}}(\delta_y), W_{\text{Æ}}(\delta_z)) = (\delta'_x, \delta'_y, \delta'_z)$$
 
-$$i_{dom} = \underset{i \in \{x, y, z\}}{\operatorname{argmax}} |\delta'_i|$$
+$$i_{dom} = \mathop{\text{argmax}}_{i \in \{x, y, z\}} |\delta'_i|$$
 
 $$\vec{e}_x = (1, 0, 0) ; \vec{e}_y = (0, 1, 0) ; \vec{e}_z = (0, 0, 1)$$
 
-$$\Delta\vec{p} = \operatorname{sgn}(\delta'_{i_{dom}}) \cdot \vec{e}_{i_{dom}}$$
+$$\Delta\vec{p} = \mathop {\text{sgn}(\delta'_{i_{dom}})} \cdot \vec{e}_{i_{dom}}$$
 
 $$\vec{p}_{n} = (W_{\text{Æ}}(x_æ + \Delta p_x), W_{\text{Æ}}(y_æ + \Delta p_y), W_{\text{Æ}}(z_æ + \Delta p_z))$$
 
