@@ -317,7 +317,7 @@ The independence of the total time spent by the etheron on Euclidean motion from
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
 $$\vec{p}_æ(t) = rc_æ + \frac {(t - tc_æ)\cdot \vec{d_æ}}  {τ_Æ + a_æ} $$
 
-The number of etherons in the "rest" state ($s1_æ$) in a cell of space with position $\vec{p}$ is denoted by $N_{s1æ}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
+The number of etherons in the "rest" state ( $s1_\text{æ}$ ) in a cell of space with position $\vec{p}$ is denoted by $N_{s1æ}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
 
 $$N_{s1æ}(\vec{p}) = \sum_{æ \in Æ} \delta(\vec{r}_{\text{æ}}, \vec{p}) \cdot \delta(s_{\text{æ}}, 1)$$
 
