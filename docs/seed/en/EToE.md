@@ -503,7 +503,7 @@ $$a_{æs} = |\vec{i}_{æs}| \cdot D_Æ$$
 
 $$\vec{d}_{æs} = -\frac{\vec{i}_{æs} \cdot D_Æ }{ |\vec{i}_{æs}|}$$
 
-In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $|\vec{V}^{(k)}| = 0$, then use the bisection method. If $i_{æf}^{(k)} \notin [0, 1]$, then project onto the permissible range.
+In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $\lvert \vec{V}^{(k)} \rvert = 0$, then use the bisection method. If $i_{æf}^{(k)} \notin [0, 1]$, then project onto the permissible range.
 
 $$i_{æf}^{(0)} = \frac{A_{\text{old}}}{N}, \quad k = 0$$
 
