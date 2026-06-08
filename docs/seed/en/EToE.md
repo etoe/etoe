@@ -315,7 +315,8 @@ If we add these components, the terms containing the direction vector $(|d_{æx}
 The independence of the total time spent by the etheron on Euclidean motion from the Euclidean direction ensures the same Euclidean speed for etherons with the same "delay" parameter, regardless of the trajectory of their jumps.
 
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
-$$\vec{p}_æ(t) = rc_æ + \frac {(t - tc_æ)\cdot \vec{d_æ}}  {τ_Æ + a_æ} $$
+
+$$\vec{p}_æ(t) = rc_æ + \frac {(t - tc_æ)\cdot \vec{d_æ}} {τ_Æ + a_æ}$$
 
 The number of etherons in the "rest" state ( $s1$<sub>æ</sub> ) in a cell of space with position $\vec{p}$ is denoted by $N_{s1æ}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
 
@@ -345,7 +346,7 @@ In the state of "moving to a cell" ($s4_æ$), the etheron's "position" parameter
 
 $$s_{\text{æ}} = s^{(4)} \implies \vec{r}_{\text{æ}} = \vec{p}_{n}$$
 
-The modulus of the Euclidean continuous velocity of an etheron $v_æ=|\vec{v_æ}|$ is the ratio of the Euclidean distance traveled to the time spent on its passage. The modulus of the maximum continuous velocity of an etheron does not depend on the direction of movement, since the difference in time arising from a different number of jumps is completely compensated by a different number of ticks of the compensatory delay. The modulus of the continuous velocity of an etheron $v_æ$ is determined only by its "delay" parameter $a_æ$.
+The modulus of the Euclidean continuous velocity of an etheron $v$<sub>æ</sub>$=|\vec{v}$<sub>æ</sub>$|$ is the ratio of the Euclidean distance traveled to the time spent on its passage. The modulus of the maximum continuous velocity of an etheron does not depend on the direction of movement, since the difference in time arising from a different number of jumps is completely compensated by a different number of ticks of the compensatory delay. The modulus of the continuous velocity of an etheron $v_æ$ is determined only by its "delay" parameter $a_æ$.
 
 Formula for the module of continuous velocity of etheron $v_æ$:
 $$v_æ = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + a_æ }=\frac{D_Æ }{ τ_Æ + a_æ }$$
