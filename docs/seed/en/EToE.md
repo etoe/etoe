@@ -314,7 +314,7 @@ $$T_{æc} = τb_æ \cdot (D_Æ\cdot\sqrt{3} - (|d_{æx}| + |d_{æy}| + |d_{æz}|
 
 $$T_{æa} = a_æ$$
 
-If we add these components, the terms containing the direction vector $(|d_{æx}| + |d_{æy}| + |d_{æz}|)$ cancel each other out. As a result, the total time is independent of direction: 
+If we add these components, the terms containing the direction vector $(\lvert d_{\text{æx}}\rvert + \lvert d_{\text{æy}}\rvert + \lvert d_{\text{æz}}\rvert)$ cancel each other out. As a result, the total time is independent of direction: 
 
 $$T_æ = T_{æb} + T_{æc} + T_{æa} = τb_æ  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
 
