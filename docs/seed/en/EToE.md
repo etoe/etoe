@@ -307,11 +307,17 @@ where:
 $$τ_Æ = τb_æ \cdot D_Æ \cdot \sqrt{3}$$
 
 The total time ($T_æ$) spent by the etheron on Euclidean motion over a distance of $D_Æ$ is made up of the base time ($T_{æb}$), the time for compensatory delays ($T_{æc}$), and the time for additional delays ($T_{æa}$):
+
 $$T_{æb} = (|d_{æx}| + |d_{æy}| + |d_{æz}|) \cdot τb_æ$$
+
 $$T_{æc} = τb_æ \cdot (D_Æ\cdot\sqrt{3} - (|d_{æx}| + |d_{æy}| + |d_{æz}|))$$
+
 $$T_{æa} = a_æ$$
 
-If we add these components, the terms containing the direction vector $(|d_{æx}| + |d_{æy}| + |d_{æz}|)$ cancel each other out. As a result, the total time is independent of direction: $$T_æ = T_{æb} + T_{æc} + T_{æa} = τb_æ  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
+If we add these components, the terms containing the direction vector $(|d_{æx}| + |d_{æy}| + |d_{æz}|)$ cancel each other out. As a result, the total time is independent of direction: 
+
+$$T_æ = T_{æb} + T_{æc} + T_{æa} = τb_æ  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
+
 The independence of the total time spent by the etheron on Euclidean motion from the Euclidean direction ensures the same Euclidean speed for etherons with the same "delay" parameter, regardless of the trajectory of their jumps.
 
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
@@ -349,27 +355,36 @@ $$s_{\text{æ}} = s^{(4)} \implies \vec{r}_{\text{æ}} = \vec{p}_{n}$$
 The modulus of the Euclidean continuous velocity of an etheron $v_{\text{æ}} = \lvert \vec{v}_{\text{æ}} \rvert$ is the ratio of the Euclidean distance traveled to the time spent on its passage. The modulus of the maximum continuous velocity of an etheron does not depend on the direction of movement, since the difference in time arising from a different number of jumps is completely compensated by a different number of ticks of the compensatory delay. The modulus of the continuous velocity of an etheron $v_æ$ is determined only by its "delay" parameter $a_æ$.
 
 Formula for the module of continuous velocity of etheron $v_æ$:
+
 $$v_æ = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + a_æ }=\frac{D_Æ }{ τ_Æ + a_æ }$$
+
 $$a_æ = \frac{D_Æ}{v_æ} - { τb_æ \cdot D_Æ\cdot\sqrt{3}}= \frac{D_Æ}{v_æ} - τ_Æ$$
+
 where:
 * $D_Æ$ — reference Euclidean distance.
 * $τ_Æ$ — reference ether delay.
 * $a_æ$ — etheron parameter that determines the number of ticks of additional delay during Euclidean movement by the reference Euclidean distance.
 
 The unit vector of continuous velocity of the etheron $\hat{v_æ}$, indicating the direction of the vector of continuous velocity of the etheron $\vec{v_æ}$, is equal to the ratio of the reference direction vector $\vec{d_æ}$ to the reference distance $D_Æ$. The formula for the unit vector of continuous velocity of the etheron $\hat{v_æ}$:
+
 $$\hat{v_æ} = \frac{\vec{d_æ}}{D_Æ}$$
 
 The continuous velocity vector of the etheron $\vec{v_æ}$ is equal to the product of the unit continuous velocity vector of the etheron $\hat{v_æ}$ and the modulus of the velocity of the etheron $v_æ$. Formula for the continuous velocity vector of the etheron $\vec{v_æ}$:
+
 $$\vec{v_æ} = \frac{\vec{d_æ}}{D_Æ} \cdot v_æ = \frac{\vec{d_æ}}{D_Æ} \cdot \frac{D_Æ }{ τ_Æ + a_æ }  = \frac{\vec{d_æ}} { τ_Æ + a_æ }= \frac{\vec{d_æ}} { τb_æ \cdot D_Æ\cdot\sqrt{3} + a_æ }$$
+
 $$\vec{d_æ} = \frac{\vec{v_æ}\cdot D_Æ}{|\vec{v_æ}|}$$
 
 The modulus of the continuous velocity of the etheron $v_æ$ is maximum at the minimum value of the "delay" parameter ($a_æ=0$):
+
 $$v_{æmax} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3}} = \frac{1}{ τb_æ\cdot\sqrt{3}}$$
 
 The modulus of the continuous velocity of the etheron $v_æ$ is minimal at the maximum value of the "delay" parameter ($a_æ=D_Æ$):
+
 $$v_{æmin} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + D_Æ}= \frac{1}{ τb_æ\cdot\sqrt{3}+1}$$
 
 The average value of the modulus of the continuous velocity of the etheron occurs at the average value of the "delay" parameter ($a_æ=\frac{D_Æ}{2}$):
+
 $${v_{æavg}} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + \frac{D_Æ}{2}}= \frac{1}{ τb_æ\cdot\sqrt{3}+\frac{1}{2}}$$
 
 The ratio of the modulus of the maximum continuous velocity of the etheron to the modulus of the minimum continuous velocity of the etheron:
@@ -381,12 +396,12 @@ The ratio of the modulus of the maximum continuous velocity of the etheron to th
 $$\frac{v_{æmax}}{v_{æavg}} = \frac{ τb_æ\cdot\sqrt{3}+\frac{1}{2} }{τb_æ\cdot\sqrt{3} + 1}$$
 
 The difference between the module of the maximum continuous speed of etheron and the module of the minimum continuous speed of etheron:
+
 $${v_{æmax}}-{v_{æmin}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}$$
 
 At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{æavg}$ to $1.1 \cdot v_{æavg}$.
 
 The inertness vector of the etheron $\vec{i}_æ$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}$<sub>æ</sub> and having a modulus equal to the ratio of the "total additional delay" of the etheron $a_æ$ to the reference distance $D_Æ$:
-
 
 $$i_æ=|\vec{i}_æ|=\frac{a_æ}{D_Æ}$$
 
