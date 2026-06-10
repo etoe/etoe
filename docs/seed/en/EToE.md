@@ -397,7 +397,11 @@ $$\frac{v_{æmax}}{v_{æavg}} = \frac{ τb_æ\cdot\sqrt{3}+\frac{1}{2} }{τb_æ\
 
 The difference between the module of the maximum continuous speed of etheron and the module of the minimum continuous speed of etheron:
 
-$${v_{æmax}}-{v_{æmin}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}$$
+$$
+\begin{aligned}
+{v_{æmax}}-{v_{æmin}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\\\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}
+\end{aligned}
+$$
 
 At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{æavg}$ to $1.1 \cdot v_{æavg}$.
 
