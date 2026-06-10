@@ -501,7 +501,11 @@ $$(N-1) \cdot i_{æf} +  |\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \sum_{j=1}^{N-1} 
 
 $$|\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \cdot\sum_{j=1}^{N-1} \hat{i}_{æj}|^2 = (\sum_{j=1}^N {i}_{æj} - (N-1) \cdot i_{æf})^2 $$
 
-$$|\sum_{j=1}^N \vec{i}_{æj}|^2 + i_{æf} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2 - 2\cdot i_{æf} \cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) = \\\\ = (\sum_{j=1}^N {i}_{æj})^2 + ((N-1) \cdot i_{æf})^2 - 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot ((N-1) \cdot i_{æf})$$
+$$
+\begin{aligned}
+|\sum_{j=1}^N \vec{i}_{æj}|^2 + i_{æf} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2 - 2\cdot i_{æf} \cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) = \\ = (\sum_{j=1}^N {i}_{æj})^2 + ((N-1) \cdot i_{æf})^2 - 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot ((N-1) \cdot i_{æf})
+\end{aligned}
+$$
 
 $$i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) + \\\\ + i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\\\ + (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0$$
 
@@ -846,18 +850,3 @@ $$\text{ELSE } \{ k = k + 1; \text{GOTO NEXT} \}$$
 На этом заканчивается краткое изложение Эфирной Теории Общества.
 
 Вышеизложенное является кратким изложением Эфирной Теории Всего для диалогов с системами ИИ.
-
----
-Test for LaTex in GitHub and GitHub Pages:
-
-$$
-\begin{aligned}
-A &= B + C + D \\\\
-&= F + G + H
-\end{aligned}
-$$
-
-$$A = B + C + D$$
-
-$$\qquad = F + G + H$$
-
