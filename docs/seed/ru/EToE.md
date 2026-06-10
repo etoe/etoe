@@ -501,9 +501,12 @@ $$(N-1) \cdot i_{æf} +  |\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \sum_{j=1}^{N-1} 
 
 $$|\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \cdot\sum_{j=1}^{N-1} \hat{i}_{æj}|^2 = (\sum_{j=1}^N {i}_{æj} - (N-1) \cdot i_{æf})^2 $$
 
-$$|\sum_{j=1}^N \vec{i}_{æj}|^2 + i_{æf} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2 - 2\cdot i_{æf} \cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj})=\\ = (\sum_{j=1}^N {i}_{æj})^2 + ((N-1) \cdot i_{æf})^2 - 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot ((N-1) \cdot i_{æf})$$
+$$|\sum_{j=1}^N \vec{i}_{æj}|^2 + i_{æf} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2 - 2\cdot i_{æf} \cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj})=\\
+= (\sum_{j=1}^N {i}_{æj})^2 + ((N-1) \cdot i_{æf})^2 - 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot ((N-1) \cdot i_{æf})$$
 
-$$i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) +  \\ + i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\ + (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0$$
+$$i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) + \\
++ i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\
++ (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0$$
 
 $$a \cdot i_{æf}^2 + b \cdot i_{æf} + c = 0$$
 
