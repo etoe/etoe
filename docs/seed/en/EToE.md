@@ -510,7 +510,11 @@ $$
 \end{aligned}
 $$
 
-$$i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) + \\\\ + i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\\\ + (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0$$
+$$
+\begin{aligned}
+i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) + \\\\ + i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\\\ + (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0
+\end{aligned}
+$$
 
 $$a \cdot i_{æf}^2 + b \cdot i_{æf} + c = 0$$
 
