@@ -849,9 +849,15 @@ $$\text{ELSE } \{ k = k + 1; \text{GOTO NEXT} \}$$
 
 ---
 Test for LaTex in GitHub and GitHub Pages:
+
 $$
 \begin{aligned}
 A &= B + C + D \\\\
 &= F + G + H
 \end{aligned}
 $$
+
+$$A = B + C + D$$
+
+$$\qquad = F + G + H$$
+
