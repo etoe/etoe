@@ -448,19 +448,19 @@ During the interaction of three or more etherons in a space cell, the fourth and
 
 When three or more etherons interact in a cell of space, the fourth and fifth parameters of each of these etherons can change in accordance with the "substance-field pattern" of the distribution of continuous velocities of etherons in a group of etherons, as well as in accordance with the "law of conservation of inertness" and in accordance with the range of absolute continuous velocities of etherons. If there is no satisfactory solution to the problem of distributing continuous velocities for the parameters of the interacting etherons, then after the interaction, the velocities and directions of the interacting etherons remain unchanged, and the interaction itself is considered transit.
 
-The "law of conservation of inertness" during the interaction of three or more etherons in a cell of space consists in the fact that for collision etherons in a cell of space, the "sum of their inertness vectors" ($\vec{I_c}$) before the collision is equal to the "sum of their inertness vectors" after the collision, and also the "sum of their inertness vector moduli" (${\mathcal I_c}$) before the collision is equal to the "sum of their inertness vector moduli" after the collision:
+The "law of conservation of inertness" during the interaction of three or more etherons in a cell of space consists in the fact that for collision etherons in a cell of space, the "sum of their inertness vectors" ($\vec{I_c}$) before the collision is equal to the "sum of their inertness vectors" after the collision, and also the "sum of their inertness vector moduli" (${ℐ_c}$) before the collision is equal to the "sum of their inertness vector moduli" after the collision:
 
 $$\vec{I_c} = \sum_{i=1}^{N} \vec{i}_\text{æi} = const$$
 
-$${\mathcal I_c} = \sum_{i=1}^{N}{i}_\text{æi} = const$$
+$${ℐ_c} = \sum_{i=1}^{N}{i}_\text{æi} = const$$
 
-In the simplest model, the "amount of inertness" in the Universe is constant. "Σiæ=const" is a conventional notation for the constancy of the Universe's inertness. $\vec{I}{_Æ}$ is the "sum of the inertness vectors" of all etherons. ${\mathcal I_Æ}$ is the "sum of the inertness vector modules" of all etherons. Formulas for the constancy of the Universe's inertness:
+In the simplest model, the "amount of inertness" in the Universe is constant. "Σiæ=const" is a conventional notation for the constancy of the Universe's inertness. $\vec{I}{_Æ}$ is the "sum of the inertness vectors" of all etherons. ${ℐ_Æ}$ is the "sum of the inertness vector modules" of all etherons. Formulas for the constancy of the Universe's inertness:
 
 $$Σiæ=const$$
 
 $$\vec{I}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}} \vec{i}_\text{æi} = \vec{0}$$
 
-$${\mathcal I}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}}{i}_\text{æi} = \frac{m_\text{Æ}}{2} $$
+$${ℐ}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}}{i}_\text{æi} = \frac{m_\text{Æ}}{2} $$
 
 The interaction of three or more etherons in a cell of space with a change in the speeds and directions of the interacting etherons is called "synthesizing interaction" of etherons.
 
@@ -488,7 +488,7 @@ The third version of the algorithm for selecting a substantial etheron in a "gro
 
 $$æ_s = \arg\min_{æ \in Æ_c} (| \vec{i}_\text{æ} - \sum_{æ \in Æ_c} \vec{i}_\text{æ} |)$$
 
-The algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in the amount equal to $N$, in the analytical version is reduced to solving the quadratic equation $ax²+bx+c=0$, where $x=i_{æf}$ is the modulus of the inertness vector of each field etheron after the collision. The formulas of the algorithm contain the following notations. Vectors are denoted by symbols with an arrow on top. Unit vectors are denoted by symbols with a cap on top. Vector moduli are denoted either by simple symbols or by symbols with an arrow on top in two vertical lines around the symbols. The number of a substantial etheron is equal to $N$. Field etheron numbers start with $1$ and end with $N-1$. $\vec{i}$<sub>æs</sub> is the inertness vector of a substantial etheron after the collision. $\vec{i}$<sub>æj</sub> is the inertness vector of an etheron with the number $j$ before the collision. $\vec{I}$<sub>old</sub> is the sum of the inertness vectors of all etherons before the collision. $\vec{I}$<sub>new</sub> is the sum of the inertness vectors of all etherons after the collision. $\mathcal I_{\text{old}}$ is the sum of the moduli of the inertness vectors of all etherons before the collision. $\mathcal I_{\text{new}}$ is the sum of the moduli of the inertness vectors of all etherons after the collision. Formulas for the calculation algorithm of the simplest version of the substance-field pattern:
+The algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in the amount equal to $N$, in the analytical version is reduced to solving the quadratic equation $ax²+bx+c=0$, where $x=i_{æf}$ is the modulus of the inertness vector of each field etheron after the collision. The formulas of the algorithm contain the following notations. Vectors are denoted by symbols with an arrow on top. Unit vectors are denoted by symbols with a cap on top. Vector moduli are denoted either by simple symbols or by symbols with an arrow on top in two vertical lines around the symbols. The number of a substantial etheron is equal to $N$. Field etheron numbers start with $1$ and end with $N-1$. $\vec{i}$<sub>æs</sub> is the inertness vector of a substantial etheron after the collision. $\vec{i}$<sub>æj</sub> is the inertness vector of an etheron with the number $j$ before the collision. $\vec{I}$<sub>old</sub> is the sum of the inertness vectors of all etherons before the collision. $\vec{I}$<sub>new</sub> is the sum of the inertness vectors of all etherons after the collision. $ℐ_{\text{old}}$ is the sum of the moduli of the inertness vectors of all etherons before the collision. $ℐ_{\text{new}}$ is the sum of the moduli of the inertness vectors of all etherons after the collision. Formulas for the calculation algorithm of the simplest version of the substance-field pattern:
 
 $$\vec{I}_{\text{old}} = \sum_{j=1}^N \vec{i}_{æj}$$
 
@@ -496,11 +496,11 @@ $$\vec{I}_{\text{new}} = \sum_{j=1}^{N-1} i_{æf} \cdot \hat{i}_{æj} + \vec{i}_
 
 $$\vec{I}_{\text{new}} = \vec{I}_{\text{old}}$$
 
-$$\mathcal I_{\text{old}} = \sum_{j=1}^N {i}_{æj}$$
+$$ℐ_{\text{old}} = \sum_{j=1}^N {i}_{æj}$$
 
-$$\mathcal I_{\text{new}} = (N-1)\cdot i_{æf} + i_{æs}$$
+$$ℐ_{\text{new}} = (N-1)\cdot i_{æf} + i_{æs}$$
 
-$$\mathcal I_{\text{new}} = \mathcal I_{\text{old}}$$
+$$ℐ_{\text{new}} = ℐ_{\text{old}}$$
 
 $$\vec{i}_{æs} = \sum_{j=1}^N \vec{i}_{æj} - i_{æf}\cdot \sum_{j=1}^{N-1} \hat{i}_{æj}$$
 
@@ -532,13 +532,13 @@ $$\vec{d}_{æs} = -\frac{\vec{i}_{æs} \cdot D_Æ }{ |\vec{i}_{æs}|}$$
 
 In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $\lvert \vec{V}^{(k)} \rvert = 0$, then use the bisection method. If $i_{æf}^{(k)} \notin [0, 1]$, then project onto the permissible range.
 
-$$i_{æf}^{(0)} = \frac{\mathcal I_{\text{old}}}{N}, \quad k = 0$$
+$$i_{æf}^{(0)} = \frac{ℐ_{\text{old}}}{N}, \quad k = 0$$
 
 $$\vec{U} = \sum_{j=1}^{N-1} \hat{\vec{i}}_\text{æj}$$
 
 $$NEXT: \vec{V}^{(k)} = \vec{I}_\text{old} - i_{æf}^{(k)} \cdot \vec{U}$$
 
-$$F(i_{æf}^{(k)}) = (N-1) \cdot i_{æf}^{(k)} + |\vec{V}^{(k)}| - \mathcal I_{\text{old}}$$
+$$F(i_{æf}^{(k)}) = (N-1) \cdot i_{æf}^{(k)} + |\vec{V}^{(k)}| - ℐ_{\text{old}}$$
 
 $$F'(i_{æf}^{(k)}) = (N-1) - \frac{\vec{V}^{(k)} \cdot \vec{U}}{|\vec{V}^{(k)}|}$$
 
