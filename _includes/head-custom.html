@@ -1,9 +1,13 @@
 <script>
   window.MathJax = {
     tex: {
+      packages: {'[+]': ['base']},
       inlineMath: [['$', '$'], ['\\(', '\\)']],
       displayMath: [['$$', '$$'], ['\\[', '\\]']],
-      processEscapes: true
+      processEscapes: true,
+      unicode: {
+        0x2110: ['\mathcal{I}', {variant: 'cal'}]
+      }      
     }
   };
 </script>
