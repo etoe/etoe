@@ -190,23 +190,53 @@ $$\forall æ \quad f_{æ}^{(t_Æ+1)} = 0$$
 
 $$f_{æ}^{(t_Æ)} = \Phi(\, f_{æ}^{(t_Æ)} \lor F_{æ}^{(t_Æ)} \,)$$
 
-The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ1_æ$. The duration of the first state of the etheron is at least one tick of time. The first tick in the "rest" state is conventionally called the "tick of the basic delay". The duration of the "basic delay" of the etheron is denoted by $τ1b_æ$. If the etheron spontaneously remains in the first state for one more tick when it should have passed to the third state, then such a tick is conventionally called the "tick of the spontaneous delay". The duration of the "spontaneous delay" of the etheron is denoted by $τ1r_æ$. If the etheron remains in the first state for one more tick to compensate for the deficit of jumps in the direction of its continuous movement, then such a tick is conventionally called the "tick of the compensatory delay". The duration of the "compensatory delay" of the etheron is denoted by $τ1c_æ$. If the etheron remains in the first state for one more tick to implement a decrease in the continuous speed in the direction of its continuous movement in accordance with the fifth parameter of the etheron, then such a tick is called the "tick of the additional delay". The duration of the "additional delay" of the etheron is denoted by $τ1a_æ$. The duration of the first state of the etheron consists of the duration of the "basic delay", the duration of the "compensatory delay", the duration of the "additional delay" and the duration of the "spontaneous delay": 
+The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ1_æ$. The duration of the first state of the etheron is at least one tick of time:
+
+$$τ1_æ \ge 1$$
+
+The first tick in the "rest" state is conventionally called the "tick of the basic delay". The duration of the "basic delay" of the etheron is denoted by $τ1b_æ$:
+
+$$τ1b_æ \ge 1$$
+
+If the etheron spontaneously remains in the first state for one more tick when it should have passed to the third state, then such a tick is conventionally called the "tick of the spontaneous delay". The duration of the "spontaneous delay" of the etheron is denoted by $τ1r_æ$:
+
+$$τ1r_æ \ge 0$$
+
+If the etheron remains in the first state for one more tick to compensate for the deficit of jumps in the direction of its continuous movement, then such a tick is conventionally called the "tick of the compensatory delay". The duration of the "compensatory delay" of the etheron is denoted by $τ1c_æ$:
+
+$$τ1c_æ \ge 0$$
+
+If the etheron remains in the first state for one more tick to implement a decrease in the continuous speed in the direction of its continuous movement in accordance with the fifth parameter of the etheron, then such a tick is called the "tick of the additional delay". The duration of the "additional delay" of the etheron is denoted by $τ1a_æ$:
+
+$$τ1a_æ \ge 0$$
+
+The duration of the first state of the etheron consists of the duration of the "basic delay", the duration of the "compensatory delay", the duration of the "additional delay" and the duration of the "spontaneous delay": 
 
 $$τ1_æ = τ1b_æ + τ1c_æ + τ1a_æ + τ1r_æ$$
 
-The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_æ$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ2_æ$. The duration of the second state of the etheron is at least one tick of time.
+The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_æ$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ2_æ$. The duration of the second state of the etheron is at least one tick of time:
 
-The third state of an etheron is "movement from the cell" in which the etheron is located. The third state of an etheron can be called "the departure of an etheron". The third state of the etheron is denoted $s3_æ$. An etheron usually moves to the third state from the first state if there are no other etherons in the first state in the space cell, and if a time tick has arrived in which, in accordance with the parameters of the etheron's movement, it is necessary to move from the space cell. But sometimes an etheron can spontaneously remain in the first state for another time tick, even if it should have moved to the third state. If an etheron spontaneously remains in the first state, then when other etherons appear in the cell, the etheron will move to the second state, not to the third state. An etheron also moves to the third state from the second state. The duration of the third state of the etheron is denoted by $τ3_æ$. The duration of the third state of an etheron is at least one tick of time.
+$$τ2_æ \ge 1$$
 
-The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_æ$. The etheron moves to the fourth state from the third state. The duration of the fourth state of the etheron is denoted by $τ4_æ$. The duration of the fourth state of the etheron is at least one tick of time. The etheron moves to the first state from the fourth state.
+The third state of an etheron is "movement from the cell" in which the etheron is located. The third state of an etheron can be called "the departure of an etheron". The third state of the etheron is denoted $s3_æ$. An etheron usually moves to the third state from the first state if there are no other etherons in the first state in the space cell, and if a time tick has arrived in which, in accordance with the parameters of the etheron's movement, it is necessary to move from the space cell. But sometimes an etheron can spontaneously remain in the first state for another time tick, even if it should have moved to the third state. If an etheron spontaneously remains in the first state, then when other etherons appear in the cell, the etheron will move to the second state, not to the third state. An etheron also moves to the third state from the second state. The duration of the third state of the etheron is denoted by $τ3_æ$. The duration of the third state of an etheron is at least one tick of time:
+
+$$τ3_æ \ge 1$$
+
+The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_æ$. The etheron moves to the fourth state from the third state. The etheron moves to the first state from the fourth state. The duration of the fourth state of the etheron is denoted by $τ4_æ$. The duration of the fourth state of the etheron is at least one tick of time:
+
+$$τ4_æ \ge 1$$
 
 The third state of the etheron and the fourth state of the etheron together constitute the "etheron jump" from the cell in which the etheron is located to the neighboring cell in which the etheron will be located, in accordance with the parameters of the etheron's movement. The duration of the etheron jump is denoted by $τj_æ$. The duration of the etheron jump is at least two time ticks:
 
 $$τj_æ = τ3_æ + τ4_æ$$
 
-The duration of the basic delay of the etheron in the resting state $τ1b_æ$ together with the duration of the etheron jump $τj_æ$ make up the basic duration of the etheron movement $τb_æ$: 
+$$τj_æ \ge 2$$
+
+The duration of the basic delay of the etheron in the resting state $τ1b_æ$ together with the duration of the etheron jump $τj_æ$ make up the basic duration of the etheron movement $τb_æ$. The basic duration of the etheron movement is at least three ticks of time: 
 
 $$τb_æ = τ1b_æ + τ3_æ + τ4_æ = τ1b_æ + τj_æ$$
+
+$$τb_æ \ge 3$$
 
 The relative number of time ticks after which an etheron, which is in a state of rest at a given time tick, will be in the next cell of space in a state of rest is called the duration of the etheron step $τs_æ$: 
 
@@ -218,9 +248,13 @@ An etheron cycle without the second state of the etheron is called a "free cycle
 
 $$τf_æ = τ1_æ + τ3_æ + τ4_æ$$
 
+$$τf_æ \ge 3$$
+
 An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τc_æ$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
 
 $$τc_æ = τ1_æ + τ2_æ + τ3_æ + τ4_æ$$
+
+$$τc_æ \ge 4$$
 
 Velocity relative to absolute space is called "absolute velocity".
 
