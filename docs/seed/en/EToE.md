@@ -454,6 +454,36 @@ $$\vec{I_c} = \sum_{i=1}^{N} \vec{i}_\text{æi} = const$$
 
 $${ℐ_c} = \sum_{i=1}^{N}{i}_\text{æi} = const$$
 
+The "law of conservation of inertness" states that during any interaction of etherons, the following are simultaneously conserved: the total vector of etheron inertness; and the total scalar inertness of etherons. The "law of conservation of inertness" includes the "first law of conservation of inertness" and the "second law of conservation of inertness."
+
+The first law of conservation of inertness is equivalent to the conservation of the weighted sum of etheron directions:
+
+$$\sum_{k=1}^{N} a_k \vec d_k = \mathrm{const}$$
+
+The second law of conservation of inertness is equivalent to the conservation of the total delay:
+
+$$\sum_{k=1}^{N} a_k = \mathrm{const}$$
+
+The "law of conservation of inertness" can be written in its most compact form as the conservation of a pair of invariants under any collisions of etherons:
+
+$$
+\left(
+\sum_{k=1}^{N}\vec i_k,
+\sum_{k=1}^{N}|\vec i_k|
+\right)
+= \mathrm{const}
+$$
+
+The "law of conservation of inertness" can be written in its equivalent, most compact form as the conservation of a pair of invariants under any collisions of etherons:
+
+$$
+\left(
+\sum_{k=1}^{N} a_k\vec d_k,
+\sum_{k=1}^{N} a_k
+\right)
+= \mathrm{const}
+$$
+
 In the simplest model, the "amount of inertness" in the Universe is constant. "Σiæ=const" is a conventional notation for the constancy of the Universe's inertness. $\vec{I}{_Æ}$ is the "sum of the inertness vectors" of all etherons. ${ℐ_Æ}$ is the "sum of the inertness vector modules" of all etherons. Formulas for the constancy of the Universe's inertness:
 
 $$Σiæ=const$$
