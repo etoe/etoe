@@ -184,6 +184,8 @@ The "state" of an etheron is denoted by $s_æ$. Each etheron can be in one of fo
 
 $$s_æ \in \{1, 2, 3, 4\}$$
 
+Ether is called multistate because etherons are in different states.
+
 In the simplest STÆ model, each state of an etheron lasts for at least one time tick and is processed only once during the current time tick. Therefore, in general, in a computer simulation, each etheron may need a "counter of ticks of the time an etheron is in its state" - $t_æ$, as well as a "flag for processing the current state in the current time tick" - $f_æ$. At the beginning of each time tick, the flags of all etherons are reset to zero, and after processing ($F_æ$) in the current time tick ($t_Æ$) by an etheron of its state, the etheron's flag is set to one, and the etheron can no longer process its state in the current time tick again:
 
 $$\forall æ \quad f_{æ}^{(t_Æ+1)} = 0$$
@@ -621,6 +623,8 @@ An etheron that has become a field etheron during synthesizing interaction is ca
 An etheron that has become a substantial etheron during synthesizing interaction with a scattered field etheron and another etheron is called "dragged field etheron".
 
 An etheron that has become a substantial etheron during synthesizing interaction with a dragged field etheron and another etheron is also called "dragged field etheron".
+
+Ether is called multirole due to the fact that etherons perform different inertial roles.
 
 Substantial etherons of an ether hyperobject form the "ether substance" of the ether hyperobject.
 
