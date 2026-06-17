@@ -528,6 +528,8 @@ $$\vec{I}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}} \vec{i}_\text{æi} = \vec{0}$$
 
 $${ℐ}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}}{i}_\text{æi} = \frac{m_\text{Æ}}{2} $$
 
+The introduction of the term "inertness" as a vector into the theory allows for the operation of a conserved pair of invariants as a single object, simplifying the formulation of conservation laws and making them more compact. The term "inertness" does not replace the multi-valued, macro-level classical concept of "inertia", but rather provides a convenient semantic and mathematical construct for the laws of the primary discrete motion of etherons. For the first level of matter, due to the specific nature of its laws, the term "inertness" takes precedence over the term "velocity".
+
 The interaction of three or more etherons in a cell of space with a change in the speeds and directions of the interacting etherons is called "synthesizing interaction" of etherons.
 
 In the general case, the substance-field pattern of distribution of continuous velocities of etherons in a group of etherons means that some etherons in a group move relative to the trajectory of other etherons in the same group with approximately the same moduli of continuous velocities, but in different directions.
