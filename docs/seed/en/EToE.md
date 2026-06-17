@@ -441,7 +441,7 @@ $$
 
 At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{æavg}$ to $1.1 \cdot v_{æavg}$.
 
-The inertness vector of the etheron $\vec{i}_æ$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}_{\text{æ}}$ and having a modulus equal to the ratio of the "total additional delay" of the etheron $a_æ$ to the reference distance $D_Æ$. In its meaning, the modulus of the inertness vector of the etheron is a "normalized delay".
+The inertness vector of the etheron $\vec{i}_{\text{æ}}$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}_{\text{æ}}$ and having a modulus equal to the ratio of the "total additional delay" of the etheron $a_{\text{æ}}$ to the reference distance $D_{\text{Æ}}$. In its meaning, the modulus of the inertness vector of the etheron is a "normalized delay".
 
 $$i_æ=|\vec{i}_æ|=\frac{a_æ}{D_Æ}$$
 
