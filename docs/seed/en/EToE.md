@@ -304,7 +304,7 @@ The third parameter of an etheron is the absolute time tick in which the etheron
 
 The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of an etheron is called "direction". The fourth parameter of an etheron is denoted by $\vec{d}_æ$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from $-D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
 
-$$\vec{d}_æ = (D_Æ \cdot \sin\theta \cdot \cos\varphi, D_Æ \cdot \sin\theta \cdot \sin\varphi, D_Æ \cdot \cos\theta)$$
+$$\vec{d}_æ = \Bigl( \operatorname{round}\bigl(D_Æ \cdot \sin\theta \cdot \cos\varphi\bigr), \operatorname{round}\bigl(D_Æ \cdot \sin\theta \cdot \sin\varphi\bigr), \operatorname{round}\bigl(D_Æ \cdot \cos\theta\bigr) \Bigr)$$
 
 where:
 - $\theta \sim U[0, \pi]$ is the zenith angle, uniformly distributed on $[0, \pi]$
