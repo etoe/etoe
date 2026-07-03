@@ -636,6 +636,8 @@ The spatial, temporal, and velocity parameters of the ether substance of an ethe
 
 Field etherons of an ether hyperobject form the "ether field" of the ether hyperobject.
 
+Medium etherons and field etherons together constitute the "medium-field ether". For an ether hyperobject, the "external medium-field ether" is considered to be "the medium-field ether excluding the field etherons of that ether hyperobject".
+
 Usually, an ether hyperobject has ether substance and ether field. Typically, the higher the level of an ether hyperobject, the smaller the ratio of the mass of its ether substance to the mass of its ether field. Therefore, the ratio $R_{\text{sf,Æn}}$ of the "mass of the ether substance of all ether hyperobjects of a certain level" $m_{\text{s,Æn}}$ to the "mass of the ether field of all ether hyperobjects of this level" $m_{\text{f,Æn}}$ decreases with the growth of the level $Æn$. Obviously, the ratio $R_{\text{sf,Æ}}$ of the "mass of all substantial etherons" $m_{\text{s,Æ}}$ to the "mass of all field etherons" $m_{\text{f,Æ}}$ is between $R_{\text{sf,Æ8}}$ and $R_{\text{sf,Æ2}}$. "The mass of all etherons of all ether hyperobjects" $m_{\text{h,Æ}}$ includes "the mass of all substantial etherons" $m_{\text{s,Æ}}$ and "the mass of all field etherons" $m_{\text{f,Æ}}$. "The mass of all etherons" $m_{\text{Æ}}$ includes "the mass of all etherons of all ether hyperobjects" $m_{\text{h,Æ}}$ and "the mass of all medium etherons" $m_{\text{m,Æ}}$. Obviously, the ratio $R_{\text{hm,Æ}}$ of "the mass of all etherons of all ether hyperobjects" $m_{\text{h,Æ}}$ to "the mass of all medium etherons" $m_{\text{m,Æ}}$ is much less than $1$.
 
 $$m_{\text{h,Æ}}= m_{\text{s,Æ}} + m_{\text{f,Æ}}$$
