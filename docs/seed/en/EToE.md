@@ -672,7 +672,7 @@ Ether fields of ether hyperobjects obey the "principle of ether superposition".
 
 The principle of ether superposition means that the ether fields of ether subhyperobjects of an ether hyperobject overlap each other and form the ether field of the ether hyperobject.
 
-The interaction trail of an ether object is a discrete spatio-temporal configuration of cumulative changes in the external medium-field ether, which arose as a result of a sequence of transit and synthesizing interactions of the etherons of the ether object with the medium etherons and with the field etherons of other ether objects.
+The interaction trail of an ether object is a discrete spatio-temporal configuration of cumulative changes in the external medium-field ether, which arose as a result of a sequence of transit and synthesizing interactions of the etherons of the ether object with the medium etherons and with the field etherons of other ether objects. The interaction trail of an ether object is not the ether field of that ether object, but is the changes in the ether fields of other ether objects and the changes in the ether medium that arise in them from interaction with the etherons of that ether object. The interaction trail of an ether object is not "ether waves" in the strict sense of the term.
 
 Etherons of the ether substance of an ether batch are located in space cells positioned close to each other. The directions of absolute continuous motion and absolute continuous velocities of etherons of the ether substance of an ether batch are approximately the same.
 
