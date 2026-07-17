@@ -144,7 +144,7 @@ The concept of "ether medium" and the concept of "external ether" are not synony
 
 The spatial, temporal, and velocity parameters of the external ether constitute the configuration of the external ether for the ether hyperobject.
 
-The process by which an etheron becomes part of an ether hyperobject is conventionally called synthesization. The process by which an etheron becomes part of an ether medium is conventionally called chaotization. The process by which an etheron leaves a trail in an ether medium or an ether hyperobject is conventionally called trailization.
+The process by which an etheron becomes part of an ether hyperobject is conventionally called synthesization. The process by which an etheron becomes part of an ether medium is conventionally called chaotization. The process by which an etheron leaves a trail in an ether medium or an ether hyperobject is conventionally called trailization. The basis of synthesization, trailization and chaotization is the process of interaction of etherons.
 
 The total number of etherons in space does not change.
 
