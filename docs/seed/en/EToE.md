@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.1
+version: 0.1.2
 date: 2026-06-11
 created: 2026-06-01
-updated: 2026-06-11
+updated: 2026-08-17
 status: active
 priority: critical
 audience: LLM, Human
@@ -544,21 +544,9 @@ Etherons in a group of etherons, moving relative to the trajectory of other ethe
 
 Etherons in a group of etherons, relative to the trajectory of which other etherons in the same group move with approximately the same modules of continuous velocities, but in different directions, are called "substantial etherons".
 
-In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that one etheron, whose "inertness vector modulus" ($\lvert \vec{i}\_{\text{æ}} \rvert$) is greater than the "inertness vector moduli" of the other etherons in the collision, becomes a substantial etheron ($æs$), while all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector moduli" do not go beyond the range of the "inertness vector moduli", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are obtained. The new "delay" and "direction" for the substantial etheron will compensate for changes in the "inertness vector magnitudes" of the field etherons.
+In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. The new "delay" and "direction" for the substantial etheron will compensate for changes in the "inertness vector magnitudes" of the field etherons.
 
-The first version of the algorithm for selecting a substantial etheron in the "group of collision etherons in a cell of space" ($Æ_c$) comes down to finding the "etheron index" ($æ_s$) with the maximum value of the inertness vector modulus ($\lvert \vec{i}\_{\text{æ}} \rvert$), which is equivalent to finding the "etheron index" ($æ_s$) with the maximum value of the "delay" parameter ($a_æ$):
-
-$$æ_s = \arg\max_{æ \in Æ_c} (|\vec{i}_\text{æ}|)$$
-
-$$æ_s = \arg\max_{æ \in Æ_c} (a_\text{æ})$$
-
-The second variant of the algorithm for selecting a substantial etheron in the "group of collision etherons in a cell of space" ($Æ_c$) comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the modulus of the inertness vector ($\lvert \vec{i}\_{\text{æ}} \rvert$) and the "average value from the range for the moduli of the inertness vectors" ($\frac{1}{2}$), which is equivalent to finding the "etheron index" ($æ_s$) with the value of the "delay" parameter ($a_æ$) closest to $\frac{D_Æ}{2}$:
-
-$$æ_s = \arg\min_{æ \in Æ_c} (||\vec{i}_\text{æ}| - \frac{1}{2}|)$$
-
-$$æ_s = \arg\min_{æ \in Æ_c} (|a_æ - \frac{D_\text{Æ}}{2}|)$$
-
-The third version of the algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}$<sub>æ</sub>) and the "sum of the inertness vectors of all collision etherons in a cell":
+The selection of a substantial etheron in a "group of collision etherons in a spatial cell" ($Æ_c$) occurs according to the "principle of least action of etheron collision". The "principle of least action of etheron collision" consists of redistributing the inertness of the collision etherons in accordance with the substance-field pattern through minimal changes in the inertness of the collision etherons. The algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}$<sub>æ</sub>) and the "sum of the inertness vectors of all collision etherons in a cell":
 
 $$æ_s = \arg\min_{æ \in Æ_c} (| \vec{i}_\text{æ} - \sum_{æ \in Æ_c} \vec{i}_\text{æ} |)$$
 
