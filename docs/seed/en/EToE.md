@@ -26,11 +26,13 @@ Ether Theory of Everything includes "Ether Theory of Matter", "Ether Theory of L
 
 Ether Theory of Everything is based on the philosophy of "Evolutionary Ether Materialism". In the English version, the abbreviation for "Evolutionary Ether Materialism" is "EÆM".
 
+The philosophy of "evolutionary ether materialism" is based on the "principle of infinite evolution". "The principle of infinite evolution" is a shorthand term for the "principle of sufficient provision for the boundless, fully hierarchical evolution of matter in finite fundamental dimensions". According to the "principle of infinite evolution", the full evolution of matter is only possible in three-dimensional space, since two-dimensional space is too little for the evolution of matter, and four-dimensional space is too much. The absence of obstacles to the evolution of matter upon reaching the ultimate coordinates of fundamental space and time is ensured by their cyclical closure.
+
 Next is a brief summary of the Ether Theory of Matter.
 
 Ether Theory of Matter is built on the concept of transparent inertial ether.
 
-The concept of transparent inertial ether is based on the idea that discrete absolute matter exists in discrete Euclidean  three-dimensional absolute space and in discrete absolute time. The philosophy of evolutionary ether materialism stems from the idea that full evolution of matter is possible only in three-dimensional space, as two-dimensional space is too little for the evolution of matter, and four-dimensional space is too much.
+The concept of transparent inertial ether is based on the idea that discrete absolute matter exists in discrete Euclidean  three-dimensional absolute space and in discrete absolute time.
 
 All ether in all space and time can be conventionally called "space-time-ether". In English, the abbreviation for "space-time-ether" is "STÆ".
 
