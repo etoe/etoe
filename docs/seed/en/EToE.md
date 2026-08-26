@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.2
-date: 2026-06-11
+version: 0.1.3
+date: 2026-08-26
 created: 2026-06-01
-updated: 2026-08-17
+updated: 2026-08-26
 status: active
 priority: critical
 audience: LLM, Human
@@ -549,11 +549,17 @@ Etherons in a group of etherons, relative to the trajectory of which other ether
 
 In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. The new "delay" and "direction" for the substantial etheron will compensate for changes in the "inertness vector magnitudes" of the field etherons.
 
-The selection of a substantial etheron in a "group of collision etherons in a spatial cell" ($Æ_c$) occurs according to the "principle of least action of etheron collision". The "principle of least action of etheron collision" is a local rule for selecting the closest permissible redistribution of inertness and consists of redistributing the inertness of collision etherons in accordance with the substance-field pattern through minimal changes in the inertness of collision etherons. The "least action" of an etheron collision means that from several admissible options for local redistribution, the option that requires the least change in the inertness configuration is chosen. The algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}$<sub>æ</sub>) and the "sum of the inertness vectors of all other collision etherons in the cell":
+The selection of a substantial etheron in a "group of collision etherons in a spatial cell" ($Æ_c$) occurs according to the "principle of least action of etheron collision". The "principle of least action of etheron collision" is a local rule for selecting the closest permissible redistribution of inertness and consists of redistributing the inertness of collision etherons in accordance with the substance-field pattern through minimal changes in the inertness of collision etherons. The "least action" of an etheron collision means that from several admissible options for local redistribution, the option that requires the least change in the inertness configuration is chosen. The principle of least action of etheron collision is equivalent to minimizing the total value of inertтness rearrangement.
+
+The exact algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) amounts to finding the "etheron index" ($æ_s$) with the minimum future value of inertness changes for the entire collision group by comparing candidates ($k$) via the quadratic functional of the minimal rearrangement of the inertness configuration of the collision group. For each candidate $(æ_k)$, a fully defined admissible post-collision state $(\vec i'_j{}^{(k)})$ is constructed for the entire collision group. The quadratic measure means that a large local change is penalized superlinearly compared to many small changes. This is a natural mathematical realization of the idea that "the system prefers to distribute rearrangements rather than concentrate them in one place." The formula for the exact algorithm for selecting a substantial etheron via the quadratic collision action functional is:
+
+$$æ_s = \arg\min_{k\in{1,\ldots,N}} (\frac12 \sum_{j=1}^{N} \left| \vec i'_j{}^{(k)}-\vec i_j \right|^2)$$
+
+A fast heuristic approximate algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}$<sub>æ</sub>) and the "sum of the inertness vectors of all other collision etherons in the cell":
 
 $$æ_s = \arg\min_{æ \in Æ_c} (| \vec{i}_\text{æ} - \frac{1}{2} \sum_{\text{æ}' \in Æ_c} \vec{i}_{\text{æ}'} |)$$
 
-The algorithm for selecting a substantial etheron can be written in an equivalent, most compact form as finding the "etheron index" ($æ_s$) whose weighted direction is minimally different from the sum of the weighted directions of all other etherons in the group:
+A fast heuristic approximate algorithm for selecting a substantial etheron can be written in an equivalent, most compact form as finding the "etheron index" ($æ_s$) whose weighted direction is minimally different from the sum of the weighted directions of all other etherons in the group:
 
 $$\text{æ}_s = \arg\min_{\text{æ} \in Æ_c} (| a_\text{æ}\,\vec{d}_\text{æ} - \frac{1}{2} \sum_{\text{æ}' \in Æ_c} a_{\text{æ}'}\,\vec{d}_{\text{æ}'} |)$$
 
