@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.3
-date: 2026-08-26
+version: 0.1.4
+date: 2026-08-30
 created: 2026-06-01
-updated: 2026-08-26
+updated: 2026-08-30
 status: active
 priority: critical
 audience: LLM, Human
@@ -80,7 +80,7 @@ $$D_Æ = N_Æ -1$$
 
 The coordinate of absolute position ($p_A$) in absolute space has a range from $-L_Æ/2$ to $L_Æ/2-1$. The coordinate of relative position ($p_R$) in absolute space has a range from $-D_Æ$ to $D_Æ$:
 
-$$p_A = (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_Æ}{2} \le x, y, z \le \frac{L_Æ}{2} $$
+$$p_A = (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_Æ}{2} \le x, y, z \le \frac{L_Æ}{2}-1 $$
 
 $$p_R = (x, y, z) \in \mathbb{Z}^3 \mid  -D_Æ \le x, y, z \le D_Æ$$
 
@@ -104,11 +104,27 @@ $$T_Æ=L_Æ$$
 
 $T_Æ=L_Æ$ is a conditional formula for the principle of numerical equivalence of all time and the size of all space.
 
-The current time tick is denoted by $t_Æ$. Time ticks are numbered from $0$ to $T_Æ-1$. The tick with the number $0$ is called the "zero tick". The zero tick at the "start of time" is called the "start tick". After the tick with the number $T_Æ-1$, there is another tick with the number $0$. The "time wrapping function" $WT_{Æ}(n)$, which maps any integer $n$ to the interval $[ 0, T_Æ)$, taking into account the cyclic nature of time:
+The current time tick is denoted by $t_Æ$. Time ticks are numbered from $-T_Æ/2$ to $T_Æ/2-1$. The history $H_Æ$ is a cyclic sequential one-dimensional integer sequence:
 
-$$WT_{Æ}(n) = \left( n \right)\pmod{T_Æ}$$
+$$
+H_{Æ} = \left\lbrace (t_Æ) \in \mathbb{Z} \mid -\frac{T_{Æ}}{2} \le t_Æ \le \frac{T_{Æ}}{2}-1 \right\rbrace
+$$
 
-$$t_Æ = WT_{Æ}(t_Æ+1)$$
+A "history wrapper function" $WH_{Æ}(n)$ that maps any integer $n$ to the interval $[ -T_Æ/2, T_Æ/2 - 1 ]$, taking into account the cyclic nature of history:
+
+$$
+WH_{Æ}(n) = \left( n + \frac{T_{Æ}}{2} \right)\pmod{T_{Æ}} - \frac{T_{Æ}}{2}
+$$
+
+The tick number $0$ is called the "zero tick". In the simplest model and in the simplest computer simulations, the "start of time" occurs at "zero tick". The zero tick at the "start of time" is called the "start tick." After the tick number $T_Æ/2-1$, there is another tick number $-T_Æ/2$:
+
+$$t_Æ = WH_{Æ}(t_Æ+1)$$
+
+In the simplest model, the "history wrapper function" $WH_{Æ}(n)$ is equivalent to the "space wrapper function" $WS_{Æ}(n)$. For simplicity, in the simplest model, we can use the "dimension wrapper function" $W_{Æ}(n)$ as a general synonym for the "space wrapper function" $WS_{Æ}(n)$ and the "history wrapper function" $WH_{Æ}(n)$:
+
+$$
+W_{Æ}(n) = WS_{Æ}(n) = WH_{Æ}(n)
+$$
 
 Each ether object is conventionally assigned to one of eight levels of matter. For brevity, the level of matter can be denoted by the capital letter $Æ$ with a number corresponding to the level of matter. Æ1 is the designation for the first level of matter, Æ2 for the second, Æ3 for the third, Æ4 for the fourth, Æ5 for the fifth, Æ6 for the sixth, Æ7 for the seventh, Æ8 for the eighth.
 
@@ -304,9 +320,9 @@ Transformations of coordinates and continuous velocity of an etheron or group of
 
 The first parameter of an etheron is the absolute position of the cell in which the etheron is located at the current time tick. The first parameter of an etheron is called "position". The first parameter of the etheron is denoted by $\vec{r}_æ$. At the starting tick of time in the simplest model, in each cell of space there is one etheron with the first parameter equal to the position of the cell in which this etheron is located.
 
-The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{rc}_æ$. At each zero tick of time in the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron.
+The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{rc}_æ$. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
 
-The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $tc_æ$. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At every zero tick of time in the simplest model, the third parameter of the etheron is reset to zero.
+The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $tc_æ$. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
 
 The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of an etheron is called "direction". The fourth parameter of an etheron is denoted by $\vec{d}_æ$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from $-D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
 
@@ -322,7 +338,7 @@ $$a_{æavg}= \frac{D_Æ}{2}$$
 
 The fifth parameter of the etheron is the "total additional delay" of the etheron in time ticks in the "rest" state, with which the etheron, in free movement, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called the "delay". The fifth parameter of the etheron is denoted by $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" during the Euclidean free continuous movement of the etheron by the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous speeds of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous speeds of the etheron.
 
-In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub> ) of each etheron into the "collision position" parameter ( $\vec{rc}$<sub>æ</sub> ) of that etheron and zeroing the "collision tick" parameter ( $tc_{æ}$ ) of each etheron at every zero tick of time ( $t_Æ=0$ ) prevents uncertainty in the time elapsed since collisions:
+In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub> ) of each etheron into the "collision position" parameter ( $\vec{rc}$<sub>æ</sub> ) of that etheron and zeroing the "collision tick" parameter ( $tc_{æ}$ ) of each etheron at zero tick of time ( $t_Æ=0$ ) prevents uncertainty in the time elapsed since collisions:
 
 $$\forall æ \quad \vec{rc}_{æ}^{(t_Æ=0)} = \vec{r}_{æ}$$
 
@@ -364,7 +380,9 @@ The independence of the total time spent by the etheron on Euclidean motion from
 
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
 
-$$\vec{p}_æ(t) = rc_æ + \frac {(t - tc_æ)\cdot \vec{d_æ}} {τ_Æ + a_æ}$$
+$$\vec{p}_æ(t) = WS_{Æ}(rc_æ + \frac {WH_{Æ}(t - tc_æ)\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
+
+Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $tc_æ$. Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection."
 
 The number of etherons in the "rest" state ( $s1$<sub>æ</sub> ) in a cell of space with position $\vec{p}$ is denoted by $N_{s1æ}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
 
