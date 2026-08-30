@@ -102,9 +102,9 @@ $$T_Æ=N_Æ$$
 
 $$T_Æ=L_Æ$$
 
-$T_Æ=L_Æ$ is a conditional formula for the principle of numerical equivalence of all time and the size of all space.
+$T_Æ=L_Æ$ is a conditional formula for the principle of numerical equivalence of all time and the size of all space. Space and time have the same fundamental numerical periodicity.
 
-The current time tick is denoted by $t_Æ$. Time ticks are numbered from $-T_Æ/2$ to $T_Æ/2-1$. The history $H_Æ$ is a cyclic sequential one-dimensional integer sequence:
+The current time tick is denoted by $t_Æ$ and is a discrete cyclic time coordinate. Time ticks are numbered from $-T_Æ/2$ to $T_Æ/2-1$. For a separate designation for the discrete cyclic structure of time, the concept of "history" $H_Æ$ is used. The word "history" emphasizes that we are not talking about just a numerical parameter $t_Æ$, but about a set of admissible states of the time coordinate with a cyclic structure and sequence. The space $S_Æ$ and the history $H_Æ$ are two types of fundamental discrete regions in which the spatial and temporal coordinates live, respectively. The history of $H_Æ$ is actually the space of the time coordinate, and not the history of any object in the usual sense. The name "history" for $H_Æ$ allows us not to confuse time as a cyclic structure with the size of this structure $T_Æ$ and with the current time coordinate $t_Æ$. The history $H_Æ$ is a cyclic sequential one-dimensional integer sequence:
 
 $$
 H_{Æ} = \left\lbrace (t_Æ) \in \mathbb{Z} \mid -\frac{T_{Æ}}{2} \le t_Æ \le \frac{T_{Æ}}{2}-1 \right\rbrace
@@ -288,7 +288,7 @@ The kinematic displacement of an etheron from a cell to an adjacent cell is call
 
 Free motion of an etheron is a sequence of states starting after the state of interaction with other etherons and ending before the state of interaction with other etherons.
 
-The cell of space in which the etheron was located when interacting with other etherons is called the "initial cell" of free motion.
+The cell of space in which the etheron was located when interacting with other etherons is called the "initial cell" of free motion. The etheron collision actually creates a new starting point of free movement for the etherons participating in the etheron collision.
 
 The jump of the etheron after interacting with other etherons is called the "initial jump" of free motion.
 
@@ -320,9 +320,9 @@ Transformations of coordinates and continuous velocity of an etheron or group of
 
 The first parameter of an etheron is the absolute position of the cell in which the etheron is located at the current time tick. The first parameter of an etheron is called "position". The first parameter of the etheron is denoted by $\vec{r}_æ$. At the starting tick of time in the simplest model, in each cell of space there is one etheron with the first parameter equal to the position of the cell in which this etheron is located.
 
-The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{rc}_æ$. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
+The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{rc}_æ$. The second parameter of the etheron actually determines where the current free section of its movement begins. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
 
-The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $tc_æ$. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
+The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $tc_æ$. The third parameter of the etheron actually determines when the current free section of the etheron's movement begins. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
 
 The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of an etheron is called "direction". The fourth parameter of an etheron is denoted by $\vec{d}_æ$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from $-D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
 
@@ -343,6 +343,8 @@ In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub>
 $$\forall æ \quad \vec{rc}_{æ}^{(t_Æ=0)} = \vec{r}_{æ}$$
 
 $$\forall æ \quad tc_{æ}^{(t_Æ=0)} = 0$$
+
+At the start of the Universe and at the start of the computer simulation, there are essentially no previous etheron collisions. Therefore, before the first etheron interaction, it is conventionally assumed that the initial etheron collision occurred at the moment of the launch of space-time-ether, right here and right now. On the starting tick, "where the etheron is actually located" coincides with "where it should be according to its free movement".
 
 In the fourth state of the etheron, the absolute position of the space cell to which the etheron has arrived is entered into the first parameter of this etheron.
 
@@ -382,7 +384,11 @@ The absolute position of the etheron in space $\vec{p}_æ$, where at some point 
 
 $$\vec{p}_æ(t) = WS_{Æ}(rc_æ + \frac {WH_{Æ}(t - tc_æ)\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
 
-Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $tc_æ$. Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection."
+Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $tc_æ$:
+
+$$WH_{Æ}(t-tc_æ) \ll T_Æ$$
+
+Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection". "Special protection" in a computer simulation is needed not because cyclic time is physically "broken", but because the computer in the general case needs to limit the interpretation of the old initial parameters of the free movement of etherons. Nature does not need to install "special protection" because the collision dynamics itself regularly updates the reference points of the free movement of etherons.
 
 The number of etherons in the "rest" state ( $s1$<sub>æ</sub> ) in a cell of space with position $\vec{p}$ is denoted by $N_{s1æ}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
 
