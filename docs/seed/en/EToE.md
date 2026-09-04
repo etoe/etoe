@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.4
-date: 2026-08-30
+version: 0.1.5
+date: 2026-09-04
 created: 2026-06-01
-updated: 2026-08-30
+updated: 2026-09-04
 status: active
 priority: critical
 audience: LLM, Human
@@ -572,6 +572,8 @@ Etherons in a group of etherons, moving relative to the trajectory of other ethe
 Etherons in a group of etherons, relative to the trajectory of which other etherons in the same group move with approximately the same modules of continuous velocities, but in different directions, are called "substantial etherons".
 
 In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. The new "delay" and "direction" for the substantial etheron will compensate for changes in the "inertness vector magnitudes" of the field etherons.
+
+The constancy of the directions of continuous movement of field etherons before and after synthesizing collisions is a structural condition for the existence of stable, scattered ether fields of ether hyperobjects and ensures the preservation of sufficiently long correlations of the directions of field etherons. If each new contact with the external ether also arbitrarily rotated the direction of the already scattered field etheron of an ether hyperobject, the ether field of the ether hyperobject would quickly lose its connection with its original geometry, and instead of a spatially organized field, a nearly isotropic kinetic background would result. An ether field requires not simply the inertness of its etherons, but the coherence of their directions of movement. An etheron collision can redistribute the sum of the inertness moduli of the colliding etherons, but does not destroy the spatial geometry of the directed flow of etherons. The direction of a field etheron is the carrier of the geometric information of the ether field, and the modulus of inertness of a field etheron is the carrier of the amplitude information of the ether field. The preservation of the directions of field etherons can be interpreted as a minimally reorganizing branch of the solution to the collision problem in accordance with the principle of minimizing the restructuring of inertness. The ether field of an ether hyperobject is constructed precisely as a spatiotemporal accumulation of scattered field etherons carrying directional information. Directional stability at the microscopic level is one of the mechanisms from which a macroscopic multicomponent field structure emerges at subsequent levels.
 
 The selection of a substantial etheron in a "group of collision etherons in a spatial cell" ($Æ_c$) occurs according to the "principle of least action of etheron collision". The "principle of least action of etheron collision" is a local rule for selecting the closest permissible redistribution of inertness and consists of redistributing the inertness of collision etherons in accordance with the substance-field pattern through minimal changes in the inertness of collision etherons. The "least action" of an etheron collision means that from several admissible options for local redistribution, the option that requires the least change in the inertness configuration is chosen. The principle of least action of etheron collision is equivalent to minimizing the total value of inertтness rearrangement.
 
