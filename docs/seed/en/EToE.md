@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.5
-date: 2026-09-04
+version: 0.1.6
+date: 2026-09-08
 created: 2026-06-01
-updated: 2026-09-04
+updated: 2026-09-08
 status: active
 priority: critical
 audience: LLM, Human
@@ -571,7 +571,19 @@ Etherons in a group of etherons, moving relative to the trajectory of other ethe
 
 Etherons in a group of etherons, relative to the trajectory of which other etherons in the same group move with approximately the same modules of continuous velocities, but in different directions, are called "substantial etherons".
 
-In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. The new "delay" and "direction" for the substantial etheron will compensate for changes in the "inertness vector magnitudes" of the field etherons.
+In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
+
+If the inertness vectors of the etherons of a multi-etheron collision have not changed before ($\vec i_j$) and after $(\vec i_j')$ the multi-etheron collision, then: such a collision is considered transit; the inertial roles of the etherons and the affiliations of the etherons do not change:
+
+$$\forall j: \quad \vec i_j'=\vec i_j$$
+
+$$\forall j: \quad (\vec d_j',a_j')=(\vec d_j,a_j)$$
+
+If the inertness vectors of several etherons of a multi-etheron collision have changed before ($\vec i_j$) and after $(\vec i_j')$ the multi-etheron collision, then: such a collision is considered synthesizing; the affiliations of the etherons change; the inertial roles of etherons can change:
+
+$$\exists j: \quad \vec i_j' \ne \vec i_j$$
+
+$$\exists j: \quad (\vec d_j',a_j')\ne(\vec d_j,a_j)$$
 
 The constancy of the directions of continuous movement of field etherons before and after synthesizing collisions is a structural condition for the existence of stable, scattered ether fields of ether hyperobjects and ensures the preservation of sufficiently long correlations of the directions of field etherons. If each new contact with the external ether also arbitrarily rotated the direction of the already scattered field etheron of an ether hyperobject, the ether field of the ether hyperobject would quickly lose its connection with its original geometry, and instead of a spatially organized field, a nearly isotropic kinetic background would result. An ether field requires not simply the inertness of its etherons, but the coherence of their directions of movement. An etheron collision can redistribute the sum of the inertness moduli of the colliding etherons, but does not destroy the spatial geometry of the directed flow of etherons. The direction of a field etheron is the carrier of the geometric information of the ether field, and the modulus of inertness of a field etheron is the carrier of the amplitude information of the ether field. The preservation of the directions of field etherons can be interpreted as a minimally reorganizing branch of the solution to the collision problem in accordance with the principle of minimizing the restructuring of inertness. The ether field of an ether hyperobject is constructed precisely as a spatiotemporal accumulation of scattered field etherons carrying directional information. Directional stability at the microscopic level is one of the mechanisms from which a macroscopic multicomponent field structure emerges at subsequent levels.
 
@@ -655,15 +667,15 @@ The interaction of etherons in a cell of space, as a result of which the modules
 
 An ether object of the second level of matter is conventionally called "ether batch".
 
-An etheron that has become a field etheron during synthesizing interaction is called "scattered field etheron".
+An etheron that has become a field etheron during synthesizing interaction is called "scattered field etheron". In the simplest model of the ether field, only "scattered field etherons" are defined, and therefore in the simplest model, "field etheron" and "scattered field etheron" are one and the same.
 
-An etheron that has become a substantial etheron during synthesizing interaction with a scattered field etheron and another etheron is called "dragged field etheron".
+An etheron that has become a substantial etheron during synthesizing interaction with a scattered field etheron and another etheron is called "dragged substantial etheron". If a "dragged substantial etheron" experiences attraction to the ether hyperobject of a scattered field etheron, then such an etheron is considered an "dragged-in substantial etheron." If an "dragged substantial etheron" experiences repulsion to the ether hyperobject of a scattered field etheron, then such an etheron is considered an "dragged-out substantial etheron."
 
-An etheron that has become a substantial etheron during synthesizing interaction with a dragged field etheron and another etheron is also called "dragged field etheron".
+An etheron that has become a substantial etheron during synthesizing interaction with a dragged substantial etheron and another etheron is also called "dragged substantial etheron".
 
 Ether is called multirole due to the fact that etherons perform different inertial roles.
 
-Substantial etherons of an ether hyperobject form the "ether substance" of the ether hyperobject.
+Substantial etherons of an ether hyperobject form the "ether substance" of the ether hyperobject. The "ether substance" of an ether hyperobject can be conditionally divided into the "bearing part" of the "ether substance" and the "dragged part" of the "ether substance." The "dragged part" of the "ether substance" of an ether hyperobject can be conditionally divided into the "dragged-in part" of the "ether substance" and the "dragged-out part" of the "ether substance."
 
 The spatial, temporal, and velocity parameters of the ether substance of an ether hyperobject constitute the configuration of the ether substance of the ether hyperobject.
 
@@ -707,7 +719,7 @@ The principle of ether superposition means that the ether fields of ether subhyp
 
 The interaction trail of an ether object is a discrete spatio-temporal configuration of cumulative changes in the external medium-field ether, which arose as a result of a sequence of transit and synthesizing interactions of the etherons of the ether object with the medium etherons and with the field etherons of other ether objects. The interaction trail of an ether object is not the ether field of that ether object, but is the changes in the ether fields of other ether objects and the changes in the ether medium that arise in them from interaction with the etherons of that ether object. The interaction trail of an ether object is not "ether waves" in the strict sense of the term. Trailization is conditionally includes "transit trailization" and "synthesizing trailization". Transit trailization only causes a decrease in the effective velocity of etherons. Synthesizing trailization causes a decrease in the effective velocity of etherons, as well as a change in the ownership of some or all etherons involved in the trailization.
 
-Etherons of the ether substance of an ether batch are located in space cells positioned close to each other. The directions of absolute continuous motion and absolute continuous velocities of etherons of the ether substance of an ether batch are approximately the same.
+The etherons of the bearing part of the ether substance of the ether batch are located in spatial cells located close to one another. The directions of absolute continuous motion and absolute continuous velocities of the etherons of the bearing part of the ether substance of the ether batch are approximately equal.
 
 The ether field of an ether batch is called "batch ether field".
 
