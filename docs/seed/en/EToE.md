@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.7
+version: 0.1.8
 date: 2026-09-11
 created: 2026-06-01
 updated: 2026-09-11
@@ -835,7 +835,7 @@ A hyperatom is considered a "non-elementary atom".
 
 The hierarchy of a cluster of ether objects of any type means that a complex cluster of ether objects of this type consists of less complex clusters of ether objects of this type, and that less complex clusters of ether objects of this type in turn consist of even less complex clusters of ether objects of this type, and so on up to the ether objects of this type themselves.
 
-The hierarchy of a hyperatom means that a complex hyperatom consists of less complex hyperatoms, and that less complex hyperatoms in turn consist of even less complex hyperatoms, and so on up to the proteons themselves.
+The hierarchy of a hyperatom means that a complex hyperatom consists of less complex hyperatoms, and that less complex hyperatoms in turn consist of even less complex hyperatoms, and so on up to the proteons themselves. Proteons and hyperatoms belong to different stairs of matter, yet both are considered atoms. Therefore, the atomic level is reckoned starting from proteons. The atomic level of a hyperatom is always one unit higher than the level of the hyperatom itself.
 
 The Protium atoms in a hyperatom are called Protium subatoms. A Protium subatom is an elementary subatom.
 
