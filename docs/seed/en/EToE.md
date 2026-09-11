@@ -673,9 +673,9 @@ An etheron that has become a substantial etheron during synthesizing interaction
 
 An etheron that has become a substantial etheron during synthesizing interaction with a dragged substantial etheron and another etheron is also called "dragged substantial etheron".
 
-Ether is called multirole due to the fact that etherons perform different inertial roles.
-
 Substantial etherons of an ether hyperobject form the "ether substance" of the ether hyperobject. The "ether substance" of an ether hyperobject can be conditionally divided into the "bearing part" of the "ether substance" and the "dragged part" of the "ether substance." The "dragged part" of the "ether substance" of an ether hyperobject can be conditionally divided into the "dragged-in part" of the "ether substance" and the "dragged-out part" of the "ether substance."
+
+Ether is called multirole due to the fact that etherons perform different inertial roles. "Substantial/field" is the role of the etheron, whereas "bearing/dragged/dragged-in/dragged-out" is a sub-role within the substantial component.
 
 The spatial, temporal, and velocity parameters of the ether substance of an ether hyperobject constitute the configuration of the ether substance of the ether hyperobject.
 
