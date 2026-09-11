@@ -751,7 +751,7 @@ The result of ether field interaction of two ether hyperobjects can be either ac
 
 Synchronization of the motion of one ether hyperobject with changes in the ether fields of other ether hyperobjects can lead to predominance of attraction to other ether hyperobjects or predominance of repulsion from other ether hyperobjects. Predominance of attraction to other ether hyperobjects or predominance of repulsion from other ether hyperobjects as a result of synchronization of the motion of one ether hyperobject with changes in the ether fields of other ether hyperobjects is called "ether field synchronization".
 
-Due to synthesizing interactions of etherons of an ether batch with external etherons, the mass of the ether batch can grow to a certain value, and the ether batch can increase its degree of stability. An ether batch formed as a result of multiple interconnected synthesizing interactions of etherons is called an ether hyperbatch.
+Due to synthesizing interactions of etherons of an ether batch with external etherons, the mass of the ether batch can grow to a certain value, and the ether batch can increase its degree of stability. An ether batch formed as a result of multiple interconnected synthesizing interactions of etherons is called an ether hyperbatch. An elementary ether batch is ephemeral. Only an ether hyperbatch can be stable.
 
 The speed of an etheron over the aggregate of free motions of the etheron alternating with transit interactions of etherons and synthesizing interactions of etherons is called "effective speed".
 
