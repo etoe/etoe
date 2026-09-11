@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.6
-date: 2026-09-08
+version: 0.1.7
+date: 2026-09-11
 created: 2026-06-01
-updated: 2026-09-08
+updated: 2026-09-11
 status: active
 priority: critical
 audience: LLM, Human
@@ -126,7 +126,7 @@ $$
 W_{Æ}(n) = WS_{Æ}(n) = WH_{Æ}(n)
 $$
 
-Each ether object is conventionally assigned to one of eight levels of matter. For brevity, the level of matter can be denoted by the capital letter $Æ$ with a number corresponding to the level of matter. Æ1 is the designation for the first level of matter, Æ2 for the second, Æ3 for the third, Æ4 for the fourth, Æ5 for the fifth, Æ6 for the sixth, Æ7 for the seventh, Æ8 for the eighth.
+Each ether object is conventionally assigned to one of eight levels of matter. In physics and chemistry, the term "level" is used to denote a wide variety of relationships, which can lead to confusion in terminology in this context. Therefore, a "level of matter" can also be referred to as a "stair of matter", "rung of matter", "stage of matter", or "step of matter". Collectively, these "stages of matter" form a "ladder of matter", or "stairs of matter". For brevity, the level of matter can be denoted by the capital letter $Æ$ with a number corresponding to the level of matter. Æ1 is the designation for the first level of matter, Æ2 for the second, Æ3 for the third, Æ4 for the fourth, Æ5 for the fifth, Æ6 for the sixth, Æ7 for the seventh, Æ8 for the eighth.
 
 Etheron is the name of a discrete particle of matter at the first level of matter. Etheron is considered an ether object of the first level of matter. Etheron is denoted by the sign $æ$. In formulas, a separate sign $æ$ denotes one etheron from the set of all etherons.
 
