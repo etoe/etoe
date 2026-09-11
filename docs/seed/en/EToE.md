@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.8
+version: 0.1.9
 date: 2026-09-11
 created: 2026-06-01
 updated: 2026-09-11
@@ -142,7 +142,7 @@ Subobjects of ether hyperobjects are called "ether subobjects". In the English v
 
 The criterion for classifying an ether hyperobject as belonging to a certain level of matter is not the quantitative parameters of the ether hyperobject, but the characteristic qualitative aspect of the interaction of ether subobjects of ether hyperobjects of this level of matter.
 
-Ether subobjects of ether objects of the second level of matter are etherons.
+Ether subobjects of ether objects of the second level of matter are etherons. An etheron has two distinct, conceptual "identity axes": "etheron role" and "etheron affiliation". The etheron role answers the question: "What does the etheron do within a given ether hyperobject?" Etheron affiliation answers the question: "Of which ether hyperobject is the etheron currently a part?"
 
 An ether subobject containing ether subobjects of a lower level is called "ether subhyperobject".
 
