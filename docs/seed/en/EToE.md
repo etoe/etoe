@@ -835,7 +835,7 @@ A hyperatom is considered a "non-elementary atom".
 
 The hierarchy of a cluster of ether objects of any type means that a complex cluster of ether objects of this type consists of less complex clusters of ether objects of this type, and that less complex clusters of ether objects of this type in turn consist of even less complex clusters of ether objects of this type, and so on up to the ether objects of this type themselves.
 
-The hierarchy of a hyperatom means that a complex hyperatom consists of less complex hyperatoms, and that less complex hyperatoms in turn consist of even less complex hyperatoms, and so on up to the proteons themselves. Proteons and hyperatoms belong to different stairs of matter, yet both are considered atoms. Therefore, the atomic level is reckoned starting from proteons. The atomic level of a hyperatom is always one unit higher than the level of the hyperatom itself.
+The hierarchy of a hyperatom means that a complex hyperatom consists of less complex hyperatoms, and that less complex hyperatoms in turn consist of even less complex hyperatoms, and so on up to the proteons themselves. Proteons and hyperatoms belong to different stairs of matter, yet both are considered atoms. Therefore, the atomic level is reckoned starting from proteons. The atomic level of a hyperatom is always one unit higher than the level of the hyperatom itself. The atomic level is the position of an atom within the hierarchy of atomic organization, determined by the number of successively nested levels of atomic structure.
 
 The Protium atoms in a hyperatom are called Protium subatoms. A Protium subatom is an elementary subatom.
 
