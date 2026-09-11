@@ -142,7 +142,7 @@ Subobjects of ether hyperobjects are called "ether subobjects". In the English v
 
 The criterion for classifying an ether hyperobject as belonging to a certain level of matter is not the quantitative parameters of the ether hyperobject, but the characteristic qualitative aspect of the interaction of ether subobjects of ether hyperobjects of this level of matter.
 
-Ether subobjects of ether objects of the second level of matter are etherons. An etheron has two distinct, conceptual "identity axes": "etheron role" and "etheron affiliation". The etheron role answers the question: "What does the etheron do within a given ether hyperobject?" Etheron affiliation answers the question: "Of which ether hyperobject is the etheron currently a part?"
+Ether subobjects of ether objects of the second level of matter are etherons. An etheron has two distinct, conceptual "identity axes": "etheron role" and "etheron affiliation". The etheron role answers the question: "What does the etheron do within a given ether hyperobject?" Etheron affiliation answers the question: "Of which ether hyperobject is the etheron currently a part?" The affiliation of the etheron is discrete yet hierarchical. The role of the etheron is discrete yet relational.
 
 An ether subobject containing ether subobjects of a lower level is called "ether subhyperobject".
 
