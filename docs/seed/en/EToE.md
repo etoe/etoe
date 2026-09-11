@@ -136,7 +136,7 @@ Ether objects of the second and subsequent levels of matter are called "ether hy
 
 In ether theory, the prefix "hyper" for any physical object or any informational object means "non-elementarity" of this object. Non-elementarity of an object of any type means that the object consists of subobjects of the same type.
 
-In ether theory, the prefix "sub" for any physical object or any informational object means "nestedness" of this object in an object of a higher level. Nestedness of an object of any type means that the object is a component part of an object of the same type but of a higher level.
+In ether theory, the prefix "sub" for any physical object or any informational object means "nestedness" of this object in an object of a higher level. Nestedness of an object of any type means that the object is a component part of an object of the same type but of a higher level. The stair of matter does not increase with each act of nesting.
 
 Subobjects of ether hyperobjects are called "ether subobjects". In the English version, "ether subobject" is "ether subobject".
 
