@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.10
-date: 2026-09-12
+version: 0.1.11
+date: 2026-09-14
 created: 2026-06-01
-updated: 2026-09-12
+updated: 2026-09-14
 status: active
 priority: critical
 audience: LLM, Human
@@ -729,9 +729,122 @@ The interaction trail of an ether object is a discrete spatio-temporal configura
 
 The etherons of the bearing part of the ether substance of the ether batch are located in spatial cells located close to one another. The directions of absolute continuous motion and absolute continuous velocities of the etherons of the bearing part of the ether substance of the ether batch are approximately equal.
 
-The ether field of an ether batch is called "batch ether field".
+The ether field of an ether batch is called "batch ether field". The batch ether field almost always lags behind the ether substance of the ether batch.
 
-The batch ether field always lags behind the ether substance of the ether batch.
+The kinematic classification of the ether fields of ether batches determines the longitudinal or transverse nature of the ether field relative to the axis of motion of the batch's ether substance — that is, relative to its own kinematic direction. For the ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its axis of motion $\hat{\mathbf e}_\text{Æ2.b}$ is:
+
+$$
+\hat{\mathbf e}_\text{Æ2.b}
+=
+\frac{\sum\limits_{æ \in Æ2.b.s} \vec{v}_\text{æ}}
+{\left|\sum\limits_{æ \in Æ2.b.s} \vec{v}_\text{æ}\right|}
+$$
+
+For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}_\text{æf}$ relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}_\text{Æ2.b.s}$) is:
+
+$$ \vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
+
+$$ u_\text{æf} = |\vec{u}_\text{æf}|$$
+
+$$
+\vec{u}_\text{æf}
+=
+\vec{u}_{\parallel _\text{æf}}
++
+\vec{u}_{\perp _\text{æf}}
+$$
+
+$$
+\vec{u}_{\parallel _\text{æf}}
+=
+(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b})\hat{\mathbf e}_\text{Æ2.b}
+$$
+
+$$
+\vec{u}_{\perp _\text{æf}}
+=
+\vec{u}_\text{æf}-\vec{u}_{\parallel _\text{æf}}
+$$
+
+$$
+\cos\theta_\text{æf}
+=
+\frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b}}
+{|\vec{u}_\text{æf}|}
+$$
+
+The average longitudinality $L_\text{Æ2.b.f}$ and average transversality $T_\text{Æ2.b.f}$ of the batch field $Æ2.b.f$:
+
+$$
+L_\text{Æ2.b.f}=
+\frac{\sum_\text{æf} |\vec{u}_\text{æf}|\cos^2\theta_\text{æf}}
+{\sum_\text{æf} |\vec{u}_\text{æf}|}
+$$
+
+$$
+T_\text{Æ2.b.f}=
+\frac{\sum_\text{æf} |\vec{u}_\text{æf}|\sin^2\theta_\text{æf}}
+{\sum_\text{æf} |\vec{u}_\text{æf}|}
+$$
+
+$$
+L_\text{Æ2.b.f}+T_\text{Æ2.b.f}=1
+$$
+
+Then $L_\text{Æ2.b.f} \approx 1$ signifies a longitudinal-field batch, $T_\text{Æ2.b.f} \approx 1$ a transverse-field batch, and $L_\text{Æ2.b.f} \approx T_\text{Æ2.b.f}$ a mixed one.
+
+Field longitudinality $\Pi_{\text{Æ2.b.f}}$ of the batch field $\text{Æ2.b.f}$:
+
+$$
+\Pi_\text{Æ2.b.f}=L_\text{Æ2.b.f}-T_\text{Æ2.b.f}
+$$
+
+$$
+-1\leq\Pi_\text{Æ2.b.f}\leq1
+$$
+
+$$
+\Pi_\text{Æ2.b.f}\rightarrow+1
+\quad\Rightarrow\quad
+\text{strongly longitudinal field}
+$$
+
+$$
+\Pi_\text{Æ2.b.f}\rightarrow-1
+\quad\Rightarrow\quad
+\text{strongly transverse field}
+$$
+
+$$
+\Pi_\text{Æ2.b.f}\approx0
+\quad\Rightarrow\quad
+\text{isotropic/mixed field}
+$$
+
+The average relative velocity $\bar u_\text{Æ2.b.f.æ}$ and the average normalized relative velocity $s_\text{norm.Æ2.b.f.æ}$ of the field etheron $\text{æf}$ of the ether field $Æ2.b.f$ of the ether batch $Æ2.b$:
+
+$$
+\bar u_\text{Æ2.b.f.æ}=
+\frac{\sum_\text{æf} u_\text{æf}}{m_\text{Æ2.b.f}}
+$$
+
+$$
+s_\text{norm.Æ2.b.f.æ}=\frac{\bar u_\text{Æ2.b.f.æ}}{C}
+$$
+
+$$
+s_\text{norm.Æ2.b.f.æ}< s_\text{norm.avg}
+\quad\Rightarrow\quad
+\text{slow-field}
+$$
+
+$$
+s_\text{norm.Æ2.b.f.æ}> s_\text{norm.avg}
+\quad\Rightarrow\quad
+\text{fast-field}
+$$
+
+Based on the criteria of ether field longitudinality and the average relative velocity of field etherons, ether batches can be tentatively classified into longitudinal-slow-field, longitudinal-fast-field, transverse-slow-field, and mixed-field types.
 
 The frequency parameters of the batch ether field of an ether batch are determined by the substance-field pattern of the distribution of relative continuous velocities of etherons in the group of etherons after each synthesizing interaction of any etheron of the ether batch with external etherons. Each synthesizing interaction of any etheron of the ether batch with external etherons leads to the scattering of field etherons with approximately the same moduli of relative continuous velocities, but in different directions. The moduli of relative continuous velocities of scattered field etherons from different synthesizing interactions of etherons of the ether batch with external etherons usually differ.
 
@@ -759,7 +872,28 @@ The result of ether field interaction of two ether hyperobjects can be either ac
 
 Synchronization of the motion of one ether hyperobject with changes in the ether fields of other ether hyperobjects can lead to predominance of attraction to other ether hyperobjects or predominance of repulsion from other ether hyperobjects. Predominance of attraction to other ether hyperobjects or predominance of repulsion from other ether hyperobjects as a result of synchronization of the motion of one ether hyperobject with changes in the ether fields of other ether hyperobjects is called "ether field synchronization".
 
-Due to synthesizing interactions of etherons of an ether batch with external etherons, the mass of the ether batch can grow to a certain value, and the ether batch can increase its degree of stability. An ether batch formed as a result of multiple interconnected synthesizing interactions of etherons is called an ether hyperbatch. An elementary ether batch is ephemeral. Only an ether hyperbatch can be stable.
+Due to synthesizing interactions of etherons of an ether batch with external etherons, the mass of the ether batch can grow to a certain value, and the ether batch can increase its degree of stability. The increase in the mass of the ether batch is a field-induced increase. An ether batch formed as a result of multiple interconnected synthesizing interactions of etherons is called an ether hyperbatch. An elementary ether batch is ephemeral. Only an ether hyperbatch can be stable. An ether hyperbatch can be conditionally considered a self-sustaining kinetic cluster of etherons that captures and drags external etherons by means of its own ether field. The bearing component of the ether substance of an ether hyperbatch can be considered, provisionally and approximately, as a coherent, moving cluster of etherons. The ether hyperbatch forms a kinematic corridor around its trajectory. The ether hyperbatch takes the form of a narrow, angular cone.
+
+The fundamental criterion for the self-sustainment of an ether hyperbatch, $R_{\rm syn.Æ2.b}$, can be defined as the average number of new, stably linked synthesizing interactions generated by a single preceding interaction:
+
+$$R_{\rm syn.Æ2.b}\approx 1$$
+
+If $ R_{\rm syn.Æ2.b}<1 $, the ether hyperbatch decays. If $ R_{\rm syn.Æ2.b}=1 $, a critically stable ether hyperbatch structure is formed. An ether hyperbatch can continuously lose some etherons and acquire others while maintaining a virtually unchanged structure. If $ R_{\rm syn.Æ2.b}>1 $, a cascading growth of the ether hyperbatch occurs. As the mass of the ether hyperbatch increases, maintaining its unified kinematic organization becomes increasingly difficult.
+
+Kinematic coherence coefficient $K_\text{Æ2.b.s.b}$ of the bearing substance $Æ2.b.s.b$ of the ether hyperbatch $Æ2.b$:
+
+$$
+K_\text{Æ2.b.s.b}=
+\frac{
+\left|\sum\limits_{æ \in Æ2.b.s.b}\vec{v}_\text{æ}\right|
+}{
+\sum\limits_{æ \in Æ2.b.s.b}|\vec{v}_\text{æ}|
+}
+$$
+
+In this case, the range of the kinematic coherence coefficient for the bearing substance of the ether hyperbatch is $0 < K_\text{Æ2.b.s.b} \le 1$. For perfectly unidirectional motion of the etherons of the bearing substance of the ether hyperbatch, $K_\text{Æ2.b.s.b} = 1$. For a nearly isotropic set of velocities of the etherons of the bearing substance of the ether hyperbatch, $K_\text{Æ2.b.s.b} \to 0$. In that case, the hyperbatch can be considered stable if $K_\text{Æ2.b.s.b} > K_{\rm crit}$ and the mass of the ether hyperbatch is sufficiently large. A cascade of synthesizing collisions is the natural mechanism behind the emergence of an ether hyperbatch. The synthesis of an ether hyperbatch generates a spatially directed ether field characterized by an increased probability of subsequent syntheses involving the bearing substance; the longitudinal/quasi-collinear component of the hyperbatch's ether field ensures the kinematic coherence of the cascade. The ether hyperbatch is a dissipative/dynamic object: it constantly interacts with the environment, continuously reconfigures its field, and simultaneously preserves its own structure and motion. A cascade of synthesizing etheron collisions reproduces the kinematic configuration of the ether hyperbatch itself faster than it disintegrates. The ether hyperbatch possesses a stable mode of reproducing the same kinematic pattern through coupled syntheses. It is possible that three-dimensional space possesses the maximum dimensionality in which a hyperbatch is capable of self-sustenance.
+
+The inclusion of an elementary ether batch in an ether hyperbatch signifies not a transition to a different type of ether object, but a compositional complexification of an object of the same type. An elementary batch is the result of a single synthesizing interaction of etherons. An elementary batch possesses its own substance and field but lacks a sufficiently long history of linked syntheses to stably reproduce its configuration. A hyperbatch differs from an elementary batch primarily in the topology and dynamics of the interaction network. The transformation of an elementary batch into a hyperbatch does not represent the emergence of a new type of ether object, but rather signifies a transition from a singular pattern to a self-sustaining pattern. It can be tentatively assumed that the transition from an elementary batch to a hyperbatch does not give rise to a qualitatively different type of interaction between ether objects that would lead to the emergence of ether objects belonging to the next stair of matter. Therefore, the elementary ether batch and the ether hyperbatch belong to the same class of ether objects at the same stair of matter.
 
 The speed of an etheron over the aggregate of free motions of the etheron alternating with transit interactions of etherons and synthesizing interactions of etherons is called "effective speed".
 
@@ -767,7 +901,7 @@ The speed of light in vacuum is close to the average absolute effective speed of
 
 An ether object of the third level of matter is called "ether spiral".
 
-An ether spiral is a spiral cluster of ether batches united by ether fields of ether batches. In an ether spiral, there is a "leading ether batch" and one or more "follower ether batches," which are held by the ether field of the leading ether batch. The follower ether batches of the ether spiral orbitally rotate around the trajectory of motion of the leading ether batch of the ether spiral.
+An ether spiral is a spiral cluster of ether batches united by ether fields of ether batches. In an ether spiral, there is a "leading ether batch" and one or more "follower ether batches," which are held by the ether field of the leading ether batch. The follower ether batches of the ether spiral orbitally rotate around the trajectory of motion of the leading ether batch of the ether spiral. The transition from an ether batch to an ether hyperbatch represents a quantitative and configurational complication, whereas the transition from a hyperbatch to a spiral creates a new qualitative type of organization for the ether object. An increase in the complexity of an ether object does not imply an increase in the stair of matter. When the ether spiral emerges, a new organization of interaction arises: intrabatch synthesizing coherence within ether hyperbatches gives rise to the interbatch orbital organization of the ether spiral. It is likely that only three-dimensional space allows for the type of field and kinematic stability of the ether hyperbatch from which the ether spiral subsequently emerges naturally.
 
 The ether field of an ether spiral is called "spiral ether field".
 
