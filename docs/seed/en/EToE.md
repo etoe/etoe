@@ -878,7 +878,7 @@ The fundamental criterion for the self-sustainment of an ether hyperbatch, $R_{\
 
 $$R_{\rm syn.Æ2.b}\approx 1$$
 
-If $ R_{\rm syn.Æ2.b}<1 $, the ether hyperbatch decays. If $ R_{\rm syn.Æ2.b}=1 $, a critically stable ether hyperbatch structure is formed. An ether hyperbatch can continuously lose some etherons and acquire others while maintaining a virtually unchanged structure. If $ R_{\rm syn.Æ2.b}>1 $, a cascading growth of the ether hyperbatch occurs. As the mass of the ether hyperbatch increases, maintaining its unified kinematic organization becomes increasingly difficult.
+If $R_{\rm syn.Æ2.b}<1$, the ether hyperbatch decays. If $R_{\rm syn.Æ2.b}=1$, a critically stable ether hyperbatch structure is formed. An ether hyperbatch can continuously lose some etherons and acquire others while maintaining a virtually unchanged structure. If $R_{\rm syn.Æ2.b}>1$, a cascading growth of the ether hyperbatch occurs. As the mass of the ether hyperbatch increases, maintaining its unified kinematic organization becomes increasingly difficult.
 
 Kinematic coherence coefficient $K_\text{Æ2.b.s.b}$ of the bearing substance $Æ2.b.s.b$ of the ether hyperbatch $Æ2.b$:
 
