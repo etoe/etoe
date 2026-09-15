@@ -742,7 +742,7 @@ $$
 {\left|\sum\limits_{æ \in Æ2.b.s} \vec{v}_\text{æ}\right|}
 $$
 
-For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}_\text{æf}$ relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}_\text{Æ2.b.s}$) is:
+For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
 
 $$ \vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
 
