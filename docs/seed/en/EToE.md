@@ -741,36 +741,23 @@ $$\hat{e}_\text{Æ2.b}=
 
 For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
 
-$$ \vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
+$$\vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
 
-$$ u_\text{æf} = |\vec{u}_\text{æf}|$$
+$$u_\text{æf} = |\vec{u}_\text{æf}|$$
 
-$$
-\vec{u}_\text{æf}
-=
-\vec{u}_{\parallel _\text{æf}}
-+
-\vec{u}_{\perp _\text{æf}}
-$$
+$$\vec{u}_\text{æf}=
+\vec{u}_{\parallel_\text{æf}}+
+\vec{u}_{\perp_\text{æf}}$$
 
-$$
-\vec{u}_{\parallel _\text{æf}}
-=
-(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b})\hat{\mathbf e}_\text{Æ2.b}
-$$
+$$\vec{u}_{\parallel_\text{æf}}=
+(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b})\hat{\mathbf e}_\text{Æ2.b}$$
 
-$$
-\vec{u}_{\perp _\text{æf}}
-=
-\vec{u}_\text{æf}-\vec{u}_{\parallel _\text{æf}}
-$$
+$$\vec{u}_{\perp_\text{æf}}=
+\vec{u}_\text{æf}-\vec{u}_{\parallel_\text{æf}}$$
 
-$$
-\cos\theta_\text{æf}
-=
+$$\cos\theta_\text{æf}=
 \frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b}}
-{|\vec{u}_\text{æf}|}
-$$
+{|\vec{u}_\text{æf}|}$$
 
 The average longitudinality $L_\text{Æ2.b.f}$ and average transversality $T_\text{Æ2.b.f}$ of the batch field $Æ2.b.f$:
 

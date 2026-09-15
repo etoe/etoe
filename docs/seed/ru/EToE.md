@@ -738,32 +738,23 @@ $$\hat{e}_\text{Æ2.b}=
 
 Для каждого полевого эфирона $\text{æf}$ эфирного поля $Æ2.b.f$ эфирного батча $Æ2.b$ его скорость $\vec{u}$<sub>æf</sub> относительно субстанции $Æ2.b.s$ со средней скоростью $\vec{v}$<sub>Æ2.b.s</sub>:
 
-$$ \vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
+$$\vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
 
-$$ u_\text{æf} = |\vec{u}_\text{æf}|$$
+$$u_\text{æf} = |\vec{u}_\text{æf}|$$
 
 $$\vec{u}_\text{æf}=
 \vec{u}_{\parallel_\text{æf}}+
 \vec{u}_{\perp_\text{æf}}$$
 
-$$
-\vec{u}_{\parallel _\text{æf}}
-=
-(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b})\hat{\mathbf e}_\text{Æ2.b}
-$$
+$$\vec{u}_{\parallel_\text{æf}}=
+(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b})\hat{\mathbf e}_\text{Æ2.b}$$
 
-$$
-\vec{u}_{\perp _\text{æf}}
-=
-\vec{u}_\text{æf}-\vec{u}_{\parallel _\text{æf}}
-$$
+$$\vec{u}_{\perp_\text{æf}}=
+\vec{u}_\text{æf}-\vec{u}_{\parallel_\text{æf}}$$
 
-$$
-\cos\theta_\text{æf}
-=
+$$\cos\theta_\text{æf}=
 \frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b}}
-{|\vec{u}_\text{æf}|}
-$$
+{|\vec{u}_\text{æf}|}$$
 
 Средняя продольность $L_\text{Æ2.b.f}$ и средняя поперечность $T_\text{Æ2.b.f}$ батчевого поля $Æ2.b.f$:
 
