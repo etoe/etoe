@@ -738,8 +738,8 @@ The kinematic classification of the ether fields of ether batches determines the
 $$
 \hat{\mathbf e}_\text{Æ2.b}
 =
-\frac{\sum\limits_{æ \in Æ2.b.s} \vec{v}_\text{æ}}
-{\left|\sum\limits_{æ \in Æ2.b.s} \vec{v}_\text{æ}\right|}
+\frac{\sum\limits_{\text{æs} \in Æ2.b.s} \vec{v}_\text{æs}}
+{\left|\sum\limits_{\text{æs} \in Æ2.b.s} \vec{v}_\text{æs}\right|}
 $$
 
 For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
