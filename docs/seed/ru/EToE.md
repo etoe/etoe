@@ -735,8 +735,8 @@ $$R_{\text{sf,Æ2}} > R_{\text{sf,Æ}} > R_{\text{sf,Æ8}}$$
 $$
 \hat{\mathbf e}_\text{Æ2.b}
 =
-\frac{\sum\limits_{\text{æs} \in Æ2.b.s} \vec{v}_\text{æs}}
-{\left|\sum\limits_{\text{æs} \in Æ2.b.s} \vec{v}_\text{æs}\right|}
+\frac{\sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs}}
+{\left|\sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs}\right|}
 $$
 
 Для каждого полевого эфирона $\text{æf}$ эфирного поля $Æ2.b.f$ эфирного батча $Æ2.b$ его скорость $\vec{u}$<sub>æf</sub> относительно субстанции $Æ2.b.s$ со средней скоростью $\vec{v}$<sub>Æ2.b.s</sub>:
