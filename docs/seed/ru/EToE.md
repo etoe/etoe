@@ -742,13 +742,9 @@ $$ \vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
 
 $$ u_\text{æf} = |\vec{u}_\text{æf}|$$
 
-$$
-\vec{u}_\text{æf}
-=
-\vec{u}_{\parallel _\text{æf}}
-+
-\vec{u}_{\perp _\text{æf}}
-$$
+$$\vec{u}_\text{æf}=
+\vec{u}_{\parallel_\text{æf}}+
+\vec{u}_{\perp_\text{æf}}$$
 
 $$
 \vec{u}_{\parallel _\text{æf}}

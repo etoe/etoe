@@ -735,12 +735,9 @@ The ether field of an ether batch is called "batch ether field". The batch ether
 
 The kinematic classification of the ether fields of ether batches determines the longitudinal or transverse nature of the ether field relative to the axis of motion of the batch's ether substance — that is, relative to its own kinematic direction. For the ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its axis of motion $\hat{e}_\text{Æ2.b}$ is:
 
-$$
-\hat{e}_\text{Æ2.b}
-=
+$$\hat{e}_\text{Æ2.b}=
 \frac{\sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs}}
-{\left|\sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs}\right|}
-$$
+{| \sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs} |}$$
 
 For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
 
