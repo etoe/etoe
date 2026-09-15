@@ -733,7 +733,7 @@ The etherons of the bearing part of the ether substance of the ether batch are l
 
 The ether field of an ether batch is called "batch ether field". The batch ether field almost always lags behind the ether substance of the ether batch.
 
-The kinematic classification of the ether fields of ether batches determines the longitudinal or transverse nature of the ether field relative to the axis of motion of the batch's ether substance — that is, relative to its own kinematic direction. For the ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its axis of motion $\hat{\mathbf e}_\text{Æ2.b}$ is:
+The kinematic classification of the ether fields of ether batches determines the longitudinal or transverse nature of the ether field relative to the axis of motion of the batch's ether substance — that is, relative to its own kinematic direction. For the ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its axis of motion $\hat{e}_\text{Æ2.b}$ is:
 
 $$
 \hat{e}_\text{Æ2.b}
