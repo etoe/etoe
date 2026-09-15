@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.11
-date: 2026-09-14
+version: 0.1.12
+date: 2026-09-15
 created: 2026-06-01
-updated: 2026-09-14
+updated: 2026-09-15
 status: active
 priority: critical
 audience: LLM, Human
@@ -144,9 +144,11 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; information about the specific instance of the ether object; and information about the ether object's structure. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
-$$notation = Æn.class\#\{instance\}-(structure)$$
+$$notation = Æn.object-\{instance\}-(structure)$$
+
+$$object = class.substance|field.part ...$$
 
 $$structure = notation ' notation ...$$
 
