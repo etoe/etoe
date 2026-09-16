@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.12
-date: 2026-09-15
+version: 0.1.13
+date: 2026-09-16
 created: 2026-06-01
-updated: 2026-09-15
+updated: 2026-09-16
 status: active
 priority: critical
 audience: LLM, Human
@@ -146,11 +146,128 @@ The hierarchical level of an ether subobject within a certain ether hyperobject 
 
 The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
-$$notation = Æn.object-\{instance\}-(structure)$$
+```ebnf
+notation          = æ_notation
+                  | chemical_notation
+                  | quantity_expression
+                  | constant_expression ;
 
-$$object = class.substance|field.part ...$$
+æ_notation        = æ_object | æ_level ;
 
-$$structure = notation ' notation ...$$
+æ_object          = æ_full_object
+                  | æ_compact_object
+                  | æ_etheron ;
+
+æ_full_object     = "Æ", level, ".", class, { ".", part }
+                  , [ instance ], [ structure ] ;
+
+æ_compact_object  = "Æ", class, { ".", part }
+                  , [ instance ], [ structure ] ;
+
+æ_etheron         = "æ", { ".", part }
+                  , [ instance ], [ structure ] ;
+
+æ_level           = "Æ", level ;
+
+level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
+
+class             = "b" | "sp" | "mj" | "ha" | "mol" | "bd" | "as" ;
+
+part              = "s" | "f" | "m" | "mf"
+                  | "br" | "dr" | "di" | "do"
+                  | "atm" | "core" ;
+
+chemical_notation = chemical_full
+                  | chemical_mass_only ;
+
+chemical_full     = element, [ "-", mass ], [ chemical_structure ] ;
+
+chemical_mass_only = mass ;
+
+chemical_structure = "-", "(", [ notation_list ], ")"
+                   | "-", mass ;
+
+element           = "H"  | "D"  | "T"  | "Ht" | "He"
+                  | "Li" | "Be" | "B"  | "C"  | "N"
+                  | "O"  | "F"  | "Ne" | "Na" | "Mg"
+                  | "Al" | "Si" | "P"  | "S"  | "Cl"
+                  | "Ar" | "K"  | "Ca" | "Sc" | "Ti"
+                  | "V"  | "Cr" | "Mn" | "Fe" | "Co"
+                  | "Ni" | "Cu" | "Zn" | "Ga" | "Ge"
+                  | "As" | "Se" | "Br" | "Kr" | "Rb"
+                  | "Sr" | "Y"  | "Zr" | "Nb" | "Mo"
+                  | "Tc" | "Ru" | "Rh" | "Pd" | "Ag"
+                  | "Cd" | "In" | "Sn" | "Sb" | "Te"
+                  | "I"  | "Xe" | "Cs" | "Ba" | "La"
+                  | "Ce" | "Pr" | "Nd" | "Pm" | "Sm"
+                  | "Eu" | "Gd" | "Tb" | "Dy" | "Ho"
+                  | "Er" | "Tm" | "Yb" | "Lu" | "Hf"
+                  | "Ta" | "W"  | "Re" | "Os" | "Ir"
+                  | "Pt" | "Au" | "Hg" | "Tl" | "Pb"
+                  | "Bi" | "Po" | "At" | "Rn" | "Fr"
+                  | "Ra" | "Ac" | "Th" | "Pa" | "U"
+                  | "Np" | "Pu" | "Am" | "Cm" | "Bk"
+                  | "Cf" | "Es" | "Fm" | "Md" | "No"
+                  | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
+                  | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
+
+mass              = number ;
+
+quantity_expression = quantity, ".", character, ".", object_notation ;
+
+quantity          = ident ;
+
+character         = "avg" | "max" | "min" | "inst" | "rms"
+                  | "tot" | "net" | "abs" | "rel"
+                  | "peak" | "mean" | "std" ;
+
+object_notation   = æ_notation | chemical_notation ;
+
+constant_expression = const_full
+                    | const_compact_letter
+                    | const_compact_at ;
+
+const_full        = "const.", quantity, ".", character, ".", const_object ;
+
+const_compact_letter = "Ꞓ", const_name ;
+
+const_compact_at  = "@", const_name ;
+
+const_object      = æ_notation
+                  | chemical_notation
+                  | "Æ"
+                  | "_" ;
+
+const_name        = ident | number ;
+
+instance          = "-", "{", [ pair_list ], "}" ;
+
+pair_list         = pair, { ",", pair } ;
+
+pair              = key, "=", value ;
+
+key               = ident ;
+
+value             = ident | number | string ;
+
+structure         = "-", "(", [ notation_list ], ")" ;
+
+notation_list     = notation, { separator, notation } ;
+
+separator         = "'", [ "-{", [ pair_list ], "}" ] ;
+
+ident             = letter, { letter | digit | "_" } ;
+
+letter            = "a" | ... | "z" | "A" | ... | "Z" | "æ" | "Æ" ;
+
+number            = [ "-" ], digits, [ ".", digits ] ;
+
+digits            = digit, { digit } ;
+
+digit             = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+string            = '"', { escaped_char }, '"' ;
+```
 
 Ether subobjects of ether objects of the second level of matter are etherons. An etheron has two distinct, conceptual "identity axes": "etheron role" and "etheron affiliation". The etheron role answers the question: "What does the etheron do within a given ether hyperobject?" Etheron affiliation answers the question: "Of which ether hyperobject is the etheron currently a part?" The affiliation of the etheron is discrete yet hierarchical. The role of the etheron is discrete yet relational. When affiliation changes, the role does not necessarily change as part of the same event. When the role changes, affiliation does not necessarily change as part of the same event. An ether hyperobject can preserve the pattern of role distribution among etherons. The physical individuality of an ether hyperobject is determined not by the specific etherons that comprise it, but by the configuration of relationships maintained between them. The bearer of the ether hyperobject's stability is not the etheron, but the organization of a multitude of etherons. The role of an etheron is the relational classification of its motion. The affiliation of an etheron is the hierarchical relationship of its inclusion. An ether hyperobject is a stable collective pattern of etheron roles and motions.
 

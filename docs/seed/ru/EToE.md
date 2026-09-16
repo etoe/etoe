@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.12
-date: 2026-09-15
+version: 0.1.13
+date: 2026-09-16
 created: 2026-06-01
-updated: 2026-09-15
+updated: 2026-09-16
 status: active
 priority: critical
 audience: LLM, Human
@@ -147,11 +147,128 @@ $$
 
 Иерархическая конфигурационная нотация эфирного объекта имеет формат, в полном варианте включающий в себя: обозначение ступени материи; обозначение класса эфирного объекта в этой ступени материи; обозначение части эфирного объекта; информацию об экземпляре эфирного объекта; информацию о структуре эфирного объекта. Информация об экземпляре эфирного объекта указывается через дефис в фигурных скобках в некотором формате. Информация о структуре эфирного объекта указывается через дефис в круглых скобках. Информация о структуре эфирного объекта включает в себя нотации эфирных субобъектов этого эфирного объекта, разделённые апострофом в качестве знака сцепления эфирных субобъектов. Нотация сможет служить и компактной записью для человека, и сериализацией состояния для симулятора:
 
-$$notation = Æn.object-\{instance\}-(structure)$$
+```ebnf
+notation          = æ_notation
+                  | chemical_notation
+                  | quantity_expression
+                  | constant_expression ;
 
-$$object = class.substance|field.part ...$$
+æ_notation        = æ_object | æ_level ;
 
-$$structure = notation ' notation ...$$
+æ_object          = æ_full_object
+                  | æ_compact_object
+                  | æ_etheron ;
+
+æ_full_object     = "Æ", level, ".", class, { ".", part }
+                  , [ instance ], [ structure ] ;
+
+æ_compact_object  = "Æ", class, { ".", part }
+                  , [ instance ], [ structure ] ;
+
+æ_etheron         = "æ", { ".", part }
+                  , [ instance ], [ structure ] ;
+
+æ_level           = "Æ", level ;
+
+level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
+
+class             = "b" | "sp" | "mj" | "ha" | "mol" | "bd" | "as" ;
+
+part              = "s" | "f" | "m" | "mf"
+                  | "br" | "dr" | "di" | "do"
+                  | "atm" | "core" ;
+
+chemical_notation = chemical_full
+                  | chemical_mass_only ;
+
+chemical_full     = element, [ "-", mass ], [ chemical_structure ] ;
+
+chemical_mass_only = mass ;
+
+chemical_structure = "-", "(", [ notation_list ], ")"
+                   | "-", mass ;
+
+element           = "H"  | "D"  | "T"  | "Ht" | "He"
+                  | "Li" | "Be" | "B"  | "C"  | "N"
+                  | "O"  | "F"  | "Ne" | "Na" | "Mg"
+                  | "Al" | "Si" | "P"  | "S"  | "Cl"
+                  | "Ar" | "K"  | "Ca" | "Sc" | "Ti"
+                  | "V"  | "Cr" | "Mn" | "Fe" | "Co"
+                  | "Ni" | "Cu" | "Zn" | "Ga" | "Ge"
+                  | "As" | "Se" | "Br" | "Kr" | "Rb"
+                  | "Sr" | "Y"  | "Zr" | "Nb" | "Mo"
+                  | "Tc" | "Ru" | "Rh" | "Pd" | "Ag"
+                  | "Cd" | "In" | "Sn" | "Sb" | "Te"
+                  | "I"  | "Xe" | "Cs" | "Ba" | "La"
+                  | "Ce" | "Pr" | "Nd" | "Pm" | "Sm"
+                  | "Eu" | "Gd" | "Tb" | "Dy" | "Ho"
+                  | "Er" | "Tm" | "Yb" | "Lu" | "Hf"
+                  | "Ta" | "W"  | "Re" | "Os" | "Ir"
+                  | "Pt" | "Au" | "Hg" | "Tl" | "Pb"
+                  | "Bi" | "Po" | "At" | "Rn" | "Fr"
+                  | "Ra" | "Ac" | "Th" | "Pa" | "U"
+                  | "Np" | "Pu" | "Am" | "Cm" | "Bk"
+                  | "Cf" | "Es" | "Fm" | "Md" | "No"
+                  | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
+                  | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
+
+mass              = number ;
+
+quantity_expression = quantity, ".", character, ".", object_notation ;
+
+quantity          = ident ;
+
+character         = "avg" | "max" | "min" | "inst" | "rms"
+                  | "tot" | "net" | "abs" | "rel"
+                  | "peak" | "mean" | "std" ;
+
+object_notation   = æ_notation | chemical_notation ;
+
+constant_expression = const_full
+                    | const_compact_letter
+                    | const_compact_at ;
+
+const_full        = "const.", quantity, ".", character, ".", const_object ;
+
+const_compact_letter = "Ꞓ", const_name ;
+
+const_compact_at  = "@", const_name ;
+
+const_object      = æ_notation
+                  | chemical_notation
+                  | "Æ"
+                  | "_" ;
+
+const_name        = ident | number ;
+
+instance          = "-", "{", [ pair_list ], "}" ;
+
+pair_list         = pair, { ",", pair } ;
+
+pair              = key, "=", value ;
+
+key               = ident ;
+
+value             = ident | number | string ;
+
+structure         = "-", "(", [ notation_list ], ")" ;
+
+notation_list     = notation, { separator, notation } ;
+
+separator         = "'", [ "-{", [ pair_list ], "}" ] ;
+
+ident             = letter, { letter | digit | "_" } ;
+
+letter            = "a" | ... | "z" | "A" | ... | "Z" | "æ" | "Æ" ;
+
+number            = [ "-" ], digits, [ ".", digits ] ;
+
+digits            = digit, { digit } ;
+
+digit             = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+string            = '"', { escaped_char }, '"' ;
+```
 
 Эфирными субобъектами эфирных объектов второго уровня материи являются эфироны. У эфирона есть две разные условные "оси идентичности": "роль эфирона" и "принадлежность эфирона". Роль эфирона отвечает на вопрос: "Что эфирон делает в некотором эфирном гиперобъекте?" Принадлежность эфирона отвечает на вопрос: "В составе какого эфирного гиперобъекта эфирон сейчас находится?" Принадлежность эфирона дискретна, но иерархична. Роль эфирона дискретна, но реляционна. При изменении принадлежности роль не обязана меняться тем же событием. При изменении роли принадлежность не обязана меняться тем же событием. Эфирный гиперобъект может сохранять паттерн распределения ролей эфиронов. Физическая индивидуальность эфирного гиперобъекта определяется не тем, какие именно эфироны входят в него, а тем, какая конфигурация отношений между эфиронами сохраняется. Носителем устойчивости эфирного гиперобъекта является не эфирон, а организация множества эфиронов. Роль эфирона - это реляционная классификация его движения. Принадлежность эфирона - это иерархическое отношение его включённости. Эфирный гиперобъект - это устойчивый коллективный паттерн ролей и движений эфиронов.
 
