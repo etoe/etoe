@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.13
-date: 2026-09-16
+version: 0.1.14
+date: 2026-09-17
 created: 2026-06-01
-updated: 2026-09-16
+updated: 2026-09-17
 status: active
 priority: critical
 audience: LLM, Human
@@ -144,7 +144,7 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
 notation          = æ_notation
@@ -268,6 +268,10 @@ digit             = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
 string            = '"', { escaped_char }, '"' ;
 ```
+
+The semantic validator for the ether assertion notation verifies the physical and mathematical correctness of both the ether assertion itself and the structure of the ether objects within that assertion. For example, the ether object of a certain stair of matter cannot contain, as sub-objects, the ether objects of subsequent stairs of matter.
+
+Serializing the ether assertion notation into a programming language identifier must ensure that the identifier is valid in major programming languages, maintain a one-to-one mapping between the notation and the identifier, and allow for lossless reversibility. The serialization process may employ either a fixed-length escape-encoding scheme or a base64url encoding scheme. The escape-encoding scheme preserves the recognizability of the notation, whereas the base64url encoding scheme ensures a compact identifier. Both schemes may incorporate a prefix (e.g., "etoe_").
 
 Ether subobjects of ether objects of the second level of matter are etherons. An etheron has two distinct, conceptual "identity axes": "etheron role" and "etheron affiliation". The etheron role answers the question: "What does the etheron do within a given ether hyperobject?" Etheron affiliation answers the question: "Of which ether hyperobject is the etheron currently a part?" The affiliation of the etheron is discrete yet hierarchical. The role of the etheron is discrete yet relational. When affiliation changes, the role does not necessarily change as part of the same event. When the role changes, affiliation does not necessarily change as part of the same event. An ether hyperobject can preserve the pattern of role distribution among etherons. The physical individuality of an ether hyperobject is determined not by the specific etherons that comprise it, but by the configuration of relationships maintained between them. The bearer of the ether hyperobject's stability is not the etheron, but the organization of a multitude of etherons. The role of an etheron is the relational classification of its motion. The affiliation of an etheron is the hierarchical relationship of its inclusion. An ether hyperobject is a stable collective pattern of etheron roles and motions.
 
