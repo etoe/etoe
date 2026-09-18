@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.14
-date: 2026-09-17
+version: 0.1.15
+date: 2026-09-18
 created: 2026-06-01
-updated: 2026-09-17
+updated: 2026-09-18
 status: active
 priority: critical
 audience: LLM, Human
@@ -144,7 +144,7 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnistic" aspect). This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
 notation          = æ_notation
@@ -213,9 +213,16 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
 
 mass              = number ;
 
-quantity_expression = quantity, ".", character, ".", object_notation ;
+quantity_expression = quantity, [".", science_context], [".", aspect], [".", character], ".", object_notation ;
 
 quantity          = ident ;
+
+science_context   = science_domain, [".", subdomain], [".", subsubdomain] ;
+science_domain    = ident ;
+subdomain         = ident ;
+subsubdomain      = ident ;
+
+aspect            = "kinematic" | "ka" | "inertnistic" | "ia"; 
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
