@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.16
+version: 0.1.17
 date: 2026-09-20
 created: 2026-06-01
 updated: 2026-09-20
@@ -144,7 +144,7 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnistic" aspect). This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
 notation          = æ_notation
@@ -238,7 +238,7 @@ science_domain    = ident ;
 subdomain         = ident ;
 subsubdomain      = ident ;
 
-aspect            = "kinematic" | "ka" | "inertnistic" | "ia"; 
+aspect            = "kinematic" | "ka" | "inertnic" | "ia";  
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -715,7 +715,7 @@ $$\vec{I}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}} \vec{i}_\text{æi} = \vec{0}$$
 
 $${ℐ}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}}{i}_\text{æi} = \frac{m_\text{Æ}}{2} $$
 
-The introduction of the term "inertness" as a vector into the theory allows for the operation of a conserved pair of invariants as a single object, simplifying the formulation of conservation laws and making them more compact. The term "inertness" does not replace the multi-valued, macro-level classical concept of "inertia", but rather provides a convenient semantic and mathematical construct for the laws of the primary discrete motion of etherons. For the first level of matter, due to the specific nature of its laws, the term "inertness" takes precedence over the term "velocity".
+The introduction of the term "inertness" as a vector into the theory allows for the operation of a conserved pair of invariants as a single object, simplifying the formulation of conservation laws and making them more compact. The term "inertness" does not replace the multi-valued, macro-level classical concept of "inertia", but rather provides a convenient semantic and mathematical construct for the laws of the primary discrete motion of etherons. The theory deliberately distinguishes between the concept of "inertia" and the new term "inertness," thereby establishing a terminological barrier to prevent the new fundamental invariants from being conflated with conventional Newtonian physics. For the first level of matter, due to the specific nature of its laws, the term "inertness" takes precedence over the term "velocity".
 
 Due to the nonlinear relationship between the etheron's inertness vector and the etheron's continuous velocity vector, strict adherence to the law of conservation of inertia does not guarantee strict conservation of classical Newtonian momentum and classical Newtonian energy for a small number of etherons. The higher the level of matter, the less deviation from the classical Newtonian laws of conservation of momentum and energy during the interaction of ether objects at that level. The substantial-field pattern of inertness distribution also determines the distribution of the "burden" of observing classical Newtonian conservation laws between the ether substance and the ether field.
 
