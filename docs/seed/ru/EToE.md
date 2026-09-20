@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.15
-date: 2026-09-18
+version: 0.1.16
+date: 2026-09-20
 created: 2026-06-01
-updated: 2026-09-18
+updated: 2026-09-20
 status: active
 priority: critical
 audience: LLM, Human
@@ -159,24 +159,37 @@ notation          = æ_notation
                   | æ_compact_object
                   | æ_etheron ;
 
-æ_full_object     = "Æ", level, ".", class, { ".", part }
+æ_full_object     = "Æ", level, ".", class, [".", object_context]
                   , [ instance ], [ structure ] ;
 
-æ_compact_object  = "Æ", class, { ".", part }
+æ_compact_object  = "Æ", class, [".", object_context]
                   , [ instance ], [ structure ] ;
 
-æ_etheron         = "æ", { ".", part }
+æ_etheron         = "æ"
                   , [ instance ], [ structure ] ;
 
 æ_level           = "Æ", level ;
 
 level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
 
-class             = "b" | "sp" | "mj" | "ha" | "mol" | "bd" | "as" ;
+class             = "b" | "hb" 
+                  | "sp" | "hsp" 
+                  | "mj" | "hmj" 
+                    | "el" | "ps" 
+                    | "p" | "n" | "a" | "pna" 
+                  | "ha" 
+                  | "ml" | "hml" 
+                  | "bd" | "hbd" 
+                  | "as" | "has";
 
-part              = "s" | "f" | "m" | "mf"
-                  | "br" | "dr" | "di" | "do"
-                  | "atm" | "core" ;
+object_context    = part, [".", subpart, [".", subsubpart]] ;
+part              = "s" | "f" 
+                  | "m" | "mf" ;
+subpart           = "tr"
+                  | "br" 
+                  | "dr" | "di" | "do"                   
+                  | "core" | "atm" ;   
+subsubpart        = ident;                                  
 
 chemical_notation = chemical_full
                   | chemical_mass_only ;
@@ -214,11 +227,14 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
 
 mass              = number ;
 
-quantity_expression = quantity, [".", science_context], [".", aspect], [".", character], ".", object_notation ;
+quantity_expression = quantity, [".", science_context]
+                    , [".", aspect], [".", character]
+                    , ".", object_notation ;
 
 quantity          = ident ;
 
-science_context   = science_domain, [".", subdomain], [".", subsubdomain] ;
+science_context   = science_domain
+                  , [".", subdomain, [".", subsubdomain]];
 science_domain    = ident ;
 subdomain         = ident ;
 subsubdomain      = ident ;
@@ -243,8 +259,7 @@ const_compact_at  = "@", const_name ;
 
 const_object      = æ_notation
                   | chemical_notation
-                  | "Æ"
-                  | "_" ;
+                  | "Æ";
 
 const_name        = ident | number ;
 
@@ -266,13 +281,16 @@ separator         = "'", [ "-{", [ pair_list ], "}" ] ;
 
 ident             = letter, { letter | digit | "_" } ;
 
-letter            = "a" | ... | "z" | "A" | ... | "Z" | "æ" | "Æ" ;
+letter            = "a" | ... | "z" 
+                  | "A" | ... | "Z" 
+                  | "æ" | "Æ" ;
 
 number            = [ "-" ], digits, [ ".", digits ] ;
 
 digits            = digit, { digit } ;
 
-digit             = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+digit             = "0" | "1" | "2" | "3" | "4" 
+                  | "5" | "6" | "7" | "8" | "9" ;
 
 string            = '"', { escaped_char }, '"' ;
 ```
