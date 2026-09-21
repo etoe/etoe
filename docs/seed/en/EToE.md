@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.18
+version: 0.1.19
 date: 2026-09-21
 created: 2026-06-01
 updated: 2026-09-21
@@ -994,6 +994,23 @@ s_\text{norm.Æ2.b.f.æ}> s_\text{norm.avg}
 $$
 
 Based on the criteria of ether field longitudinality and the average relative velocity of field etherons, ether batches can be tentatively classified into longitudinal-slow-field, longitudinal-fast-field, transverse-slow-field, and mixed-field types.
+
+The kinematic coherence coefficient $K_\text{Æ2.b.f}$ of the ether field $Æ2.b.f$ belonging to the ether hyperbatch $Æ2.b$. When $K_\text{Æ2.b.f}\approx1$, the field is highly directional. When $K_\text{Æ2.b.f}\approx0$, the field is nearly isotropic:
+
+$$
+K_\text{Æ2.b.f}=
+\frac{
+\left|\sum\limits_{æf \in Æ2.b.f}\hat{u}_\text{æf}\right|
+}{
+m_\text{Æ2.b.f}
+}
+$$
+
+$$
+0\leq K_\text{Æ2.b.f}\leq1
+$$
+
+The kinematic coherence coefficient $K_\text{Æ2.b.f}$ of the ether field $Æ2.b.f$ (of the ether hyperbatch $Æ2.b$) and the field longitudinality $\Pi_\text{Æ2.b.f}$ measure different things. It is possible to have $K_\text{Æ2.b.f}\approx1$ and $\Pi_\text{Æ2.b.f}\approx0$ — that is, a highly coherent but transversely oriented field. Conversely, one can have $\Pi_\text{Æ2.b.f}\approx1$ and $K_\text{Æ2.b.f}\ll1$ if the field is longitudinal on average but exhibits significant directional dispersion.
 
 The frequency parameters of the batch ether field of an ether batch are determined by the substance-field pattern of the distribution of relative continuous velocities of etherons in the group of etherons after each synthesizing interaction of any etheron of the ether batch with external etherons. Each synthesizing interaction of any etheron of the ether batch with external etherons leads to the scattering of field etherons with approximately the same moduli of relative continuous velocities, but in different directions. The moduli of relative continuous velocities of scattered field etherons from different synthesizing interactions of etherons of the ether batch with external etherons usually differ.
 
