@@ -900,7 +900,7 @@ $$
 $$
 
 Synonyms for "axial misalignment angle" include
-"kinematic-inertnic divergence," "inertnic incoherence angle," and "axis dissonance". When a batch collides with an external etheron, it is the inertnic axis that determines the direction in which the batch "reacts". However, the actual motion following the collision is determined by the new kinematic axis. The greater the value of $\chi_\text{Æ2.b}$, the more significantly the batch alters its direction of motion in response to the same external influence. If $\chi_\text{Æ2.b}$ increases over time, it indicates the accumulation of internal heterogeneity and potential disintegration or restructuring. If $\chi_\text{Æ2.b}$ decreases, the batch is "maturing" into a more coherent structure.
+"kinematic-inertnic divergence", "inertnic incoherence angle", and "axis dissonance". When a batch collides with an external etheron, it is the inertnic axis that determines the direction in which the batch "reacts". However, the actual motion following the collision is determined by the new kinematic axis. The greater the value of $\chi_\text{Æ2.b}$, the more significantly the batch alters its direction of motion in response to the same external influence. If $\chi_\text{Æ2.b}$ increases over time, it indicates the accumulation of internal heterogeneity and potential disintegration or restructuring. If $\chi_\text{Æ2.b}$ decreases, the batch is "maturing" into a more coherent structure.
 
 For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
 
@@ -999,7 +999,7 @@ The frequency parameters of the batch ether field of an ether batch are determin
 
 Ether batches can pass through each other.
 
-The average absolute continuous velocity of an ether batch is approximately equal to C.
+The average absolute continuous velocity of an ether batch is approximately equal to $C$.
 
 During the synthesizing interaction of etherons, the ether substance of the synthesized ether batch accelerates in the direction of the difference between the vector sum of the continuous velocity vectors of the substantial etherons after the interaction and the vector sum of the continuous velocity vectors of these etherons before the interaction.
 
