@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.17
-date: 2026-09-20
+version: 0.1.18
+date: 2026-09-21
 created: 2026-06-01
-updated: 2026-09-20
+updated: 2026-09-21
 status: active
 priority: critical
 audience: LLM, Human
@@ -879,11 +879,29 @@ The etherons of the bearing part of the ether substance of the ether batch are l
 
 The ether field of an ether batch is called "batch ether field". The batch ether field almost always lags behind the ether substance of the ether batch.
 
-The kinematic classification of the ether fields of ether batches determines the longitudinal or transverse nature of the ether field relative to the axis of motion of the batch's ether substance — that is, relative to its own kinematic direction. For the ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its axis of motion $\hat{e}_\text{Æ2.b}$ is:
+The kinematic classification of the ether fields of ether batches determines the longitudinal or transverse nature of the ether field relative to the axis of motion of the batch's ether substance — that is, relative to its own kinematic direction. For the ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its kinematic axis of motion $\hat{e}_\text{ka.Æ2.b}$ is:
 
-$$\hat{e}_\text{Æ2.b}=
+$$\hat{e}_\text{ka.Æ2.b}=
 \frac{\sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs}}
 {| \sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{v}_\text{æs} |}$$
+
+For an ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, the formula for its inertnic axis of motion $\hat{e}_\text{ia.Æ2.b}$ is:
+
+$$\hat{e}_\text{ia.Æ2.b}= 
+- \frac{\sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{i}_\text{æs}}
+{| \sum\limits_{\text{æs} \in \text{Æ2.b.s}} \vec{i}_\text{æs} |}$$
+
+For a coherent ether batch, the directions $\vec{v}$<sub>æs</sub> and $-\vec{i}$<sub>æs</sub> nearly coincide; consequently, the formulas for $\hat{e}_\text{ka.Æ2.b}$ and $\hat{e}_\text{ia.Æ2.b}$ yield virtually identical results. However, if the inertness magnitudes of the etherons differ significantly, the directions of the sums $\vec{v}$<sub>æs</sub> and $-\vec{i}$<sub>æs</sub> may diverge slightly. Both sums are weighted sums of the same unit directions $-\hat{i}_{\text{æs}}$, but with different weights: in the velocity sum, the weight of an etheron is $\dfrac{1}{\tau b_{\text{æ}}\sqrt{3} + i_{\text{æs}}}$ — that is, it decreases as $i_{\text{æs}}$ increases — whereas in the inertness sum, the weight is $i_{\text{æs}}$ — that is, it increases as $i_{\text{æs}}$ increases. Therefore, fast etherons (low $i_{\text{æs}}$) dominate the velocity sum, while slow etherons (high $i_{\text{æs}}$) dominate the inertness sum. For determining the axis of the batch's motion, the formula based on $\vec{v}$<sub>æs</sub> is intuitively clearer and closer to kinematics. The "axis of motion" intuitively signifies "where the object is moving". The kinematic axis of motion is the direction of the total momentum of the substance. The inertnic axis is the direction aligned with the conserved sum of inertnesses. The kinematic axis indicates the direction in which the group is actually moving. The inertnic axis indicates the direction of the group's conserved inertnic "charge" — the attribute that determines its response to interactions and is conserved during collisions. This is neither the "direction of motion" nor the "direction of momentum." Rather, it is the direction of the group's inertnic core — the part that is "heaviest" in terms of lag and most resistant to reconfiguration. An inertnic axis is a direction that: does not change during internal collisions within the group; determines how the group redistributes inertness upon colliding with external etherons; and serves as a "hidden" parameter — invisible in the motion itself, yet governing the interaction. The divergence between the kinematic and inertnic axes is a measure of the group's internal kinematic inhomogeneity. It indicates the extent to which the group's fast and slow etherons "disagree" on the direction of motion.
+
+The axial misalignment angle $\chi_\text{Æ2.b}$ of the ether batch $Æ2.b$:
+
+$$
+\chi_\text{Æ2.b} = \arccos\!\left(\hat{e}_\text{ka.Æ2.b} \cdot \hat{e}_\text{ia.Æ2.b}\right),
+\qquad 0 \le \chi_\text{Æ2.b} \le \pi
+$$
+
+Synonyms for "axial misalignment angle" include
+"kinematic-inertnic divergence," "inertnic incoherence angle," and "axis dissonance". When a batch collides with an external etheron, it is the inertnic axis that determines the direction in which the batch "reacts". However, the actual motion following the collision is determined by the new kinematic axis. The greater the value of $\chi_\text{Æ2.b}$, the more significantly the batch alters its direction of motion in response to the same external influence. If $\chi_\text{Æ2.b}$ increases over time, it indicates the accumulation of internal heterogeneity and potential disintegration or restructuring. If $\chi_\text{Æ2.b}$ decreases, the batch is "maturing" into a more coherent structure.
 
 For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
 
@@ -896,13 +914,13 @@ $$\vec{u}_\text{æf}=
 \vec{u}_{\perp_\text{æf}}$$
 
 $$\vec{u}_{\parallel_\text{æf}}=
-(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b})\hat{\mathbf e}_\text{Æ2.b}$$
+(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{ka.Æ2.b})\hat{\mathbf e}_\text{ka.Æ2.b}$$
 
 $$\vec{u}_{\perp_\text{æf}}=
 \vec{u}_\text{æf}-\vec{u}_{\parallel_\text{æf}}$$
 
 $$\cos\theta_\text{æf}=
-\frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{Æ2.b}}
+\frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{ka.Æ2.b}}
 {|\vec{u}_\text{æf}|}$$
 
 The average longitudinality $L_\text{Æ2.b.f}$ and average transversality $T_\text{Æ2.b.f}$ of the batch field $Æ2.b.f$:
