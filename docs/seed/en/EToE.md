@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.19
-date: 2026-09-21
+version: 0.1.20
+date: 2026-09-22
 created: 2026-06-01
-updated: 2026-09-21
+updated: 2026-09-22
 status: active
 priority: critical
 audience: LLM, Human
@@ -1067,7 +1067,11 @@ The speed of light in vacuum is close to the average absolute effective speed of
 
 An ether object of the third level of matter is called "ether spiral".
 
-An ether spiral is a spiral cluster of ether batches united by ether fields of ether batches. In an ether spiral, there is a "leading ether batch" and one or more "follower ether batches," which are held by the ether field of the leading ether batch. The follower ether batches of the ether spiral orbitally rotate around the trajectory of motion of the leading ether batch of the ether spiral. The transition from an ether batch to an ether hyperbatch represents a quantitative and configurational complication, whereas the transition from a hyperbatch to a spiral creates a new qualitative type of organization for the ether object. An increase in the complexity of an ether object does not imply an increase in the stair of matter. When the ether spiral emerges, a new organization of interaction arises: intrabatch synthesizing coherence within ether hyperbatches gives rise to the interbatch orbital organization of the ether spiral. It is likely that only three-dimensional space allows for the type of field and kinematic stability of the ether hyperbatch from which the ether spiral subsequently emerges naturally.
+An ether spiral is a spiral cluster of ether batches united by ether fields of ether batches. In an ether spiral, there is a "leading ether batch" and one or more "follower ether batches," which are held by the ether field of the leading ether batch. The follower ether batches of the ether spiral orbitally rotate around the trajectory of motion of the leading ether batch of the ether spiral. 
+
+An ether spiral typically arises from the "ether budding" of a single "large" ether hyperbatch into several "small" ether hyperbatches. Within a "large" ether hyperbatch, "lagging" "small" ether subhyperbatches gradually form; after their mass increases sufficiently, they "bud off" from the leading parent ether hyperbatch and begin to orbit the trajectory of that parent hyperbatch. Physically, hyperbatch ether budding constitutes the fragmentation of a hyperbatch followed by the orbital stabilization of its daughter fragments. The parent hyperbatch possesses a longitudinal field associated with the longitudinal cascade of hyperbatch formation and maintenance, as well as a transverse field component that can become significant at the hyperbatch's periphery. Following the budding process, the relative motion of the daughter hyperbatch must transition from mere recession from the parent into a bound orbital trajectory. The parent hyperbatch becomes the "leading" one because it retains the majority of the original substance after fragmentation. Thus, the concept of hyperbatch ether budding posits that an ether spiral generally emerges through the fragmentation-driven orbital budding of a large ether hyperbatch, wherein subhyperbatches form within its ether substance due to a spatially inhomogeneous cascade of synthesizing interactions. Upon reaching a specific range of mass and relative kinetic energy, these subhyperbatches detach from the parent substance — while maintaining a dynamic connection to its ether field — and enter bound orbital trajectories around the path of the leading hyperbatch.
+
+The transition from an ether batch to an ether hyperbatch represents a quantitative and configurational complication, whereas the transition from a hyperbatch to a spiral creates a new qualitative type of organization for the ether object. An increase in the complexity of an ether object does not imply an increase in the stair of matter. When the ether spiral emerges, a new organization of interaction arises: intrabatch synthesizing coherence within ether hyperbatches gives rise to the interbatch orbital organization of the ether spiral. It is likely that only three-dimensional space allows for the type of field and kinematic stability of the ether hyperbatch from which the ether spiral subsequently emerges naturally.
 
 The ether field of an ether spiral is called "spiral ether field".
 
