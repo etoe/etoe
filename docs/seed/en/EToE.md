@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.20
+version: 0.1.21
 date: 2026-09-22
 created: 2026-06-01
 updated: 2026-09-22
@@ -1098,6 +1098,8 @@ Light is radiation consisting of sparse packets of ether spirals. The ether spir
 An ether object of the fourth level of matter is called "ether major".
 
 An ether major is a chaotic cluster of ether spirals united by ether fields of ether spirals. Ether majors include protium atoms, protons, neutrons, extra-atomic electrons, positrons, as well as some other particles.
+
+An ether major can emerge as a result of the "ether budding" of a single "large" ether hyperspiral into several "small" ether hyperspirals, followed by the "ether wrapping" of these hyperspirals into a closed system of hyperbatch-hyperspiral organization — an ether toroid. Linear ether budding of an ether hyperbatch is followed by orbital ether budding of the ether hyperspiral; this, in turn, is followed by the ether wrapping of the hyperspirals into an ether toroid, after which closed orbital ether budding of the ether torus itself becomes possible. Thus, the concept of hyperspiral ether budding posits that, during repeated hyperbatch budding, daughter hyperbatches can organize not only into separate orbital structures but also into a closed spatial system, provided the field of the parent hyperstructure supports stable circulation and flow closure. A sufficiently large hyperspiral system — through repeated budding and the subsequent self-consistent closure of trajectories — can acquire a toroidal topology, forming an independent object at a higher level of organization: an ether major. Each successive level of matter emerges not simply because objects at the previous level have grown larger, but because a new organization of motion arises: first local coupling, then cascading coupling, then orbitality, and finally closed circulation. Budding leads to self-coiling, which in turn leads to self-closure.
 
 The ether field of an ether major is called "major ether field".
 
