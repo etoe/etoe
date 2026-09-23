@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.23
+version: 0.1.24
 date: 2026-09-23
 created: 2026-06-01
 updated: 2026-09-23
@@ -154,9 +154,10 @@ The hierarchical configuration notation for an ether object follows a format tha
 notation          = æ_notation
                   | chemical_notation
                   | quantity_expression
-                  | constant_expression ;
+                  | constant_expression
+                  | measurement_expression ;                  
 
-æ_notation        = æ_object | æ_level ;
+æ_notation        = æ_object | æ_level | æ_unit ;
 
 æ_object          = æ_full_object
                   | æ_compact_object
@@ -174,6 +175,10 @@ notation          = æ_notation
 æ_level           = "Æ", level ;
 
 level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
+
+æ_unit            = "æ", unit_suffix ;
+
+unit_suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
 
 class             = "b" | "hb" 
                   | "sp" | "hsp" 
@@ -242,7 +247,7 @@ science_domain    = ident ;
 subdomain         = ident ;
 subsubdomain      = ident ;
 
-aspect            = "kinematic" | "ka" | "inertnic" | "ia";  
+aspect            = "kinematic" | "ka" | "inertnic" | "ia"; 
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -266,6 +271,8 @@ const_object      = æ_notation
 
 const_name        = ident | number ;
 
+measurement_expression = number, æ_unit ;
+
 instance          = "-", "{", [ pair_list ], "}" ;
 
 pair_list         = pair, { ",", pair } ;
@@ -274,7 +281,10 @@ pair              = key, "=", value ;
 
 key               = ident ;
 
-value             = ident | number | string ;
+value             = ident
+                  | measurement_expression
+                  | number
+                  | string ;
 
 structure         = "-", "(", [ notation_list ], ")" ;
 
