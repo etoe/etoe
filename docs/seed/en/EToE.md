@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.22
+version: 0.1.23
 date: 2026-09-23
 created: 2026-06-01
 updated: 2026-09-23
@@ -131,6 +131,10 @@ Each ether object is conventionally assigned to one of eight levels of matter. I
 Etheron is the name of a discrete particle of matter at the first level of matter. Etheron is considered an ether object of the first level of matter. Etheron is denoted by the sign $æ$. In formulas, a separate sign $æ$ denotes one etheron from the set of all etherons.
 
 Ether is etherons. Ether is denoted by the symbol $Æ$. In the formulas, the separate sign $Æ$ denotes the set of all etherons.
+
+The principle of ether units of measurement: although ether units of measurement are applicable to the physical quantities of objects and processes at all levels of matter, their physical definitions derive from the fundamental characteristics of the individual etheron. Consequently, the designations of ether units of measurement employ the prefix æ, indicating their etheronic basis. Thus, the prefix æ in a unit's designation does not imply that the measured quantity or object itself is an etheron; rather, it indicates the fundamental level relative to which the corresponding unit of measurement is defined. For example, æt, æl, and æv are units of time, length, and velocity, respectively, defined on an etheronic basis, yet they can be applied to the quantitative description of objects and processes at any level of matter. In other words, the æ in æt should not be interpreted to mean "the etheron is time". The æ symbol in a unit of measurement signifies that the unit possesses an etheronic basis. There is no contradiction between a unit's "etheronic origin" and its "etheric application." A unit's prefix is ​​determined not by its scope of application, but by the level at which its physical basis is established.
+
+The principle of the etheronic basis of measurement: a physical unit may be applied to quantities associated with objects at any level of matter, but its fundamental definition must be expressed in terms of the characteristics of the individual etheron. The principle of the etheronic basis of measurement constitutes a metrological principle of ÆToE.
 
 Ether objects of the second and subsequent levels of matter are called "ether hyperobjects".
 
