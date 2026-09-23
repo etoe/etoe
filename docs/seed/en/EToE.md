@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.21
-date: 2026-09-22
+version: 0.1.22
+date: 2026-09-23
 created: 2026-06-01
-updated: 2026-09-22
+updated: 2026-09-23
 status: active
 priority: critical
 audience: LLM, Human
@@ -921,6 +921,21 @@ $$\vec{u}_{\perp_\text{æf}}=
 $$\cos\theta_\text{æf}=
 \frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{ka.Æ2.b}}
 {|\vec{u}_\text{æf}|}$$
+
+For the ether batch $Æ2.b$ with a set of field etherons $Æ2.b.f$, the formula for its kinematic field axis $\hat{e}_\text{ka.Æ2.b.f}$ is:
+
+$$\hat{e}_\text{ka.Æ2.b.f}=
+\frac{\sum\limits_{\text{f.æ} \in \text{Æ2.b.f}} \vec{v}_\text{f.æ}}
+{| \sum\limits_{\text{f.æ} \in \text{Æ2.b.f}} \vec{v}_\text{f.æ} |}$$
+
+The angle of kinematic substantial-field axial misalignment $\chi_\text{ka.Æ2.b.sf}$ for the ether batch $Æ2.b$ is:
+
+$$
+\chi_\text{ka.Æ2.b.sf} = \arccos\!\left(\hat{e}_\text{ka.Æ2.b.s} \cdot \hat{e}_\text{ka.Æ2.b.f}\right),
+\qquad 0 \le \chi_\text{ka.Æ2.b.sf} \le \pi
+$$
+
+Synonyms for "kinematic substantial-field axial misalignment" include "kinematic substantial-field divergence", "angle of kinematic substantial-field incoherence", and "kinematic substantial-field dissonance". For example, if the batch's substance moves to the right and the field is directed primarily to the right, then $\chi_\text{ka.Æ2.b.sf}\approx0$, and this is a matched - or conditionally co-phased - batch. If the substance moves to the right while the field is directed primarily to the left, then $\chi_\text{ka.Æ2.b.sf}\approx\pi$, and this is an oppositely directed — or anti-dissonant — batch. If the substance moves to the right and the field is distributed almost uniformly in all directions, then $\sum\vec{v}_\text{Æ2.b.f.æ}\approx0$, and the direction of the field becomes ill-defined. A zero resultant field vector does not imply the absence of a field.
 
 The average longitudinality $L_\text{Æ2.b.f}$ and average transversality $T_\text{Æ2.b.f}$ of the batch field $Æ2.b.f$:
 
