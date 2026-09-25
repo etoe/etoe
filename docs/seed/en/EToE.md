@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.25
-date: 2026-09-24
+version: 0.1.26
+date: 2026-09-25
 created: 2026-06-01
-updated: 2026-09-24
+updated: 2026-09-25
 status: active
 priority: critical
 audience: LLM, Human
@@ -236,7 +236,8 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
 mass              = number ;
 
 quantity_expression = quantity, [".", science_context]
-                    , [".", aspect], [".", character]
+                    , [".", aspect_expression]
+                    , [".", character]
                     , ".", object_notation ;
 
 quantity          = ident ;
@@ -247,7 +248,13 @@ science_domain    = ident ;
 subdomain         = ident ;
 subsubdomain      = ident ;
 
-aspect            = "kinematic" | "ka" | "inertnic" | "ia"; 
+aspect_expression = aspect
+                  , [ ".", subaspect ] ;
+
+aspect       = "kinematic" | "ka"
+             | "inertnic" | "ia" ;
+
+subaspect    = "substance-field" | "sf" ; 
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -942,14 +949,14 @@ $$\hat{e}_\text{ka.Æ2.b.f}=
 \frac{\sum\limits_{\text{f.æ} \in \text{Æ2.b.f}} \vec{v}_\text{f.æ}}
 {| \sum\limits_{\text{f.æ} \in \text{Æ2.b.f}} \vec{v}_\text{f.æ} |}$$
 
-The angle of kinematic substantial-field axial misalignment $\chi_\text{ka.Æ2.b.sf}$ for the ether batch $Æ2.b$ is:
+The angle of kinematic substantial-field axial misalignment $\chi_\text{a.sf.Æ2.b}$ for the ether batch $Æ2.b$ is:
 
 $$
-\chi_\text{ka.Æ2.b.sf} = \arccos\!\left(\hat{e}_\text{ka.Æ2.b.s} \cdot \hat{e}_\text{ka.Æ2.b.f}\right),
-\qquad 0 \le \chi_\text{ka.Æ2.b.sf} \le \pi
+\chi_\text{a.sf.Æ2.b} = \arccos\!\left(\hat{e}_\text{ka.Æ2.b.s} \cdot \hat{e}_\text{ka.Æ2.b.f}\right),
+\qquad 0 \le \chi_\text{a.sf.Æ2.b} \le \pi
 $$
 
-Synonyms for "kinematic substantial-field axial misalignment" include "kinematic substantial-field divergence", "angle of kinematic substantial-field incoherence", and "kinematic substantial-field dissonance". For example, if the batch's substance moves to the right and the field is directed primarily to the right, then $\chi_\text{ka.Æ2.b.sf}\approx0$, and this is a matched - or conditionally co-phased - batch. If the substance moves to the right while the field is directed primarily to the left, then $\chi_\text{ka.Æ2.b.sf}\approx\pi$, and this is an oppositely directed — or anti-dissonant — batch. If the substance moves to the right and the field is distributed almost uniformly in all directions, then $\sum\vec{v}_\text{Æ2.b.f.æ}\approx0$, and the direction of the field becomes ill-defined. A zero resultant field vector does not imply the absence of a field.
+Synonyms for "kinematic substantial-field axial misalignment" include "kinematic substantial-field divergence", "angle of kinematic substantial-field incoherence", and "kinematic substantial-field dissonance". For example, if the batch's substance moves to the right and the field is directed primarily to the right, then $\chi_\text{a.sf.Æ2.b}\approx0$, and this is a matched - or conditionally co-phased - batch. If the substance moves to the right while the field is directed primarily to the left, then $\chi_\text{a.sf.Æ2.b}\approx\pi$, and this is an oppositely directed — or anti-dissonant — batch. If the substance moves to the right and the field is distributed almost uniformly in all directions, then $\sum\vec{v}_\text{Æ2.b.f.æ}\approx0$, and the direction of the field becomes ill-defined. A zero resultant field vector does not imply the absence of a field.
 
 The average longitudinality $L_\text{Æ2.b.f}$ and average transversality $T_\text{Æ2.b.f}$ of the batch field $Æ2.b.f$:
 
