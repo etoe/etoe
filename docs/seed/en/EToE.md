@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.27
+version: 0.1.28
 date: 2026-09-26
 created: 2026-06-01
 updated: 2026-09-26
@@ -511,7 +511,7 @@ where:
 
 The fifth parameter of the etheron is the "total additional delay" of the etheron in ticks of time in the "rest" state, with which the etheron, when moving freely, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called "delay". The fifth parameter of the etheron is designated $a_æ$. The letter 'a' in the designation of the fifth parameter of the etheron comes from the English word "addition", since the meaning of "delay" is an addition to some time or an addition to some duration. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" in the Euclidean free continuous displacement of the etheron over the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous velocities of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous velocities of the etheron. The average value of the fifth parameter of the etheron in the simplest model is equal to half of $D_Æ$: 
 
-$$a_{æavg}= \frac{D_Æ}{2}$$
+$$a_{avg.æ}= \frac{D_Æ}{2}$$
 
 The fifth parameter of the etheron is the "total additional delay" of the etheron in time ticks in the "rest" state, with which the etheron, in free movement, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called the "delay". The fifth parameter of the etheron is denoted by $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" during the Euclidean free continuous movement of the etheron by the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous speeds of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous speeds of the etheron.
 
@@ -620,39 +620,39 @@ $$\vec{d_æ} = \frac{\vec{v_æ}\cdot D_Æ}{|\vec{v_æ}|}$$
 
 The modulus of the continuous velocity of the etheron $v_æ$ is maximum at the minimum value of the "delay" parameter ($a_æ=0$):
 
-$$v_{æmax} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3}} = \frac{1}{ τb_æ\cdot\sqrt{3}}$$
+$$v_{max.æ} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3}} = \frac{1}{ τb_æ\cdot\sqrt{3}}$$
 
 The modulus of the continuous velocity of the etheron $v_æ$ is minimal at the maximum value of the "delay" parameter ($a_æ=D_Æ$):
 
-$$v_{æmin} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + D_Æ}= \frac{1}{ τb_æ\cdot\sqrt{3}+1}$$
+$$v_{min.æ} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + D_Æ}= \frac{1}{ τb_æ\cdot\sqrt{3}+1}$$
 
 The average value of the modulus of the continuous velocity of the etheron occurs at the average value of the "delay" parameter ($a_æ=\frac{D_Æ}{2}$):
 
-$${v_{æavg}} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + \frac{D_Æ}{2}}= \frac{1}{ τb_æ\cdot\sqrt{3}+\frac{1}{2}}$$
+$${v_{avg.æ}} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + \frac{D_Æ}{2}}= \frac{1}{ τb_æ\cdot\sqrt{3}+\frac{1}{2}}$$
 
 The ratio of the modulus of the maximum continuous velocity of the etheron to the modulus of the minimum continuous velocity of the etheron:
 
-$$\frac{v_{æmax}}{v_{æmin}} = \frac{ τb_æ\cdot\sqrt{3}+1 }{τb_æ\cdot\sqrt{3}} = 1 + \frac{1}{ τb_æ\cdot\sqrt{3}} = 1+ v_{æmax} $$
+$$\frac{v_{max.æ}}{v_{min.æ}} = \frac{ τb_æ\cdot\sqrt{3}+1 }{τb_æ\cdot\sqrt{3}} = 1 + \frac{1}{ τb_æ\cdot\sqrt{3}} = 1+ v_{max.æ} $$
 
 The ratio of the modulus of the maximum continuous velocity of the etheron to the modulus of the average continuous velocity of the etheron:
 
-$$\frac{v_{æmax}}{v_{æavg}} = \frac{ τb_æ\cdot\sqrt{3}+\frac{1}{2} }{τb_æ\cdot\sqrt{3} + 1}$$
+$$\frac{v_{max.æ}}{v_{avg.æ}} = \frac{ τb_æ\cdot\sqrt{3}+\frac{1}{2} }{τb_æ\cdot\sqrt{3} + 1}$$
 
 The difference between the module of the maximum continuous speed of etheron and the module of the minimum continuous speed of etheron:
 
 $$
 \begin{aligned}
-{v_{æmax}}-{v_{æmin}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\\\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}
+{v_{max.æ}}-{v_{min.æ}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\\\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}
 \end{aligned}
 $$
 
-At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{æavg}$ to $1.1 \cdot v_{æavg}$.
+At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{avg.æ}$ to $1.1 \cdot v_{avg.æ}$.
 
 The inertness vector of the etheron $\vec{i}\_{\text{æ}}$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}\_{\text{æ}}$ and having a modulus equal to the ratio of the "total additional delay" of the etheron $a\_{\text{æ}}$ to the reference distance $D\_{\text{Æ}}$. In its meaning, the modulus of the inertness vector of the etheron is a "normalized delay".
 
 $$i_æ=|\vec{i}_æ|=\frac{a_æ}{D_Æ}$$
 
-$$i_{æavg}=\frac{a_{æavg}}{D_Æ}=\frac{1}{2}$$
+$$i_{avg.æ}=\frac{a_{avg.æ}}{D_Æ}=\frac{1}{2}$$
 
 $$a_æ=i_æ \cdot D_Æ$$
 
@@ -668,7 +668,7 @@ $$\vec{d}_æ = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ|}$$
 
 $$\vec{v_æ} = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ| \cdot (τ_Æ + |\vec{i}_æ| \cdot D_Æ)}= -\frac{\vec{i}_æ}{ |\vec{i}_æ| \cdot (τb_æ\cdot\sqrt{3} + |\vec{i}_æ|)}$$
 
-The modulus of the inertness vector of the etheron $\lvert \vec{i}\_{\text{æ}} \rvert$ is equal to zero at the maximum continuous velocity of the etheron $v_{æmax}$ and is maximum at the minimum continuous velocity of the etheron $v_{æmin}$.
+The modulus of the inertness vector of the etheron $\lvert \vec{i}\_{\text{æ}} \rvert$ is equal to zero at the maximum continuous velocity of the etheron $v_{max.æ}$ and is maximum at the minimum continuous velocity of the etheron $v_{min.æ}$.
 
 The unit of measurement for inertness in the ether system of units is "æi".
 
@@ -1082,18 +1082,18 @@ $$R_{\rm syn.Æ2.b}\approx 1$$
 
 If $R_{\rm syn.Æ2.b}<1$, the ether hyperbatch decays. If $R_{\rm syn.Æ2.b}=1$, a critically stable ether hyperbatch structure is formed. An ether hyperbatch can continuously lose some etherons and acquire others while maintaining a virtually unchanged structure. If $R_{\rm syn.Æ2.b}>1$, a cascading growth of the ether hyperbatch occurs. As the mass of the ether hyperbatch increases, maintaining its unified kinematic organization becomes increasingly difficult.
 
-Kinematic coherence coefficient $K_\text{Æ2.b.s.b}$ of the bearing substance $Æ2.b.s.b$ of the ether hyperbatch $Æ2.b$:
+Kinematic coherence coefficient $K_\text{Æ2.b.s.br}$ of the bearing substance $Æ2.b.s.br$ of the ether hyperbatch $Æ2.b$:
 
 $$
-K_\text{Æ2.b.s.b}=
+K_\text{Æ2.b.s.br}=
 \frac{
-\left|\sum\limits_{æ \in Æ2.b.s.b}\vec{v}_\text{æ}\right|
+\left|\sum\limits_{æ \in Æ2.b.s.br}\vec{v}_\text{æ}\right|
 }{
-\sum\limits_{æ \in Æ2.b.s.b}|\vec{v}_\text{æ}|
+\sum\limits_{æ \in Æ2.b.s.br}|\vec{v}_\text{æ}|
 }
 $$
 
-In this case, the range of the kinematic coherence coefficient for the bearing substance of the ether hyperbatch is $0 < K_\text{Æ2.b.s.b} \le 1$. For perfectly unidirectional motion of the etherons of the bearing substance of the ether hyperbatch, $K_\text{Æ2.b.s.b} = 1$. For a nearly isotropic set of velocities of the etherons of the bearing substance of the ether hyperbatch, $K_\text{Æ2.b.s.b} \to 0$. In that case, the hyperbatch can be considered stable if $K_\text{Æ2.b.s.b} > K_{\rm crit}$ and the mass of the ether hyperbatch is sufficiently large. A cascade of synthesizing collisions is the natural mechanism behind the emergence of an ether hyperbatch. The synthesis of an ether hyperbatch generates a spatially directed ether field characterized by an increased probability of subsequent syntheses involving the bearing substance; the longitudinal/quasi-collinear component of the hyperbatch's ether field ensures the kinematic coherence of the cascade. The ether hyperbatch is a dissipative/dynamic object: it constantly interacts with the environment, continuously reconfigures its field, and simultaneously preserves its own structure and motion. A cascade of synthesizing etheron collisions reproduces the kinematic configuration of the ether hyperbatch itself faster than it disintegrates. The ether hyperbatch possesses a stable mode of reproducing the same kinematic pattern through coupled syntheses. It is possible that three-dimensional space possesses the maximum dimensionality in which a hyperbatch is capable of self-sustenance.
+In this case, the range of the kinematic coherence coefficient for the bearing substance of the ether hyperbatch is $0 < K_\text{Æ2.b.s.br} \le 1$. For perfectly unidirectional motion of the etherons of the bearing substance of the ether hyperbatch, $K_\text{Æ2.b.s.br} = 1$. For a nearly isotropic set of velocities of the etherons of the bearing substance of the ether hyperbatch, $K_\text{Æ2.b.s.br} \to 0$. In that case, the hyperbatch can be considered stable if $K_\text{Æ2.b.s.br} > K_{\rm crit}$ and the mass of the ether hyperbatch is sufficiently large. A cascade of synthesizing collisions is the natural mechanism behind the emergence of an ether hyperbatch. The synthesis of an ether hyperbatch generates a spatially directed ether field characterized by an increased probability of subsequent syntheses involving the bearing substance; the longitudinal/quasi-collinear component of the hyperbatch's ether field ensures the kinematic coherence of the cascade. The ether hyperbatch is a dissipative/dynamic object: it constantly interacts with the environment, continuously reconfigures its field, and simultaneously preserves its own structure and motion. A cascade of synthesizing etheron collisions reproduces the kinematic configuration of the ether hyperbatch itself faster than it disintegrates. The ether hyperbatch possesses a stable mode of reproducing the same kinematic pattern through coupled syntheses. It is possible that three-dimensional space possesses the maximum dimensionality in which a hyperbatch is capable of self-sustenance.
 
 The inclusion of an elementary ether batch in an ether hyperbatch signifies not a transition to a different type of ether object, but a compositional complexification of an object of the same type. An elementary batch is the result of a single synthesizing interaction of etherons. An elementary batch possesses its own substance and field but lacks a sufficiently long history of linked syntheses to stably reproduce its configuration. A hyperbatch differs from an elementary batch primarily in the topology and dynamics of the interaction network. The transformation of an elementary batch into a hyperbatch does not represent the emergence of a new type of ether object, but rather signifies a transition from a singular pattern to a self-sustaining pattern. It can be tentatively assumed that the transition from an elementary batch to a hyperbatch does not give rise to a qualitatively different type of interaction between ether objects that would lead to the emergence of ether objects belonging to the next stair of matter. Therefore, the elementary ether batch and the ether hyperbatch belong to the same class of ether objects at the same stair of matter.
 
