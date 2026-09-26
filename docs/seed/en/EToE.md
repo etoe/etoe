@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.28
+version: 0.1.29
 date: 2026-09-26
 created: 2026-06-01
 updated: 2026-09-26
@@ -148,7 +148,7 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. The symbolic philosophy of the grammar of an ether assertion: a rich physico-mathematical alphabet for quantities, but a strict machine alphabet for classes, objects, and context. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
 notation          = æ_notation
@@ -161,12 +161,16 @@ notation          = æ_notation
 
 æ_object          = æ_full_object
                   | æ_compact_object
+                  | æ_ether
                   | æ_etheron ;
 
 æ_full_object     = "Æ", level, ".", class, [".", object_context]
                   , [ instance ], [ structure ] ;
 
 æ_compact_object  = "Æ", class, [".", object_context]
+                  , [ instance ], [ structure ] ;
+
+æ_ether           = "Æ"
                   , [ instance ], [ structure ] ;
 
 æ_etheron         = "æ"
@@ -240,7 +244,10 @@ quantity_expression = quantity, [".", science_context]
                     , [".", character]
                     , ".", object_notation ;
 
-quantity          = ident ;
+quantity             = quantity_ident ;
+
+quantity_ident       = quantity_letter
+                     , { quantity_letter | digit | "_" } ;
 
 science_context   = science_domain
                   , [".", subdomain, [".", subsubdomain]];
@@ -305,6 +312,11 @@ letter            = "a" | ... | "z"
                   | "A" | ... | "Z" 
                   | "æ" | "Æ" ;
 
+quantity_letter      = letter
+                     | greek_letter
+                     | greek_variant_letter
+                     | letterlike_symbol ;                  
+
 number            = [ "-" ], digits, [ ".", digits ] ;
 
 digits            = digit, { digit } ;
@@ -313,6 +325,39 @@ digit             = "0" | "1" | "2" | "3" | "4"
                   | "5" | "6" | "7" | "8" | "9" ;
 
 string            = '"', { escaped_char }, '"' ;
+
+greek_letter          = "Α" | "α"
+                      | "Β" | "β"
+                      | "Γ" | "γ"
+                      | "Δ" | "δ"
+                      | "Ε" | "ε"
+                      | "Ζ" | "ζ"
+                      | "Η" | "η"
+                      | "Θ" | "θ"
+                      | "Ι" | "ι"
+                      | "Κ" | "κ"
+                      | "Λ" | "λ"
+                      | "Μ" | "μ"
+                      | "Ν" | "ν"
+                      | "Ξ" | "ξ"
+                      | "Ο" | "ο"
+                      | "Π" | "π"
+                      | "Ρ" | "ρ"
+                      | "Σ" | "σ"
+                      | "Τ" | "τ"
+                      | "Υ" | "υ"
+                      | "Φ" | "φ"
+                      | "Χ" | "χ"
+                      | "Ψ" | "ψ"
+                      | "Ω" | "ω" ;
+
+greek_variant_letter = "ϵ" | "ϑ" | "ϖ"
+                      | "ϱ" | "ϰ" | "ϕ" ;
+
+letterlike_symbol    = "ℏ" | "ℎ" | "ℓ"
+                      | "ℐ" | "ℑ" | "ℒ"
+                      | "ℱ" | "ℜ" | "ℵ"
+                      | "℘" ;
 ```
 
 The semantic validator for the ether assertion notation verifies the physical and mathematical correctness of both the ether assertion itself and the structure of the ether objects within that assertion. For example, the ether object of a certain stair of matter cannot contain, as sub-objects, the ether objects of subsequent stairs of matter.
