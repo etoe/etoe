@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.29
+version: 0.1.30
 date: 2026-09-26
 created: 2026-06-01
 updated: 2026-09-26
@@ -362,7 +362,7 @@ letterlike_symbol    = "ℏ" | "ℎ" | "ℓ"
 
 The semantic validator for the ether assertion notation verifies the physical and mathematical correctness of both the ether assertion itself and the structure of the ether objects within that assertion. For example, the ether object of a certain stair of matter cannot contain, as sub-objects, the ether objects of subsequent stairs of matter.
 
-Serializing the ether assertion notation into a programming language identifier must ensure that the identifier is valid in major programming languages, maintain a one-to-one mapping between the notation and the identifier, and allow for lossless reversibility. The serialization process may employ either a fixed-length escape-encoding scheme or a base64url encoding scheme. The escape-encoding scheme preserves the recognizability of the notation, whereas the base64url encoding scheme ensures a compact identifier. Both schemes may incorporate a prefix (e.g., "etoe_").
+Serializing the ether assertion notation into a programming language identifier must ensure that the identifier is valid in major programming languages, maintain a one-to-one mapping between the notation and the identifier, and allow for lossless reversibility. The serialization process may employ either a fixed-length escape-encoding scheme or a base64url encoding scheme. The escape-encoding scheme preserves the recognizability of the notation, whereas the base64url encoding scheme ensures a compact identifier. Both schemes may incorporate a prefix (e.g., "etoe_"). Serialization layers for a programming language, database, or file system may provide canonical ASCII aliases for each ether quantity (e.g., "tau" for "τ").
 
 Ether subobjects of ether objects of the second level of matter are etherons. An etheron has two distinct, conceptual "identity axes": "etheron role" and "etheron affiliation". The etheron role answers the question: "What does the etheron do within a given ether hyperobject?" Etheron affiliation answers the question: "Of which ether hyperobject is the etheron currently a part?" The affiliation of the etheron is discrete yet hierarchical. The role of the etheron is discrete yet relational. When affiliation changes, the role does not necessarily change as part of the same event. When the role changes, affiliation does not necessarily change as part of the same event. An ether hyperobject can preserve the pattern of role distribution among etherons. The physical individuality of an ether hyperobject is determined not by the specific etherons that comprise it, but by the configuration of relationships maintained between them. The bearer of the ether hyperobject's stability is not the etheron, but the organization of a multitude of etherons. The role of an etheron is the relational classification of its motion. The affiliation of an etheron is the hierarchical relationship of its inclusion. An ether hyperobject is a stable collective pattern of etheron roles and motions.
 
