@@ -78,11 +78,11 @@ The reference distance is denoted by $D_Æ$. In the simplest model, the referenc
 
 $$D_Æ = N_Æ -1$$
 
-The coordinate of absolute position ($p_A$) in absolute space has a range from $-L_Æ/2$ to $L_Æ/2-1$. The coordinate of relative position ($p_R$) in absolute space has a range from $-D_Æ$ to $D_Æ$:
+The coordinate of absolute position ($p_{abs}$) in absolute space has a range from $-L_Æ/2$ to $L_Æ/2-1$. The coordinate of relative position ($p_{rel}$) in absolute space has a range from $-D_Æ$ to $D_Æ$:
 
-$$p_A = (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_Æ}{2} \le x, y, z \le \frac{L_Æ}{2}-1 $$
+$$p_{abs} = (x, y, z) \in \mathbb{Z}^3 \mid -\frac{L_Æ}{2} \le x, y, z \le \frac{L_Æ}{2}-1 $$
 
-$$p_R = (x, y, z) \in \mathbb{Z}^3 \mid  -D_Æ \le x, y, z \le D_Æ$$
+$$p_{rel} = (x, y, z) \in \mathbb{Z}^3 \mid  -D_Æ \le x, y, z \le D_Æ$$
 
 $V_Æ$ is the discrete volume of the entire space. Formula for the discrete volume of the entire space:
 
