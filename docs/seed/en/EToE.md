@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.31
+version: 0.1.32
 date: 2026-09-27
 created: 2026-06-01
 updated: 2026-09-27
@@ -325,7 +325,26 @@ digits            = digit, { digit } ;
 digit             = "0" | "1" | "2" | "3" | "4" 
                   | "5" | "6" | "7" | "8" | "9" ;
 
-string            = '"', { escaped_char }, '"' ;
+hex_digit         = digit
+                  | "A" | "B" | "C" | "D" | "E" | "F"
+                  | "a" | "b" | "c" | "d" | "e" | "f" ;                  
+
+string            = '"', { string_char }, '"' ;
+
+string_char       = unescaped_char
+                  | escape_sequence ;
+
+escape_sequence   = "\", escape_code ;
+
+escape_code       = '"'
+                  | "\"
+                  | "b"
+                  | "f"
+                  | "n"
+                  | "r"
+                  | "t"
+                  | "u", hex_digit, hex_digit
+                  , hex_digit, hex_digit ;
 
 greek_letter          = "Α" | "α"
                       | "Β" | "β"
@@ -359,6 +378,10 @@ letterlike_symbol    = "ℏ" | "ℎ" | "ℓ"
                       | "ℐ" | "ℑ" | "ℒ"
                       | "ℱ" | "ℜ" | "ℵ"
                       | "℘" ;
+
+unescaped_char    = ? Unicode scalar value,
+                      except U+0000–U+001F,
+                      U+0022 и U+005C ? ;
 ```
 
 The semantic validator for the ether assertion notation verifies the physical and mathematical correctness of both the ether assertion itself and the structure of the ether objects within that assertion. For example, the ether object of a certain stair of matter cannot contain, as sub-objects, the ether objects of subsequent stairs of matter.
