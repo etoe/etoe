@@ -1043,14 +1043,14 @@ The average longitudinality $L_\text{Æ2.b.f}$ and average transversality $T_\te
 
 $$
 L_\text{Æ2.b.f}=
-\frac{\sum_\text{æf} |\vec{u}_\text{æf}|\cos^2\theta_\text{æf}}
-{\sum_\text{æf} |\vec{u}_\text{æf}|}
+\frac{\sum\limits_{\text{æ} \in \text{Æ2.b.f}} |\vec{u}_\text{æ}|\cos^2\theta_\text{æ}}
+{\sum\limits_{\text{æ} \in \text{Æ2.b.f}} |\vec{u}_\text{æ}|}
 $$
 
 $$
 T_\text{Æ2.b.f}=
-\frac{\sum_\text{æf} |\vec{u}_\text{æf}|\sin^2\theta_\text{æf}}
-{\sum_\text{æf} |\vec{u}_\text{æf}|}
+\frac{\sum\limits_{\text{æ} \in \text{Æ2.b.f}} |\vec{u}_\text{æ}|\sin^2\theta_\text{æ}}
+{\sum\limits_{\text{æ} \in \text{Æ2.b.f}} |\vec{u}_\text{æ}|}
 $$
 
 $$
