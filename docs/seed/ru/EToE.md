@@ -1098,25 +1098,25 @@ $$
 \text{изотропное/смешанное поле}
 $$
 
-Cредняя относительная скорость $\bar u_\text{Æ2.b.f.æ}$ и средняя нормированная относительная скорость $s_\text{norm.Æ2.b.f.æ}$ полевого эфирона $\text{æ:f}$ эфирного поля $Æ2.b.f$ эфирного батча $Æ2.b$:
+Cредняя относительная скорость $\bar u_\text{æ:f}$ и средняя нормированная относительная скорость $s_\text{norm.æ:f}$ полевого эфирона $\text{æ:f}$ эфирного поля $Æ2.b.f$ эфирного батча $Æ2.b$:
 
 $$
-\bar u_\text{Æ2.b.f.æ}=
-\frac{\sum_\text{æ:f} u_\text{æ:f}}{m_\text{Æ2.b.f}}
-$$
-
-$$
-s_\text{norm.Æ2.b.f.æ}=\frac{\bar u_\text{Æ2.b.f.æ}}{C}
+\bar u_\text{æ:f}=
+\frac{\sum\limits_{æ \in Æ2.b.f} u_\text{æ}}{m_\text{Æ2.b.f}}
 $$
 
 $$
-s_\text{norm.Æ2.b.f.æ}< s_\text{norm.avg}
+s_\text{norm.æ:f}=\frac{\bar u_\text{æ:f}}{C}
+$$
+
+$$
+s_\text{norm.æ:f}< s_\text{norm.avg}
 \quad\Rightarrow\quad
 \text{медленно-полевой}
 $$
 
 $$
-s_\text{norm.Æ2.b.f.æ}> s_\text{norm.avg}
+s_\text{norm.æ:f}> s_\text{norm.avg}
 \quad\Rightarrow\quad
 \text{быстро-полевой}
 $$
@@ -1128,7 +1128,7 @@ $$
 $$
 K_\text{Æ2.b.f}=
 \frac{
-\left|\sum\limits_{æf \in Æ2.b.f}\hat{u}_\text{æ:f}\right|
+\left|\sum\limits_{æ \in Æ2.b.f}\hat{u}_\text{æ}\right|
 }{
 m_\text{Æ2.b.f}
 }

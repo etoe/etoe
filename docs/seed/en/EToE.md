@@ -1104,27 +1104,27 @@ $$
 \text{isotropic/mixed field}
 $$
 
-The average relative velocity $\bar u_\text{Æ2.b.f.æ}$ and the average normalized relative velocity $s_\text{norm.Æ2.b.f.æ}$ of the field etheron $\text{æ:f}$ of the ether field $Æ2.b.f$ of the ether batch $Æ2.b$:
+The average relative velocity $\bar u_\text{æ:f}$ and the average normalized relative velocity $s_\text{norm.æ:f}$ of the field etheron $\text{æ:f}$ of the ether field $Æ2.b.f$ of the ether batch $Æ2.b$:
 
 $$
-\bar u_\text{Æ2.b.f.æ}=
-\frac{\sum_\text{æ:f} u_\text{æ:f}}{m_\text{Æ2.b.f}}
-$$
-
-$$
-s_\text{norm.Æ2.b.f.æ}=\frac{\bar u_\text{Æ2.b.f.æ}}{C}
+\bar u_\text{æ:f}=
+\frac{\sum\limits_{æ \in Æ2.b.f} u_\text{æ}}{m_\text{Æ2.b.f}}
 $$
 
 $$
-s_\text{norm.Æ2.b.f.æ}< s_\text{norm.avg}
+s_\text{norm.æ:f}=\frac{\bar u_\text{æ:f}}{C}
+$$
+
+$$
+s_\text{norm.æ:f}< s_\text{norm.avg}
 \quad\Rightarrow\quad
-\text{slow-field}
+\text{медленно-полевой}
 $$
 
 $$
-s_\text{norm.Æ2.b.f.æ}> s_\text{norm.avg}
+s_\text{norm.æ:f}> s_\text{norm.avg}
 \quad\Rightarrow\quad
-\text{fast-field}
+\text{быстро-полевой}
 $$
 
 Based on the criteria of ether field longitudinality and the average relative velocity of field etherons, ether batches can be tentatively classified into longitudinal-slow-field, longitudinal-fast-field, transverse-slow-field, and mixed-field types.
@@ -1134,7 +1134,7 @@ The kinematic coherence coefficient $K_\text{Æ2.b.f}$ of the ether field $Æ2.b
 $$
 K_\text{Æ2.b.f}=
 \frac{
-\left|\sum\limits_{æf \in Æ2.b.f}\hat{u}_\text{æ:f}\right|
+\left|\sum\limits_{æ \in Æ2.b.f}\hat{u}_\text{æ}\right|
 }{
 m_\text{Æ2.b.f}
 }
