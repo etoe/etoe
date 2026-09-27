@@ -184,7 +184,7 @@ notation          = æ_notation
                   = ":", etheron_role
                   | ":", etheron_role, ".", etheron_subrole ;
 
-etheron_role     = "m" | "s" | "f" | "sf" | "mf" ;
+etheron_role     = "m" | "s" | "f" | "sf" | "h" | "mf" ;
 
 etheron_subrole  = "br" |  "dr" | "di" | "do" ;                  
 
@@ -274,7 +274,8 @@ aspect_expression = aspect
 aspect       = "kinematic" | "ka"
              | "inertnic" | "ia" ;
 
-subaspect    = "substance-field" | "sf" ; 
+subaspect    = "substance-field" | "sf" 
+             | "hyperobject-medium" | "hm" ;
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -958,27 +959,27 @@ Field etherons of an ether hyperobject form the "ether field" of the ether hyper
 
 Medium etherons and field etherons together constitute the "medium-field ether". For an ether hyperobject, the "external medium-field ether" is considered to be "the medium-field ether excluding the field etherons of that ether hyperobject".
 
-Usually, an ether hyperobject has ether substance and ether field. Typically, the higher the level of an ether hyperobject, the smaller the ratio of the mass of its ether substance to the mass of its ether field. Therefore, the ratio $R_{\text{sf,Æn}}$ of the "mass of the ether substance of all ether hyperobjects of a certain level" $m_{\text{s,Æn}}$ to the "mass of the ether field of all ether hyperobjects of this level" $m_{\text{f,Æn}}$ decreases with the growth of the level $Æn$. Obviously, the ratio $R_{\text{sf,Æ}}$ of the "mass of all substantial etherons" $m_{\text{s,Æ}}$ to the "mass of all field etherons" $m_{\text{f,Æ}}$ is between $R_{\text{sf,Æ8}}$ and $R_{\text{sf,Æ2}}$. "The mass of all etherons of all ether hyperobjects" $m_{\text{h,Æ}}$ includes "the mass of all substantial etherons" $m_{\text{s,Æ}}$ and "the mass of all field etherons" $m_{\text{f,Æ}}$. "The mass of all etherons" $m_{\text{Æ}}$ includes "the mass of all etherons of all ether hyperobjects" $m_{\text{h,Æ}}$ and "the mass of all medium etherons" $m_{\text{m,Æ}}$. Obviously, the ratio $R_{\text{hm,Æ}}$ of "the mass of all etherons of all ether hyperobjects" $m_{\text{h,Æ}}$ to "the mass of all medium etherons" $m_{\text{m,Æ}}$ is much less than $1$.
+Usually, an ether hyperobject has ether substance and ether field. Typically, the higher the level of an ether hyperobject, the smaller the ratio of the mass of its ether substance to the mass of its ether field. Therefore, the ratio $R_{\text{sf.Æ(n)}}$ of the "mass of the ether substance of all ether hyperobjects of a certain level" $m_{\text{Æ(n):s}}$ to the "mass of the ether field of all ether hyperobjects of this level" $m_{\text{Æ(n):f}}$ decreases with the growth of the level $Æ(n)$. Obviously, the ratio $R_{\text{sf.Æ}}$ of the "mass of all substantial etherons" $m_{\text{Æ:s}}$ to the "mass of all field etherons" $m_{\text{Æ:f}}$ is between $R_{\text{sf.Æ8}}$ and $R_{\text{sf.Æ2}}$. "The mass of all etherons of all ether hyperobjects" $m_{\text{Æ:h}}$ includes "the mass of all substantial etherons" $m_{\text{Æ:s}}$ and "the mass of all field etherons" ${\text{Æ:f}}$. "The mass of all etherons" $m_{\text{Æ}}$ includes "the mass of all etherons of all ether hyperobjects" $m_{\text{Æ:h}}$ and "the mass of all medium etherons" $m_{\text{Æ:m}}$. Obviously, the ratio $R_{\text{hm.Æ}}$ of "the mass of all etherons of all ether hyperobjects" $m_{\text{Æ:h}}$ to "the mass of all medium etherons" $m_{\text{Æ:m}}$ is much less than $1$.
 
-$$m_{\text{h,Æ}}= m_{\text{s,Æ}} + m_{\text{f,Æ}}$$
+$$m_{\text{Æ:h}}= m_{\text{Æ:s}} + m_{\text{Æ:f}}$$
 
-$$m_{\text{Æ}}= m_{\text{m,Æ}} + m_{\text{h,Æ}}$$
+$$m_{\text{Æ}}= m_{\text{Æ:m}} + m_{\text{Æ:h}}$$
 
-$$m_{\text{h,Æ}} = m_{\text{Æ}} - m_{\text{m,Æ}}$$
+$$m_{\text{Æ:h}} = m_{\text{Æ}} - m_{\text{Æ:m}}$$
 
-$$m_{\text{h,Æ}} \ll m_{\text{m,Æ}}$$
+$$m_{\text{Æ:h}} \ll m_{\text{Æ:m}}$$
 
-$$R_{\text{hm,Æ}}=\frac{m_{\text{h,Æ}}}{m_{\text{m,Æ}}} \ll 1$$
+$$R_{\text{hm.Æ}}=\frac{m_{\text{Æ:h}}}{m_{\text{Æ:m}}} \ll 1$$
 
-$$R_{\text{sf,Æ}}=\frac{m_{\text{s,Æ}}}{m_{\text{f,Æ}}}$$
+$$R_{\text{sf.Æ}}=\frac{m_{\text{Æ:s}}}{m_{\text{Æ:f}}}$$
 
-$$R_{\text{sf,Æn}}=\frac{m_{\text{s,Æn}}}{m_{\text{f,Æn}}}$$
+$$R_{\text{sf.Æ(n)}}=\frac{m_{\text{Æ(n):s}}}{m_{\text{Æ(n):f}}}$$
 
-$$R_{\text{sf,Æ2}} > R_{\text{sf,Æ3}} > R_{\text{sf,Æ4}} > R_{\text{sf,Æ5}} > R_{\text{sf,Æ6}} > R_{\text{sf,Æ7}} > R_{\text{sf,Æ8}}$$
+$$R_{\text{sf.Æ2}} > R_{\text{sf.Æ3}} > R_{\text{sf.Æ4}} > R_{\text{sf.Æ5}} > R_{\text{sf.Æ6}} > R_{\text{sf.Æ7}} > R_{\text{sf.Æ8}}$$
 
-$$R_{\text{sf,Æn}} > R_{\text{sf,Æn+1}}$$
+$$R_{\text{sf.Æ(n)}} > R_{\text{sf.Æ(n+1)}}$$
 
-$$R_{\text{sf,Æ2}} > R_{\text{sf,Æ}} > R_{\text{sf,Æ8}}$$
+$$R_{\text{sf.Æ2}} > R_{\text{sf.Æ}} > R_{\text{sf.Æ8}}$$
 
 Field etherons of an ether hyperobject can be low-speed and high-speed.
 
