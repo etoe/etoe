@@ -834,7 +834,7 @@ Etherons in a group of etherons, moving relative to the trajectory of other ethe
 
 Etherons in a group of etherons, relative to the trajectory of which other etherons in the same group move with approximately the same modules of continuous velocities, but in different directions, are called "substantial etherons".
 
-In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ1.c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
+In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ1.c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æ:f}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æ:s</sub>) is then calculated, from which the "delay" ($a_{æ:s}$) and "direction" ($\vec{d}$<sub>æ:s</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
 
 If the inertness vectors of the etherons of a multi-etheron collision have not changed before ($\vec i_j$) and after $(\vec i_j')$ the multi-etheron collision, then: such a collision is considered transit; the inertial roles of the etherons and the affiliations of the etherons do not change:
 
@@ -877,63 +877,63 @@ $$\text{æ}_s = \arg\min_{\text{æ} \in Æ1.c} (| a_\text{æ}\,\vec{d}_\text{æ}
 
 The "principle of least action" of macrophysics is an emergent principle arising from the statistics of a large number of etheron collisions.
 
-The algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in the amount equal to $N$, in the analytical version is reduced to solving the quadratic equation $ax²+bx+c=0$, where $x=i_{æf}$ is the modulus of the inertness vector of each field etheron after the collision. The formulas of the algorithm contain the following notations. Vectors are denoted by symbols with an arrow on top. Unit vectors are denoted by symbols with a cap on top. Vector moduli are denoted either by simple symbols or by symbols with an arrow on top in two vertical lines around the symbols. The number of a substantial etheron is equal to $N$. Field etheron numbers start with $1$ and end with $N-1$. $\vec{i}$<sub>æs</sub> is the inertness vector of a substantial etheron after the collision. $\vec{i}$<sub>æj</sub> is the inertness vector of an etheron with the number $j$ before the collision. $\vec{I}$<sub>old</sub> is the sum of the inertness vectors of all etherons before the collision. $\vec{I}$<sub>new</sub> is the sum of the inertness vectors of all etherons after the collision. $ℐ_{\text{old}}$ is the sum of the moduli of the inertness vectors of all etherons before the collision. $ℐ_{\text{new}}$ is the sum of the moduli of the inertness vectors of all etherons after the collision. Formulas for the calculation algorithm of the simplest version of the substance-field pattern:
+The algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in the amount equal to $N$, in the analytical version is reduced to solving the quadratic equation $ax²+bx+c=0$, where $x=i_{æ:f}$ is the modulus of the inertness vector of each field etheron after the collision. The formulas of the algorithm contain the following notations. Vectors are denoted by symbols with an arrow on top. Unit vectors are denoted by symbols with a cap on top. Vector moduli are denoted either by simple symbols or by symbols with an arrow on top in two vertical lines around the symbols. The number of a substantial etheron is equal to $N$. Field etheron numbers start with $1$ and end with $N-1$. $\vec{i}$<sub>æ:s</sub> is the inertness vector of a substantial etheron after the collision. $\vec{i}$<sub>æ,j</sub> is the inertness vector of an etheron with the number $j$ before the collision. $\vec{I}$<sub>old</sub> is the sum of the inertness vectors of all etherons before the collision. $\vec{I}$<sub>new</sub> is the sum of the inertness vectors of all etherons after the collision. $ℐ_{\text{old}}$ is the sum of the moduli of the inertness vectors of all etherons before the collision. $ℐ_{\text{new}}$ is the sum of the moduli of the inertness vectors of all etherons after the collision. Formulas for the calculation algorithm of the simplest version of the substance-field pattern:
 
-$$\vec{I}_{\text{old}} = \sum_{j=1}^N \vec{i}_{æj}$$
+$$\vec{I}_{\text{old}} = \sum_{j=1}^N \vec{i}_{æ,j}$$
 
-$$\vec{I}_{\text{new}} = \sum_{j=1}^{N-1} i_{æf} \cdot \hat{i}_{æj} + \vec{i}_{æs}$$
+$$\vec{I}_{\text{new}} = \sum_{j=1}^{N-1} i_{æ:f} \cdot \hat{i}_{æ,j} + \vec{i}_{æ:s}$$
 
 $$\vec{I}_{\text{new}} = \vec{I}_{\text{old}}$$
 
-$$ℐ_{\text{old}} = \sum_{j=1}^N {i}_{æj}$$
+$$ℐ_{\text{old}} = \sum_{j=1}^N {i}_{æ,j}$$
 
-$$ℐ_{\text{new}} = (N-1)\cdot i_{æf} + i_{æs}$$
+$$ℐ_{\text{new}} = (N-1)\cdot i_{æ:f} + i_{æ:s}$$
 
 $$ℐ_{\text{new}} = ℐ_{\text{old}}$$
 
-$$\vec{i}_{æs} = \sum_{j=1}^N \vec{i}_{æj} - i_{æf}\cdot \sum_{j=1}^{N-1} \hat{i}_{æj}$$
+$$\vec{i}_{æ:s} = \sum_{j=1}^N \vec{i}_{æ,j} - i_{æ:f}\cdot \sum_{j=1}^{N-1} \hat{i}_{æ,j}$$
 
-$$(N-1) \cdot i_{æf} +  |\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \sum_{j=1}^{N-1} \hat{i}_{æj}| = \sum_{j=1}^N {i}_{æj}$$
+$$(N-1) \cdot i_{æ:f} +  |\sum_{j=1}^N \vec{i}_{æ,j} - i_{æ:f} \sum_{j=1}^{N-1} \hat{i}_{æ,j}| = \sum_{j=1}^N {i}_{æ,j}$$
 
-$$|\sum_{j=1}^N \vec{i}_{æj} - i_{æf} \cdot\sum_{j=1}^{N-1} \hat{i}_{æj}|^2 = (\sum_{j=1}^N {i}_{æj} - (N-1) \cdot i_{æf})^2 $$
+$$|\sum_{j=1}^N \vec{i}_{æ,j} - i_{æ:f} \cdot\sum_{j=1}^{N-1} \hat{i}_{æ,j}|^2 = (\sum_{j=1}^N {i}_{æ,j} - (N-1) \cdot i_{æ:f})^2 $$
 
 $$
 \begin{aligned}
-|\sum_{j=1}^N \vec{i}_{æj}|^2 + i_{æf} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2 - 2\cdot i_{æf} \cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) = \\\\ = (\sum_{j=1}^N {i}_{æj})^2 + ((N-1) \cdot i_{æf})^2 - 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot ((N-1) \cdot i_{æf})
+|\sum_{j=1}^N \vec{i}_{æ,j}|^2 + i_{æ:f} ^2 \cdot| \sum_{j=1}^{N-1} \hat{i}_{æ,j}|^2 - 2\cdot i_{æ:f} \cdot(\sum_{j=1}^N \vec{i}_{æ,j})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æ,j}) = \\\\ = (\sum_{j=1}^N {i}_{æ,j})^2 + ((N-1) \cdot i_{æ:f})^2 - 2\cdot (\sum_{j=1}^N {i}_{æ,j}) \cdot ((N-1) \cdot i_{æ:f})
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
-i_{æf} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æj}|^2-(N-1)^2) + \\\\ + i_{æf}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æj})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æj}) + 2\cdot (\sum_{j=1}^N {i}_{æj}) \cdot (N-1 )) + \\\\ + (|\sum_{j=1}^N \vec{i}_{æj}|^2-(\sum_{j=1}^N {i}_{æj})^2)=0
+i_{æ:f} ^2 \cdot (| \sum_{j=1}^{N-1} \hat{i}_{æ,j}|^2-(N-1)^2) + \\\\ + i_{æ:f}  \cdot (-2\cdot(\sum_{j=1}^N \vec{i}_{æ,j})\cdot (\sum_{j=1}^{N-1} \hat{i}_{æ,j}) + 2\cdot (\sum_{j=1}^N {i}_{æ,j}) \cdot (N-1 )) + \\\\ + (|\sum_{j=1}^N \vec{i}_{æ,j}|^2-(\sum_{j=1}^N {i}_{æ,j})^2)=0
 \end{aligned}
 $$
 
-$$a \cdot i_{æf}^2 + b \cdot i_{æf} + c = 0$$
+$$a \cdot i_{æ:f}^2 + b \cdot i_{æ:f} + c = 0$$
 
-$$i_{æf} = \frac{-b \pm \sqrt{b^2 - 4\cdot a \cdot c}}{2\cdot a}$$
+$$i_{æ:f} = \frac{-b \pm \sqrt{b^2 - 4\cdot a \cdot c}}{2\cdot a}$$
 
-$$a_{æf} = i_{æf} \cdot D_Æ$$
+$$a_{æ:f} = i_{æ:f} \cdot D_Æ$$
 
-$$a_{æs} = |\vec{i}_{æs}| \cdot D_Æ$$
+$$a_{æ:s} = |\vec{i}_{æ:s}| \cdot D_Æ$$
 
-$$\vec{d}_{æs} = -\frac{\vec{i}_{æs} \cdot D_Æ }{ |\vec{i}_{æs}|}$$
+$$\vec{d}_{æ:s} = -\frac{\vec{i}_{æ:s} \cdot D_Æ }{ |\vec{i}_{æ:s}|}$$
 
-In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $\lvert \vec{V}^{(k)} \rvert = 0$, then use the bisection method. If $i_{æf}^{(k)} \notin [0, 1]$, then project onto the permissible range.
+In the iterative version, the algorithm for calculating the simplest version of the substance-field pattern for a group of collision etherons in a quantity equal to $N$ can be based on the Newton-Raphson method for solving the conservation equation. Maximum number of iterations: $K_{\max}$. Accuracy: $\varepsilon = 10^{-8}$. If $\lvert \vec{V}^{(k)} \rvert = 0$, then use the bisection method. If $i_{æ:f}^{(k)} \notin [0, 1]$, then project onto the permissible range.
 
-$$i_{æf}^{(0)} = \frac{ℐ_{\text{old}}}{N}, \quad k = 0$$
+$$i_{æ:f}^{(0)} = \frac{ℐ_{\text{old}}}{N}, \quad k = 0$$
 
-$$\vec{U} = \sum_{j=1}^{N-1} \hat{\vec{i}}_\text{æj}$$
+$$\vec{U} = \sum_{j=1}^{N-1} \hat{\vec{i}}_\text{æ,j}$$
 
-$$NEXT: \vec{V}^{(k)} = \vec{I}_\text{old} - i_{æf}^{(k)} \cdot \vec{U}$$
+$$NEXT: \vec{V}^{(k)} = \vec{I}_\text{old} - i_{æ:f}^{(k)} \cdot \vec{U}$$
 
-$$F(i_{æf}^{(k)}) = (N-1) \cdot i_{æf}^{(k)} + |\vec{V}^{(k)}| - ℐ_{\text{old}}$$
+$$F(i_{æ:f}^{(k)}) = (N-1) \cdot i_{æ:f}^{(k)} + |\vec{V}^{(k)}| - ℐ_{\text{old}}$$
 
-$$F'(i_{æf}^{(k)}) = (N-1) - \frac{\vec{V}^{(k)} \cdot \vec{U}}{|\vec{V}^{(k)}|}$$
+$$F'(i_{æ:f}^{(k)}) = (N-1) - \frac{\vec{V}^{(k)} \cdot \vec{U}}{|\vec{V}^{(k)}|}$$
 
-$$i_{æf}^{(k+1)} = i_{æf}^{(k)} - \frac{F(i_{æf}^{(k)})}{F'(i_{æf}^{(k)})}$$
+$$i_{æ:f}^{(k+1)} = i_{æ:f}^{(k)} - \frac{F(i_{æ:f}^{(k)})}{F'(i_{æ:f}^{(k)})}$$
 
-$$\text{IF } (|i_{æf}^{(k+1)} - i_{æf}^{(k)}| < \varepsilon) \text{ THEN } i_{æf} = i_{æf}^{(k+1)}$$
+$$\text{IF } (|i_{æ:f}^{(k+1)} - i_{æ:f}^{(k)}| < \varepsilon) \text{ THEN } i_{æ:f} = i_{æ:f}^{(k+1)}$$
 
 $$\text{ELSE } \{ k = k + 1; \text{GOTO NEXT} \}$$
 
@@ -1008,7 +1008,7 @@ For an ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, t
 $$\hat{e}_\text{ia.Æ2.b}=-\frac{\sum\limits_{\text{æ} \in \text{Æ2.b.s}} \vec{i}_\text{æ}}
 {| \sum\limits_{\text{æ} \in \text{Æ2.b.s}} \vec{i}_\text{æ} |}$$
 
-For a coherent ether batch, the directions $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> nearly coincide; consequently, the formulas for $\hat{e}$<sub>ka.Æ2.b</sub> and $\hat{e}$<sub>ia.Æ2.b</sub> yield virtually identical results. However, if the inertness magnitudes of the etherons differ significantly, the directions of the sums $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> may diverge slightly. Both sums are weighted sums of the same unit directions $-\hat{i}_{\text{æ}}$, but with different weights: in the velocity sum, the weight of an etheron is $\dfrac{1}{\tau b_{\text{æ}}\sqrt{3} + i_{\text{æ}}}$ — that is, it decreases as $i_{\text{æ}}$ increases — whereas in the inertness sum, the weight is $i_{\text{æ}}$ — that is, it increases as $i_{\text{æ}}$ increases. Therefore, fast etherons (low $i_{\text{æ}}$) dominate the velocity sum, while slow etherons (high $i_{\text{æ}}$) dominate the inertness sum. For determining the axis of the batch's motion, the formula based on $\vec{v}$<sub>æ</sub> is intuitively clearer and closer to kinematics. The "axis of motion" intuitively signifies "where the object is moving". The kinematic axis of motion is the direction of the total momentum of the substance. The inertnic axis is the direction aligned with the conserved sum of inertnesses. The kinematic axis indicates the direction in which the group is actually moving. The inertnic axis indicates the direction of the group's conserved inertnic "charge" — the attribute that determines its response to interactions and is conserved during collisions. This is neither the "direction of motion" nor the "direction of momentum." Rather, it is the direction of the group's inertnic core — the part that is "heaviest" in terms of lag and most resistant to reconfiguration. An inertnic axis is a direction that: does not change during internal collisions within the group; determines how the group redistributes inertness upon colliding with external etherons; and serves as a "hidden" parameter — invisible in the motion itself, yet governing the interaction. The divergence between the kinematic and inertnic axes is a measure of the group's internal kinematic inhomogeneity. It indicates the extent to which the group's fast and slow etherons "disagree" on the direction of motion.
+For substantial etherons of a coherent ether batch, the directions $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> almost coincide; therefore, the formulas $\hat{e}$<sub>ka.Æ2.b</sub> and $\hat{e}$<sub>ia.Æ2.b</sub> will yield practically identical results. However, if the inertness magnitudes of the etherons differ significantly, the directions of the sums $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> may diverge slightly. Both sums are weighted sums of the same unit directions $-\hat{i}_{\text{æ}}$, but with different weights: in the velocity sum, the weight of an etheron is $\dfrac{1}{\tau b_{\text{æ}}\sqrt{3} + i_{\text{æ}}}$ — that is, it decreases as $i_{\text{æ}}$ increases — whereas in the inertness sum, the weight is $i_{\text{æ}}$ — that is, it increases as $i_{\text{æ}}$ increases. Therefore, fast etherons (low $i_{\text{æ}}$) dominate the velocity sum, while slow etherons (high $i_{\text{æ}}$) dominate the inertness sum. For determining the axis of the batch's motion, the formula based on $\vec{v}$<sub>æ</sub> is intuitively clearer and closer to kinematics. The "axis of motion" intuitively signifies "where the object is moving". The kinematic axis of motion is the direction of the total momentum of the substance. The inertnic axis is the direction aligned with the conserved sum of inertnesses. The kinematic axis indicates the direction in which the group is actually moving. The inertnic axis indicates the direction of the group's conserved inertnic "charge" — the attribute that determines its response to interactions and is conserved during collisions. This is neither the "direction of motion" nor the "direction of momentum." Rather, it is the direction of the group's inertnic core — the part that is "heaviest" in terms of lag and most resistant to reconfiguration. An inertnic axis is a direction that: does not change during internal collisions within the group; determines how the group redistributes inertness upon colliding with external etherons; and serves as a "hidden" parameter — invisible in the motion itself, yet governing the interaction. The divergence between the kinematic and inertnic axes is a measure of the group's internal kinematic inhomogeneity. It indicates the extent to which the group's fast and slow etherons "disagree" on the direction of motion.
 
 The axial misalignment angle $\chi_\text{Æ2.b}$ of the ether batch $Æ2.b$:
 
@@ -1020,31 +1020,32 @@ $$
 Synonyms for "axial misalignment angle" include
 "kinematic-inertnic divergence", "inertnic incoherence angle", and "axis dissonance". When a batch collides with an external etheron, it is the inertnic axis that determines the direction in which the batch "reacts". However, the actual motion following the collision is determined by the new kinematic axis. The greater the value of $\chi_\text{Æ2.b}$, the more significantly the batch alters its direction of motion in response to the same external influence. If $\chi_\text{Æ2.b}$ increases over time, it indicates the accumulation of internal heterogeneity and potential disintegration or restructuring. If $\chi_\text{Æ2.b}$ decreases, the batch is "maturing" into a more coherent structure.
 
-For each field etheron $\text{æf}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æf</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
+For each field etheron $\text{æ:f}$ of the ether field $Æ2.b.f$ belonging to the ether batch $Æ2.b$, its velocity $\vec{u}$<sub>æ:f</sub> relative to the substance $Æ2.b.s$ (which has an average velocity $\vec{v}$<sub>Æ2.b.s</sub>) is:
 
-$$\vec{u}_\text{æf} = \vec{v}_\text{æf}-\vec{v}_\text{Æ2.b.s}$$
+$$\vec{u}_\text{æ:f} = \vec{v}_\text{æ:f}-\vec{v}_\text{Æ2.b.s}$$
 
-$$u_\text{æf} = |\vec{u}_\text{æf}|$$
+$$u_\text{æ:f} = |\vec{u}_\text{æ:f}|$$
 
-$$\vec{u}_\text{æf}=
-\vec{u}_{\parallel_\text{æf}}+
-\vec{u}_{\perp_\text{æf}}$$
+$$\vec{u}_\text{æ:f}=
+\vec{u}_{\parallel_\text{æ:f}}+
+\vec{u}_{\perp_\text{æ:f}}$$
 
-$$\vec{u}_{\parallel_\text{æf}}=
-(\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{ka.Æ2.b})\hat{\mathbf e}_\text{ka.Æ2.b}$$
+$$\vec{u}_{\parallel_\text{æ:f}}=
+(\vec{u}_\text{æ:f}\cdot\hat{\mathbf e}_\text{ka.Æ2.b})\hat{\mathbf e}_\text{ka.Æ2.b}$$
 
-$$\vec{u}_{\perp_\text{æf}}=
-\vec{u}_\text{æf}-\vec{u}_{\parallel_\text{æf}}$$
+$$\vec{u}_{\perp_\text{æ:f}}=
+\vec{u}_\text{æ:f}-\vec{u}_{\parallel_\text{æ:f}}$$
 
-$$\cos\theta_\text{æf}=
-\frac{\vec{u}_\text{æf}\cdot\hat{\mathbf e}_\text{ka.Æ2.b}}
-{|\vec{u}_\text{æf}|}$$
+$$\cos\theta_\text{æ:f}=
+\frac{\vec{u}_\text{æ:f}\cdot\hat{\mathbf e}_\text{ka.Æ2.b}}
+{|\vec{u}_\text{æ:f}|}$$
 
 For the ether batch $Æ2.b$ with a set of field etherons $Æ2.b.f$, the formula for its kinematic field axis $\hat{e}_\text{ka.Æ2.b.f}$ is:
 
 $$\hat{e}_\text{ka.Æ2.b.f}=
-\frac{\sum\limits_{\text{f.æ} \in \text{Æ2.b.f}} \vec{v}_\text{f.æ}}
-{| \sum\limits_{\text{f.æ} \in \text{Æ2.b.f}} \vec{v}_\text{f.æ} |}$$
+\frac{\sum\limits_{\text{æ} \in \text{Æ2.b.f}} \vec{v}_\text{æ}}
+{| \sum\limits_{\text{æ} \in \text{Æ2.b.f}} \vec{v}_\text{æ} |}$$
+
 
 The angle of kinematic substantial-field axial misalignment $\chi_\text{a.sf.Æ2.b}$ for the ether batch $Æ2.b$ is:
 
@@ -1103,11 +1104,11 @@ $$
 \text{isotropic/mixed field}
 $$
 
-The average relative velocity $\bar u_\text{Æ2.b.f.æ}$ and the average normalized relative velocity $s_\text{norm.Æ2.b.f.æ}$ of the field etheron $\text{æf}$ of the ether field $Æ2.b.f$ of the ether batch $Æ2.b$:
+The average relative velocity $\bar u_\text{Æ2.b.f.æ}$ and the average normalized relative velocity $s_\text{norm.Æ2.b.f.æ}$ of the field etheron $\text{æ:f}$ of the ether field $Æ2.b.f$ of the ether batch $Æ2.b$:
 
 $$
 \bar u_\text{Æ2.b.f.æ}=
-\frac{\sum_\text{æf} u_\text{æf}}{m_\text{Æ2.b.f}}
+\frac{\sum_\text{æ:f} u_\text{æ:f}}{m_\text{Æ2.b.f}}
 $$
 
 $$
@@ -1133,7 +1134,7 @@ The kinematic coherence coefficient $K_\text{Æ2.b.f}$ of the ether field $Æ2.b
 $$
 K_\text{Æ2.b.f}=
 \frac{
-\left|\sum\limits_{æf \in Æ2.b.f}\hat{u}_\text{æf}\right|
+\left|\sum\limits_{æf \in Æ2.b.f}\hat{u}_\text{æ:f}\right|
 }{
 m_\text{Æ2.b.f}
 }
