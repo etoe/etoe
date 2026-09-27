@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.30
-date: 2026-09-26
+version: 0.1.31
+date: 2026-09-27
 created: 2026-06-01
-updated: 2026-09-26
+updated: 2026-09-27
 status: active
 priority: critical
 audience: LLM, Human
@@ -184,7 +184,8 @@ level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
 
 unit_suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
 
-class             = "b" | "hb" 
+class             = "c"
+                  | "b" | "hb" 
                   | "sp" | "hsp" 
                   | "mj" | "hmj" 
                     | "el" | "ps" 
@@ -410,7 +411,7 @@ It is likely that if, with the existing amount of motion of matter, the amount o
 
 Several etherons can be in one space cell at the same time. A space cell in which there is one etheron or several etherons at a given time tick is called an "occupied cell".
 
-Several etherons can interact simultaneously in one cell of space. The interaction of etherons can be conventionally called "collision of etherons".
+Several etherons can interact simultaneously in one cell of space. The interaction of etherons can be conventionally called "collision of etherons". A "group of collisional etherons in a space cell" is designated as $Æ1.c$ (or $Æc$ for short) and is considered a composite ether object of the first stair - a "collisional group of etherons" or a "collisional ether object of the first stair". A "collisional group of etherons" is not a second-stage ether hyperobject of matter, but it can become one upon the completion of the etheron collision. A group of interacting etherons is treated as a single composite object within the framework of a specific collision event. A collision composition does not imply an increase in the level of matter. A collision group can be interpreted as a pre-emergent configuration. Collision group Æ1.c is a temporary composite ether object of the first stair, comprising a multitude of etherons that mutually participate in a single local act of interaction within a single spatial cell during a single tick or a specific collision cycle. "Etheron collision" is an event, and Æ1.c is the object/configuration of that event.
 
 In one space cell, interacting etherons and etherons that do not interact with the interacting etherons can be present simultaneously.
 
@@ -737,28 +738,29 @@ During the interaction of three or more etherons in a space cell, the fourth and
 
 When three or more etherons interact in a cell of space, the fourth and fifth parameters of each of these etherons can change in accordance with the "substance-field pattern" of the distribution of continuous velocities of etherons in a group of etherons, as well as in accordance with the "law of conservation of inertness" and in accordance with the range of absolute continuous velocities of etherons. If there is no satisfactory solution to the problem of distributing continuous velocities for the parameters of the interacting etherons, then after the interaction, the velocities and directions of the interacting etherons remain unchanged, and the interaction itself is considered transit.
 
-The "law of conservation of inertness" during the interaction of three or more etherons in a cell of space consists in the fact that for collision etherons in a cell of space, the "sum of their inertness vectors" ($\vec{I_c}$) before the collision is equal to the "sum of their inertness vectors" after the collision, and also the "sum of their inertness vector moduli" (${ℐ_c}$) before the collision is equal to the "sum of their inertness vector moduli" after the collision:
+The "law of conservation of inertness" during the interaction of three or more etherons in a cell of space consists in the fact that for collision etherons ($Æ1.c$) in a cell of space, the "sum of their inertness vectors" ($\vec{I}$<sub>Æ1.c</sub>) before the collision is equal to the "sum of their inertness vectors" after the collision, and also the "sum of their inertness vector moduli" (${ℐ}$<sub>Æ1.c</sub>) before the collision is equal to the "sum of their inertness vector moduli" after the collision:
 
-$$\vec{I_c} = \sum_{i=1}^{N} \vec{i}_\text{æi} = const$$
+$$\vec{I}_\text{Æ1.c} = \sum_{\text{æ} \in Æ1.c} \vec{i}_\text{æ} = const$$
 
-$${ℐ_c} = \sum_{i=1}^{N}{i}_\text{æi} = const$$
+$${ℐ}_\text{Æ1.c} = \sum_{\text{æ} \in Æ1.c}{i}_\text{æi} = const$$
+
 
 The "law of conservation of inertness" states that during any interaction of etherons, the following are simultaneously conserved: the total vector of etheron inertness; and the total scalar inertness of etherons. The "law of conservation of inertness" includes the "first law of conservation of inertness" and the "second law of conservation of inertness."
 
 The first law of conservation of inertness is equivalent to the conservation of the weighted sum of etheron directions:
 
-$$\sum_{k=1}^{N} a_k \vec d_k = \mathrm{const}$$
+$$\sum_{\text{æ} \in Æ1.c} a_\text{æ} \vec {d}_\text{æ} = \mathrm{const}$$
 
 The second law of conservation of inertness is equivalent to the conservation of the total delay:
 
-$$\sum_{k=1}^{N} a_k = \mathrm{const}$$
+$$\sum_{\text{æ} \in Æ1.c} a_\text{æ}  = \mathrm{const}$$
 
 The "law of conservation of inertness" can be written in its most compact form as the conservation of a pair of invariants under any collisions of etherons:
 
 $$
 \left(
-\sum_{k=1}^{N}\vec i_k,
-\sum_{k=1}^{N}|\vec i_k|
+\sum_{\text{æ} \in Æ1.c}\vec {i}_\text{æ},
+\sum_{\text{æ} \in Æ1.c}|\vec {i}_\text{æ}|
 \right)
 = \mathrm{const}
 $$
@@ -767,8 +769,8 @@ The "law of conservation of inertness" can be written in its equivalent, most co
 
 $$
 \left(
-\sum_{k=1}^{N} a_k\vec d_k,
-\sum_{k=1}^{N} a_k
+\sum_{\text{æ} \in Æ1.c} a_\text{æ} \vec {d}_\text{æ},
+\sum_{\text{æ} \in Æ1.c} a_\text{æ}
 \right)
 = \mathrm{const}
 $$
@@ -777,9 +779,9 @@ In the simplest model, the "amount of inertness" in the Universe is constant. "�
 
 $$Σiæ=const$$
 
-$$\vec{I}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}} \vec{i}_\text{æi} = \vec{0}$$
+$$\vec{I}_\text{Æ} = \sum_{\text{æ} \in Æ} \vec{i}_\text{æ} = \vec{0}$$
 
-$${ℐ}_\text{Æ} = \sum_{i=1}^{m_\text{Æ}}{i}_\text{æi} = \frac{m_\text{Æ}}{2} $$
+$${ℐ}_\text{Æ} = \sum_{\text{æ} \in Æ}{i}_\text{æ} = \frac{m_\text{Æ}}{2} $$
 
 The introduction of the term "inertness" as a vector into the theory allows for the operation of a conserved pair of invariants as a single object, simplifying the formulation of conservation laws and making them more compact. The term "inertness" does not replace the multi-valued, macro-level classical concept of "inertia", but rather provides a convenient semantic and mathematical construct for the laws of the primary discrete motion of etherons. The theory deliberately distinguishes between the concept of "inertia" and the new term "inertness," thereby establishing a terminological barrier to prevent the new fundamental invariants from being conflated with conventional Newtonian physics. For the first level of matter, due to the specific nature of its laws, the term "inertness" takes precedence over the term "velocity".
 
@@ -793,7 +795,7 @@ Etherons in a group of etherons, moving relative to the trajectory of other ethe
 
 Etherons in a group of etherons, relative to the trajectory of which other etherons in the same group move with approximately the same modules of continuous velocities, but in different directions, are called "substantial etherons".
 
-In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ_c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
+In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ1.c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æf}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æs</sub>) is then calculated, from which the "delay" ($a_{æs}$) and "direction" ($\vec{d}$<sub>æs</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
 
 If the inertness vectors of the etherons of a multi-etheron collision have not changed before ($\vec i_j$) and after $(\vec i_j')$ the multi-etheron collision, then: such a collision is considered transit; the inertial roles of the etherons and the affiliations of the etherons do not change:
 
@@ -807,21 +809,32 @@ $$\exists j: \quad \vec i_j' \ne \vec i_j$$
 
 $$\exists j: \quad (\vec d_j',a_j')\ne(\vec d_j,a_j)$$
 
+Ontological scheme of the etheron collision:
+
+$$
+\text{Æ1.c}
+\quad\longrightarrow\quad
+\begin{cases}
+\text{transit}\\
+\text{synthesis of Æ2.b}
+\end{cases}
+$$
+
 The constancy of the directions of continuous movement of field etherons before and after synthesizing collisions is a structural condition for the existence of stable, scattered ether fields of ether hyperobjects and ensures the preservation of sufficiently long correlations of the directions of field etherons. If each new contact with the external ether also arbitrarily rotated the direction of the already scattered field etheron of an ether hyperobject, the ether field of the ether hyperobject would quickly lose its connection with its original geometry, and instead of a spatially organized field, a nearly isotropic kinetic background would result. An ether field requires not simply the inertness of its etherons, but the coherence of their directions of movement. An etheron collision can redistribute the sum of the inertness moduli of the colliding etherons, but does not destroy the spatial geometry of the directed flow of etherons. The direction of a field etheron is the carrier of the geometric information of the ether field, and the modulus of inertness of a field etheron is the carrier of the amplitude information of the ether field. The preservation of the directions of field etherons can be interpreted as a minimally reorganizing branch of the solution to the collision problem in accordance with the principle of minimizing the restructuring of inertness. The ether field of an ether hyperobject is constructed precisely as a spatiotemporal accumulation of scattered field etherons carrying directional information. Directional stability at the microscopic level is one of the mechanisms from which a macroscopic multicomponent field structure emerges at subsequent levels.
 
-The selection of a substantial etheron in a "group of collision etherons in a spatial cell" ($Æ_c$) occurs according to the "principle of least action of etheron collision". The "principle of least action of etheron collision" is a local rule for selecting the closest permissible redistribution of inertness and consists of redistributing the inertness of collision etherons in accordance with the substance-field pattern through minimal changes in the inertness of collision etherons. The "least action" of an etheron collision means that from several admissible options for local redistribution, the option that requires the least change in the inertness configuration is chosen. The principle of least action of etheron collision is equivalent to minimizing the total value of inertтness rearrangement.
+The selection of a substantial etheron in a "group of collision etherons in a spatial cell" ($Æ1.c$) occurs according to the "principle of least action of etheron collision". The "principle of least action of etheron collision" is a local rule for selecting the closest permissible redistribution of inertness and consists of redistributing the inertness of collision etherons in accordance with the substance-field pattern through minimal changes in the inertness of collision etherons. The "least action" of an etheron collision means that from several admissible options for local redistribution, the option that requires the least change in the inertness configuration is chosen. The principle of least action of etheron collision is equivalent to minimizing the total value of inertтness rearrangement.
 
-The exact algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) amounts to finding the "etheron index" ($æ_s$) with the minimum future value of inertness changes for the entire collision group by comparing candidates ($k$) via the quadratic functional of the minimal rearrangement of the inertness configuration of the collision group. For each candidate $(æ_k)$, a fully defined admissible post-collision state $(\vec i'_j{}^{(k)})$ is constructed for the entire collision group. The quadratic measure means that a large local change is penalized superlinearly compared to many small changes. This is a natural mathematical realization of the idea that "the system prefers to distribute rearrangements rather than concentrate them in one place." The formula for the exact algorithm for selecting a substantial etheron via the quadratic collision action functional is:
+The exact algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ1.c$) amounts to finding the "etheron index" ($æ_s$) with the minimum future value of inertness changes for the entire collision group by comparing candidates ($k$) via the quadratic functional of the minimal rearrangement of the inertness configuration of the collision group. For each candidate $(æ_k)$, a fully defined admissible post-collision state $(\vec i'_j{}^{(k)})$ is constructed for the entire collision group. The quadratic measure means that a large local change is penalized superlinearly compared to many small changes. This is a natural mathematical realization of the idea that "the system prefers to distribute rearrangements rather than concentrate them in one place." The formula for the exact algorithm for selecting a substantial etheron via the quadratic collision action functional is:
 
 $$æ_s = \arg\min_{k\in{1,\ldots,N}} (\frac12 \sum_{j=1}^{N} \left| \vec i'_j{}^{(k)}-\vec i_j \right|^2)$$
 
-A fast heuristic approximate algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ_c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}$<sub>æ</sub>) and the "sum of the inertness vectors of all other collision etherons in the cell":
+A fast heuristic approximate algorithm for selecting a substantial etheron in a "group of collision etherons in a cell of space" ($Æ1.c$) takes into account the vectors of the etheron directions and comes down to finding the "etheron index" ($æ_s$) with the minimum value of the modulus of the difference between the "inertness vector of a collision etheron" ($\vec{i}$<sub>æ</sub>) and the "sum of the inertness vectors of all other collision etherons in the cell":
 
-$$æ_s = \arg\min_{æ \in Æ_c} (| \vec{i}_\text{æ} - \frac{1}{2} \sum_{\text{æ}' \in Æ_c} \vec{i}_{\text{æ}'} |)$$
+$$æ_s = \arg\min_{æ \in Æ1.c} (| \vec{i}_\text{æ} - \frac{1}{2} \sum_{\text{æ}' \in Æ1.c} \vec{i}_{\text{æ}'} |)$$
 
 A fast heuristic approximate algorithm for selecting a substantial etheron can be written in an equivalent, most compact form as finding the "etheron index" ($æ_s$) whose weighted direction is minimally different from the sum of the weighted directions of all other etherons in the group:
 
-$$\text{æ}_s = \arg\min_{\text{æ} \in Æ_c} (| a_\text{æ}\,\vec{d}_\text{æ} - \frac{1}{2} \sum_{\text{æ}' \in Æ_c} a_{\text{æ}'}\,\vec{d}_{\text{æ}'} |)$$
+$$\text{æ}_s = \arg\min_{\text{æ} \in Æ1.c} (| a_\text{æ}\,\vec{d}_\text{æ} - \frac{1}{2} \sum_{\text{æ}' \in Æ1.c} a_{\text{æ}'}\,\vec{d}_{\text{æ}'} |)$$
 
 The "principle of least action" of macrophysics is an emergent principle arising from the statistics of a large number of etheron collisions.
 
@@ -887,7 +900,7 @@ $$\text{ELSE } \{ k = k + 1; \text{GOTO NEXT} \}$$
 
 The interaction of etherons in a cell of space, as a result of which the modules of continuous velocities and reference directions of etherons have changed, is called synthesizing due to the synthesis from this group of etherons of an etheric object of the second level of matter, consisting of substantial and field etherons.
 
-An ether object of the second level of matter is conventionally called "ether batch".
+An ether object of the second level of matter is conventionally termed an "ether batch" and designated as Æ2.b (or Æb for short). The transition $Æ1.c \rightarrow Æ2.b$ (from a collision group of etherons ($Æ1.c$) to an elementary ether batch ($Æ2.b$)) represents a shift from a collision process to an ether hyperobject, whereas the transition $Æ2.b \rightarrow Æ2.hb$ (from an elementary ether batch ($Æ2.b$) to an ether hyperbatch ($Æ2.hb$)) constitutes a transition to a collective pattern.
 
 An etheron that has become a field etheron during synthesizing interaction is called "scattered field etheron". In the simplest model of the ether field, only "scattered field etherons" are defined, and therefore in the simplest model, "field etheron" and "scattered field etheron" are one and the same.
 
