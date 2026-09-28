@@ -65,7 +65,7 @@ $$
 "Space wrapping function" $WS_Æ(n)$, which maps any integer $n$ into the interval $[ -L_Æ/2, L_Æ/2 - 1 ]$ taking into account the cyclic nature of the space:
 
 $$
-WS_{Æ}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}
+W_{\text{S.Æ}}(n) = \left( n + \frac{L_{Æ}}{2} \right)\pmod{L_{Æ}} - \frac{L_{Æ}}{2}
 $$
 
 The unit of measurement of the extent of space in the ether system of units is "æl". The size of a space cell is 1 æl:
@@ -110,20 +110,20 @@ $$
 H_{Æ} = \left\lbrace (t_Æ) \in \mathbb{Z} \mid -\frac{T_{Æ}}{2} \le t_Æ \le \frac{T_{Æ}}{2}-1 \right\rbrace
 $$
 
-A "history wrapper function" $WH_{Æ}(n)$ that maps any integer $n$ to the interval $[ -T_Æ/2, T_Æ/2 - 1 ]$, taking into account the cyclic nature of history:
+A "history wrapper function" $W_{\text{H.Æ}}(n)$ that maps any integer $n$ to the interval $[ -T_Æ/2, T_Æ/2 - 1 ]$, taking into account the cyclic nature of history:
 
 $$
-WH_{Æ}(n) = \left( n + \frac{T_{Æ}}{2} \right)\pmod{T_{Æ}} - \frac{T_{Æ}}{2}
+W_{\text{H.Æ}}(n) = \left( n + \frac{T_{Æ}}{2} \right)\pmod{T_{Æ}} - \frac{T_{Æ}}{2}
 $$
 
 The tick number $0$ is called the "zero tick". In the simplest model and in the simplest computer simulations, the "start of time" occurs at "zero tick". The zero tick at the "start of time" is called the "start tick." After the tick number $T_Æ/2-1$, there is another tick number $-T_Æ/2$:
 
-$$t_Æ = WH_{Æ}(t_Æ+1)$$
+$$t_Æ = W_{\text{H.Æ}}(t_Æ+1)$$
 
-In the simplest model, the "history wrapper function" $WH_{Æ}(n)$ is equivalent to the "space wrapper function" $WS_{Æ}(n)$. For simplicity, in the simplest model, we can use the "dimension wrapper function" $W_{Æ}(n)$ as a general synonym for the "space wrapper function" $WS_{Æ}(n)$ and the "history wrapper function" $WH_{Æ}(n)$:
+In the simplest model, the "history wrapper function" $W_{\text{H.Æ}}(n)$ is equivalent to the "space wrapper function" $W_{\text{S.Æ}}(n)$. For simplicity, in the simplest model, we can use the "dimension wrapper function" $W_{\text{D.Æ}}(n)$ as a general synonym for the "space wrapper function" $W_{\text{S.Æ}}(n)$ and the "history wrapper function" $W_{\text{H.Æ}}(n)$:
 
 $$
-W_{Æ}(n) = WS_{Æ}(n) = WH_{Æ}(n)
+W_{\text{D.Æ}}(n) = W_{\text{S.Æ}}(n) = W_{\text{H.Æ}}(n)
 $$
 
 Each ether object is conventionally assigned to one of eight levels of matter. In physics and chemistry, the term "level" is used to denote a wide variety of relationships, which can lead to confusion in terminology in this context. Therefore, a "level of matter" can also be referred to as a "stair of matter", "rung of matter", "stage of matter", or "step of matter". Collectively, these "stages of matter" form a "ladder of matter", or "stairs of matter". For brevity, the level of matter can be denoted by the capital letter $Æ$ with a number corresponding to the level of matter. Æ1 is the designation for the first level of matter, Æ2 for the second, Æ3 for the third, Æ4 for the fourth, Æ5 for the fifth, Æ6 for the sixth, Æ7 for the seventh, Æ8 for the eighth. A stair of matter is a qualitative type of collective organization of ether objects.
@@ -268,11 +268,17 @@ science_domain    = ident ;
 subdomain         = ident ;
 subsubdomain      = ident ;
 
-aspect_expression = [ ".", dynamic_aspect ]
+aspect_expression = [ ".", dimension_aspect ]
+                  , [ ".", dynamic_aspect ]
                   , [ ".", relation_aspect ] 
-                  , [ ".", æ_state_aspect ]    
+                  , [ ".", æ_state_aspect ]
                   , [ ".", æ_delay_aspect ]
-                  , [ ".", æ_parameter_aspect ] ;                  
+                  , [ ".", æ_parameter_aspect ] ;
+
+dimension_aspect = "dimension" | "D"
+                 | "space" | "S"
+                 | "time" | "T"
+                 | "history" | "H" ;
 
 dynamic_aspect = "kinematic" | "ka"
                | "inertnic" | "ia" ;
@@ -666,11 +672,11 @@ The independence of the total time spent by the etheron on Euclidean motion from
 
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
 
-$$\vec{p}_æ(t) = WS_{Æ}(\vec{r}_{\text{coll.æ}} + \frac {WH_{Æ}(t - t_{\text{coll.æ}})\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
+$$\vec{p}_æ(t) = W_{\text{S.Æ}}(\vec{r}_{\text{coll.æ}} + \frac {W_{\text{H.Æ}}(t - t_{\text{coll.æ}})\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
 
 Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $t_{\text{coll.æ}}$:
 
-$$WH_{Æ}(t-t_{\text{coll.æ}}) \ll T_Æ$$
+$$W_{\text{H.Æ}}(t-t_{\text{coll.æ}}) \ll T_Æ$$
 
 Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection". "Special protection" in a computer simulation is needed not because cyclic time is physically "broken", but because the computer in the general case needs to limit the interpretation of the old initial parameters of the free movement of etherons. Nature does not need to install "special protection" because the collision dynamics itself regularly updates the reference points of the free movement of etherons.
 
