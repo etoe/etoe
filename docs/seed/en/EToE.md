@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.35
+version: 0.1.36
 date: 2026-09-28
 created: 2026-06-01
 updated: 2026-09-28
@@ -306,6 +306,9 @@ relation_aspect = "substance-field" | "sf"
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
                   | "peak" | "mean" | "std" 
+                  | "norm" | "syn"
+                  | "parallel" | "par" 
+                  | "perpendicular | "perp"
                   | "crit" ;  
 
 object_notation   = æ_notation | chemical_notation ;
@@ -423,6 +426,7 @@ unescaped_char    = ? Unicode scalar value,
                       except U+0000–U+001F,
                       U+0022 и U+005C ? ;
 ```
+The EBNF grammar for the ÆToE ether statement defines the statement as a linear sequence of symbols in which structural relationships between segments are expressed by explicit delimiters: the dot (`.`), colon (`:`), hyphen (`-`), curly braces (`{}`), parentheses (`()`), apostrophe (`'`), and comma (`,`). The ÆToE EBNF grammar does not recognize LaTeX markup and contains no rules for LaTeX commands, LaTeX groups, or LaTeX subscripts. LaTeX markup introduces an additional layer of representation to the ether statement that is not part of the ÆToE grammar; for instance, Greek letters and letter-like symbols may be encoded using LaTeX commands (such as `tau`, `rho`, `chi`, `Pi`, `hbar`, etc.). The relationship between the EBNF form of an ether statement and its LaTeX form is one of representation rather than identity: the LaTeX form is one possible external representation of the ether statement, whereas the EBNF form constitutes its canonical form within the ÆToE grammar. In a LaTeX document where an ether statement is written in LaTeX form, subscripts and superscripts implicitly serve as structural delimiters — roles that are expressed by the dot in the EBNF form. In other words, the LaTeX form of an ether statement implicitly includes an "invisible dot" before every subscript and superscript; this structural delimiter is written explicitly in the EBNF form but omitted in the LaTeX form as visually redundant. An ether statement in LaTeX form cannot be fed directly into the parser for the ÆToE EBNF grammar. Before parsing, an ether assertion in LaTeX form must undergo de-LaTeX-ization — the conversion of the LaTeX form of the ether assertion into its EBNF form. De-LaTeX-ization of an ether assertion is a deterministic transformation that maps each LaTeX construct within the assertion to its EBNF equivalent. De-LaTeX-ization is neither part of the ÆToE EBNF grammar nor part of the ÆToE semantic validator; rather, it is a preparatory step performed before the ÆToE EBNF grammar is applied. For example, LaTeX commands for Greek letters and letter-like symbols are replaced by the corresponding Unicode characters from the `greek_letter`, `greek_variant_letter`, and `letterlike_symbol` sets. LaTeX constructs lacking an EBNF equivalent in the ÆToE grammar are either mapped to the nearest valid EBNF segment or flagged as a grammar extension requiring a separate solution. De-LaTeX-ization is a preliminary stage in processing an ether assertion found within a LaTeX document; it does not replace semantic validation. Following de-LaTeX-ization, the ether assertion in EBNF form is fed into the ÆToE EBNF grammar and subsequently into the ÆToE semantic validator. In ÆToE formulations where ether assertions are written in LaTeX form, subscripts and superscripts should be interpreted as LaTeX representations of EBNF segments rather than as independent EBNF segments. This rule separates the representation of an ether statement from its canonical form and prevents the mixing of LaTeX markup with the ÆToE EBNF grammar. Reliable de-LaTeXing requires a deterministic pipeline: LaTeX tokenization; parsing into an AST; converting the AST into an EBNF-AST based on explicit rules; serialization into an EBNF string; and validation against the ÆToE grammar.
 
 The semantic validator for the ether assertion notation verifies the physical and mathematical correctness of both the ether assertion itself and the structure of the ether objects within that assertion. For example, the ether object of a certain stair of matter cannot contain, as sub-objects, the ether objects of subsequent stairs of matter.
 
@@ -558,11 +562,11 @@ $$τ_{\text{step.æ}} = 1 + τ_{\text{s3.æ}} + τ_{\text{s4.æ}} = 1 + τ_{\tex
 
 The cycle of an etheron is a sequence of states starting with the first state and ending with the fourth state. The duration of the etheron cycle is denoted by $τ_æ$.
 
-An etheron cycle without the second state of the etheron is called a "free cycle". The duration of the free cycle of etheron is denoted by $τ_{\text{frc.æ}}$. The duration of the free cycle of etheron is made up of the duration of the first state, the duration of the third state, and the duration of the fourth state: 
+An etheron cycle without the second state of the etheron is called a "free cycle". The duration of the free cycle of etheron is denoted by $τ_{\text{freec.æ}}$. The duration of the free cycle of etheron is made up of the duration of the first state, the duration of the third state, and the duration of the fourth state: 
 
-$$τ_{\text{frc.æ}} = τ_{\text{s1.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
+$$τ_{\text{freec.æ}} = τ_{\text{s1.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
 
-$$τ_{\text{frc.æ}} \ge 3$$
+$$τ_{\text{freec.æ}} \ge 3$$
 
 An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τ_{\text{collc.æ}}$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
 
