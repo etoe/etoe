@@ -509,7 +509,7 @@ $$\forall æ \quad f_{æ}^{(t_Æ+1)} = 0$$
 
 $$f_{æ}^{(t_Æ)} = \Phi(\, f_{æ}^{(t_Æ)} \lor F_{æ}^{(t_Æ)} \,)$$
 
-The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ_{\text{s1.æ}}$. The duration of the first state of the etheron is at least one tick of time:
+The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_{\text{æ}}$. The duration of the first state of the etheron is denoted by $τ_{\text{s1.æ}}$. The duration of the first state of the etheron is at least one tick of time:
 
 $$τ_{\text{s1.æ}} \ge 1$$
 
@@ -533,15 +533,15 @@ The duration of the first state of the etheron consists of the duration of the "
 
 $$τ_{\text{s1.æ}} = τ_{\text{s1.base.æ}} + τ_{\text{s1.comp.æ}} + τ_{\text{s1.add.æ}} + τ_{\text{s1.rnd.æ}}$$
 
-The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_æ$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ_{\text{s2.æ}}$. The duration of the second state of the etheron is at least one tick of time:
+The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_{\text{æ}}$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ_{\text{s2.æ}}$. The duration of the second state of the etheron is at least one tick of time:
 
 $$τ_{\text{s2.æ}} \ge 1$$
 
-The third state of an etheron is "movement from the cell" in which the etheron is located. The third state of an etheron can be called "the departure of an etheron". The third state of the etheron is denoted $s3_æ$. An etheron usually moves to the third state from the first state if there are no other etherons in the first state in the space cell, and if a time tick has arrived in which, in accordance with the parameters of the etheron's movement, it is necessary to move from the space cell. But sometimes an etheron can spontaneously remain in the first state for another time tick, even if it should have moved to the third state. If an etheron spontaneously remains in the first state, then when other etherons appear in the cell, the etheron will move to the second state, not to the third state. An etheron also moves to the third state from the second state. The duration of the third state of the etheron is denoted by $τ_{\text{s3.æ}}$. The duration of the third state of an etheron is at least one tick of time:
+The third state of an etheron is "movement from the cell" in which the etheron is located. The third state of an etheron can be called "the departure of an etheron". The third state of the etheron is denoted $s3_{\text{æ}}$. An etheron usually moves to the third state from the first state if there are no other etherons in the first state in the space cell, and if a time tick has arrived in which, in accordance with the parameters of the etheron's movement, it is necessary to move from the space cell. But sometimes an etheron can spontaneously remain in the first state for another time tick, even if it should have moved to the third state. If an etheron spontaneously remains in the first state, then when other etherons appear in the cell, the etheron will move to the second state, not to the third state. An etheron also moves to the third state from the second state. The duration of the third state of the etheron is denoted by $τ_{\text{s3.æ}}$. The duration of the third state of an etheron is at least one tick of time:
 
 $$τ_{\text{s3.æ}} \ge 1$$
 
-The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_æ$. The etheron moves to the fourth state from the third state. The etheron moves to the first state from the fourth state. The duration of the fourth state of the etheron is denoted by $τ_{\text{s4.æ}}$. The duration of the fourth state of the etheron is at least one tick of time:
+The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_{\text{æ}}$. The etheron moves to the fourth state from the third state. The etheron moves to the first state from the fourth state. The duration of the fourth state of the etheron is denoted by $τ_{\text{s4.æ}}$. The duration of the fourth state of the etheron is at least one tick of time:
 
 $$τ_{\text{s4.æ}} \ge 1$$
 
@@ -689,11 +689,11 @@ The number of etherons in the "rest" state ( $s1$<sub>æ</sub> ) in a cell of sp
 
 $$N_{\text{s1.Æ}}(\vec{p}) = \sum_{æ \in Æ} \delta(\vec{r}_{\text{æ}}, \vec{p}) \cdot \delta(s_{\text{æ}}, 1)$$
 
-The transition of an etheron from the "rest" state ( $s1_æ$ ) to the "moving from the cell" state ( $s3_æ$ ), provided that there are no other etherons in the "rest" state in the cell, occurs if its position in space ( $\vec{r}$<sub>æ</sub> ) at the current time tick ( $t$<sub>Æ</sub> ) does not coincide with the position $\vec{p}$<sub>æ</sub>$(t$<sub>Æ</sub>$)$, where the etheron should be:
+The transition of an etheron from the "rest" state ( $s1_{\text{æ}}$ ) to the "moving from the cell" state ( $s3_{\text{æ}}$ ), provided that there are no other etherons in the "rest" state in the cell, occurs if its position in space ( $\vec{r}$<sub>æ</sub> ) at the current time tick ( $t$<sub>Æ</sub> ) does not coincide with the position $\vec{p}$<sub>æ</sub>$(t$<sub>Æ</sub>$)$, where the etheron should be:
 
 $$s_{\text{æ}}^{(1)} \longrightarrow s_{\text{æ}}^{(3)}, \quad \text{for} \quad ( N_{\text{s1.Æ}}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}}))$$
 
-In the "moving out of cell" state ($s3_æ$), the etheron determines which neighboring cell $\vec{p}$<sub>n</sub> it must go to in order to get to the cell $\vec{p}$<sub>t</sub> where it should be. In a computer simulation, an algorithm similar to a digital differential analyzer (DDA) adapted to toroidal space can be used to find the next neighboring cell $\vec{p}$<sub>n</sub> on the way from the current cell $\vec{r}$<sub>æ</sub> to the cell $\vec{p}$<sub>t</sub> where the etheron should be:
+In the "moving out of cell" state ($s3_{\text{æ}}$), the etheron determines which neighboring cell $\vec{p}$<sub>n</sub> it must go to in order to get to the cell $\vec{p}$<sub>t</sub> where it should be. In a computer simulation, an algorithm similar to a digital differential analyzer (DDA) adapted to toroidal space can be used to find the next neighboring cell $\vec{p}$<sub>n</sub> on the way from the current cell $\vec{r}$<sub>æ</sub> to the cell $\vec{p}$<sub>t</sub> where the etheron should be:
 
 $$\vec{r}_æ = (x_æ, y_æ, z_æ) \in S$$
 
@@ -709,7 +709,7 @@ $$\Delta\vec{p} = \mathop {\text{sgn}(\delta'_{i_{dom}})} \cdot \vec{e}_{i_{dom}
 
 $$\vec{p}_{n} = (W_{\text{Æ}}(x_æ + \Delta p_x), W_{\text{Æ}}(y_æ + \Delta p_y), W_{\text{Æ}}(z_æ + \Delta p_z))$$
 
-In the state of "moving to a cell" ($s4_æ$), the etheron's "position" parameter $\vec{r}_æ$ becomes equal to the position of the cell $\vec{p}$<sub>n</sub> it arrived at:
+In the state of "moving to a cell" ($s4_{\text{æ}}$), the etheron's "position" parameter $\vec{r}_æ$ becomes equal to the position of the cell $\vec{p}$<sub>n</sub> it arrived at:
 
 $$s_{\text{æ}} = s^{(4)} \implies \vec{r}_{\text{æ}} = \vec{p}_{n}$$
 
