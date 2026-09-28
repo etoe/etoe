@@ -679,7 +679,7 @@ The absolute position of the etheron in space $\vec{p}_æ$, where at some point 
 
 $$\vec{p}_æ(t) = W_{\text{S.Æ}}(\vec{r}_{\text{coll.æ}} + \frac {W_{\text{H.Æ}}(t - t_{\text{coll.æ}})\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
 
-Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $t_{\text{coll.æ}}$:
+Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_{\text{æ}}(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $t_{\text{coll.æ}}$:
 
 $$W_{\text{H.Æ}}(t-t_{\text{coll.æ}}) \ll T_Æ$$
 
