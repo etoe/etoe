@@ -271,7 +271,8 @@ subsubdomain      = ident ;
 aspect_expression = [ ".", dynamic_aspect ]
                   , [ ".", relation_aspect ] 
                   , [ ".", æ_state_aspect ]    
-                  , [ ".", æ_delay_aspect ] ;
+                  , [ ".", æ_delay_aspect ]
+                  , [ ".", æ_parameter_aspect ] ;                  
 
 dynamic_aspect = "kinematic" | "ka"
                | "inertnic" | "ia" ;
@@ -285,14 +286,16 @@ relation_aspect = "substance-field" | "sf"
                | "state4" | "s4" | "arrival" 
                | "jump" | "jmp" | "s3s4"
                | "free-cycle" | "freec" | "s1s3s4"
-               | "collision-cycle" | "colc" | "s1s2s3s4" ;
+               | "collision-cycle" | "collc" | "s1s2s3s4" ;
 
 æ_delay_aspect = "base"
                | "spontaneous" | "spont" | "random" | "rnd"
                | "compensatory" | "comp"
                | "additional" | "add" 
                | "step"
-               | "move" ;                 
+               | "move" ;  
+
+æ_parameter_aspect = "collision" | "coll";
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -555,11 +558,11 @@ $$τ_{\text{frc.æ}} = τ_{\text{s1.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}
 
 $$τ_{\text{frc.æ}} \ge 3$$
 
-An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τ_{\text{colc.æ}}$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
+An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τ_{\text{collc.æ}}$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
 
-$$τ_{\text{colc.æ}} = τ_{\text{s1.æ}} + τ_{\text{s2.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
+$$τ_{\text{collc.æ}} = τ_{\text{s1.æ}} + τ_{\text{s2.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
 
-$$τ_{\text{colc.æ}} \ge 4$$
+$$τ_{\text{collc.æ}} \ge 4$$
 
 Velocity relative to absolute space is called "absolute velocity".
 
@@ -601,9 +604,9 @@ Transformations of coordinates and continuous velocity of an etheron or group of
 
 The first parameter of an etheron is the absolute position of the cell in which the etheron is located at the current time tick. The first parameter of an etheron is called "position". The first parameter of the etheron is denoted by $\vec{r}_æ$. At the starting tick of time in the simplest model, in each cell of space there is one etheron with the first parameter equal to the position of the cell in which this etheron is located.
 
-The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{rc}_æ$. The second parameter of the etheron actually determines where the current free section of its movement begins. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
+The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{r}_{\text{coll.æ}}$. The second parameter of the etheron actually determines where the current free section of its movement begins. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
 
-The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $tc_æ$. The third parameter of the etheron actually determines when the current free section of the etheron's movement begins. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
+The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $t_{\text{coll.æ}}$. The third parameter of the etheron actually determines when the current free section of the etheron's movement begins. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
 
 The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of an etheron is called "direction". The fourth parameter of an etheron is denoted by $\vec{d}_æ$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from $-D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
 
@@ -619,11 +622,11 @@ $$a_{avg.æ}= \frac{D_Æ}{2}$$
 
 The fifth parameter of the etheron is the "total additional delay" of the etheron in time ticks in the "rest" state, with which the etheron, in free movement, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called the "delay". The fifth parameter of the etheron is denoted by $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" during the Euclidean free continuous movement of the etheron by the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous speeds of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous speeds of the etheron.
 
-In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub> ) of each etheron into the "collision position" parameter ( $\vec{rc}$<sub>æ</sub> ) of that etheron and zeroing the "collision tick" parameter ( $tc_{æ}$ ) of each etheron at zero tick of time ( $t_Æ=0$ ) prevents uncertainty in the time elapsed since collisions:
+In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub> ) of each etheron into the "collision position" parameter ( $\vec{r}$<sub>coll.æ</sub> ) of that etheron and zeroing the "collision tick" parameter ( $t_{\text{coll.æ}}$ ) of each etheron at zero tick of time ( $t_Æ=0$ ) prevents uncertainty in the time elapsed since collisions:
 
-$$\forall æ \quad \vec{rc}_{æ}^{(t_Æ=0)} = \vec{r}_{æ}$$
+$$\forall æ \quad \vec{r}_{\text{coll.æ}}^{(t_Æ=0)} = \vec{r}_{æ}$$
 
-$$\forall æ \quad tc_{æ}^{(t_Æ=0)} = 0$$
+$$\forall æ \quad t_{\text{coll.æ}}^{(t_Æ=0)} = 0$$
 
 At the start of the Universe and at the start of the computer simulation, there are essentially no previous etheron collisions. Therefore, before the first etheron interaction, it is conventionally assumed that the initial etheron collision occurred at the moment of the launch of space-time-ether, right here and right now. On the starting tick, "where the etheron is actually located" coincides with "where it should be according to its free movement".
 
@@ -663,11 +666,11 @@ The independence of the total time spent by the etheron on Euclidean motion from
 
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
 
-$$\vec{p}_æ(t) = WS_{Æ}(rc_æ + \frac {WH_{Æ}(t - tc_æ)\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
+$$\vec{p}_æ(t) = WS_{Æ}(\vec{r}_{\text{coll.æ}} + \frac {WH_{Æ}(t - t_{\text{coll.æ}})\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
 
-Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $tc_æ$:
+Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}_æ(t)$, the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $t_{\text{coll.æ}}$:
 
-$$WH_{Æ}(t-tc_æ) \ll T_Æ$$
+$$WH_{Æ}(t-t_{\text{coll.æ}}) \ll T_Æ$$
 
 Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection". "Special protection" in a computer simulation is needed not because cyclic time is physically "broken", but because the computer in the general case needs to limit the interpretation of the old initial parameters of the free movement of etherons. Nature does not need to install "special protection" because the collision dynamics itself regularly updates the reference points of the free movement of etherons.
 
@@ -853,7 +856,7 @@ Etherons in a group of etherons, moving relative to the trajectory of other ethe
 
 Etherons in a group of etherons, relative to the trajectory of which other etherons in the same group move with approximately the same modules of continuous velocities, but in different directions, are called "substantial etherons".
 
-In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ1.c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æs$), and all other etherons in the collision become field etherons ($æf$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æ:f}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æ:s</sub>) is then calculated, from which the "delay" ($a_{æ:s}$) and "direction" ($\vec{d}$<sub>æ:s</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
+In the simplest version of the substance-field pattern, for any "group of collision etherons" ($Æ1.c$), their "delays" and "directions" after a collision are calculated in such a way that the one etheron that most closely resembles the substantial etheron in the pattern of inertness distribution between the collision etherons becomes the substantial etheron ($æ:s$), and all other etherons in the collision become field etherons ($æ:f$). After which, the same "inertness vector modulus" ($\lvert \vec{i}\_{\text{æ:f}} \rvert$) is first calculated for all field etherons, provided that the directions of the field etherons do not change after the collision, that the "inertness vector modulus" does not go beyond the range of the "inertness vector modulus", and that the law of conservation of inertness is satisfied. The "inertness vector" of the substantial etheron ($\vec{i}$<sub>æ:s</sub>) is then calculated, from which the "delay" ($a_{æ:s}$) and "direction" ($\vec{d}$<sub>æ:s</sub>) of the substantial etheron are derived. Changing the distribution of inertness between field etherons does not always require changing the "inertness vector" of the selected substantial etheron. In general, a change in the inertness of the selected substantial etheron is not a necessary condition for a synthesizing collision. The inertness modules of all or part of the field etherons may change, but the "inertia vector" of the selected substantial etheron may remain the same. If the "inertness vector" of the selected substantial etheron has changed, then the new "delay" and new "direction" for the substantial etheron will compensate for the changes in the "inertness vector magnitudes" of the field etherons.
 
 If the inertness vectors of the etherons of a multi-etheron collision have not changed before ($\vec i_j$) and after $(\vec i_j')$ the multi-etheron collision, then: such a collision is considered transit; the inertial roles of the etherons and the affiliations of the etherons do not change:
 
@@ -1027,7 +1030,7 @@ For an ether batch $Æ2.b$ comprising a set of substantial etherons $Æ2.b.s$, t
 $$\hat{e}_\text{ia.Æ2.b}=-\frac{\sum\limits_{\text{æ} \in \text{Æ2.b.s}} \vec{i}_\text{æ}}
 {| \sum\limits_{\text{æ} \in \text{Æ2.b.s}} \vec{i}_\text{æ} |}$$
 
-For substantial etherons of a coherent ether batch, the directions $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> almost coincide; therefore, the formulas $\hat{e}$<sub>ka.Æ2.b</sub> and $\hat{e}$<sub>ia.Æ2.b</sub> will yield practically identical results. However, if the inertness magnitudes of the etherons differ significantly, the directions of the sums $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> may diverge slightly. Both sums are weighted sums of the same unit directions $-\hat{i}$<sub>æ</sub>, but with different weights: in the velocity sum, the weight of an etheron is $\dfrac{1}{\tau b_{\text{æ}}\sqrt{3} + i_{\text{æ}}}$ — that is, it decreases as $i_{\text{æ}}$ increases — whereas in the inertness sum, the weight is $i_{\text{æ}}$ — that is, it increases as $i_{\text{æ}}$ increases. Therefore, fast etherons (low $i_{\text{æ}}$) dominate the velocity sum, while slow etherons (high $i_{\text{æ}}$) dominate the inertness sum. For determining the axis of the batch's motion, the formula based on $\vec{v}$<sub>æ</sub> is intuitively clearer and closer to kinematics. The "axis of motion" intuitively signifies "where the object is moving". The kinematic axis of motion is the direction of the total momentum of the substance. The inertnic axis is the direction aligned with the conserved sum of inertnesses. The kinematic axis indicates the direction in which the group is actually moving. The inertnic axis indicates the direction of the group's conserved inertnic "charge" — the attribute that determines its response to interactions and is conserved during collisions. This is neither the "direction of motion" nor the "direction of momentum." Rather, it is the direction of the group's inertnic core — the part that is "heaviest" in terms of lag and most resistant to reconfiguration. An inertnic axis is a direction that: does not change during internal collisions within the group; determines how the group redistributes inertness upon colliding with external etherons; and serves as a "hidden" parameter — invisible in the motion itself, yet governing the interaction. The divergence between the kinematic and inertnic axes is a measure of the group's internal kinematic inhomogeneity. It indicates the extent to which the group's fast and slow etherons "disagree" on the direction of motion.
+For substantial etherons of a coherent ether batch, the directions $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> almost coincide; therefore, the formulas $\hat{e}$<sub>ka.Æ2.b</sub> and $\hat{e}$<sub>ia.Æ2.b</sub> will yield practically identical results. However, if the inertness magnitudes of the etherons differ significantly, the directions of the sums $\vec{v}$<sub>æ</sub> and $-\vec{i}$<sub>æ</sub> may diverge slightly. Both sums are weighted sums of the same unit directions $-\hat{i}$<sub>æ</sub>, but with different weights: in the velocity sum, the weight of an etheron is $\dfrac{1}{\tau _{\text{move.æ}}\sqrt{3} + i_{\text{æ}}}$ — that is, it decreases as $i_{\text{æ}}$ increases — whereas in the inertness sum, the weight is $i_{\text{æ}}$ — that is, it increases as $i_{\text{æ}}$ increases. Therefore, fast etherons (low $i_{\text{æ}}$) dominate the velocity sum, while slow etherons (high $i_{\text{æ}}$) dominate the inertness sum. For determining the axis of the batch's motion, the formula based on $\vec{v}$<sub>æ</sub> is intuitively clearer and closer to kinematics. The "axis of motion" intuitively signifies "where the object is moving". The kinematic axis of motion is the direction of the total momentum of the substance. The inertnic axis is the direction aligned with the conserved sum of inertnesses. The kinematic axis indicates the direction in which the group is actually moving. The inertnic axis indicates the direction of the group's conserved inertnic "charge" — the attribute that determines its response to interactions and is conserved during collisions. This is neither the "direction of motion" nor the "direction of momentum." Rather, it is the direction of the group's inertnic core — the part that is "heaviest" in terms of lag and most resistant to reconfiguration. An inertnic axis is a direction that: does not change during internal collisions within the group; determines how the group redistributes inertness upon colliding with external etherons; and serves as a "hidden" parameter — invisible in the motion itself, yet governing the interaction. The divergence between the kinematic and inertnic axes is a measure of the group's internal kinematic inhomogeneity. It indicates the extent to which the group's fast and slow etherons "disagree" on the direction of motion.
 
 The axial misalignment angle $\chi_\text{Æ2.b}$ of the ether batch $Æ2.b$:
 
