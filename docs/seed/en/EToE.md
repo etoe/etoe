@@ -671,13 +671,13 @@ $$WH_{Æ}(t-tc_æ) \ll T_Æ$$
 
 Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection". "Special protection" in a computer simulation is needed not because cyclic time is physically "broken", but because the computer in the general case needs to limit the interpretation of the old initial parameters of the free movement of etherons. Nature does not need to install "special protection" because the collision dynamics itself regularly updates the reference points of the free movement of etherons.
 
-The number of etherons in the "rest" state ( $s1$<sub>æ</sub> ) in a cell of space with position $\vec{p}$ is denoted by $N_{s1æ}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
+The number of etherons in the "rest" state ( $s1$<sub>æ</sub> ) in a cell of space with position $\vec{p}$ is denoted by $N_{\text{s1.Æ}}(\vec{p})$ and is expressed through summation over all etherons from the set $Æ$ using the Kronecker delta symbol $\delta$:
 
-$$N_{s1æ}(\vec{p}) = \sum_{æ \in Æ} \delta(\vec{r}_{\text{æ}}, \vec{p}) \cdot \delta(s_{\text{æ}}, 1)$$
+$$N_{\text{s1.Æ}}(\vec{p}) = \sum_{æ \in Æ} \delta(\vec{r}_{\text{æ}}, \vec{p}) \cdot \delta(s_{\text{æ}}, 1)$$
 
 The transition of an etheron from the "rest" state ( $s1_æ$ ) to the "moving from the cell" state ( $s3_æ$ ), provided that there are no other etherons in the "rest" state in the cell, occurs if its position in space ( $\vec{r}$<sub>æ</sub> ) at the current time tick ( $t$<sub>Æ</sub> ) does not coincide with the position $\vec{p}$<sub>æ</sub>$(t$<sub>Æ</sub>$)$, where the etheron should be:
 
-$$s_{\text{æ}}^{(1)} \longrightarrow s_{\text{æ}}^{(3)}, \quad \text{for} \quad ( N_{s1æ}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}}))$$
+$$s_{\text{æ}}^{(1)} \longrightarrow s_{\text{æ}}^{(3)}, \quad \text{for} \quad ( N_{\text{s1.Æ}}(\vec{r}_{\text{æ}}) = 1 ) \land (\vec{r}_{\text{æ}} \neq p_{\text{æ}}(t_{\text{Æ}}))$$
 
 In the "moving out of cell" state ($s3_æ$), the etheron determines which neighboring cell $\vec{p}$<sub>n</sub> it must go to in order to get to the cell $\vec{p}$<sub>t</sub> where it should be. In a computer simulation, an algorithm similar to a digital differential analyzer (DDA) adapted to toroidal space can be used to find the next neighboring cell $\vec{p}$<sub>n</sub> on the way from the current cell $\vec{r}$<sub>æ</sub> to the cell $\vec{p}$<sub>t</sub> where the etheron should be:
 
