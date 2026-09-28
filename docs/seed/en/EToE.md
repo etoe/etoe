@@ -309,7 +309,8 @@ character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "norm" | "syn"
                   | "parallel" | "par" 
                   | "perpendicular | "perp"
-                  | "crit" ;  
+                  | "old" | "new"
+                  | "crit" ;   
 
 object_notation   = æ_notation | chemical_notation ;
 
