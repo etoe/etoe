@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.34
-date: 2026-09-27
+version: 0.1.35
+date: 2026-09-28
 created: 2026-06-01
-updated: 2026-09-27
+updated: 2026-09-28
 status: active
 priority: critical
 audience: LLM, Human
@@ -253,7 +253,7 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
 mass              = number ;
 
 quantity_expression = quantity, [".", science_context]
-                    , [".", aspect_expression]
+                    , [aspect_expression]
                     , [".", character]
                     , ".", object_notation ;
 
@@ -268,14 +268,31 @@ science_domain    = ident ;
 subdomain         = ident ;
 subsubdomain      = ident ;
 
-aspect_expression = aspect
-                  , [ ".", subaspect ] ;
+aspect_expression = [ ".", dynamic_aspect ]
+                  , [ ".", relation_aspect ] 
+                  , [ ".", æ_state_aspect ]    
+                  , [ ".", æ_delay_aspect ] ;
 
-aspect       = "kinematic" | "ka"
-             | "inertnic" | "ia" ;
+dynamic_aspect = "kinematic" | "ka"
+               | "inertnic" | "ia" ;
 
-subaspect    = "substance-field" | "sf" 
-             | "hyperobject-medium" | "hm" ;
+relation_aspect = "substance-field" | "sf" 
+                | "hyperobject-medium" | "hm" ;
+
+æ_state_aspect = "state1" | "s1" | "rest"
+               | "state2" | "s2" | "interaction"
+               | "state3" | "s3" | "departure"
+               | "state4" | "s4" | "arrival" 
+               | "jump" | "jmp" | "s3s4"
+               | "free-cycle" | "freec" | "s1s3s4"
+               | "collision-cycle" | "colc" | "s1s2s3s4" ;
+
+æ_delay_aspect = "base"
+               | "spontaneous" | "spont" | "random" | "rnd"
+               | "compensatory" | "comp"
+               | "additional" | "add" 
+               | "step"
+               | "move" ;                 
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -478,71 +495,71 @@ $$\forall æ \quad f_{æ}^{(t_Æ+1)} = 0$$
 
 $$f_{æ}^{(t_Æ)} = \Phi(\, f_{æ}^{(t_Æ)} \lor F_{æ}^{(t_Æ)} \,)$$
 
-The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ1_æ$. The duration of the first state of the etheron is at least one tick of time:
+The first state of the etheron is the "rest of the etheron" in the cell of space. The first state of the etheron is designated $s1_æ$. The duration of the first state of the etheron is denoted by $τ_{\text{s1.æ}}$. The duration of the first state of the etheron is at least one tick of time:
 
-$$τ1_æ \ge 1$$
+$$τ_{\text{s1.æ}} \ge 1$$
 
-The first tick in the "rest" state is conventionally called the "tick of the basic delay". The duration of the "basic delay" of the etheron is denoted by $τ1b_æ$:
+The first tick in the "rest" state is conventionally called the "tick of the basic delay". The duration of the "basic delay" of the etheron is denoted by $τ_{\text{s1.base.æ}}$:
 
-$$τ1b_æ \ge 1$$
+$$τ_{\text{s1.base.æ}} \ge 1$$
 
-If the etheron spontaneously remains in the first state for one more tick when it should have passed to the third state, then such a tick is conventionally called the "tick of the spontaneous delay". The duration of the "spontaneous delay" of the etheron is denoted by $τ1r_æ$:
+If the etheron spontaneously remains in the first state for one more tick when it should have passed to the third state, then such a tick is conventionally called the "tick of the spontaneous delay". The duration of the "spontaneous delay" of the etheron is denoted by $τ_{\text{s1.rnd.æ}}$:
 
-$$τ1r_æ \ge 0$$
+$$τ_{\text{s1.rnd.æ}} \ge 0$$
 
-If the etheron remains in the first state for one more tick to compensate for the deficit of jumps in the direction of its continuous movement, then such a tick is conventionally called the "tick of the compensatory delay". The duration of the "compensatory delay" of the etheron is denoted by $τ1c_æ$:
+If the etheron remains in the first state for one more tick to compensate for the deficit of jumps in the direction of its continuous movement, then such a tick is conventionally called the "tick of the compensatory delay". The duration of the "compensatory delay" of the etheron is denoted by $τ_{\text{s1.comp.æ}}$:
 
-$$τ1c_æ \ge 0$$
+$$τ_{\text{s1.comp.æ}} \ge 0$$
 
-If the etheron remains in the first state for one more tick to implement a decrease in the continuous speed in the direction of its continuous movement in accordance with the fifth parameter of the etheron, then such a tick is called the "tick of the additional delay". The duration of the "additional delay" of the etheron is denoted by $τ1a_æ$:
+If the etheron remains in the first state for one more tick to implement a decrease in the continuous speed in the direction of its continuous movement in accordance with the fifth parameter of the etheron, then such a tick is called the "tick of the additional delay". The duration of the "additional delay" of the etheron is denoted by $τ_{\text{s1.add.æ}}$:
 
-$$τ1a_æ \ge 0$$
+$$τ_{\text{s1.add.æ}} \ge 0$$
 
 The duration of the first state of the etheron consists of the duration of the "basic delay", the duration of the "compensatory delay", the duration of the "additional delay" and the duration of the "spontaneous delay": 
 
-$$τ1_æ = τ1b_æ + τ1c_æ + τ1a_æ + τ1r_æ$$
+$$τ_{\text{s1.æ}} = τ_{\text{s1.base.æ}} + τ_{\text{s1.comp.æ}} + τ_{\text{s1.add.æ}} + τ_{\text{s1.rnd.æ}}$$
 
-The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_æ$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ2_æ$. The duration of the second state of the etheron is at least one tick of time:
+The second state of the etheron is the "interaction of the etheron" in a cell of space with other etherons located in the same cell. The second state of the etheron is denoted $s2_æ$.The etheron always passes into the second state from the first state if there are other etherons in the first state in the cell of space. The duration of the second state of the etheron is denoted by $τ_{\text{s2.æ}}$. The duration of the second state of the etheron is at least one tick of time:
 
-$$τ2_æ \ge 1$$
+$$τ_{\text{s2.æ}} \ge 1$$
 
-The third state of an etheron is "movement from the cell" in which the etheron is located. The third state of an etheron can be called "the departure of an etheron". The third state of the etheron is denoted $s3_æ$. An etheron usually moves to the third state from the first state if there are no other etherons in the first state in the space cell, and if a time tick has arrived in which, in accordance with the parameters of the etheron's movement, it is necessary to move from the space cell. But sometimes an etheron can spontaneously remain in the first state for another time tick, even if it should have moved to the third state. If an etheron spontaneously remains in the first state, then when other etherons appear in the cell, the etheron will move to the second state, not to the third state. An etheron also moves to the third state from the second state. The duration of the third state of the etheron is denoted by $τ3_æ$. The duration of the third state of an etheron is at least one tick of time:
+The third state of an etheron is "movement from the cell" in which the etheron is located. The third state of an etheron can be called "the departure of an etheron". The third state of the etheron is denoted $s3_æ$. An etheron usually moves to the third state from the first state if there are no other etherons in the first state in the space cell, and if a time tick has arrived in which, in accordance with the parameters of the etheron's movement, it is necessary to move from the space cell. But sometimes an etheron can spontaneously remain in the first state for another time tick, even if it should have moved to the third state. If an etheron spontaneously remains in the first state, then when other etherons appear in the cell, the etheron will move to the second state, not to the third state. An etheron also moves to the third state from the second state. The duration of the third state of the etheron is denoted by $τ_{\text{s3.æ}}$. The duration of the third state of an etheron is at least one tick of time:
 
-$$τ3_æ \ge 1$$
+$$τ_{\text{s3.æ}} \ge 1$$
 
-The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_æ$. The etheron moves to the fourth state from the third state. The etheron moves to the first state from the fourth state. The duration of the fourth state of the etheron is denoted by $τ4_æ$. The duration of the fourth state of the etheron is at least one tick of time:
+The fourth state of the etheron is "movement to the neighboring cell" that corresponds to the parameters of the etheron's movement, and in which the etheron will be. The fourth state of the etheron is called "arrival of the etheron". The fourth state of the etheron is denoted $s4_æ$. The etheron moves to the fourth state from the third state. The etheron moves to the first state from the fourth state. The duration of the fourth state of the etheron is denoted by $τ_{\text{s4.æ}}$. The duration of the fourth state of the etheron is at least one tick of time:
 
-$$τ4_æ \ge 1$$
+$$τ_{\text{s4.æ}} \ge 1$$
 
-The third state of the etheron and the fourth state of the etheron together constitute the "etheron jump" from the cell in which the etheron is located to the neighboring cell in which the etheron will be located, in accordance with the parameters of the etheron's movement. The duration of the etheron jump is denoted by $τj_æ$. The duration of the etheron jump is at least two time ticks:
+The third state of the etheron and the fourth state of the etheron together constitute the "etheron jump" from the cell in which the etheron is located to the neighboring cell in which the etheron will be located, in accordance with the parameters of the etheron's movement. The duration of the etheron jump is denoted by $τ_{\text{jump.æ}}$. The duration of the etheron jump is at least two time ticks:
 
-$$τj_æ = τ3_æ + τ4_æ$$
+$$τ_{\text{jump.æ}} = τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
 
-$$τj_æ \ge 2$$
+$$τ_{\text{jump.æ}} \ge 2$$
 
-The duration of the basic delay of the etheron in the resting state $τ1b_æ$ together with the duration of the etheron jump $τj_æ$ make up the basic duration of the etheron movement $τb_æ$. The basic duration of the etheron movement is at least three ticks of time: 
+The duration of the basic delay of the etheron in the resting state $τ_{\text{s1.base.æ}}$ together with the duration of the etheron jump $τ_{\text{jump.æ}}$ make up the basic duration of the etheron movement $τ_{\text{move.æ}}$. The basic duration of the etheron movement is at least three ticks of time: 
 
-$$τb_æ = τ1b_æ + τ3_æ + τ4_æ = τ1b_æ + τj_æ$$
+$$τ_{\text{move.æ}} = τ_{\text{s1.base.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}} = τ_{\text{s1.base.æ}} + τ_{\text{jump.æ}}$$
 
-$$τb_æ \ge 3$$
+$$τ_{\text{move.æ}} \ge 3$$
 
-The relative number of time ticks after which an etheron, which is in a state of rest at a given time tick, will be in the next cell of space in a state of rest is called the duration of the etheron step $τs_æ$: 
+The relative number of time ticks after which an etheron, which is in a state of rest at a given time tick, will be in the next cell of space in a state of rest is called the duration of the etheron step $τ_{\text{step.æ}}$: 
 
-$$τs_æ = 1 + τ3_æ + τ4_æ = 1 + τj_æ$$
+$$τ_{\text{step.æ}} = 1 + τ_{\text{s3.æ}} + τ_{\text{s4.æ}} = 1 + τ_{\text{jump.æ}}$$
 
 The cycle of an etheron is a sequence of states starting with the first state and ending with the fourth state. The duration of the etheron cycle is denoted by $τ_æ$.
 
-An etheron cycle without the second state of the etheron is called a "free cycle". The duration of the free cycle of etheron is denoted by $τf_æ$. The duration of the free cycle of etheron is made up of the duration of the first state, the duration of the third state, and the duration of the fourth state: 
+An etheron cycle without the second state of the etheron is called a "free cycle". The duration of the free cycle of etheron is denoted by $τ_{\text{frc.æ}}$. The duration of the free cycle of etheron is made up of the duration of the first state, the duration of the third state, and the duration of the fourth state: 
 
-$$τf_æ = τ1_æ + τ3_æ + τ4_æ$$
+$$τ_{\text{frc.æ}} = τ_{\text{s1.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
 
-$$τf_æ \ge 3$$
+$$τ_{\text{frc.æ}} \ge 3$$
 
-An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τc_æ$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
+An etheron cycle with the second state of the etheron is called a "collisional cycle". The duration of the collision cycle of the etheron is denoted by $τ_{\text{colc.æ}}$. The duration of the collision cycle of the etheron is made up of the duration of the first state, the duration of the second state, the duration of the third state, and the duration of the fourth state: 
 
-$$τc_æ = τ1_æ + τ2_æ + τ3_æ + τ4_æ$$
+$$τ_{\text{colc.æ}} = τ_{\text{s1.æ}} + τ_{\text{s2.æ}} + τ_{\text{s3.æ}} + τ_{\text{s4.æ}}$$
 
-$$τc_æ \ge 4$$
+$$τ_{\text{colc.æ}} \ge 4$$
 
 Velocity relative to absolute space is called "absolute velocity".
 
@@ -618,29 +635,29 @@ The trajectory of the etheron jumps always approximates a straight line, and the
 
 Compensatory delay ticks are necessary to ensure that the total time of movement over the reference Euclidean distance ($D_Æ$) remains constant, regardless of direction. This time is calibrated by the "slowest" direction — the diagonal in space where the number of jumps is maximum. The number of compensatory delay ticks depends on the Manhattan distance for the direction vector $\vec{d_æ} = (d_{æ,x}, d_{æ,y}, d_{æ,z})$ and is calculated by the formula:
 
-$$T_{æc} = τb_æ \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
+$$T_{æc} = τ_{\text{move.æ}} \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
 
 where:
 * $D_Æ$ is the number of cells in one direction.
 * $d_{æ,x}, d_{æ,y}, d_{æ,z}$ are the coordinates of the direction vector.
 * $D_Æ\cdot\sqrt{3}$ is the approximate maximum Manhattan distance for a vector with Euclidean length $D_Æ$.
-* The coefficient $τb_æ$ arises because each etheron cycle takes several ticks of time, and the compensating delay ticks must compensate for the difference in time, not just in the number of jumps.
+* The coefficient $τ_{\text{move.æ}}$ arises because each etheron cycle takes several ticks of time, and the compensating delay ticks must compensate for the difference in time, not just in the number of jumps.
 
 "Reference ether delay" is the number of time ticks required to perform the maximum number of jumps over the reference Euclidean distance $D_Æ$:
 
-$$τ_Æ = τb_æ \cdot D_Æ \cdot \sqrt{3}$$
+$$τ_Æ = τ_{\text{move.æ}} \cdot D_Æ \cdot \sqrt{3}$$
 
 The total time ($T_æ$) spent by the etheron on Euclidean motion over a distance of $D_Æ$ is made up of the base time ($T_{æb}$), the time for compensatory delays ($T_{æc}$), and the time for additional delays ($T_{æa}$):
 
-$$T_{æb} = (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|) \cdot τb_æ$$
+$$T_{æb} = (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|) \cdot τ_{\text{move.æ}}$$
 
-$$T_{æc} = τb_æ \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
+$$T_{æc} = τ_{\text{move.æ}} \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
 
 $$T_{æa} = a_æ$$
 
 If we add these components, the terms containing the direction vector $(\lvert d_{\text{æ,x}}\rvert + \lvert d_{\text{æ,y}}\rvert + \lvert d_{\text{æ,z}}\rvert)$ cancel each other out. As a result, the total time is independent of direction: 
 
-$$T_æ = T_{æb} + T_{æc} + T_{æa} = τb_æ  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
+$$T_æ = T_{æb} + T_{æc} + T_{æa} = τ_{\text{move.æ}}  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
 
 The independence of the total time spent by the etheron on Euclidean motion from the Euclidean direction ensures the same Euclidean speed for etherons with the same "delay" parameter, regardless of the trajectory of their jumps.
 
@@ -686,9 +703,9 @@ The modulus of the Euclidean continuous velocity of an etheron $v_{\text{æ}} = 
 
 Formula for the module of continuous velocity of etheron $v_æ$:
 
-$$v_æ = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + a_æ }=\frac{D_Æ }{ τ_Æ + a_æ }$$
+$$v_æ = \frac{D_Æ }{ τ_{\text{move.æ}} \cdot D_Æ\cdot\sqrt{3} + a_æ }=\frac{D_Æ }{ τ_Æ + a_æ }$$
 
-$$a_æ = \frac{D_Æ}{v_æ} - { τb_æ \cdot D_Æ\cdot\sqrt{3}}= \frac{D_Æ}{v_æ} - τ_Æ$$
+$$a_æ = \frac{D_Æ}{v_æ} - { τ_{\text{move.æ}} \cdot D_Æ\cdot\sqrt{3}}= \frac{D_Æ}{v_æ} - τ_Æ$$
 
 where:
 * $D_Æ$ — reference Euclidean distance.
@@ -701,39 +718,39 @@ $$\hat{v_æ} = \frac{\vec{d_æ}}{D_Æ}$$
 
 The continuous velocity vector of the etheron $\vec{v_æ}$ is equal to the product of the unit continuous velocity vector of the etheron $\hat{v_æ}$ and the modulus of the velocity of the etheron $v_æ$. Formula for the continuous velocity vector of the etheron $\vec{v_æ}$:
 
-$$\vec{v_æ} = \frac{\vec{d_æ}}{D_Æ} \cdot v_æ = \frac{\vec{d_æ}}{D_Æ} \cdot \frac{D_Æ }{ τ_Æ + a_æ }  = \frac{\vec{d_æ}} { τ_Æ + a_æ }= \frac{\vec{d_æ}} { τb_æ \cdot D_Æ\cdot\sqrt{3} + a_æ }$$
+$$\vec{v_æ} = \frac{\vec{d_æ}}{D_Æ} \cdot v_æ = \frac{\vec{d_æ}}{D_Æ} \cdot \frac{D_Æ }{ τ_Æ + a_æ }  = \frac{\vec{d_æ}} { τ_Æ + a_æ }= \frac{\vec{d_æ}} { τ_{\text{move.æ}} \cdot D_Æ\cdot\sqrt{3} + a_æ }$$
 
 $$\vec{d_æ} = \frac{\vec{v_æ}\cdot D_Æ}{|\vec{v_æ}|}$$
 
 The modulus of the continuous velocity of the etheron $v_æ$ is maximum at the minimum value of the "delay" parameter ($a_æ=0$):
 
-$$v_{max.æ} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3}} = \frac{1}{ τb_æ\cdot\sqrt{3}}$$
+$$v_{max.æ} = \frac{D_Æ }{ τ_{\text{move.æ}} \cdot D_Æ\cdot\sqrt{3}} = \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3}}$$
 
 The modulus of the continuous velocity of the etheron $v_æ$ is minimal at the maximum value of the "delay" parameter ($a_æ=D_Æ$):
 
-$$v_{min.æ} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + D_Æ}= \frac{1}{ τb_æ\cdot\sqrt{3}+1}$$
+$$v_{min.æ} = \frac{D_Æ }{ τ_{\text{move.æ}} \cdot D_Æ\cdot\sqrt{3} + D_Æ}= \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3}+1}$$
 
 The average value of the modulus of the continuous velocity of the etheron occurs at the average value of the "delay" parameter ($a_æ=\frac{D_Æ}{2}$):
 
-$${v_{avg.æ}} = \frac{D_Æ }{ τb_æ \cdot D_Æ\cdot\sqrt{3} + \frac{D_Æ}{2}}= \frac{1}{ τb_æ\cdot\sqrt{3}+\frac{1}{2}}$$
+$${v_{avg.æ}} = \frac{D_Æ }{ τ_{\text{move.æ}} \cdot D_Æ\cdot\sqrt{3} + \frac{D_Æ}{2}}= \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3}+\frac{1}{2}}$$
 
 The ratio of the modulus of the maximum continuous velocity of the etheron to the modulus of the minimum continuous velocity of the etheron:
 
-$$\frac{v_{max.æ}}{v_{min.æ}} = \frac{ τb_æ\cdot\sqrt{3}+1 }{τb_æ\cdot\sqrt{3}} = 1 + \frac{1}{ τb_æ\cdot\sqrt{3}} = 1+ v_{max.æ} $$
+$$\frac{v_{max.æ}}{v_{min.æ}} = \frac{ τ_{\text{move.æ}}\cdot\sqrt{3}+1 }{τ_{\text{move.æ}}\cdot\sqrt{3}} = 1 + \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3}} = 1+ v_{max.æ} $$
 
 The ratio of the modulus of the maximum continuous velocity of the etheron to the modulus of the average continuous velocity of the etheron:
 
-$$\frac{v_{max.æ}}{v_{avg.æ}} = \frac{ τb_æ\cdot\sqrt{3}+\frac{1}{2} }{τb_æ\cdot\sqrt{3} + 1}$$
+$$\frac{v_{max.æ}}{v_{avg.æ}} = \frac{ τ_{\text{move.æ}}\cdot\sqrt{3}+\frac{1}{2} }{τ_{\text{move.æ}}\cdot\sqrt{3} + 1}$$
 
 The difference between the module of the maximum continuous speed of etheron and the module of the minimum continuous speed of etheron:
 
 $$
 \begin{aligned}
-{v_{max.æ}}-{v_{min.æ}} = \frac{1}{ τb_æ\cdot\sqrt{3}} - \frac{1}{ τb_æ\cdot\sqrt{3}+1} = \frac{ τb_æ\cdot\sqrt{3}+1 - τb_æ\cdot\sqrt{3}}{(τb_æ\cdot\sqrt{3})\cdot (τb_æ\cdot\sqrt{3}+1)} = \\\\ = \frac{ 1}{(τb_æ\cdot\sqrt{3})^2+ (τb_æ\cdot\sqrt{3})}
+{v_{max.æ}}-{v_{min.æ}} = \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3}} - \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3}+1} = \frac{ τ_{\text{move.æ}}\cdot\sqrt{3}+1 - τ_{\text{move.æ}}\cdot\sqrt{3}}{(τ_{\text{move.æ}}\cdot\sqrt{3})\cdot (τ_{\text{move.æ}}\cdot\sqrt{3}+1)} = \\\\ = \frac{ 1}{(τ_{\text{move.æ}}\cdot\sqrt{3})^2+ (τ_{\text{move.æ}}\cdot\sqrt{3})}
 \end{aligned}
 $$
 
-At the minimum value of the basic duration of the movement of etheron from cell to cell ($τb_æ=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{avg.æ}$ to $1.1 \cdot v_{avg.æ}$.
+At the minimum value of the basic duration of the movement of etheron from cell to cell ($τ_{\text{move.æ}}=3$), the modules of continuous etheron velocities have a maximum range, approximately equal to the range from $0.9 \cdot v_{avg.æ}$ to $1.1 \cdot v_{avg.æ}$.
 
 The inertness vector of the etheron $\vec{i}\_{\text{æ}}$ is a vector directed opposite to the unit vector of the continuous velocity of the etheron $\hat{v}\_{\text{æ}}$ and having a modulus equal to the ratio of the "total additional delay" of the etheron $a\_{\text{æ}}$ to the reference distance $D\_{\text{Æ}}$. In its meaning, the modulus of the inertness vector of the etheron is a "normalized delay".
 
@@ -743,9 +760,9 @@ $$i_{avg.æ}=\frac{a_{avg.æ}}{D_Æ}=\frac{1}{2}$$
 
 $$a_æ=i_æ \cdot D_Æ$$
 
-$$v_æ=\frac{D_Æ }{ τ_Æ + i_æ \cdot D_Æ }= \frac{1}{ τb_æ\cdot\sqrt{3} + i_æ }$$
+$$v_æ=\frac{D_Æ }{ τ_Æ + i_æ \cdot D_Æ }= \frac{1}{ τ_{\text{move.æ}}\cdot\sqrt{3} + i_æ }$$
 
-$$i_æ=\frac{1}{v_æ}-τb_æ\cdot\sqrt{3}$$
+$$i_æ=\frac{1}{v_æ}-τ_{\text{move.æ}}\cdot\sqrt{3}$$
 
 $$\hat{i}_æ=-\hat{v}_æ = -\frac{\vec{d_æ}}{D_Æ}$$
 
@@ -753,7 +770,7 @@ $$\vec{i}_æ = \hat{i}_æ \cdot |\vec{i}_æ| = -\hat{v}_æ \cdot \frac{a_æ}{D_�
 
 $$\vec{d}_æ = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ|}$$
 
-$$\vec{v_æ} = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ| \cdot (τ_Æ + |\vec{i}_æ| \cdot D_Æ)}= -\frac{\vec{i}_æ}{ |\vec{i}_æ| \cdot (τb_æ\cdot\sqrt{3} + |\vec{i}_æ|)}$$
+$$\vec{v_æ} = -\frac{\vec{i}_æ \cdot D_Æ }{ |\vec{i}_æ| \cdot (τ_Æ + |\vec{i}_æ| \cdot D_Æ)}= -\frac{\vec{i}_æ}{ |\vec{i}_æ| \cdot (τ_{\text{move.æ}}\cdot\sqrt{3} + |\vec{i}_æ|)}$$
 
 The modulus of the inertness vector of the etheron $\lvert \vec{i}\_{\text{æ}} \rvert$ is equal to zero at the maximum continuous velocity of the etheron $v_{max.æ}$ and is maximum at the minimum continuous velocity of the etheron $v_{min.æ}$.
 
