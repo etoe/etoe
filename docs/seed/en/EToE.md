@@ -647,9 +647,9 @@ The free motion of an etheron is always calculated based on the current time tic
 
 The trajectory of the etheron jumps always approximates a straight line, and the Euclidean speed of movement along this straight line is approximately constant. Etherons with different directions of movement, but with the same "delay" parameters, move with the same Euclidean speed due to a different number of their "compensatory delay ticks" at rest. The number of jumps to the target cell depending on the direction of movement is determined by the "Manhattan distance" to the target cell in this direction. The greater the number of jumps in the direction of movement, the fewer "compensatory delay ticks" at rest. The smaller the number of jumps in the direction of movement, the more "compensatory delay ticks" at rest. Etherons with the same directions of movement, but with different "delay" parameters, with the same number of "compensatory delay ticks" move with different Euclidean speeds due to a different number of "additional delay ticks".
 
-Compensatory delay ticks are necessary to ensure that the total time of movement over the reference Euclidean distance ($D_Æ$) remains constant, regardless of direction. This time is calibrated by the "slowest" direction — the diagonal in space where the number of jumps is maximum. The number of compensatory delay ticks depends on the Manhattan distance for the direction vector $\vec{d_æ} = (d_{æ,x}, d_{æ,y}, d_{æ,z})$ and is calculated by the formula:
+Compensatory delay ticks are necessary to ensure that the total time of movement over the reference Euclidean distance ($D_Æ$) remains constant, regardless of direction. This time is calibrated by the "slowest" direction — the diagonal in space where the number of jumps is maximum. The number of compensatory delay ticks ($T_{\text{comp.æ}}$) depends on the Manhattan distance for the direction vector $\vec{d_æ} = (d_{æ,x}, d_{æ,y}, d_{æ,z})$ and is calculated by the formula:
 
-$$T_{æc} = τ_{\text{move.æ}} \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
+$$T_{\text{comp.æ}} = τ_{\text{move.æ}} \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
 
 where:
 * $D_Æ$ is the number of cells in one direction.
@@ -661,17 +661,17 @@ where:
 
 $$τ_Æ = τ_{\text{move.æ}} \cdot D_Æ \cdot \sqrt{3}$$
 
-The total time ($T_æ$) spent by the etheron on Euclidean motion over a distance of $D_Æ$ is made up of the base time ($T_{æb}$), the time for compensatory delays ($T_{æc}$), and the time for additional delays ($T_{æa}$):
+The total time ($T_æ$) spent by the etheron on Euclidean motion over a distance of $D_Æ$ is made up of the base time ($T_{\text{move.æ}}$), the time for compensatory delays ($T_{\text{comp.æ}}$), and the time for additional delays ($T_{\text{add.æ}}$):
 
-$$T_{æb} = (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|) \cdot τ_{\text{move.æ}}$$
+$$T_{\text{move.æ}} = (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|) \cdot τ_{\text{move.æ}}$$
 
-$$T_{æc} = τ_{\text{move.æ}} \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
+$$T_{\text{comp.æ}} = τ_{\text{move.æ}} \cdot (D_Æ\cdot\sqrt{3} - (|d_{æ,x}| + |d_{æ,y}| + |d_{æ,z}|))$$
 
-$$T_{æa} = a_æ$$
+$$T_{\text{add.æ}} = a_æ$$
 
 If we add these components, the terms containing the direction vector $(\lvert d_{\text{æ,x}}\rvert + \lvert d_{\text{æ,y}}\rvert + \lvert d_{\text{æ,z}}\rvert)$ cancel each other out. As a result, the total time is independent of direction: 
 
-$$T_æ = T_{æb} + T_{æc} + T_{æa} = τ_{\text{move.æ}}  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
+$$T_æ = T_{\text{move.æ}} + T_{\text{comp.æ}} + T_{\text{add.æ}} = τ_{\text{move.æ}}  \cdot D_Æ \cdot \sqrt{3} + a_æ = τ_Æ + a_æ$$
 
 The independence of the total time spent by the etheron on Euclidean motion from the Euclidean direction ensures the same Euclidean speed for etherons with the same "delay" parameter, regardless of the trajectory of their jumps.
 
