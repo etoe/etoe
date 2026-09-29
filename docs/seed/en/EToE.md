@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.36
-date: 2026-09-28
+version: 0.1.37
+date: 2026-09-29
 created: 2026-06-01
-updated: 2026-09-28
+updated: 2026-09-29
 status: active
 priority: critical
 audience: LLM, Human
@@ -148,7 +148,7 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. The colon symbol is used as a "role-qualification operator" (medium, substantial, or field) for a single etheron ($æ$) or the ether as a whole ($Æ$). The dot describes the structure of an object; the colon qualifies an object or a set of objects based on a relational property. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. The structural information comprises the notations of the object's ether subobjects, separated by an apostrophe acting as a linking character. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. The symbolic philosophy of the grammar of an ether assertion: a rich physico-mathematical alphabet for quantities, but a strict machine alphabet for classes, objects, and context. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. The colon symbol is used as a "role-qualification operator" (medium, substantial, or field) for a single etheron ($æ$) or the ether as a whole ($Æ$). The dot describes the structure of an object; the colon qualifies an object or a set of objects based on a relational property. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. Information regarding the structure of an ether object includes the notations of that object's ether subobjects, separated by an apostrophe or other characters serving as connectors between the ether subobjects. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. The symbolic philosophy of the grammar of an ether assertion: a rich physico-mathematical alphabet for quantities, but a strict machine alphabet for classes, objects, and context. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
 notation          = æ_notation
@@ -219,12 +219,14 @@ subsubpart        = ident;
 chemical_notation = chemical_full
                   | chemical_mass_only ;
 
-chemical_full     = element, [ "-", mass ], [ chemical_structure ] ;
+chemical_full     = element, [ ":", element_subsort ]
+                  , [ "-", mass ], [ chemical_structure ] ;
+                  | molecule, [ ":", molecule_subsort ]
+                  , [ "-", mass ], [ chemical_structure ] ;
 
 chemical_mass_only = mass ;
 
-chemical_structure = "-", "(", [ notation_list ], ")"
-                   | "-", mass ;
+chemical_structure = "-", "(", [ notation_list ], ")";
 
 element           = "H"  | "D"  | "T"  | "Ht" | "He"
                   | "Li" | "Be" | "B"  | "C"  | "N"
@@ -250,7 +252,15 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
                   | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
                   | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
 
+element_subsort   = subelement ;
+
+subelement        = ident | number ;
+
 mass              = number ;
+
+molecule          = ident ;
+
+molecule_subsort  = ident | number ;
 
 quantity_expression = quantity, [".", science_context]
                     , [aspect_expression]
@@ -279,7 +289,7 @@ dimension_aspect = "dimension" | "D"
                  | "space" | "S"
                  | "time" | "T"
                  | "history" | "H" ;
-
+              
 dynamic_aspect = "kinematic" | "ka"
                | "inertnic" | "ia" ;
 
@@ -310,7 +320,7 @@ character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "parallel" | "par" 
                   | "perpendicular | "perp"
                   | "old" | "new"
-                  | "crit" ;   
+                  | "crit" ;    
 
 object_notation   = æ_notation | chemical_notation ;
 
@@ -349,7 +359,27 @@ structure         = "-", "(", [ notation_list ], ")" ;
 
 notation_list     = notation, { separator, notation } ;
 
-separator         = "'", [ "-{", [ pair_list ], "}" ] ;
+separator         = separator_char, [ separator_instance ] ;
+
+separator_char    = etheron_separator_char
+                  | batch_separator_char
+                  | spiral_separator_char  
+                  | major_separator_char
+                  | atom_separator_char
+                  | mol_separator_char
+                  | body_separator_char
+                  | astr_separator_char ;
+
+etheron_separator_char = "|" ;
+batch_separator_char = "!" ;
+spiral_separator_char = "$" ;
+major_separator_char = "*" ;
+atom_separator_char = "'" ;
+mol_separator_char = "^" ;
+body_separator_char = "&" ;
+astr_separator_char = "~" ;
+
+separator_instance = instance ;
 
 ident             = letter, { letter | digit | "_" } ;
 
@@ -427,6 +457,7 @@ unescaped_char    = ? Unicode scalar value,
                       except U+0000–U+001F,
                       U+0022 и U+005C ? ;
 ```
+
 The EBNF grammar for the ÆToE ether statement defines the statement as a linear sequence of symbols in which structural relationships between segments are expressed by explicit delimiters: the dot (`.`), colon (`:`), hyphen (`-`), curly braces (`{}`), parentheses (`()`), apostrophe (`'`), and comma (`,`). The ÆToE EBNF grammar does not recognize LaTeX markup and contains no rules for LaTeX commands, LaTeX groups, or LaTeX subscripts. LaTeX markup introduces an additional layer of representation to the ether statement that is not part of the ÆToE grammar; for instance, Greek letters and letter-like symbols may be encoded using LaTeX commands (such as `tau`, `rho`, `chi`, `Pi`, `hbar`, etc.). The relationship between the EBNF form of an ether statement and its LaTeX form is one of representation rather than identity: the LaTeX form is one possible external representation of the ether statement, whereas the EBNF form constitutes its canonical form within the ÆToE grammar. In a LaTeX document where an ether statement is written in LaTeX form, subscripts and superscripts implicitly serve as structural delimiters — roles that are expressed by the dot in the EBNF form. In other words, the LaTeX form of an ether statement implicitly includes an "invisible dot" before every subscript and superscript; this structural delimiter is written explicitly in the EBNF form but omitted in the LaTeX form as visually redundant. An ether statement in LaTeX form cannot be fed directly into the parser for the ÆToE EBNF grammar. Before parsing, an ether assertion in LaTeX form must undergo de-LaTeX-ization — the conversion of the LaTeX form of the ether assertion into its EBNF form. De-LaTeX-ization of an ether assertion is a deterministic transformation that maps each LaTeX construct within the assertion to its EBNF equivalent. De-LaTeX-ization is neither part of the ÆToE EBNF grammar nor part of the ÆToE semantic validator; rather, it is a preparatory step performed before the ÆToE EBNF grammar is applied. For example, LaTeX commands for Greek letters and letter-like symbols are replaced by the corresponding Unicode characters from the `greek_letter`, `greek_variant_letter`, and `letterlike_symbol` sets. LaTeX constructs lacking an EBNF equivalent in the ÆToE grammar are either mapped to the nearest valid EBNF segment or flagged as a grammar extension requiring a separate solution. De-LaTeX-ization is a preliminary stage in processing an ether assertion found within a LaTeX document; it does not replace semantic validation. Following de-LaTeX-ization, the ether assertion in EBNF form is fed into the ÆToE EBNF grammar and subsequently into the ÆToE semantic validator. In ÆToE formulations where ether assertions are written in LaTeX form, subscripts and superscripts should be interpreted as LaTeX representations of EBNF segments rather than as independent EBNF segments. This rule separates the representation of an ether statement from its canonical form and prevents the mixing of LaTeX markup with the ÆToE EBNF grammar. Reliable de-LaTeXing requires a deterministic pipeline: LaTeX tokenization; parsing into an AST; converting the AST into an EBNF-AST based on explicit rules; serialization into an EBNF string; and validation against the ÆToE grammar.
 
 The semantic validator for the ether assertion notation verifies the physical and mathematical correctness of both the ether assertion itself and the structure of the ether objects within that assertion. For example, the ether object of a certain stair of matter cannot contain, as sub-objects, the ether objects of subsequent stairs of matter.
@@ -1340,13 +1371,13 @@ The following paragraph provides several examples of the structure of simple hyp
 
 Two Protium subatoms in a Deuterium hyperatom or two subatoms in a Deuterium subhyperatom are called "paired" Protium subatoms. If a Protium subatom in a hyperatom is not a subatom of a Deuterium hyperatom or a subatom of a Deuterium subhyperatom, then such a Protium subatom is called an "unpaired" Protium subatom.
 
-A hyperatom configuration is a description of the hyperatom structure. A chemical element is a set of hyperatom configurations. A chemical subelement is a subset of a chemical element. The designation of a chemical subelement consists of the designation of the chemical element, the # sign, and the conventional ordinal number of the subelement. For example, He#1 is the designation of the first chemical subelement of the chemical element Helium, and He#2 is the designation of the second chemical subelement of the chemical element Helium.
+A hyperatom configuration is a description of the hyperatom structure. A chemical element is a set of hyperatom configurations. A chemical subelement is a subset of a chemical element. The designation of a chemical subelement consists of the designation of the chemical element, the ':' sign, and the conventional ordinal number of the subelement. For example, He:1 is the designation of the first chemical subelement of the chemical element Helium, and He:2 is the designation of the second chemical subelement of the chemical element Helium.
 
 Atomahedron is a general name for geometric shapes of hyperatoms and molecules. The basic atomahedrons are diatomahedron, triatomahedron, tetraatomahedron, pentaatomahedron. A diatomahedron is an atomahedron consisting of two atoms. A triatomahedron is a triangular atomahedron consisting of three atoms. A tetraatomahedron is an atomahedron-tetrahedron consisting of four atoms. A pentaatomahedron is an atomahedron in the form of a trigonal bipyramid consisting of five atoms. Hyperatomahedron is a general name for atomahedrons of the second and subsequent levels. Subatomahedron is a general name for atomahedrons in a hyperatomahedron. Subhyperatomahedron is a hyperatomahedron of the previous level in a hyperatomahedron of the next level. For example, the Deuterium hyperatom has the shape of a diatomahedron; The Helium hyperatom He-4 has the shape of a tetraatomahedron; the Zinc hyperatom Zn-64 has the shape of a third-level tetraatomahedron.
 
 The tetrahedron is considered a periodic geometric shape of hyperatoms. The tetraatomahedron is considered a completed atomahedron. The pentaatomahedron is considered an overfilled atomahedron. Subhyperatoms of a hyperatomahedron may have an unfinished atomahedron of the previous level. The sequence of configurations of hyperatoms in the sequential hierarchical filling of a periodic hyperatomic geometric shape with Protium subatoms is considered "primary" and forms a "primary sequence of hyperatoms". The hierarchical filling of a periodic hyperatomic geometric shape means that a Protium subatom, when added to an unpaired Protium subatom, forms a Deuterium hyperatom or a Deuterium subhyperatom with it, and also means that subhyperatoms also form pairs. Hyperatoms of the primary sequence of hyperatoms are called primary. The atomic mass of a primary hyperatom can be used as a full designation for this hyperatom. For example, 1 is the designation for a Protium atom; 2 is the symbol for the hyperatom of Deuterium; 3 is the symbol for the hyperatom of Tritium; 4 is the symbol for the hyperatom of Helium; 5 is the symbol for the hyperatom of Helium-5.
 
-A hyperatom is usually notated so that the structure of the hyperatom can be uniquely identified. A hyperatom notation may include the notation of the chemical element of the hyperatom, the atomic mass of the hyperatom, and the formula of the hyperatom. The parts of a hyperatom notation are separated from each other by the - sign. For example, D is the simplest symbol for the hyperatom of Deuterium. D-2 is the symbol for the hyperatom of Deuterium with its atomic mass indicated. 2 is the symbol for the hyperatom of Deuterium with only its atomic mass indicated, which is the primary atomic mass. A hyperatom can be designated by indicating only its atomic mass only if the hyperatom is part of the primary sequence of hyperatoms.
+A hyperatom is usually notated so that the structure of the hyperatom can be uniquely identified. A hyperatom notation may include the notation of the chemical element of the hyperatom, the atomic mass of the hyperatom, and the formula of the hyperatom. The parts of a hyperatom notation are separated from each other by the minus sign '-'. For example, D is the simplest symbol for the hyperatom of Deuterium. D-2 is the symbol for the hyperatom of Deuterium with its atomic mass indicated. 2 is the symbol for the hyperatom of Deuterium with only its atomic mass indicated, which is the primary atomic mass. A hyperatom can be designated by indicating only its atomic mass only if the hyperatom is part of the primary sequence of hyperatoms.
 
 The formula of a hyperatom is an expression consisting of the designations of the subatoms of that hyperatom, separated by an apostrophe ' and joined by parentheses. For example, (H'H) is the formula of the hyperatom of Deuterium D-2. The formula of a hyperatom can be specified in the designation of the hyperatom. The formula of a hyperatom in the designation of a hyperatom is separated by the - sign. For example, D-2-(H'H) is the designation of the hyperatom of Deuterium D-2, which contains the formula of the hyperatom of Deuterium D-2.
 
