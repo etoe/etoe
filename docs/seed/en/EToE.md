@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.37
+version: 0.1.38
 date: 2026-09-29
 created: 2026-06-01
 updated: 2026-09-29
@@ -1327,7 +1327,7 @@ Proteon is the general name for the protium atom, proton, and neutron. The term 
 
 The simplest notation for the Protium atom is H. The symbol for the Protium atom, with its atomic mass, is H-1. The symbol for the Protium atom without the H sign and with the atomic mass indicated is 1.
 
-A proteon is considered an "elementary atom".
+A proteon is considered an "elementary atom". The non-hierarchical core composed of ether spirals within a proteon can be conditionally termed the "proteon nucleus" or the "nucleus of the elementary atom".
 
 The protium atom has several layers with increased probability of finding ether spirals with mass in a certain range in them. The deeper, the more often heavier ether spirals can be found in the proteon. The closer to the surface, the more often lighter ether spirals can be found in the proteon. In the outer layer of the protium atom, the probability of finding ether spirals of the smallest mass is maximum. The upper layers of the protium atom are called the "atmosphere of the atom" of protium. The lower layers of the protium atom are called the "clot of the atom" of protium. In nuclear-electronic atomic models, the outer layer of the protium atom is considered the "atomic electron".
 
@@ -1343,7 +1343,10 @@ An ether object of the fifth level of matter is called "hyperatom".
 
 A hyperatom is a hierarchical cluster of proteons united by proteon ether fields and strong common multilayered atmospheres consisting of ether spirals.
 
-A hyperatom is considered a "non-elementary atom".
+A hyperatom is considered a "non-elementary atom". 
+The hierarchical core composed of ether subatoms within a hyperatom can be conditionally termed the "hyperatom nucleus" or the "nucleus of a non-elementary atom". 
+
+Introducing the "atomic nucleus" into ÆToE is permissible and can significantly improve ÆToE's compatibility with the standard language of atomic and nuclear physics. However, the "atomic nucleus" is defined here as a structural concept within ÆToE, rather than being imported into the framework along with the nuclear-electronic model. The introduction of the "atomic nucleus" into ÆToE does not require the introduction of the atomic electron as a distinct shell particle of the atom. In ÆToE, the "atomic nucleus" is the internal structural component of the atom that forms its atomic core and stands in contrast to its atmosphere. ÆToE retains the concept of the "atomic nucleus" but redefines its physical realization. An elementary atomic nucleus is a non-hierarchical core within an elementary atom, composed of ether spirals. A non-elementary atomic nucleus is a hierarchical core within a non-elementary atom, composed of subatoms. Since the "proteon" is specifically introduced in ÆToE as an alternative to the "nucleon", the system gains the ability to retain a significant portion of familiar terminology without automatically adopting the standard nuclear-electronic picture. In ÆToE, the "atomic nucleus" is a structurally bound inner part of the atom, not a geometric center. In ÆToE, the atomic nucleus can be central, displaced, deformed, multilayered, or hierarchical. The "nucleus of the ether hyperobject" in ÆToE is the "internal organized part of an object of a given class", rather than a single specific physical object. In ÆToE, the same linguistic unit can be applied at different levels, provided its fundamental meaning remains defined. ÆToE does not reject the term "atomic nucleus", but accepts it as a traditional structural term and alters its physical interpretation. "The principle of continuity of traditional physical terminology": ÆToE retains a traditional term where its structural function is preserved, but allows for the redefinition of its microphysical realization.
 
 The hierarchy of a cluster of ether objects of any type means that a complex cluster of ether objects of this type consists of less complex clusters of ether objects of this type, and that less complex clusters of ether objects of this type in turn consist of even less complex clusters of ether objects of this type, and so on up to the ether objects of this type themselves.
 
