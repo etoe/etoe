@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.38
-date: 2026-09-29
+version: 0.1.39
+date: 2026-09-30
 created: 2026-06-01
-updated: 2026-09-29
+updated: 2026-09-30
 status: active
 priority: critical
 audience: LLM, Human
@@ -221,7 +221,7 @@ chemical_notation = chemical_full
                   | chemical_mass_only ;
 
 chemical_full     = element, [ ":", element_subsort ]
-                  , [ "-", mass ], [ chemical_structure ] ;
+                  , [ "-", mass ], [ chemical_structure ]
                   | molecule, [ ":", molecule_subsort ]
                   , [ "-", mass ], [ chemical_structure ] ;
 
@@ -264,7 +264,7 @@ molecule          = ident ;
 molecule_subsort  = ident | number ;
 
 quantity_expression = quantity, [".", science_context]
-                    , [aspect_expression]
+                    , aspect_expression
                     , [".", character]
                     , ".", object_notation ;
 
@@ -274,10 +274,58 @@ quantity_ident       = quantity_letter
                      , { quantity_letter | digit | "_" } ;
 
 science_context   = science_domain
-                  , [".", subdomain, [".", subsubdomain]];
-science_domain    = ident ;
-subdomain         = ident ;
-subsubdomain      = ident ;
+                  , [".", science_subdomain
+                  , [".", science_subdomain]] ;
+
+science_domain = core_science_domain
+               | "sc_", extension_science_domain ;
+
+science_subdomain = core_science_subdomain
+                  | "scsd_", extension_science_subdomain ;
+
+extension_science_domain = ident ;
+extension_science_subdomain = ident ;                
+
+core_science_domain =
+      "physics"
+    | "mathematics"
+    | "chemistry"
+    | "biology"
+    | "neuroscience"
+    | "cognitive-science"
+    | "social-science" ;
+
+core_science_subdomain =
+      "mechanics"
+    | "kinematics"
+    | "dynamics"
+    | "statistical"
+    | "thermodynamics"
+    | "electromagnetism"
+    | "optics"
+    | "gravitation"
+    | "fluid"
+    | "plasma"
+    | "atomic"
+    | "molecular"
+    | "nuclear"
+    | "particle"
+    | "condensed-matter"
+    | "astrophysics"
+    | "cosmology"
+    | "information"
+    | "algebra"
+    | "geometry"
+    | "number-theory"
+    | "probability"
+    | "statistics"
+    | "optimization"
+    | "discrete"
+    | "evolution"
+    | "abiogenesis"
+    | "neural-networks"
+    | "consciousness"
+    | "society" ;        
 
 aspect_expression = [ ".", dimension_aspect ]
                   , [ ".", dynamic_aspect ]
@@ -319,7 +367,7 @@ character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "peak" | "mean" | "std" 
                   | "norm" | "syn"
                   | "parallel" | "par" 
-                  | "perpendicular | "perp"
+                  | "perpendicular" | "perp"
                   | "old" | "new"
                   | "crit" ;    
 
@@ -336,8 +384,7 @@ const_compact_letter = "Ꞓ", const_name ;
 const_compact_at  = "@", const_name ;
 
 const_object      = æ_notation
-                  | chemical_notation
-                  | "Æ";
+                  | chemical_notation ;
 
 const_name        = ident | number ;
 
