@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.40
+version: 0.1.41
 date: 2026-09-30
 created: 2026-06-01
 updated: 2026-09-30
@@ -151,50 +151,52 @@ The hierarchical level of an ether subobject within a certain ether hyperobject 
 The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. The colon symbol is used as a "role-qualification operator" (medium, substantial, or field) for a single etheron ($æ$) or the ether as a whole ($Æ$). The dot describes the structure of an object; the colon qualifies an object or a set of objects based on a relational property. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. Information regarding the structure of an ether object includes the notations of that object's ether subobjects, separated by an apostrophe or other characters serving as connectors between the ether subobjects. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. The symbolic philosophy of the grammar of an ether assertion: a rich physico-mathematical alphabet for quantities, but a strict machine alphabet for classes, objects, and context. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
-notation          = æ_notation
-                  | chemical_notation
-                  | quantity_expression
-                  | constant_expression
-                  | measurement_expression ;                  
+ether-statement = notation ;
 
-æ_notation        = æ_object | æ_level | æ_unit ;
+notation          = e-notation
+                  | chemical-notation
+                  | quantity-expression
+                  | constant-expression
+                  | measurement-expression ;                  
 
-æ_object          = æ_full_object
-                  | æ_compact_object
-                  | æ_ether
-                  | æ_etheron ;
+e-notation        = e-object | e-level | e-unit ;
 
-æ_full_object     = "Æ", level, ".", class, [".", object_context]
+e-object          = e-full-object
+                  | e-compact-object
+                  | e-ether
+                  | e-etheron ;
+
+e-full-object     = "Æ", level, ".", class, [".", object-context]
                   , [ instance ], [ structure ] ;
 
-æ_compact_object  = "Æ", class, [".", object_context]
+e-compact-object  = "Æ", class, [".", object-context]
                   , [ instance ], [ structure ] ;
 
-æ_ether           = "Æ"
-                  , [ æ_etheron_qualifier ]
+e-ether           = "Æ"
+                  , [ e-etheron-qualifier ]
                   , [ instance ]
                   , [ structure ] ;
 
-æ_etheron        = "æ"
-                  , [ æ_etheron_qualifier ]
+e-etheron        = "æ"
+                  , [ e-etheron-qualifier ]
                   , [ instance ]
                   , [ structure ] ;
 
-æ_etheron_qualifier
-                  = ":", etheron_role
-                  | ":", etheron_role, ".", etheron_subrole ;
+e-etheron-qualifier
+                  = ":", etheron-role
+                  | ":", etheron-role, ".", etheron-subrole ;
 
-etheron_role     = "m" | "s" | "f" | "sf" | "h" | "mf" ;
+etheron-role     = "m" | "s" | "f" | "sf" | "h" | "mf" ;
 
-etheron_subrole  = "br" |  "dr" | "di" | "do" ;                  
+etheron-subrole  = "br" |  "dr" | "di" | "do" ;                  
 
-æ_level           = "Æ", level ;
+e-level           = "Æ", level ;
 
 level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
 
-æ_unit            = "æ", unit_suffix ;
+e-unit            = "æ", unit-suffix ;
 
-unit_suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
+unit-suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
 
 class             = "c"
                   | "b" | "hb" 
@@ -207,7 +209,7 @@ class             = "c"
                   | "bd" | "hbd" 
                   | "as" | "has";
 
-object_context    = part, [".", subpart, [".", subsubpart]] ;
+object-context    = part, [".", subpart, [".", subsubpart]] ;
 part              = "s" | "f" 
                   | "m" | "mf" ;
 subpart           = "tr"
@@ -216,17 +218,17 @@ subpart           = "tr"
                   | "core" | "atm" ;   
 subsubpart        = ident;                                  
 
-chemical_notation = chemical_full
-                  | chemical_mass_only ;
+chemical-notation = chemical-full
+                  | chemical-mass-only ;
 
-chemical_full     = element, [ ":", element_subsort ]
-                  , [ "-", mass ], [ chemical_structure ]
-                  | molecule, [ ":", molecule_subsort ]
-                  , [ "-", mass ], [ chemical_structure ] ;
+chemical-full     = element, [ ":", element-subsort ]
+                  , [ "-", mass ], [ chemical-structure ]
+                  | molecule, [ ":", molecule-subsort ]
+                  , [ "-", mass ], [ chemical-structure ] ;
 
-chemical_mass_only = mass ;
+chemical-mass-only = mass ;
 
-chemical_structure = "-", "(", [ notation_list ], ")";
+chemical-structure = "-", "(", [ notation-list ], ")";
 
 element           = "H"  | "D"  | "T"  | "Ht" | "He"
                   | "Li" | "Be" | "B"  | "C"  | "N"
@@ -252,53 +254,56 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
                   | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
                   | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
 
-element_subsort   = subelement ;
+element-subsort   = subelement ;
 
 subelement        = ident | number ;
 
 mass              = number ;
 
-identifier_not_element = ident - element ;
+molecule-ident = molecule-letter
+               , { molecule-letter | digit | "-" } ;
 
-molecule = identifier_not_element ;
+identifier-not-element = molecule-ident - element ;
 
-molecule_subsort  = ident | number ;
+molecule = identifier-not-element ;
 
-quantity_expression = quantity, [".", science_context]
-                    , aspect_expression
+molecule-subsort  = ident | number ;
+
+quantity-expression = quantity, [".", science-context]
+                    , aspect-expression
                     , [".", character]
-                    , ".", object_notation ;
+                    , ".", object-notation ;
 
-const_identifier = "const" ;                    
+const-identifier = "const" ;                    
 
-quantity = quantity_ident - const_identifier;
+quantity = quantity-ident - const-identifier;
 
-quantity_ident       = quantity_letter
-                     , { quantity_letter | digit | "_" } ;
+quantity-ident       = quantity-letter
+                     , { quantity-letter | digit | "-" } ;
 
-science_context   = science_domain
-                  , [".", science_subdomain
-                  , [".", science_subdomain]] ;
+science-context   = science-domain
+                  , [".", science-subdomain
+                  , [".", science-subdomain]] ;
 
-science_domain = core_science_domain
-               | "sc_", extension_science_domain ;
+science-domain = core-science-domain
+               | "sc_", extension-science-domain ;
 
-science_subdomain = core_science_subdomain
-                  | "scsd_", extension_science_subdomain ;
+science-subdomain = core-science-subdomain
+                  | "scsd_", extension-science-subdomain ;
 
-extension_science_domain = ident ;
-extension_science_subdomain = ident ;                
+extension-science-domain = ident ;
+extension-science-subdomain = ident ;                
 
-core_science_domain =
+core-science-domain =
       "physics"
     | "mathematics"
     | "chemistry"
     | "biology"
     | "neuroscience"
-    | "cognitive-science"
-    | "social-science" ;
+    | "cognitive_science"
+    | "social_science" ;
 
-core_science_subdomain =
+core-science-subdomain =
       "mechanics"
     | "kinematics"
     | "dynamics"
@@ -313,57 +318,57 @@ core_science_subdomain =
     | "molecular"
     | "nuclear"
     | "particle"
-    | "condensed-matter"
+    | "condensed_matter"
     | "astrophysics"
     | "cosmology"
     | "information"
     | "algebra"
     | "geometry"
-    | "number-theory"
+    | "number_theory"
     | "probability"
     | "statistics"
     | "optimization"
     | "discrete"
     | "evolution"
     | "abiogenesis"
-    | "neural-networks"
+    | "neural_networks"
     | "consciousness"
     | "society" ;        
 
-aspect_expression = [ ".", dimension_aspect ]
-                  , [ ".", dynamic_aspect ]
-                  , [ ".", relation_aspect ] 
-                  , [ ".", æ_state_aspect ]
-                  , [ ".", æ_delay_aspect ]
-                  , [ ".", æ_parameter_aspect ] ;
+aspect-expression = [ ".", dimension-aspect ]
+                  , [ ".", dynamic-aspect ]
+                  , [ ".", relation-aspect ] 
+                  , [ ".", e-state-aspect ]
+                  , [ ".", e-delay-aspect ]
+                  , [ ".", e-parameter-aspect ] ;
 
-dimension_aspect = "dimension" | "D"
+dimension-aspect = "dimension" | "D"
                  | "space" | "S"
                  | "time" | "T"
                  | "history" | "H" ;
               
-dynamic_aspect = "kinematic" | "ka"
+dynamic-aspect = "kinematic" | "ka"
                | "inertnic" | "ia" ;
 
-relation_aspect = "substance-field" | "sf" 
+relation-aspect = "substance-field" | "sf" 
                 | "hyperobject-medium" | "hm" ;
 
-æ_state_aspect = "state1" | "s1" | "rest"
+e-state-aspect = "state1" | "s1" | "rest"
                | "state2" | "s2" | "interaction"
                | "state3" | "s3" | "departure"
                | "state4" | "s4" | "arrival" 
                | "jump" | "jmp" | "s3s4"
-               | "free-cycle" | "freec" | "s1s3s4"
-               | "collision-cycle" | "collc" | "s1s2s3s4" ;
+               | "free_cycle" | "freec" | "s1s3s4"
+               | "collision_cycle" | "collc" | "s1s2s3s4" ;
 
-æ_delay_aspect = "base"
+e-delay-aspect = "base"
                | "spontaneous" | "spont" | "random" | "rnd"
                | "compensatory" | "comp"
                | "additional" | "add" 
                | "step"
                | "move" ;  
 
-æ_parameter_aspect = "collision" | "coll";
+e-parameter-aspect = "collision" | "coll";
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -374,63 +379,63 @@ character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "old" | "new"
                   | "crit" ;    
 
-object_notation   = æ_notation | chemical_notation ;
+object-notation   = e-notation | chemical-notation ;
 
-constant_expression = const_full
-                    | const_compact_letter
-                    | const_compact_at ;
+constant-expression = const-full
+                    | const-compact-letter
+                    | const-compact-at ;
 
-const_full = const_identifier, ".", quantity, ".", character, ".", const_object ;
+const-full = const-identifier, ".", quantity, ".", character, ".", const-object ;
 
-const_compact_letter = "Ꞓ", const_name ;
+const-compact-letter = "Ꞓ", const-name ;
 
-const_compact_at  = "@", const_name ;
+const-compact-at  = "@", const-name ;
 
-const_object      = æ_notation
-                  | chemical_notation ;
+const-object      = e-notation
+                  | chemical-notation ;
 
-const_name        = ident | number ;
+const-name        = ident | number ;
 
-measurement_expression = number, æ_unit ;
+measurement-expression = number, e-unit ;
 
-instance          = "-", "{", [ pair_list ], "}" ;
+instance          = "-", "{", [ pair-list ], "}" ;
 
-pair_list         = pair, { ",", pair } ;
+pair-list         = pair, { ",", pair } ;
 
 pair              = key, "=", value ;
 
 key               = ident ;
 
 value             = ident
-                  | measurement_expression
+                  | measurement-expression
                   | number
                   | string ;
 
-structure         = "-", "(", [ notation_list ], ")" ;
+structure         = "-", "(", [ notation-list ], ")" ;
 
-notation_list     = notation, { separator, notation } ;
+notation-list     = notation, { separator, notation } ;
 
-separator         = separator_char, [ separator_instance ] ;
+separator         = separator-char, [ separator-instance ] ;
 
-separator_char    = etheron_separator_char
-                  | batch_separator_char
-                  | spiral_separator_char  
-                  | major_separator_char
-                  | atom_separator_char
-                  | mol_separator_char
-                  | body_separator_char
-                  | astr_separator_char ;
+separator-char    = etheron-separator-char
+                  | batch-separator-char
+                  | spiral-separator-char  
+                  | major-separator-char
+                  | atom-separator-char
+                  | mol-separator-char
+                  | body-separator-char
+                  | astr-separator-char ;
 
-etheron_separator_char = "|" ;
-batch_separator_char = "!" ;
-spiral_separator_char = "$" ;
-major_separator_char = "*" ;
-atom_separator_char = "'" ;
-mol_separator_char = "^" ;
-body_separator_char = "&" ;
-astr_separator_char = "~" ;
+etheron-separator-char = "|" ;
+batch-separator-char = "!" ;
+spiral-separator-char = "$" ;
+major-separator-char = "*" ;
+atom-separator-char = "'" ;
+mol-separator-char = "^" ;
+body-separator-char = "&" ;
+astr-separator-char = "~" ;
 
-separator_instance = instance ;
+separator-instance = instance ;
 
 ident             = letter, { letter | digit | "_" } ;
 
@@ -441,10 +446,12 @@ letter =
   "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z"|
   "æ"|"Æ";
 
-quantity_letter      = letter
-                     | greek_letter
-                     | greek_variant_letter
-                     | letterlike_symbol ;                  
+quantity-letter      = letter
+                     | greek-letter
+                     | greek-variant-letter
+                     | letterlike-symbol ;        
+                     
+molecule-letter = letter - ("æ" | "Æ") ;
 
 number            = [ "-" ], digits, [ ".", digits ] ;
 
@@ -453,28 +460,28 @@ digits            = digit, { digit } ;
 digit             = "0" | "1" | "2" | "3" | "4" 
                   | "5" | "6" | "7" | "8" | "9" ;
 
-hex_digit         = digit
+hex-digit         = digit
                   | "A" | "B" | "C" | "D" | "E" | "F"
                   | "a" | "b" | "c" | "d" | "e" | "f" ;                  
 
-string            = '"', { string_char }, '"' ;
+string            = '"', { string-char }, '"' ;
 
-string_char       = unescaped_char
-                  | escape_sequence ;
+string-char       = unescaped-char
+                  | escape-sequence ;
 
-escape_sequence   = "\", escape_code ;
+escape-sequence   = "\", escape-code ;
 
-escape_code       = '"'
+escape-code       = '"'
                   | "\"
                   | "b"
                   | "f"
                   | "n"
                   | "r"
                   | "t"
-                  | "u", hex_digit, hex_digit
-                  , hex_digit, hex_digit ;
+                  | "u", hex-digit, hex-digit
+                  , hex-digit, hex-digit ;
 
-greek_letter          = "Α" | "α"
+greek-letter          = "Α" | "α"
                       | "Β" | "β"
                       | "Γ" | "γ"
                       | "Δ" | "δ"
@@ -499,17 +506,17 @@ greek_letter          = "Α" | "α"
                       | "Ψ" | "ψ"
                       | "Ω" | "ω" ;
 
-greek_variant_letter = "ϵ" | "ϑ" | "ϖ"
+greek-variant-letter = "ϵ" | "ϑ" | "ϖ"
                       | "ϱ" | "ϰ" | "ϕ" ;
 
-letterlike_symbol    = "ℏ" | "ℎ" | "ℓ"
+letterlike-symbol    = "ℏ" | "ℎ" | "ℓ"
                       | "ℐ" | "ℑ" | "ℒ"
                       | "ℱ" | "ℜ" | "ℵ"
                       | "℘" ;
 
-unescaped_char    = ? Unicode scalar value,
+unescaped-char    = ? Unicode scalar value,
                       except U+0000–U+001F,
-                      U+0022 и U+005C ? ;
+                      U+0022, U+005C ? ;
 ```
 
 The EBNF grammar of the dialect "ISO/IEC 14977:1996" for the ÆToE ether statement defines the statement as a linear sequence of symbols in which structural relationships between segments are expressed by explicit delimiters: the dot (`.`), colon (`:`), hyphen (`-`), curly braces (`{}`), parentheses (`()`), apostrophe (`'`), and comma (`,`). The ÆToE EBNF grammar does not recognize LaTeX markup and contains no rules for LaTeX commands, LaTeX groups, or LaTeX subscripts. LaTeX markup introduces an additional layer of representation to the ether statement that is not part of the ÆToE grammar; for instance, Greek letters and letter-like symbols may be encoded using LaTeX commands (such as `tau`, `rho`, `chi`, `Pi`, `hbar`, etc.). The relationship between the EBNF form of an ether statement and its LaTeX form is one of representation rather than identity: the LaTeX form is one possible external representation of the ether statement, whereas the EBNF form constitutes its canonical form within the ÆToE grammar. In a LaTeX document where an ether statement is written in LaTeX form, subscripts and superscripts implicitly serve as structural delimiters — roles that are expressed by the dot in the EBNF form. In other words, the LaTeX form of an ether statement implicitly includes an "invisible dot" before every subscript and superscript; this structural delimiter is written explicitly in the EBNF form but omitted in the LaTeX form as visually redundant. An ether statement in LaTeX form cannot be fed directly into the parser for the ÆToE EBNF grammar. Before parsing, an ether assertion in LaTeX form must undergo de-LaTeX-ization — the conversion of the LaTeX form of the ether assertion into its EBNF form. De-LaTeX-ization of an ether assertion is a deterministic transformation that maps each LaTeX construct within the assertion to its EBNF equivalent. De-LaTeX-ization is neither part of the ÆToE EBNF grammar nor part of the ÆToE semantic validator; rather, it is a preparatory step performed before the ÆToE EBNF grammar is applied. For example, LaTeX commands for Greek letters and letter-like symbols are replaced by the corresponding Unicode characters from the `greek_letter`, `greek_variant_letter`, and `letterlike_symbol` sets. LaTeX constructs lacking an EBNF equivalent in the ÆToE grammar are either mapped to the nearest valid EBNF segment or flagged as a grammar extension requiring a separate solution. De-LaTeX-ization is a preliminary stage in processing an ether assertion found within a LaTeX document; it does not replace semantic validation. Following de-LaTeX-ization, the ether assertion in EBNF form is fed into the ÆToE EBNF grammar and subsequently into the ÆToE semantic validator. In ÆToE formulations where ether assertions are written in LaTeX form, subscripts and superscripts should be interpreted as LaTeX representations of EBNF segments rather than as independent EBNF segments. This rule separates the representation of an ether statement from its canonical form and prevents the mixing of LaTeX markup with the ÆToE EBNF grammar. Reliable de-LaTeXing requires a deterministic pipeline: LaTeX tokenization; parsing into an AST; converting the AST into an EBNF-AST based on explicit rules; serialization into an EBNF string; and validation against the ÆToE grammar.

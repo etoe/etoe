@@ -2,7 +2,7 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.40
+version: 0.1.41
 date: 2026-09-30
 created: 2026-06-01
 updated: 2026-09-30
@@ -152,50 +152,52 @@ $$
 Иерархическая конфигурационная нотация эфирного объекта имеет формат, в полном варианте включающий в себя: обозначение ступени материи; обозначение класса эфирного объекта в этой ступени материи; обозначение части эфирного объекта; информацию об экземпляре эфирного объекта; информацию о структуре эфирного объекта. Символ точки используется в иерархических идентификаторах в качестве иерархического разделителя ступени материи, класса эфирного объекта, части эфирного объекта и подчасти эфирного объекта. Символ двоеточия используется в качестве "оператора ролевой квалификации" (медиумный, субстанциальный, полевой) одного эфирона ($æ$) или всего эфира ($Æ$). Точка описывает структуру объекта; двоеточие квалифицирует объект или множество объектов по реляционному свойству. Информация об экземпляре эфирного объекта указывается через дефис в фигурных скобках в некотором формате. Информация о структуре эфирного объекта указывается через дефис в круглых скобках. Информация о структуре эфирного объекта включает в себя нотации эфирных субобъектов этого эфирного объекта, разделённые апострофом или некоторыми другими знаками в качестве знака сцепления эфирных субобъектов. Аспект эфирной величины в эфирном утверждении может использоваться для определения разносторонних величин (например, "кинематический" аспект и "инертностный" аспект). Кинематический аспект является аспектом эфирной величины по умолчанию, если иной аспект явно не указан. Субаспект эфирной величины в эфирном утверждении может использоваться для определения величин отношения частей (например, "субстанциально-полевой" субаспект). Части объекта (например, субстанция и поле) обозначаются в нотации объекта, а отношения частей объекта обозначаются в субаспекте величины. Это правило разводит онтологию объекта и семантику измеряемой величины. Символьная философия грамматики эфирного утверждения: богатый физико-математический алфавит для величин, но строгий машинный алфавит для классов, объектов и контекста. Нотация сможет служить и компактной записью для человека, и сериализацией состояния для симулятора:
 
 ```ebnf
-notation          = æ_notation
-                  | chemical_notation
-                  | quantity_expression
-                  | constant_expression
-                  | measurement_expression ;                  
+ether-statement = notation ;
 
-æ_notation        = æ_object | æ_level | æ_unit ;
+notation          = e-notation
+                  | chemical-notation
+                  | quantity-expression
+                  | constant-expression
+                  | measurement-expression ;                  
 
-æ_object          = æ_full_object
-                  | æ_compact_object
-                  | æ_ether
-                  | æ_etheron ;
+e-notation        = e-object | e-level | e-unit ;
 
-æ_full_object     = "Æ", level, ".", class, [".", object_context]
+e-object          = e-full-object
+                  | e-compact-object
+                  | e-ether
+                  | e-etheron ;
+
+e-full-object     = "Æ", level, ".", class, [".", object-context]
                   , [ instance ], [ structure ] ;
 
-æ_compact_object  = "Æ", class, [".", object_context]
+e-compact-object  = "Æ", class, [".", object-context]
                   , [ instance ], [ structure ] ;
 
-æ_ether           = "Æ"
-                  , [ æ_etheron_qualifier ]
+e-ether           = "Æ"
+                  , [ e-etheron-qualifier ]
                   , [ instance ]
                   , [ structure ] ;
 
-æ_etheron        = "æ"
-                  , [ æ_etheron_qualifier ]
+e-etheron        = "æ"
+                  , [ e-etheron-qualifier ]
                   , [ instance ]
                   , [ structure ] ;
 
-æ_etheron_qualifier
-                  = ":", etheron_role
-                  | ":", etheron_role, ".", etheron_subrole ;
+e-etheron-qualifier
+                  = ":", etheron-role
+                  | ":", etheron-role, ".", etheron-subrole ;
 
-etheron_role     = "m" | "s" | "f" | "sf" | "h" | "mf" ;
+etheron-role     = "m" | "s" | "f" | "sf" | "h" | "mf" ;
 
-etheron_subrole  = "br" |  "dr" | "di" | "do" ;                  
+etheron-subrole  = "br" |  "dr" | "di" | "do" ;                  
 
-æ_level           = "Æ", level ;
+e-level           = "Æ", level ;
 
 level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
 
-æ_unit            = "æ", unit_suffix ;
+e-unit            = "æ", unit-suffix ;
 
-unit_suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
+unit-suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
 
 class             = "c"
                   | "b" | "hb" 
@@ -208,7 +210,7 @@ class             = "c"
                   | "bd" | "hbd" 
                   | "as" | "has";
 
-object_context    = part, [".", subpart, [".", subsubpart]] ;
+object-context    = part, [".", subpart, [".", subsubpart]] ;
 part              = "s" | "f" 
                   | "m" | "mf" ;
 subpart           = "tr"
@@ -217,17 +219,17 @@ subpart           = "tr"
                   | "core" | "atm" ;   
 subsubpart        = ident;                                  
 
-chemical_notation = chemical_full
-                  | chemical_mass_only ;
+chemical-notation = chemical-full
+                  | chemical-mass-only ;
 
-chemical_full     = element, [ ":", element_subsort ]
-                  , [ "-", mass ], [ chemical_structure ]
-                  | molecule, [ ":", molecule_subsort ]
-                  , [ "-", mass ], [ chemical_structure ] ;
+chemical-full     = element, [ ":", element-subsort ]
+                  , [ "-", mass ], [ chemical-structure ]
+                  | molecule, [ ":", molecule-subsort ]
+                  , [ "-", mass ], [ chemical-structure ] ;
 
-chemical_mass_only = mass ;
+chemical-mass-only = mass ;
 
-chemical_structure = "-", "(", [ notation_list ], ")";
+chemical-structure = "-", "(", [ notation-list ], ")";
 
 element           = "H"  | "D"  | "T"  | "Ht" | "He"
                   | "Li" | "Be" | "B"  | "C"  | "N"
@@ -253,44 +255,47 @@ element           = "H"  | "D"  | "T"  | "Ht" | "He"
                   | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
                   | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
 
-element_subsort   = subelement ;
+element-subsort   = subelement ;
 
 subelement        = ident | number ;
 
 mass              = number ;
 
-identifier_not_element = ident - element ;
+molecule-ident = molecule-letter
+               , { molecule-letter | digit | "-" } ;
 
-molecule = identifier_not_element ;
+identifier-not-element = molecule-ident - element ;
 
-molecule_subsort  = ident | number ;
+molecule = identifier-not-element ;
 
-quantity_expression = quantity, [".", science_context]
-                    , aspect_expression
+molecule-subsort  = ident | number ;
+
+quantity-expression = quantity, [".", science-context]
+                    , aspect-expression
                     , [".", character]
-                    , ".", object_notation ;
+                    , ".", object-notation ;
 
-const_identifier = "const" ;                    
+const-identifier = "const" ;                    
 
-quantity = quantity_ident - const_identifier;
+quantity = quantity-ident - const-identifier;
 
-quantity_ident       = quantity_letter
-                     , { quantity_letter | digit | "_" } ;
+quantity-ident       = quantity-letter
+                     , { quantity-letter | digit | "-" } ;
 
-science_context   = science_domain
-                  , [".", science_subdomain
-                  , [".", science_subdomain]] ;
+science-context   = science-domain
+                  , [".", science-subdomain
+                  , [".", science-subdomain]] ;
 
-science_domain = core_science_domain
-               | "sc_", extension_science_domain ;
+science-domain = core-science-domain
+               | "sc_", extension-science-domain ;
 
-science_subdomain = core_science_subdomain
-                  | "scsd_", extension_science_subdomain ;
+science-subdomain = core-science-subdomain
+                  | "scsd_", extension-science-subdomain ;
 
-extension_science_domain = ident ;
-extension_science_subdomain = ident ;                
+extension-science-domain = ident ;
+extension-science-subdomain = ident ;                
 
-core_science_domain =
+core-science-domain =
       "physics"
     | "mathematics"
     | "chemistry"
@@ -299,7 +304,7 @@ core_science_domain =
     | "cognitive_science"
     | "social_science" ;
 
-core_science_subdomain =
+core-science-subdomain =
       "mechanics"
     | "kinematics"
     | "dynamics"
@@ -331,25 +336,25 @@ core_science_subdomain =
     | "consciousness"
     | "society" ;        
 
-aspect_expression = [ ".", dimension_aspect ]
-                  , [ ".", dynamic_aspect ]
-                  , [ ".", relation_aspect ] 
-                  , [ ".", æ_state_aspect ]
-                  , [ ".", æ_delay_aspect ]
-                  , [ ".", æ_parameter_aspect ] ;
+aspect-expression = [ ".", dimension-aspect ]
+                  , [ ".", dynamic-aspect ]
+                  , [ ".", relation-aspect ] 
+                  , [ ".", e-state-aspect ]
+                  , [ ".", e-delay-aspect ]
+                  , [ ".", e-parameter-aspect ] ;
 
-dimension_aspect = "dimension" | "D"
+dimension-aspect = "dimension" | "D"
                  | "space" | "S"
                  | "time" | "T"
                  | "history" | "H" ;
               
-dynamic_aspect = "kinematic" | "ka"
+dynamic-aspect = "kinematic" | "ka"
                | "inertnic" | "ia" ;
 
-relation_aspect = "substance_field" | "sf" 
-                | "hyperobject_medium" | "hm" ;
+relation-aspect = "substance-field" | "sf" 
+                | "hyperobject-medium" | "hm" ;
 
-æ_state_aspect = "state1" | "s1" | "rest"
+e-state-aspect = "state1" | "s1" | "rest"
                | "state2" | "s2" | "interaction"
                | "state3" | "s3" | "departure"
                | "state4" | "s4" | "arrival" 
@@ -357,14 +362,14 @@ relation_aspect = "substance_field" | "sf"
                | "free_cycle" | "freec" | "s1s3s4"
                | "collision_cycle" | "collc" | "s1s2s3s4" ;
 
-æ_delay_aspect = "base"
+e-delay-aspect = "base"
                | "spontaneous" | "spont" | "random" | "rnd"
                | "compensatory" | "comp"
                | "additional" | "add" 
                | "step"
                | "move" ;  
 
-æ_parameter_aspect = "collision" | "coll";
+e-parameter-aspect = "collision" | "coll";
 
 character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "tot" | "net" | "abs" | "rel"
@@ -375,63 +380,63 @@ character         = "avg" | "max" | "min" | "inst" | "rms"
                   | "old" | "new"
                   | "crit" ;    
 
-object_notation   = æ_notation | chemical_notation ;
+object-notation   = e-notation | chemical-notation ;
 
-constant_expression = const_full
-                    | const_compact_letter
-                    | const_compact_at ;
+constant-expression = const-full
+                    | const-compact-letter
+                    | const-compact-at ;
 
-const_full = const_identifier, ".", quantity, ".", character, ".", const_object ;
+const-full = const-identifier, ".", quantity, ".", character, ".", const-object ;
 
-const_compact_letter = "Ꞓ", const_name ;
+const-compact-letter = "Ꞓ", const-name ;
 
-const_compact_at  = "@", const_name ;
+const-compact-at  = "@", const-name ;
 
-const_object      = æ_notation
-                  | chemical_notation ;
+const-object      = e-notation
+                  | chemical-notation ;
 
-const_name        = ident | number ;
+const-name        = ident | number ;
 
-measurement_expression = number, æ_unit ;
+measurement-expression = number, e-unit ;
 
-instance          = "-", "{", [ pair_list ], "}" ;
+instance          = "-", "{", [ pair-list ], "}" ;
 
-pair_list         = pair, { ",", pair } ;
+pair-list         = pair, { ",", pair } ;
 
 pair              = key, "=", value ;
 
 key               = ident ;
 
 value             = ident
-                  | measurement_expression
+                  | measurement-expression
                   | number
                   | string ;
 
-structure         = "-", "(", [ notation_list ], ")" ;
+structure         = "-", "(", [ notation-list ], ")" ;
 
-notation_list     = notation, { separator, notation } ;
+notation-list     = notation, { separator, notation } ;
 
-separator         = separator_char, [ separator_instance ] ;
+separator         = separator-char, [ separator-instance ] ;
 
-separator_char    = etheron_separator_char
-                  | batch_separator_char
-                  | spiral_separator_char  
-                  | major_separator_char
-                  | atom_separator_char
-                  | mol_separator_char
-                  | body_separator_char
-                  | astr_separator_char ;
+separator-char    = etheron-separator-char
+                  | batch-separator-char
+                  | spiral-separator-char  
+                  | major-separator-char
+                  | atom-separator-char
+                  | mol-separator-char
+                  | body-separator-char
+                  | astr-separator-char ;
 
-etheron_separator_char = "|" ;
-batch_separator_char = "!" ;
-spiral_separator_char = "$" ;
-major_separator_char = "*" ;
-atom_separator_char = "'" ;
-mol_separator_char = "^" ;
-body_separator_char = "&" ;
-astr_separator_char = "~" ;
+etheron-separator-char = "|" ;
+batch-separator-char = "!" ;
+spiral-separator-char = "$" ;
+major-separator-char = "*" ;
+atom-separator-char = "'" ;
+mol-separator-char = "^" ;
+body-separator-char = "&" ;
+astr-separator-char = "~" ;
 
-separator_instance = instance ;
+separator-instance = instance ;
 
 ident             = letter, { letter | digit | "_" } ;
 
@@ -442,10 +447,12 @@ letter =
   "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z"|
   "æ"|"Æ";
 
-quantity_letter      = letter
-                     | greek_letter
-                     | greek_variant_letter
-                     | letterlike_symbol ;                  
+quantity-letter      = letter
+                     | greek-letter
+                     | greek-variant-letter
+                     | letterlike-symbol ;        
+                     
+molecule-letter = letter - ("æ" | "Æ") ;
 
 number            = [ "-" ], digits, [ ".", digits ] ;
 
@@ -454,28 +461,28 @@ digits            = digit, { digit } ;
 digit             = "0" | "1" | "2" | "3" | "4" 
                   | "5" | "6" | "7" | "8" | "9" ;
 
-hex_digit         = digit
+hex-digit         = digit
                   | "A" | "B" | "C" | "D" | "E" | "F"
                   | "a" | "b" | "c" | "d" | "e" | "f" ;                  
 
-string            = '"', { string_char }, '"' ;
+string            = '"', { string-char }, '"' ;
 
-string_char       = unescaped_char
-                  | escape_sequence ;
+string-char       = unescaped-char
+                  | escape-sequence ;
 
-escape_sequence   = "\", escape_code ;
+escape-sequence   = "\", escape-code ;
 
-escape_code       = '"'
+escape-code       = '"'
                   | "\"
                   | "b"
                   | "f"
                   | "n"
                   | "r"
                   | "t"
-                  | "u", hex_digit, hex_digit
-                  , hex_digit, hex_digit ;
+                  | "u", hex-digit, hex-digit
+                  , hex-digit, hex-digit ;
 
-greek_letter          = "Α" | "α"
+greek-letter          = "Α" | "α"
                       | "Β" | "β"
                       | "Γ" | "γ"
                       | "Δ" | "δ"
@@ -500,17 +507,17 @@ greek_letter          = "Α" | "α"
                       | "Ψ" | "ψ"
                       | "Ω" | "ω" ;
 
-greek_variant_letter = "ϵ" | "ϑ" | "ϖ"
+greek-variant-letter = "ϵ" | "ϑ" | "ϖ"
                       | "ϱ" | "ϰ" | "ϕ" ;
 
-letterlike_symbol    = "ℏ" | "ℎ" | "ℓ"
+letterlike-symbol    = "ℏ" | "ℎ" | "ℓ"
                       | "ℐ" | "ℑ" | "ℒ"
                       | "ℱ" | "ℜ" | "ℵ"
                       | "℘" ;
 
-unescaped_char    = ? Unicode scalar value,
+unescaped-char    = ? Unicode scalar value,
                       except U+0000–U+001F,
-                      U+0022 и U+005C ? ;
+                      U+0022, U+005C ? ;
 ```
 
 EBNF-грамматика диалекта "ISO/IEC 14977:1996" эфирного утверждения ÆToE определяет эфирное утверждение как линейную символьную последовательность, в которой структурные отношения между сегментами выражаются явными разделителями: точкой (`.`), двоеточием (`:`), дефисом (`-`), фигурными скобками (`{}`), круглыми скобками (`()`), апострофом (`'`) и запятой (`,`). EBNF-грамматика ÆToE не распознаёт LaTeX-разметку и не содержит правил для LaTeX-команд, LaTeX-групп и LaTeX-подстрочников. LaTeX-разметка вводит в эфирное утверждение дополнительный слой представления, который не является частью грамматики ÆToE. Например, греческие буквы и буквоподобные символы могут кодироваться LaTeX-командами (tau, rho, chi, Pi, hbar и т.п.). Между EBNF-формой эфирного утверждения и его LaTeX-формой существует не тождество, а отношение представления. LaTeX-форма является одним из возможных внешних представлений эфирного утверждения, а EBNF-форма является канонической формой эфирного утверждения в грамматике ÆToE. В LaTeX-документе, в котором эфирное утверждение записано в LaTeX-форме, подстрочник и надстрочник неявно выполняют роль структурных разделителей, которые в EBNF-форме выражены точкой. Иными словами, в LaTeX-форме эфирного утверждения перед каждым подстрочником и перед каждым надстрочником неявно подразумевается «невидимая точка» — структурный разделитель, который в EBNF-форме записывается явно, а в LaTeX-форме опускается как визуально избыточный. Эфирное утверждение в LaTeX-форме не может быть непосредственно подано на вход парсеру EBNF-грамматики ÆToE. Перед разбором эфирное утверждение в LaTeX-форме должно быть подвергнуто де-LaTeX-изации — преобразованию LaTeX-формы эфирного утверждения в EBNF-форму эфирного утверждения. Де-LaTeX-изация эфирного утверждения — это детерминированное преобразование, ставящее в соответствие каждой LaTeX-конструкции эфирного утверждения её EBNF-эквивалент. Де-LaTeX-изация не является частью EBNF-грамматики ÆToE и не является частью семантического валидатора ÆToE. Де-LaTeX-изация является этапом подготовки эфирного утверждения к разбору, выполняемым до применения EBNF-грамматики ÆToE. Например, LaTeX-команды греческих букв и буквоподобных символов заменяются на соответствующие Unicode-символы из greek_letter, greek_variant_letter и letterlike_symbol. LaTeX-конструкции, не имеющие EBNF-эквивалента в грамматике ÆToE, при де-LaTeX-изации либо отображаются в ближайший допустимый EBNF-сегмент, либо помечаются как расширение грамматики, требующее отдельного решения. Де-LaTeX-изация эфирного утверждения является предварительным этапом обработки эфирного утверждения в LaTeX-документе. Де-LaTeX-изация не заменяет семантическую валидацию эфирного утверждения. После де-LaTeX-изации эфирное утверждение в EBNF-форме поступает на вход EBNF-грамматике ÆToE, а затем - на вход семантическому валидатору ÆToE. В формулировках ÆToE, в которых эфирные утверждения записаны в LaTeX-форме, подстрочники и надстрочники следует трактовать как LaTeX-представление EBNF-сегментов, а не как самостоятельные EBNF-сегменты. Это правило разводит представление эфирного утверждения и его каноническую форму и предотвращает смешивание LaTeX-разметки с EBNF-грамматикой ÆToE. Для надёжной де-LaTeX-изации нужен детерминированный пайплайн: токенизация LaTeX; разбор в AST; преобразование AST в EBNF-AST по явным правилам; сериализация в EBNF-строку; валидация грамматикой ÆToE.
