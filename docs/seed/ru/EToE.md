@@ -2,7 +2,7 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.41
+version: 0.1.42
 date: 2026-09-30
 created: 2026-06-01
 updated: 2026-09-30
@@ -262,7 +262,7 @@ subelement        = ident | number ;
 mass              = number ;
 
 molecule-ident = molecule-letter
-               , { molecule-letter | digit | "-" } ;
+               , { molecule-letter | digit | "_" } ;
 
 identifier-not-element = molecule-ident - element ;
 
@@ -280,7 +280,7 @@ const-identifier = "const" ;
 quantity = quantity-ident - const-identifier;
 
 quantity-ident       = quantity-letter
-                     , { quantity-letter | digit | "-" } ;
+                     , { quantity-letter | digit | "_" } ;
 
 science-context   = science-domain
                   , [".", science-subdomain
@@ -351,8 +351,8 @@ dimension-aspect = "dimension" | "D"
 dynamic-aspect = "kinematic" | "ka"
                | "inertnic" | "ia" ;
 
-relation-aspect = "substance-field" | "sf" 
-                | "hyperobject-medium" | "hm" ;
+relation-aspect = "substance_field" | "sf" 
+                | "hyperobject_medium" | "hm" ;
 
 e-state-aspect = "state1" | "s1" | "rest"
                | "state2" | "s2" | "interaction"
