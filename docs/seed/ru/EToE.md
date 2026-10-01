@@ -2,7 +2,7 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.43
+version: 0.1.44
 date: 2026-10-01
 created: 2026-06-01
 updated: 2026-10-01
@@ -154,115 +154,118 @@ $$
 ```ebnf
 ether-statement = notation ;
 
-notation          = e-notation
-                  | chemical-notation
-                  | quantity-expression
-                  | constant-expression
-                  | measurement-expression ;                  
+notation          
+  = e-notation
+  | chemical-notation
+  | quantity-expression
+  | constant-expression
+  | measurement-expression ;                  
 
-e-notation        = e-object | e-level | e-unit ;
+e-notation = e-object | e-level | e-unit ;
 
-e-object          = e-full-object
-                  | e-compact-object
-                  | e-ether
-                  | e-etheron ;
+e-object          
+  = e-full-object
+  | e-compact-object
+  | e-ether
+  | e-etheron ;
 
-e-full-object     = "Æ", level, ".", class, [".", object-context]
-                  , [ instance ], [ structure ] ;
+e-full-object     
+  = "Æ", level, ".", class, [".", object-context]
+  , [ instance ], [ structure ] ;
 
-e-compact-object  = "Æ", class, [".", object-context]
-                  , [ instance ], [ structure ] ;
+e-compact-object  
+  = "Æ", class, [".", object-context]
+  , [ instance ], [ structure ] ;
 
-e-ether           = "Æ"
-                  , [ e-etheron-qualifier ]
-                  , [ instance ]
-                  , [ structure ] ;
+e-ether           
+  = "Æ"
+  , [ e-etheron-qualifier ]
+  , [ instance ], [ structure ] ;
 
-e-etheron        = "æ"
-                  , [ e-etheron-qualifier ]
-                  , [ instance ]
-                  , [ structure ] ;
+e-etheron        
+  = "æ"
+  , [ e-etheron-qualifier ]
+  , [ instance ], [ structure ] ;
 
 e-etheron-qualifier
-                  = ":", etheron-role
-                  | ":", etheron-role, ".", etheron-subrole ;
+  = ":", etheron-role
+  | ":", etheron-role, ".", etheron-subrole ;
 
-etheron-role     = "m" | "s" | "f" | "sf" | "h" | "mf" ;
+etheron-role = "m" | "s" | "f" | "sf" | "h" | "mf" ;
 
-etheron-subrole  = "br" |  "dr" | "di" | "do" ;                  
+etheron-subrole = "br" |  "dr" | "di" | "do" ;                  
 
-e-level           = "Æ", level ;
+e-level = "Æ", level ;
 
-level             = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
+level = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
 
-e-unit            = "æ", unit-suffix ;
+e-unit = "æ", unit-suffix ;
 
-unit-suffix       = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
+unit-suffix = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
 
-class             = "c"
-                  | "b" | "hb" 
-                  | "sp" | "hsp" 
-                  | "mj" | "hmj" 
-                    | "el" | "ps" 
-                    | "p" | "n" | "a" | "pna" 
-                  | "ha" 
-                  | "ml" | "hml" 
-                  | "bd" | "hbd" 
-                  | "as" | "has";
+class             
+  = "c"
+  | "b" | "hb" 
+  | "sp" | "hsp" 
+  | "mj" | "hmj" 
+    | "el" | "ps" 
+    | "p" | "n" | "a" | "pna" 
+  | "ha" 
+  | "ml" | "hml" 
+  | "bd" | "hbd" 
+  | "as" | "has";
 
-object-context    = part, [".", subpart, [".", subsubpart]] ;
-part              = "s" | "f" 
-                  | "m" | "mf" ;
-subpart           = "tr"
-                  | "br" 
-                  | "dr" | "di" | "do"                   
-                  | "core" | "atm" ;   
-subsubpart        = ident;                                  
+object-context = part, [".", subpart, [".", subsubpart]] ;
+part = "s" | "f" | "m" | "mf" ;
+subpart = "tr" | "br" | "dr" | "di" | "do" | "core" | "atm" ;   
+subsubpart = ident;                                  
 
-chemical-notation = chemical-full
-                  | chemical-mass-only ;
+chemical-notation = chemical-full | chemical-mass-only ;
 
-chemical-full     = element, [ ":", element-subsort ]
-                  , [ "-", mass ], [ chemical-structure ]
-                  | molecule, [ ":", molecule-subsort ]
-                  , [ "-", mass ], [ chemical-structure ] ;
+chemical-full     
+  = element, [ ":", element-subsort ]
+  , [ "-", mass ], [ chemical-structure ]
+  | molecule, [ ":", molecule-subsort ]
+  , [ "-", mass ], [ chemical-structure ] ;
 
 chemical-mass-only = mass ;
 
 chemical-structure = "-", "(", [ notation-list ], ")";
 
-element           = "H"  | "D"  | "T"  | "Ht" | "He"
-                  | "Li" | "Be" | "B"  | "C"  | "N"
-                  | "O"  | "F"  | "Ne" | "Na" | "Mg"
-                  | "Al" | "Si" | "P"  | "S"  | "Cl"
-                  | "Ar" | "K"  | "Ca" | "Sc" | "Ti"
-                  | "V"  | "Cr" | "Mn" | "Fe" | "Co"
-                  | "Ni" | "Cu" | "Zn" | "Ga" | "Ge"
-                  | "As" | "Se" | "Br" | "Kr" | "Rb"
-                  | "Sr" | "Y"  | "Zr" | "Nb" | "Mo"
-                  | "Tc" | "Ru" | "Rh" | "Pd" | "Ag"
-                  | "Cd" | "In" | "Sn" | "Sb" | "Te"
-                  | "I"  | "Xe" | "Cs" | "Ba" | "La"
-                  | "Ce" | "Pr" | "Nd" | "Pm" | "Sm"
-                  | "Eu" | "Gd" | "Tb" | "Dy" | "Ho"
-                  | "Er" | "Tm" | "Yb" | "Lu" | "Hf"
-                  | "Ta" | "W"  | "Re" | "Os" | "Ir"
-                  | "Pt" | "Au" | "Hg" | "Tl" | "Pb"
-                  | "Bi" | "Po" | "At" | "Rn" | "Fr"
-                  | "Ra" | "Ac" | "Th" | "Pa" | "U"
-                  | "Np" | "Pu" | "Am" | "Cm" | "Bk"
-                  | "Cf" | "Es" | "Fm" | "Md" | "No"
-                  | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
-                  | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
+element           
+  = "H"  | "D"  | "T"  | "Ht" | "He"
+  | "Li" | "Be" | "B"  | "C"  | "N"
+  | "O"  | "F"  | "Ne" | "Na" | "Mg"
+  | "Al" | "Si" | "P"  | "S"  | "Cl"
+  | "Ar" | "K"  | "Ca" | "Sc" | "Ti"
+  | "V"  | "Cr" | "Mn" | "Fe" | "Co"
+  | "Ni" | "Cu" | "Zn" | "Ga" | "Ge"
+  | "As" | "Se" | "Br" | "Kr" | "Rb"
+  | "Sr" | "Y"  | "Zr" | "Nb" | "Mo"
+  | "Tc" | "Ru" | "Rh" | "Pd" | "Ag"
+  | "Cd" | "In" | "Sn" | "Sb" | "Te"
+  | "I"  | "Xe" | "Cs" | "Ba" | "La"
+  | "Ce" | "Pr" | "Nd" | "Pm" | "Sm"
+  | "Eu" | "Gd" | "Tb" | "Dy" | "Ho"
+  | "Er" | "Tm" | "Yb" | "Lu" | "Hf"
+  | "Ta" | "W"  | "Re" | "Os" | "Ir"
+  | "Pt" | "Au" | "Hg" | "Tl" | "Pb"
+  | "Bi" | "Po" | "At" | "Rn" | "Fr"
+  | "Ra" | "Ac" | "Th" | "Pa" | "U"
+  | "Np" | "Pu" | "Am" | "Cm" | "Bk"
+  | "Cf" | "Es" | "Fm" | "Md" | "No"
+  | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
+  | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" ;
 
-element-subsort   = subelement ;
+element-subsort = subelement ;
 
-subelement        = ident | number ;
+subelement = ident | number ;
 
-mass              = number ;
+mass = number ;
 
-molecule-ident = molecule-letter
-               , { molecule-letter | digit | "_" } ;
+molecule-ident 
+  = molecule-letter
+  , { molecule-letter | digit | "_" } ;
 
 identifier-not-element = molecule-ident - element ;
 
@@ -270,162 +273,182 @@ molecule = identifier-not-element ;
 
 molecule-subsort  = ident | number ;
 
-quantity-expression = quantity, [".", science-context]
-                    , aspect-expression
-                    , [".", character]
-                    , ".", object-notation ;
+quantity-expression 
+  = quantity, [".", science-context]
+  , aspect-expression
+  , [".", character]
+  , ".", object-notation ;
 
 const-identifier = "const" ;                    
 
 quantity = quantity-ident - const-identifier;
 
-quantity-ident       = quantity-letter
-                     , { quantity-letter | digit | "_" } ;
+quantity-ident       
+  = quantity-letter
+  , { quantity-letter | digit | "_" } ;
 
-science-context   = science-domain
-                  , [".", science-subdomain
-                  , [".", science-subdomain]] ;
+science-context   
+  = science-domain
+  , [".", science-subdomain
+  , [".", science-subdomain]] ;
 
-science-domain = core-science-domain
-               | "sc_", extension-science-domain ;
+science-domain 
+  = core-science-domain
+  | "sc_", extension-science-domain ;
 
-science-subdomain = core-science-subdomain
-                  | "scsd_", extension-science-subdomain ;
+science-subdomain 
+  = core-science-subdomain
+  | "scsd_", extension-science-subdomain ;
 
 extension-science-domain = ident ;
 extension-science-subdomain = ident ;                
 
-core-science-domain =
-      "physics"
-    | "mathematics"
-    | "chemistry"
-    | "biology"
-    | "neuroscience"
-    | "cognitive_science"
-    | "social_science" ;
+core-science-domain 
+  = "physics"
+  | "mathematics"
+  | "chemistry"
+  | "biology"
+  | "neuroscience"
+  | "cognitive_science"
+  | "social_science" ;
 
-core-science-subdomain =
-      "mechanics"
-    | "kinematics"
-    | "dynamics"
-    | "statistical"
-    | "thermodynamics"
-    | "electromagnetism"
-    | "optics"
-    | "gravitation"
-    | "fluid"
-    | "plasma"
-    | "atomic"
-    | "molecular"
-    | "nuclear"
-    | "particle"
-    | "condensed_matter"
-    | "astrophysics"
-    | "cosmology"
-    | "information"
-    | "algebra"
-    | "geometry"
-    | "number_theory"
-    | "probability"
-    | "statistics"
-    | "optimization"
-    | "discrete"
-    | "evolution"
-    | "abiogenesis"
-    | "neural_networks"
-    | "consciousness"
-    | "society" ;        
+core-science-subdomain 
+  = "mechanics"
+  | "kinematics"
+  | "dynamics"
+  | "statistical"
+  | "thermodynamics"
+  | "electromagnetism"
+  | "optics"
+  | "gravitation"
+  | "fluid"
+  | "plasma"
+  | "atomic"
+  | "molecular"
+  | "nuclear"
+  | "particle"
+  | "condensed_matter"
+  | "astrophysics"
+  | "cosmology"
+  | "information"
+  | "algebra"
+  | "geometry"
+  | "number_theory"
+  | "probability"
+  | "statistics"
+  | "optimization"
+  | "discrete"
+  | "evolution"
+  | "abiogenesis"
+  | "neural_networks"
+  | "consciousness"
+  | "society" ;        
 
-aspect-expression = [ ".", dimension-aspect ]
-                  , [ ".", dynamic-aspect ]
-                  , [ ".", relation-aspect ] 
-                  , [ ".", e-state-aspect ]
-                  , [ ".", e-delay-aspect ]
-                  , [ ".", e-parameter-aspect ] ;
+aspect-expression 
+  = [ ".", dimension-aspect ]
+  , [ ".", dynamic-aspect ]
+  , [ ".", relation-aspect ] 
+  , [ ".", e-state-aspect ]
+  , [ ".", e-delay-aspect ]
+  , [ ".", e-parameter-aspect ] ;
 
-dimension-aspect = "dimension" | "D"
-                 | "space" | "S"
-                 | "time" | "T"
-                 | "history" | "H" ;
+dimension-aspect 
+  = "dimension" | "D"
+  | "space" | "S"
+  | "time" | "T"
+  | "history" | "H" ;
               
-dynamic-aspect = "kinematic" | "ka"
-               | "inertnic" | "ia" ;
+dynamic-aspect 
+  = "kinematic" | "ka"
+  | "inertnic" | "ia" ;
 
-relation-aspect = "substance_field" | "sf" 
-                | "hyperobject_medium" | "hm" ;
+relation-aspect 
+  = "substance_field" | "sf" 
+  | "hyperobject_medium" | "hm" ;
 
-e-state-aspect = "state1" | "s1" | "rest"
-               | "state2" | "s2" | "interaction"
-               | "state3" | "s3" | "departure"
-               | "state4" | "s4" | "arrival" 
-               | "jump" | "jmp" | "s3s4"
-               | "free_cycle" | "freec" | "s1s3s4"
-               | "collision_cycle" | "collc" | "s1s2s3s4" ;
+e-state-aspect 
+  = "state1" | "s1" | "rest"
+  | "state2" | "s2" | "interaction"
+  | "state3" | "s3" | "departure"
+  | "state4" | "s4" | "arrival" 
+  | "jump" | "jmp" | "s3s4"
+  | "free_cycle" | "freec" | "s1s3s4"
+  | "collision_cycle" | "collc" | "s1s2s3s4" ;
 
-e-delay-aspect = "base"
-               | "spontaneous" | "spont" | "random" | "rnd"
-               | "compensatory" | "comp"
-               | "additional" | "add" 
-               | "step"
-               | "move" ;  
+e-delay-aspect 
+  = "base"
+  | "spontaneous" | "spont" | "random" | "rnd"
+  | "compensatory" | "comp"
+  | "additional" | "add" 
+  | "step"
+  | "move" ;  
 
 e-parameter-aspect = "collision" | "coll";
 
-character         = "avg" | "max" | "min" | "inst" | "rms"
-                  | "tot" | "net" | "abs" | "rel"
-                  | "peak" | "mean" | "std" 
-                  | "norm" | "syn"
-                  | "parallel" | "par" 
-                  | "perpendicular" | "perp"
-                  | "old" | "new"
-                  | "crit" ;    
+character         
+  = "avg" | "max" | "min" | "inst" | "rms"
+  | "tot" | "net" | "abs" | "rel"
+  | "peak" | "mean" | "std" 
+  | "norm" | "syn"
+  | "parallel" | "par" 
+  | "perpendicular" | "perp"
+  | "old" | "new"
+  | "crit" ;    
 
-object-notation   = e-notation | chemical-notation ;
+object-notation = e-notation | chemical-notation ;
 
-constant-expression = const-full
-                    | const-compact-letter
-                    | const-compact-at ;
+constant-expression 
+  = const-full
+  | const-compact-letter
+  | const-compact-at ;
 
-const-full = const-identifier, ".", quantity, ".", character, ".", const-object ;
+const-full 
+  = const-identifier, 
+  ".", quantity, 
+  ".", character, 
+  ".", const-object ;
 
 const-compact-letter = "Ꞓ", const-name ;
 
-const-compact-at  = "@", const-name ;
+const-compact-at = "@", const-name ;
 
-const-object      = e-notation
-                  | chemical-notation ;
+const-object 
+  = e-notation
+  | chemical-notation ;
 
-const-name        = ident | number ;
+const-name = ident | number ;
 
 measurement-expression = number, e-unit ;
 
-instance          = "-", "{", [ pair-list ], "}" ;
+instance = "-", "{", [ pair-list ], "}" ;
 
-pair-list         = pair, { ",", pair } ;
+pair-list = pair, { ",", pair } ;
 
-pair              = key, "=", value ;
+pair = key, "=", value ;
 
-key               = ident ;
+key = ident ;
 
-value             = ident
-                  | measurement-expression
-                  | number
-                  | string ;
+value             
+  = ident
+  | measurement-expression
+  | number
+  | string ;
 
-structure         = "-", "(", [ notation-list ], ")" ;
+structure = "-", "(", [ notation-list ], ")" ;
 
-notation-list     = notation, { separator, notation } ;
+notation-list = notation, { separator, notation } ;
 
-separator         = separator-char, [ separator-instance ] ;
+separator = separator-char, [ separator-instance ] ;
 
-separator-char    = etheron-separator-char
-                  | batch-separator-char
-                  | spiral-separator-char  
-                  | major-separator-char
-                  | atom-separator-char
-                  | mol-separator-char
-                  | body-separator-char
-                  | astr-separator-char ;
+separator-char    
+  = etheron-separator-char
+  | batch-separator-char
+  | spiral-separator-char  
+  | major-separator-char
+  | atom-separator-char
+  | mol-separator-char
+  | body-separator-char
+  | astr-separator-char ;
 
 etheron-separator-char = "|" ;
 batch-separator-char = "!" ;
@@ -438,87 +461,95 @@ astr-separator-char = "~" ;
 
 separator-instance = instance ;
 
-ident             = letter, { letter | digit | "_" } ;
+ident = letter, { letter | digit | "_" } ;
 
-letter = 
-  "a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"m"|
-  "n"|"o"|"p"|"q"|"r"|"s"|"t"|"u"|"v"|"w"|"x"|"y"|"z"|
-  "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M"|
-  "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z";
+letter 
+  = "a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"m"
+  | "n"|"o"|"p"|"q"|"r"|"s"|"t"|"u"|"v"|"w"|"x"|"y"|"z"
+  | "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M"
+  | "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z";
 
 e-letter = "æ"|"Æ";  
 
-quantity-letter      = letter
-                     | greek-letter
-                     | greek-variant-letter
-                     | letterlike-symbol ;        
+quantity-letter      
+  = letter
+  | greek-letter
+  | greek-variant-letter
+  | letterlike-symbol ;        
                      
 molecule-letter = letter;
 
-number            = [ "-" ], digits, [ ".", digits ] ;
+number = [ "-" ], digits, [ ".", digits ] ;
 
-digits            = digit, { digit } ;
+digits = digit, { digit } ;
 
-digit             = "0" | "1" | "2" | "3" | "4" 
-                  | "5" | "6" | "7" | "8" | "9" ;
+digit             
+  = "0" | "1" | "2" | "3" | "4" 
+  | "5" | "6" | "7" | "8" | "9" ;
 
-hex-digit         = digit
-                  | "A" | "B" | "C" | "D" | "E" | "F"
-                  | "a" | "b" | "c" | "d" | "e" | "f" ;                  
+hex-digit         
+  = digit
+  | "A" | "B" | "C" | "D" | "E" | "F"
+  | "a" | "b" | "c" | "d" | "e" | "f" ;                  
 
-string            = '"', { string-char }, '"' ;
+string = '"', { string-char }, '"' ;
 
-string-char       = unescaped-char
-                  | escape-sequence ;
+string-char       
+  = unescaped-char
+  | escape-sequence ;
 
-escape-sequence   = "\", escape-code ;
+escape-sequence = "\", escape-code ;
 
-escape-code       = '"'
-                  | "\"
-                  | "b"
-                  | "f"
-                  | "n"
-                  | "r"
-                  | "t"
-                  | "u", hex-digit, hex-digit
-                  , hex-digit, hex-digit ;
+escape-code       
+  = '"'
+  | "\"
+  | "b"
+  | "f"
+  | "n"
+  | "r"
+  | "t"
+  | "u", hex-digit, hex-digit
+  , hex-digit, hex-digit ;
 
-greek-letter          = "Α" | "α"
-                      | "Β" | "β"
-                      | "Γ" | "γ"
-                      | "Δ" | "δ"
-                      | "Ε" | "ε"
-                      | "Ζ" | "ζ"
-                      | "Η" | "η"
-                      | "Θ" | "θ"
-                      | "Ι" | "ι"
-                      | "Κ" | "κ"
-                      | "Λ" | "λ"
-                      | "Μ" | "μ"
-                      | "Ν" | "ν"
-                      | "Ξ" | "ξ"
-                      | "Ο" | "ο"
-                      | "Π" | "π"
-                      | "Ρ" | "ρ"
-                      | "Σ" | "σ"
-                      | "Τ" | "τ"
-                      | "Υ" | "υ"
-                      | "Φ" | "φ"
-                      | "Χ" | "χ"
-                      | "Ψ" | "ψ"
-                      | "Ω" | "ω" ;
+greek-letter          
+  = "Α" | "α"
+  | "Β" | "β"
+  | "Γ" | "γ"
+  | "Δ" | "δ"
+  | "Ε" | "ε"
+  | "Ζ" | "ζ"
+  | "Η" | "η"
+  | "Θ" | "θ"
+  | "Ι" | "ι"
+  | "Κ" | "κ"
+  | "Λ" | "λ"
+  | "Μ" | "μ"
+  | "Ν" | "ν"
+  | "Ξ" | "ξ"
+  | "Ο" | "ο"
+  | "Π" | "π"
+  | "Ρ" | "ρ"
+  | "Σ" | "σ"
+  | "Τ" | "τ"
+  | "Υ" | "υ"
+  | "Φ" | "φ"
+  | "Χ" | "χ"
+  | "Ψ" | "ψ"
+  | "Ω" | "ω" ;
 
-greek-variant-letter = "ϵ" | "ϑ" | "ϖ"
-                      | "ϱ" | "ϰ" | "ϕ" ;
+greek-variant-letter 
+  = "ϵ" | "ϑ" | "ϖ"
+  | "ϱ" | "ϰ" | "ϕ" ;
 
-letterlike-symbol    = "ℏ" | "ℎ" | "ℓ"
-                      | "ℐ" | "ℑ" | "ℒ"
-                      | "ℱ" | "ℜ" | "ℵ"
-                      | "℘" ;
+letterlike-symbol    
+  = "ℏ" | "ℎ" | "ℓ"
+  | "ℐ" | "ℑ" | "ℒ"
+  | "ℱ" | "ℜ" | "ℵ"
+  | "℘" ;
 
-unescaped-char    = ? Unicode scalar value,
-                      except U+0000–U+001F,
-                      U+0022, U+005C ? ;
+unescaped-char    
+  = ? Unicode scalar value,
+      except U+0000–U+001F, U+0022, U+005C ? ;      
 ```
 
 EBNF-грамматика диалекта "ISO/IEC 14977:1996" эфирного утверждения ÆToE определяет эфирное утверждение как линейную символьную последовательность, в которой структурные отношения между сегментами выражаются явными разделителями: точкой (`.`), двоеточием (`:`), дефисом (`-`), фигурными скобками (`{}`), круглыми скобками (`()`), апострофом (`'`) и запятой (`,`). EBNF-грамматика ÆToE не распознаёт LaTeX-разметку и не содержит правил для LaTeX-команд, LaTeX-групп и LaTeX-подстрочников. LaTeX-разметка вводит в эфирное утверждение дополнительный слой представления, который не является частью грамматики ÆToE. Например, греческие буквы и буквоподобные символы могут кодироваться LaTeX-командами (tau, rho, chi, Pi, hbar и т.п.). Между EBNF-формой эфирного утверждения и его LaTeX-формой существует не тождество, а отношение представления. LaTeX-форма является одним из возможных внешних представлений эфирного утверждения, а EBNF-форма является канонической формой эфирного утверждения в грамматике ÆToE. В LaTeX-документе, в котором эфирное утверждение записано в LaTeX-форме, подстрочник и надстрочник неявно выполняют роль структурных разделителей, которые в EBNF-форме выражены точкой. Иными словами, в LaTeX-форме эфирного утверждения перед каждым подстрочником и перед каждым надстрочником неявно подразумевается «невидимая точка» — структурный разделитель, который в EBNF-форме записывается явно, а в LaTeX-форме опускается как визуально избыточный. Эфирное утверждение в LaTeX-форме не может быть непосредственно подано на вход парсеру EBNF-грамматики ÆToE. Перед разбором эфирное утверждение в LaTeX-форме должно быть подвергнуто де-LaTeX-изации — преобразованию LaTeX-формы эфирного утверждения в EBNF-форму эфирного утверждения. Де-LaTeX-изация эфирного утверждения — это детерминированное преобразование, ставящее в соответствие каждой LaTeX-конструкции эфирного утверждения её EBNF-эквивалент. Де-LaTeX-изация не является частью EBNF-грамматики ÆToE и не является частью семантического валидатора ÆToE. Де-LaTeX-изация является этапом подготовки эфирного утверждения к разбору, выполняемым до применения EBNF-грамматики ÆToE. Например, LaTeX-команды греческих букв и буквоподобных символов заменяются на соответствующие Unicode-символы из greek_letter, greek_variant_letter и letterlike_symbol. LaTeX-конструкции, не имеющие EBNF-эквивалента в грамматике ÆToE, при де-LaTeX-изации либо отображаются в ближайший допустимый EBNF-сегмент, либо помечаются как расширение грамматики, требующее отдельного решения. Де-LaTeX-изация эфирного утверждения является предварительным этапом обработки эфирного утверждения в LaTeX-документе. Де-LaTeX-изация не заменяет семантическую валидацию эфирного утверждения. После де-LaTeX-изации эфирное утверждение в EBNF-форме поступает на вход EBNF-грамматике ÆToE, а затем - на вход семантическому валидатору ÆToE. В формулировках ÆToE, в которых эфирные утверждения записаны в LaTeX-форме, подстрочники и надстрочники следует трактовать как LaTeX-представление EBNF-сегментов, а не как самостоятельные EBNF-сегменты. Это правило разводит представление эфирного утверждения и его каноническую форму и предотвращает смешивание LaTeX-разметки с EBNF-грамматикой ÆToE. Для надёжной де-LaTeX-изации нужен детерминированный пайплайн: токенизация LaTeX; разбор в AST; преобразование AST в EBNF-AST по явным правилам; сериализация в EBNF-строку; валидация грамматикой ÆToE.
