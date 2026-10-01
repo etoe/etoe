@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.42
-date: 2026-09-30
+version: 0.1.43
+date: 2026-10-01
 created: 2026-06-01
-updated: 2026-09-30
+updated: 2026-10-01
 status: active
 priority: critical
 audience: LLM, Human
@@ -444,15 +444,16 @@ letter =
   "a"|"b"|"c"|"d"|"e"|"f"|"g"|"h"|"i"|"j"|"k"|"l"|"m"|
   "n"|"o"|"p"|"q"|"r"|"s"|"t"|"u"|"v"|"w"|"x"|"y"|"z"|
   "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M"|
-  "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z"|
-  "æ"|"Æ";
+  "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z";
+
+e-letter = "æ"|"Æ";  
 
 quantity-letter      = letter
                      | greek-letter
                      | greek-variant-letter
                      | letterlike-symbol ;        
                      
-molecule-letter = letter - ("æ" | "Æ") ;
+molecule-letter = letter;
 
 number            = [ "-" ], digits, [ ".", digits ] ;
 
