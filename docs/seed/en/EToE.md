@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.44
-date: 2026-10-01
+version: 0.1.45
+date: 2026-10-02
 created: 2026-06-01
-updated: 2026-10-01
+updated: 2026-10-02
 status: active
 priority: critical
 audience: LLM, Human
@@ -172,21 +172,25 @@ e-full-object
   = "Æ", level, ".", class, [".", object-context]
   , [ instance ], [ structure ] ;
 
+e-level = "Æ", level ;  
+
 e-compact-object  
   = "Æ", class, [".", object-context]
   , [ instance ], [ structure ] ;
 
 e-ether           
   = "Æ"
-  , [ e-etheron-qualifier ]
+  , [ etheron-qualifier ]
   , [ instance ], [ structure ] ;
+
+e-unit = "æ", unit-suffix ;  
 
 e-etheron        
   = "æ"
-  , [ e-etheron-qualifier ]
+  , [ etheron-qualifier ]
   , [ instance ], [ structure ] ;
 
-e-etheron-qualifier
+etheron-qualifier
   = ":", etheron-role
   | ":", etheron-role, ".", etheron-subrole ;
 
@@ -194,11 +198,7 @@ etheron-role = "m" | "s" | "f" | "sf" | "h" | "mf" ;
 
 etheron-subrole = "br" |  "dr" | "di" | "do" ;                  
 
-e-level = "Æ", level ;
-
 level = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" ;
-
-e-unit = "æ", unit-suffix ;
 
 unit-suffix = "n" | "c" | "l" | "s" | "t" | "m" | "v" | "i" ;
 
@@ -223,11 +223,11 @@ chemical-notation = chemical-full | chemical-mass-only ;
 
 chemical-full     
   = element, [ ":", element-subsort ]
-  , [ "-", mass ], [ chemical-structure ]
+  , [ "-", atomic_mass ], [ chemical-structure ]
   | molecule, [ ":", molecule-subsort ]
-  , [ "-", mass ], [ chemical-structure ] ;
+  , [ "-", atomic_mass ], [ chemical-structure ] ;
 
-chemical-mass-only = mass ;
+chemical-mass-only = atomic_mass ;
 
 chemical-structure = "-", "(", [ notation-list ], ")";
 
@@ -259,8 +259,6 @@ element
 element-subsort = subelement ;
 
 subelement = ident | number ;
-
-mass = number ;
 
 molecule-ident 
   = molecule-letter
@@ -348,8 +346,7 @@ aspect-expression
   , [ ".", dynamic-aspect ]
   , [ ".", relation-aspect ] 
   , [ ".", e-state-aspect ]
-  , [ ".", e-delay-aspect ]
-  , [ ".", e-parameter-aspect ] ;
+  , [ ".", e-delay-aspect ] ;
 
 dimension-aspect 
   = "dimension" | "D"
@@ -359,7 +356,8 @@ dimension-aspect
               
 dynamic-aspect 
   = "kinematic" | "ka"
-  | "inertnic" | "ia" ;
+  | "inertnic" | "ia"
+  | "collisional" | "ca" ;  
 
 relation-aspect 
   = "substance_field" | "sf" 
@@ -381,8 +379,6 @@ e-delay-aspect
   | "additional" | "add" 
   | "step"
   | "move" ;  
-
-e-parameter-aspect = "collision" | "coll";
 
 character         
   = "avg" | "max" | "min" | "inst" | "rms"
@@ -468,8 +464,6 @@ letter
   | "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M"
   | "N"|"O"|"P"|"Q"|"R"|"S"|"T"|"U"|"V"|"W"|"X"|"Y"|"Z";
 
-e-letter = "æ"|"Æ";  
-
 quantity-letter      
   = letter
   | greek-letter
@@ -478,13 +472,19 @@ quantity-letter
                      
 molecule-letter = letter;
 
+atomic_mass = non_zero, { digit } ;
+
 number = [ "-" ], digits, [ ".", digits ] ;
 
 digits = digit, { digit } ;
 
-digit             
-  = "0" | "1" | "2" | "3" | "4" 
+zero = "0" ;
+
+non_zero             
+  = "1" | "2" | "3" | "4" 
   | "5" | "6" | "7" | "8" | "9" ;
+
+digit = zero | non_zero ;
 
 hex-digit         
   = digit
@@ -500,41 +500,17 @@ string-char
 escape-sequence = "\", escape-code ;
 
 escape-code       
-  = '"'
-  | "\"
-  | "b"
-  | "f"
-  | "n"
-  | "r"
-  | "t"
+  = '"'  | "\"  | "b"  | "f"  | "n"  | "r"  | "t"
   | "u", hex-digit, hex-digit
   , hex-digit, hex-digit ;
 
 greek-letter          
-  = "Α" | "α"
-  | "Β" | "β"
-  | "Γ" | "γ"
-  | "Δ" | "δ"
-  | "Ε" | "ε"
-  | "Ζ" | "ζ"
-  | "Η" | "η"
-  | "Θ" | "θ"
-  | "Ι" | "ι"
-  | "Κ" | "κ"
-  | "Λ" | "λ"
-  | "Μ" | "μ"
-  | "Ν" | "ν"
-  | "Ξ" | "ξ"
-  | "Ο" | "ο"
-  | "Π" | "π"
-  | "Ρ" | "ρ"
-  | "Σ" | "σ"
-  | "Τ" | "τ"
-  | "Υ" | "υ"
-  | "Φ" | "φ"
-  | "Χ" | "χ"
-  | "Ψ" | "ψ"
-  | "Ω" | "ω" ;
+  = "Α" | "α"  | "Β" | "β"  | "Γ" | "γ"  | "Δ" | "δ"
+  | "Ε" | "ε"  | "Ζ" | "ζ"  | "Η" | "η"  | "Θ" | "θ"
+  | "Ι" | "ι"  | "Κ" | "κ"  | "Λ" | "λ"  | "Μ" | "μ"
+  | "Ν" | "ν"  | "Ξ" | "ξ"  | "Ο" | "ο"  | "Π" | "π"
+  | "Ρ" | "ρ"  | "Σ" | "σ"  | "Τ" | "τ"  | "Υ" | "υ"
+  | "Φ" | "φ"  | "Χ" | "χ"  | "Ψ" | "ψ"  | "Ω" | "ω" ;
 
 greek-variant-letter 
   = "ϵ" | "ϑ" | "ϖ"
@@ -548,7 +524,7 @@ letterlike-symbol
 
 unescaped-char    
   = ? Unicode scalar value,
-      except U+0000–U+001F, U+0022, U+005C ? ;   
+      except U+0000–U+001F, U+0022, U+005C ? ;      
 ```
 
 The EBNF grammar of the dialect "ISO/IEC 14977:1996" for the ÆToE ether statement defines the statement as a linear sequence of symbols in which structural relationships between segments are expressed by explicit delimiters: the dot (`.`), colon (`:`), hyphen (`-`), curly braces (`{}`), parentheses (`()`), apostrophe (`'`), and comma (`,`). The ÆToE EBNF grammar does not recognize LaTeX markup and contains no rules for LaTeX commands, LaTeX groups, or LaTeX subscripts. LaTeX markup introduces an additional layer of representation to the ether statement that is not part of the ÆToE grammar; for instance, Greek letters and letter-like symbols may be encoded using LaTeX commands (such as `tau`, `rho`, `chi`, `Pi`, `hbar`, etc.). The relationship between the EBNF form of an ether statement and its LaTeX form is one of representation rather than identity: the LaTeX form is one possible external representation of the ether statement, whereas the EBNF form constitutes its canonical form within the ÆToE grammar. In a LaTeX document where an ether statement is written in LaTeX form, subscripts and superscripts implicitly serve as structural delimiters — roles that are expressed by the dot in the EBNF form. In other words, the LaTeX form of an ether statement implicitly includes an "invisible dot" before every subscript and superscript; this structural delimiter is written explicitly in the EBNF form but omitted in the LaTeX form as visually redundant. An ether statement in LaTeX form cannot be fed directly into the parser for the ÆToE EBNF grammar. Before parsing, an ether assertion in LaTeX form must undergo de-LaTeX-ization — the conversion of the LaTeX form of the ether assertion into its EBNF form. De-LaTeX-ization of an ether assertion is a deterministic transformation that maps each LaTeX construct within the assertion to its EBNF equivalent. De-LaTeX-ization is neither part of the ÆToE EBNF grammar nor part of the ÆToE semantic validator; rather, it is a preparatory step performed before the ÆToE EBNF grammar is applied. For example, LaTeX commands for Greek letters and letter-like symbols are replaced by the corresponding Unicode characters from the `greek_letter`, `greek_variant_letter`, and `letterlike_symbol` sets. LaTeX constructs lacking an EBNF equivalent in the ÆToE grammar are either mapped to the nearest valid EBNF segment or flagged as a grammar extension requiring a separate solution. De-LaTeX-ization is a preliminary stage in processing an ether assertion found within a LaTeX document; it does not replace semantic validation. Following de-LaTeX-ization, the ether assertion in EBNF form is fed into the ÆToE EBNF grammar and subsequently into the ÆToE semantic validator. In ÆToE formulations where ether assertions are written in LaTeX form, subscripts and superscripts should be interpreted as LaTeX representations of EBNF segments rather than as independent EBNF segments. This rule separates the representation of an ether statement from its canonical form and prevents the mixing of LaTeX markup with the ÆToE EBNF grammar. Reliable de-LaTeXing requires a deterministic pipeline: LaTeX tokenization; parsing into an AST; converting the AST into an EBNF-AST based on explicit rules; serialization into an EBNF string; and validation against the ÆToE grammar.
@@ -737,13 +713,13 @@ Continuous velocity relative to an inertial reference frame is called "relative 
 
 Transformations of coordinates and continuous velocity of an etheron or group of etherons when transitioning in the description of their motion from one inertial reference frame to another correspond to Galilean transformations.
 
-The first parameter of an etheron is the absolute position of the cell in which the etheron is located at the current time tick. The first parameter of an etheron is called "position". The first parameter of the etheron is denoted by $\vec{r}_æ$. At the starting tick of time in the simplest model, in each cell of space there is one etheron with the first parameter equal to the position of the cell in which this etheron is located.
+The first parameter of an etheron is the absolute position of the cell in which the etheron is located at the current time tick. The first parameter of an etheron is called "position". The first parameter of the etheron is briefly denoted as $\vec{r}_{\text{æ}}$. The first parameter of the etheron has a kinematic aspect and may be denoted as $\vec{r}_{\text{ka.æ}}$. At the starting tick of time in the simplest model, in each cell of space there is one etheron with the first parameter equal to the position of the cell in which this etheron is located.
 
-The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second  parameter of an etheron is called "collision position". The second parameter of the etheron is denoted by $\vec{r}_{\text{coll.æ}}$. The second parameter of the etheron actually determines where the current free section of its movement begins. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
+The second parameter of an etheron is the absolute position of the cell in which the etheron interacted with other etherons once again. The second parameter of the etheron is called the "collision position" and has a collisional aspect. The second parameter of the etheron is denoted by $\vec{r}_{\text{ca.æ}}$. The second parameter of the etheron actually determines where the current free section of its movement begins. At the starting tick of the simplest model, the value from the first parameter of the etheron is entered into the second parameter of the etheron. At each zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the value from the first parameter of the etheron can be entered into the second parameter of the etheron.
 
-The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called "collision tick". The third parameter of the etheron is denoted by $t_{\text{coll.æ}}$. The third parameter of the etheron actually determines when the current free section of the etheron's movement begins. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
+The third parameter of an etheron is the absolute time tick in which the etheron interacted with other etherons once again. The third parameter of the etheron is called the "collision tick" and has a collisional aspect. The third parameter of the etheron is denoted by $t_{\text{ca.æ}}$. The third parameter of the etheron actually determines when the current free section of the etheron's movement begins. If an etheron spontaneously lingers in the first state for an additional time tick, then the third parameter of an etheron is increased by one. At the starting tick of the simplest model, the third parameter of the etheron is reset to zero. At every zero tick of the simplest model's computer simulation, to protect against incorrect calculations of the etheron's future position, the third parameter of the etheron can be reset to zero.
 
-The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of an etheron is called "direction". The fourth parameter of an etheron is denoted by $\vec{d}_æ$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from $-D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
+The fourth parameter of an etheron is the relative position of the distant cell to which the etheron moves after interacting with other etherons. The fourth parameter of the etheron is called "direction" and has a kinematic aspect. The fourth parameter of the etheron is denoted briefly as $\vec{d}_{\text{æ}}$ and fully as $\vec{d}_{\text{ka.æ}}$. The fourth parameter of an etheron is the reference direction vector, the coordinates of which have a range from $-D_Æ$ to $D_Æ$, where $D_Æ$ is the reference distance. The length of the reference direction vector is approximately equal to $D_Æ$. The reference direction vector is the vector of displacement by the reference distance $D_Æ$. In the simplest simulator, the random "direction" vector $\vec{d}_æ$ for the etheron can be obtained through angles in a spherical coordinate system:
 
 $$\vec{d}_æ = \Bigl( \mathop{\text{round}}\bigl(D_Æ \cdot \sin\theta \cdot \cos\varphi\bigr), \mathop{\text{round}}\bigl(D_Æ \cdot \sin\theta \cdot \sin\varphi\bigr), \mathop{\text{round}}\bigl(D_Æ \cdot \cos\theta\bigr) \Bigr)$$
 
@@ -751,17 +727,17 @@ where:
 - $\theta \sim U[0, \pi]$ is the zenith angle, uniformly distributed on $[0, \pi]$
 - $\varphi \sim U[0, 2\pi]$ is the azimuth angle, uniformly distributed on $[0, 2\pi]$
 
-The fifth parameter of the etheron is the "total additional delay" of the etheron in ticks of time in the "rest" state, with which the etheron, when moving freely, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called "delay". The fifth parameter of the etheron is designated $a_æ$. The letter 'a' in the designation of the fifth parameter of the etheron comes from the English word "addition", since the meaning of "delay" is an addition to some time or an addition to some duration. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" in the Euclidean free continuous displacement of the etheron over the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous velocities of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous velocities of the etheron. The average value of the fifth parameter of the etheron in the simplest model is equal to half of $D_Æ$: 
+The fifth parameter of the etheron is the "total additional delay" of the etheron in ticks of time in the "rest" state, with which the etheron, when moving freely, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called "delay" and has an inertnic aspect. The fifth etheron parameter is denoted briefly as $a_{\text{æ}}$ and fully as $a_{\text{ia.æ}}$. The letter 'a' in the designation of the fifth parameter of the etheron comes from the English word "addition", since the meaning of "delay" is an addition to some time or an addition to some duration. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" in the Euclidean free continuous displacement of the etheron over the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous velocities of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous velocities of the etheron. The average value of the fifth parameter of the etheron in the simplest model is equal to half of $D_Æ$: 
 
 $$a_{avg.æ}= \frac{D_Æ}{2}$$
 
 The fifth parameter of the etheron is the "total additional delay" of the etheron in time ticks in the "rest" state, with which the etheron, in free movement, will reach the cell whose position is the sum of the absolute position of the cell specified in the second parameter and the relative position of the cell specified in the fourth parameter. The fifth parameter of the etheron is called the "delay". The fifth parameter of the etheron is denoted by $a_æ$. The fifth parameter of the etheron can be expressed as an unsigned integer from a certain range. In the simplest case, the range of values ​​of the fifth parameter lies from $0$ to $D_Æ$, where $D_Æ$ is the reference distance. In the simplest model, the fifth parameter is the "total additional delay" during the Euclidean free continuous movement of the etheron by the Euclidean reference distance $D_Æ$. The value of the fifth parameter of the etheron cannot overflow. The zero value of the fifth parameter of the etheron corresponds to the maximum value of the range of absolute continuous speeds of the etheron. And the maximum value of the fifth parameter of the etheron corresponds to the minimum value of the range of absolute continuous speeds of the etheron.
 
-In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub> ) of each etheron into the "collision position" parameter ( $\vec{r}$<sub>coll.æ</sub> ) of that etheron and zeroing the "collision tick" parameter ( $t_{\text{coll.æ}}$ ) of each etheron at zero tick of time ( $t_Æ=0$ ) prevents uncertainty in the time elapsed since collisions:
+In the simplest model, copying the "position" parameter ( $\vec{r}$<sub>æ</sub> ) of each etheron into the "collision position" parameter ( $\vec{r}$<sub>ca.æ</sub> ) of that etheron and zeroing the "collision tick" parameter ( $t_{\text{ca.æ}}$ ) of each etheron at zero tick of time ( $t_Æ=0$ ) prevents uncertainty in the time elapsed since collisions:
 
-$$\forall æ \quad \vec{r}_{\text{coll.æ}}^{(t_Æ=0)} = \vec{r}_{æ}$$
+$$\forall æ \quad \vec{r}_{\text{ca.æ}}^{(t_Æ=0)} = \vec{r}_{æ}$$
 
-$$\forall æ \quad t_{\text{coll.æ}}^{(t_Æ=0)} = 0$$
+$$\forall æ \quad t_{\text{ca.æ}}^{(t_Æ=0)} = 0$$
 
 At the start of the Universe and at the start of the computer simulation, there are essentially no previous etheron collisions. Therefore, before the first etheron interaction, it is conventionally assumed that the initial etheron collision occurred at the moment of the launch of space-time-ether, right here and right now. On the starting tick, "where the etheron is actually located" coincides with "where it should be according to its free movement".
 
@@ -801,11 +777,11 @@ The independence of the total time spent by the etheron on Euclidean motion from
 
 The absolute position of the etheron in space $\vec{p}_æ$, where at some point in time $t$ the etheron should be located under the condition of its free movement, is calculated on the basis of the total time spent by the etheron on the Euclidean movement over the distance $D_Æ$:
 
-$$\vec{p}_æ(t) = W_{\text{S.Æ}}(\vec{r}_{\text{coll.æ}} + \frac {W_{\text{H.Æ}}(t - t_{\text{coll.æ}})\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
+$$\vec{p}_æ(t) = W_{\text{S.Æ}}(\vec{r}_{\text{ca.æ}} + \frac {W_{\text{H.Æ}}(t - t_{\text{ca.æ}})\cdot \vec{d_æ}} {τ_Æ + a_æ})$$
 
-Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}$<sub>æ</sub>(t), the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $t_{\text{coll.æ}}$:
+Due to frequent etheron collisions in real space-time-ether, when calculating the "absolute position of an etheron in space" $\vec{p}$<sub>æ</sub>(t), the moment of time $t$ is always close to the "moment of time of the last etheron collision of the etheron" $t_{\text{ca.æ}}$:
 
-$$W_{\text{H.Æ}}(t-t_{\text{coll.æ}}) \ll T_Æ$$
+$$W_{\text{H.Æ}}(t-t_{\text{ca.æ}}) \ll T_Æ$$
 
 Therefore, in real space-time-ether, no "special protection" is required against incorrectly calculating the future position of an etheron that has been moving freely without collisions with other etherons for a very long time. Therefore, most likely, in real space-time-ether there is neither such "special protection" nor "artifacts" from such "special protection". "Special protection" in a computer simulation is needed not because cyclic time is physically "broken", but because the computer in the general case needs to limit the interpretation of the old initial parameters of the free movement of etherons. Nature does not need to install "special protection" because the collision dynamics itself regularly updates the reference points of the free movement of etherons.
 
