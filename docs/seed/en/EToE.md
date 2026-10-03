@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.45
-date: 2026-10-02
+version: 0.1.46
+date: 2026-10-03
 created: 2026-06-01
-updated: 2026-10-02
+updated: 2026-10-03
 status: active
 priority: critical
 audience: LLM, Human
@@ -162,6 +162,17 @@ notation
 
 e-notation = e-object | e-level | e-unit ;
 
+object 
+  = e-object 
+  | chemical-notation ;
+
+chemical-object 
+  = object   
+  | chemical-mass-only 
+  | protium-core  
+  | proton
+  | neutron ;
+
 e-object          
   = e-full-object
   | e-compact-object
@@ -219,7 +230,8 @@ part = "s" | "f" | "m" | "mf" ;
 subpart = "tr" | "br" | "dr" | "di" | "do" | "core" | "atm" ;   
 subsubpart = ident;                                  
 
-chemical-notation = chemical-full | chemical-mass-only ;
+chemical-notation 
+  = chemical-full ;  
 
 chemical-full     
   = element, [ ":", element-subsort ]
@@ -229,7 +241,24 @@ chemical-full
 
 chemical-mass-only = atomic_mass ;
 
-chemical-structure = "-", "(", [ notation-list ], ")";
+proteon 
+  = proton  
+  | neutron
+  | protium-element ; 
+
+proton = "p" ;
+neutron = "n" ;
+
+protium-element = "H" ;
+protium-mass = "1" ;
+protium-structure = "(0)" ;
+protium-atm = "()" ;
+protium-core = "0" ;  
+
+chemical-structure 
+  = "-"
+  , protium-mass 
+  | ( "(", [ chemical-object-list ], ")" );
 
 element           
   = "H"  | "D"  | "T"  | "Ht" | "He"
@@ -264,7 +293,7 @@ molecule-ident
   = molecule-letter
   , { molecule-letter | digit | "_" } ;
 
-identifier-not-element = molecule-ident - element ;
+identifier-not-element = molecule-ident - element - proteon;
 
 molecule = identifier-not-element ;
 
@@ -429,7 +458,11 @@ value
   | number
   | string ;
 
-structure = "-", "(", [ notation-list ], ")" ;
+structure = "-", "(", [ object-list ], ")" ;
+
+object-list = object, { separator, object } ;
+
+chemical-object-list = chemical-object, { separator, chemical-object } ;
 
 notation-list = notation, { separator, notation } ;
 
