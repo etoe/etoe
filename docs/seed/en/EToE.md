@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.46
+version: 0.1.47
 date: 2026-10-03
 created: 2026-06-01
 updated: 2026-10-03
@@ -255,10 +255,9 @@ protium-structure = "(0)" ;
 protium-atm = "()" ;
 protium-core = "0" ;  
 
-chemical-structure 
-  = "-"
-  , protium-mass 
-  | ( "(", [ chemical-object-list ], ")" );
+chemical-structure
+  = "-" , protium-mass
+  | "-" , "(", [ chemical-object-list ], ")" ;  
 
 element           
   = "H"  | "D"  | "T"  | "Ht" | "He"
