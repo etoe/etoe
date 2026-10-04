@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.47
-date: 2026-10-03
+version: 0.1.48
+date: 2026-10-04
 created: 2026-06-01
-updated: 2026-10-03
+updated: 2026-10-04
 status: active
 priority: critical
 audience: LLM, Human
@@ -148,9 +148,44 @@ The criterion for classifying an ether hyperobject as belonging to a certain lev
 
 The hierarchical level of an ether subobject within a certain ether hyperobject at a specific stair of matter is called the rank of that ether object at that stair of matter. The greater the depth of nesting of an etheric subobject within a certain ether hyperobject at a given stair of matter, the lower the rank of that ether object at that stair of matter.
 
-The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. The colon symbol is used as a "role-qualification operator" (medium, substantial, or field) for a single etheron ($æ$) or the ether as a whole ($Æ$). The dot describes the structure of an object; the colon qualifies an object or a set of objects based on a relational property. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. Information regarding the structure of an ether object includes the notations of that object's ether subobjects, separated by an apostrophe or other characters serving as connectors between the ether subobjects. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. The symbolic philosophy of the grammar of an ether assertion: a rich physico-mathematical alphabet for quantities, but a strict machine alphabet for classes, objects, and context. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
+The hierarchical configuration notation for an ether object follows a format that, in its full version, includes: the designation of the matter stair; the designation of the ether object's class within that matter stair; the designation of the ether object part; information about the specific instance of the ether object; and information about the ether object's structure. The dot symbol is used in hierarchical identifiers as a hierarchical separator for stairs of matter, classes of ether objects, parts of ether objects, and sub-parts of ether objects. The colon symbol is used as a "role-qualification operator" (medium, substantial, or field) for a single etheron ($æ$) or the ether as a whole ($Æ$). The dot describes the structure of an object; the colon qualifies an object or a set of objects based on a relational property. Information about an instance of an ether object is specified after a hyphen within curly braces, in a certain format. Information about the structure of the ether object is indicated in parentheses, separated by a hyphen. Information regarding the structure of an ether object includes the notations of that object's ether subobjects, separated by an apostrophe or other characters serving as connectors between the ether subobjects. The aspect of an ether quantity within an ether assertion can be used to define various facets of that quantity (for example, the "kinematic" aspect and the "inertnic" aspect). The kinematic aspect is the default aspect of an ether quantity unless another aspect is explicitly specified. A subaspect of an ether quantity within an ether statement can be used to define part-relation quantities (e.g., the "substance-field" subaspect). Object parts (such as substance and field) are designated in the object notation, while the relations between object parts are designated in the quantity's subaspect. This rule separates object ontology from the semantics of the measured quantity. The symbolic philosophy of the grammar of an ether assertion: a rich physico-mathematical alphabet for quantities, but a strict machine alphabet for classes, objects, and context. An ether file is a sequence of ether statements and comments. The comments and the list of ether statements in the ether statement file refer not to the canonical notation of a single ether statement, but to the syntax of the ÆToE file's source text. Comments must not be included in the abstract syntax tree of an ether statement. A comment must either be discarded entirely by the lexical analyzer or, in a special mode, preserved as metadata of the source file. The list of ether statements can be used in abstract syntax trees and their corresponding application programming interfaces, while the ether file serves as a physical text format. ".etoe" is an extension for an ether file. This notation can serve both as a compact human-readable representation and as a state serialization for a simulator:
 
 ```ebnf
+ether-file
+  = { source-item } ;
+
+source-item
+  = comment 
+  | ether-statement, statement-terminator ;
+
+ether-statement-list
+  = ether-statement
+  , { statement-terminator, ether-statement }
+  , [ statement-terminator ] ;
+
+statement-terminator
+  = ";" ;  
+
+comment
+  = line-comment
+  | block-comment ;
+
+line-comment
+  = hash-comment
+  | slash-comment ;
+
+hash-comment
+  = "#", { comment-char } ;
+
+slash-comment
+  = "//", { comment-char } ;
+
+block-comment
+  = "/*", ? block-comment body ?, "*/" ;
+
+comment-char
+  = ? any character except the end of the line ? ;    
+
 ether-statement = notation ;
 
 notation          
