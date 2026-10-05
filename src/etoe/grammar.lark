@@ -1,0 +1,121 @@
+?start: ether_file
+
+ether_file: statement*
+statement: notation ";"
+
+?notation: e_notation
+         | chemical_notation
+         | quantity_expression
+         | constant_expression
+         | measurement_expression
+
+?e_notation: e_object
+           | e_level
+           | e_unit
+
+?e_object: e_full_object
+         | e_compact_object
+         | e_ether
+         | e_etheron
+
+e_full_object: "Æ" LEVEL "." CLASS ("." object_context)? instance? structure?
+e_level: "Æ" LEVEL
+e_compact_object: "Æ" CLASS ("." object_context)? instance? structure?
+e_ether: "Æ" etheron_qualifier? instance? structure?
+e_etheron: "æ" etheron_qualifier? instance? structure?
+
+e_unit: "æ" UNIT_SUFFIX
+
+etheron_qualifier: ":" ETHER_ROLE
+                 | ":" ETHER_ROLE "." ETHER_SUBROLE
+
+object_context: PART ("." SUBPART ("." IDENT)?)?
+
+?chemical_notation: chemical_full
+                  | chemical_mass_only
+                  | PROTIUM_CORE
+                  | PROTON
+                  | NEUTRON
+
+chemical_full: CHEM_SYMBOL (":" SUBSORT)? ("-" ATOMIC_MASS)? chemical_structure?
+             | MOLECULE_IDENT (":" SUBSORT)? ("-" ATOMIC_MASS)? chemical_structure?
+chemical_mass_only: ATOMIC_MASS
+
+chemical_structure: "-" "(" chemical_object_list? ")"
+
+?chemical_object: e_object
+                | chemical_full
+                | chemical_mass_only
+                | PROTIUM_CORE
+                | PROTON
+                | NEUTRON
+
+chemical_object_list: chemical_object (separator chemical_object)*
+
+quantity_expression: QUANTITY_IDENT SCIENCE_PREFIX quantity_tail
+                   | QUANTITY_IDENT quantity_tail
+quantity_tail: aspect_expression ("." CHARACTER)? "." object_notation
+
+SCIENCE_PREFIX: /\.(?:physics|mathematics|chemistry|biology|neuroscience|cognitive_science|social_science|sc_[A-Za-z][A-Za-z0-9_]*)(?:\.(?:scsd_[A-Za-z][A-Za-z0-9_]*|mechanics|kinematics|dynamics|statistical|thermodynamics|electromagnetism|optics|gravitation|fluid|plasma|atomic|molecular|nuclear|particle|condensed_matter|astrophysics|cosmology|information|algebra|geometry|number_theory|probability|statistics|optimization|discrete|evolution|abiogenesis|neural_networks|consciousness|society)){0,2}/
+
+aspect_expression: ("." DIMENSION_ASPECT)? ("." DYNAMIC_ASPECT)? ("." RELATION_ASPECT)? ("." ESTATE_ASPECT)? ("." DELAY_ASPECT)?
+
+?object_notation: e_notation | chemical_notation
+
+constant_expression: const_full | const_compact_letter | const_compact_at
+const_full: "const" "." QUANTITY_IDENT "." CHARACTER "." const_object
+const_compact_letter: "Ꞓ" CONST_NAME
+const_compact_at: "@" CONST_NAME
+?const_object: e_notation | chemical_notation
+
+measurement_expression: NUMBER e_unit
+
+instance: "-" "{" pair_list? "}"
+pair_list: pair ("," pair)*
+pair: IDENT "=" value
+
+?value: IDENT | measurement_expression | NUMBER | STRING
+
+structure: "-" "(" object_list? ")"
+object_list: object (separator object)*
+?object: e_object | chemical_notation
+
+separator: SEPARATOR_CHAR instance?
+
+LEVEL: /[1-8]/
+CLASS: /(pna|hsp|hmj|hml|hbd|has|hb|sp|mj|el|ps|ha|ml|bd|as|c|b|p|n|a)/
+UNIT_SUFFIX: /[ncslmtvi]/
+ETHER_ROLE: /(sf|mf|m|s|f|h)/
+ETHER_SUBROLE: /(core|br|dr|di|do)/
+PART: /(mf|s|f|m)/
+SUBPART: /(atm|core|tr|br|dr|di|do)/
+SUBSORT: /(?:[A-Za-z][A-Za-z0-9_]*|[0-9]+)/
+SCIENCE_DOMAIN: /(physics|mathematics|chemistry|biology|neuroscience|cognitive_science|social_science|sc_[A-Za-z][A-Za-z0-9_]*)/
+SCIENCE_SUBDOMAIN: /(scsd_[A-Za-z][A-Za-z0-9_]*|mechanics|kinematics|dynamics|statistical|thermodynamics|electromagnetism|optics|gravitation|fluid|plasma|atomic|molecular|nuclear|particle|condensed_matter|astrophysics|cosmology|information|algebra|geometry|number_theory|probability|statistics|optimization|discrete|evolution|abiogenesis|neural_networks|consciousness|society)/
+DIMENSION_ASPECT: /(dimension|D|space|S|time|T|history|H)/
+DYNAMIC_ASPECT: /(kinematic|ka|inertnic|ia|collisional|ca)/
+RELATION_ASPECT: /(substance_field|sf|hyperobject_medium|hm)/
+ESTATE_ASPECT: /(state1|s1|rest|state2|s2|interaction|state3|s3|departure|state4|s4|arrival|jump|jmp|s3s4|free_cycle|freec|s1s3s4|collision_cycle|collc|s1s2s3s4)/
+DELAY_ASPECT: /(spontaneous|spont|random|rnd|compensatory|comp|additional|add|base|step|move)/
+CHARACTER: /(parallel|par|perpendicular|perp|avg|max|min|inst|rms|tot|net|abs|rel|peak|mean|std|norm|syn|old|new|crit)/
+IDENT: /[A-Za-z][A-Za-z0-9_]*/
+QUANTITY_IDENT: /[A-Za-zΑ-ωϵϑϖϱϰϕℏℎℓℐℑℒℱℜℵ℘][A-Za-z0-9_Α-ωϵϑϖϱϰϕℏℎℓℐℑℒℱℜℵ℘]*/
+CONST_NAME: /[A-Za-z0-9_Α-ωϵϑϖϱϰϕℏℎℓℐℑℒℱℜℵ℘]+/
+CHEM_SYMBOL: /(?:Ds|Rg|Cn|Nh|Fl|Mc|Lv|Ts|Og|He|Li|Be|Ne|Na|Mg|Al|Si|Cl|Ar|Ca|Sc|Ti|Cr|Mn|Fe|Co|Ni|Cu|Zn|Ga|Ge|As|Se|Br|Kr|Rb|Sr|Zr|Nb|Mo|Tc|Ru|Rh|Pd|Ag|Cd|In|Sn|Sb|Te|Xe|Cs|Ba|La|Ce|Pr|Nd|Pm|Sm|Eu|Gd|Tb|Dy|Ho|Er|Tm|Yb|Lu|Hf|Ta|Re|Os|Ir|Pt|Au|Hg|Tl|Pb|Bi|Po|At|Rn|Fr|Ra|Ac|Th|Pa|Np|Pu|Am|Cm|Bk|Cf|Es|Fm|Md|No|Lr|Rf|Db|Sg|Bh|Hs|Mt|H|D|T|V|B|C|N|O|F|P|S|K|Y|I|W|U)/
+MOLECULE_IDENT: /[A-Za-z][A-Za-z0-9_]*/
+ATOMIC_MASS: /[1-9][0-9]*/
+PROTIUM_CORE: "0"
+PROTON: "p"
+NEUTRON: "n"
+NUMBER: /-?[0-9]+(?:\.[0-9]+)?/
+STRING: /"(?:[^"\\\x00-\x1F]|\\["\\bfnrt]|\\u[0-9A-Fa-f]{4})*"/
+SEPARATOR_CHAR: /[|!$*'\^&~]/
+
+HASH_COMMENT: /#[^\r\n]*/
+SLASH_COMMENT: /\/\/[^\r\n]*/
+BLOCK_COMMENT: /\/\*(?s:.*?)\*\//
+%ignore HASH_COMMENT
+%ignore SLASH_COMMENT
+%ignore BLOCK_COMMENT
+%import common.WS
+%ignore WS

@@ -1,0 +1,39 @@
+{
+  "implementation": "etoe",
+  "standard_family": "ÆToE",
+  "seed_version": "0.1.48",
+  "seed_date": "2026-10-04",
+  "units": {
+    "n": {"symbol": "æn", "kind": "quantity"},
+    "c": {"symbol": "æc", "kind": "cell_count"},
+    "l": {"symbol": "æl", "kind": "length"},
+    "s": {"symbol": "æs", "kind": "volume"},
+    "t": {"symbol": "æt", "kind": "time"},
+    "m": {"symbol": "æm", "kind": "mass"},
+    "v": {"symbol": "æv", "kind": "velocity"},
+    "i": {"symbol": "æi", "kind": "inertness"}
+  },
+  "matter_ladder": [
+    {"level": 1, "symbol": "Æ1", "classes": ["c"], "name_ru": "эфирон / коллизионная группа"},
+    {"level": 2, "symbol": "Æ2", "classes": ["b", "hb"], "name_ru": "эфирный батч / эфирный гипербатч"},
+    {"level": 3, "symbol": "Æ3", "classes": ["sp", "hsp"], "name_ru": "эфирная спираль / гиперспираль"},
+    {"level": 4, "symbol": "Æ4", "classes": ["mj", "hmj"], "name_ru": "эфирный мажор / гипермажор"},
+    {"level": 5, "symbol": "Æ5", "classes": ["el", "ps", "p", "n", "a", "pna", "ha"], "name_ru": "гиператомическая ступень"},
+    {"level": 6, "symbol": "Æ6", "classes": ["ml", "hml"], "name_ru": "молекула / гипермолекула"},
+    {"level": 7, "symbol": "Æ7", "classes": ["bd", "hbd"], "name_ru": "тело / гипертело"},
+    {"level": 8, "symbol": "Æ8", "classes": ["as", "has"], "name_ru": "астр / гиперастр"}
+  ],
+  "microstates": {
+    "1": "rest",
+    "2": "interaction",
+    "3": "departure",
+    "4": "arrival"
+  },
+  "principles": [
+    "etheron-based measurement",
+    "discrete toroidal 3D space",
+    "cyclic discrete time",
+    "structure-of-arrays simulation preference",
+    "state processing at most once per etheron per tick"
+  ]
+}
