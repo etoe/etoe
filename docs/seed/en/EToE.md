@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.49
-date: 2026-10-06
+version: 0.1.50
+date: 2026-10-07
 created: 2026-06-01
-updated: 2026-10-06
+updated: 2026-10-07
 status: active
 priority: critical
 audience: LLM, Human
@@ -1516,10 +1516,14 @@ Atomahedron is a general name for geometric shapes of hyperatoms and molecules. 
 
 The tetrahedron is considered a periodic geometric shape of hyperatoms. The tetraatomahedron is considered a completed atomahedron. The pentaatomahedron is considered an overfilled atomahedron. Subhyperatoms of a hyperatomahedron may have an unfinished atomahedron of the previous level. A filled hyperatomic configuration is the hyperatomic configuration of a hyperatom with a filled hyperatomic periodic form. An unfilled hyperatomic configuration is the hyperatomic configuration of a hyperatom with a partially filled hyperatomic periodic form. A hyperatomic sequence is a sequence of hyperatomic configurations becoming more complex. The arity of a hyperatomic sequence is the maximum number of subatoms of the preceding level contained within the hyperatoms of the hyperatomic sequence. The sequence of configurations of hyperatoms in the sequential hierarchical filling of a periodic hyperatomic geometric shape with Protium subatoms is considered "primary" and forms a "primary sequence of hyperatoms". The hierarchical filling of a periodic hyperatomic geometric shape means that a Protium subatom, when added to an unpaired Protium subatom, forms a Deuterium hyperatom or a Deuterium subhyperatom with it, and also means that subhyperatoms also form pairs. Hyperatoms of the primary sequence of hyperatoms are called primary. The atomic mass of a primary hyperatom can be used as a full designation for this hyperatom. For example, 1 is the designation for a Protium atom; 2 is the symbol for the hyperatom of Deuterium; 3 is the symbol for the hyperatom of Tritium; 4 is the symbol for the hyperatom of Helium; 5 is the symbol for the hyperatom of Helium-5.
 
-A hyperatom configuration is a structural description of a hyperatom in terms of its immediate subatoms. The arity ($arity(ha)$) of a hyperatom ($ha$) is equal to the number of its immediate subatoms:
+A hyperatom configuration is a structural description of a hyperatom in terms of its immediate subatoms. The arity ($arity(ha)$) of a hyperatom ($ha$) is equal to the number of immediate subatoms of the hyperatom. The arity of a proteon is zero:
 
 $$
-\operatorname{arity}(ha)=|\operatorname{subatoms}(ha)|.
+\operatorname{arity}(ha)=|\operatorname{subatoms}(ha)|
+$$
+
+$$
+\operatorname{arity}(proteon)=0.
 $$
 
 The immediate subatoms ($\{sa_1,\ldots,sa_k\}$) of a hyperatom ($ha$) form a finite multiset:
@@ -1529,7 +1533,7 @@ $$
 =
 \{\!\{sa_1,\ldots,sa_k\}\!\},
 \qquad
-k=\operatorname{arity}(h).
+k=\operatorname{arity}(ha).
 $$
 
 The use of a multiset implies that the order of subatoms within a standard stable hyperatom has no fundamental physical or mathematical significance, whereas the multiplicity of identical subatoms does matter. Therefore:
@@ -1556,7 +1560,13 @@ $$
 (1'2)
 $$
 
-the first is the canonical notation, while the second is non-canonical. The canonical notation of a hyperatom configuration serves as the unique chosen representative of its equivalence class and is used for the serialization, comparison, indexing, and machine processing of hyperatom configurations. For a hyperatomic configuration ($ha$), an atomic mass $m_{atomic}(ha)$ can be defined. For hierarchical compositions in the simplest additive model:
+the first is the canonical notation, while the second is non-canonical. The canonical notation of a hyperatom configuration serves as the unique chosen representative of its equivalence class and is used for the serialization, comparison, indexing, and machine processing of hyperatom configurations. The canonical representation must satisfy the condition:
+
+$$
+m_{atomic}(sa_1)\ge m_{atomic}(sa_2)\ge\cdots\ge m_{atomic}(sa_k).
+$$
+
+For a hyperatomic configuration ($ha$), an atomic mass $m_{atomic}(ha)$ can be defined. For hierarchical compositions in the simplest additive model:
 
 $$
 m_{atomic}\!\left(\operatorname{composition}(sa_1,\ldots,sa_k)\right)
@@ -1596,19 +1606,23 @@ $$
 
 Therefore, in the general case, the complete identity of a hyperatom must be defined by its canonical structural configuration, whereas atomic mass is a separate numerical attribute.
 
-A hyperatomic sequence is defined as an ordered sequence of hyperatomic configurations:
+A hyperatomic sequence is defined as an ordered sequence of hyperatomic configurations. Typically, for the sake of algorithmic simplicity, the protium atom ($H-1$) is considered the first element of any atomic sequence, even though it is not a hyperatom:
 
 $$
-P_{ha}=(ha_1,ha_2,\ldots,ha_N,\ldots).
+P_{atomic}=(a_1,ha_2,\ldots,ha_N,\ldots),
+$$
+
+$$
+a_1≡H-1.
 $$
 
 Equivalently, a hyperatomic sequence can be defined as a mapping:
 
 $$
-P_{ha}:\mathbb N^+\rightarrow\mathcal H,
+P_{atomic}:\mathbb N^+\rightarrow\mathcal H,
 $$
 
-where $P_{ha}(n)=ha_n$, and $n$ is called the hyperatomic number of the sequence element.
+where $P_{atomic}(n)=ha_n$, and $n$ is called the hyperatomic number of the sequence element.
 
 The hyperatomic number is the index of an element in a numbered hyperatomic sequence and should not be automatically equated with the atomic mass for all hyperatoms. For primary hyperatoms in the simplest primary sequence, the hyperatom number coincides with the atomic mass; however, for accessory hyperatoms, the same atomic mass may correspond to several distinct configurations.
 
@@ -1617,7 +1631,7 @@ The primary hyperatom sequence is a sequence of configurations obtained through 
 For the first primary atom:
 
 $$
-ha_1=1.
+a_1=1.
 $$
 
 For each $n\ge2$, the following are defined:
@@ -1673,22 +1687,50 @@ $$
 
 and so on.
 
+A hyperatom is primary if and only if its canonical structure coincides with the structure of an element of a primary hyperatomic sequence having the same atomic mass. The primality of the hyperatom is not determined by mass being some special number; on the contrary, mass becomes a sufficient notation precisely because it uniquely reconstructs the primary configuration:
+
+$$
+P_{atomic.primary,1}=1
+$$
+
+$$
+P_{atomic.primary,n}=
+\operatorname{canon}
+\left(
+P_{atomic.primary,2^{\lfloor\log_2(n-1)\rfloor}},
+P_{atomic.primary,n-2^{\lfloor\log_2(n-1)\rfloor}}
+\right),
+\qquad n\ge2
+$$
+
+$$
+\operatorname{primary}(ha)
+\iff
+\operatorname{canon}(ha)=P_{atomic.primary,m_{atomic}(ha)}
+$$
+
+$$
+\operatorname{ShortNotation}(ha)=m_{atomic}(ha)
+\iff
+\operatorname{primary}(ha).
+$$
+
 The atomic level of the primary hyperatom sequence containing the hyperatom with number $n$ is defined as:
 
 $$
-L_{atomic}(n)=\lfloor\log_2 n\rfloor+1.
+L_{atomic.primary}(n)=\lfloor\log_2 n\rfloor+1.
 $$
 
-For $L_{atomic}\ge2$, the number of primary hyperatoms with atomic level $L_{atomic}$ is:
+For $L_{atomic.primary}\ge2$, the number of primary hyperatoms with atomic level $L_{atomic.primary}$ is:
 
 $$
-|P_{ha.Latomic}|=2^{L_{atomic}-2}.
+|P_{atomic.primary,L_{atomic.primary}}|=2^{L_{atomic.primary}-2}.
 $$
 
 The number of primary hyperatoms from the first atomic level up to and including atomic level $L$ is:
 
 $$
-\sum_{\ell=1}^{L}|P_{ha,\ell}|
+\sum_{\ell=1}^{L}|P_{atomic.primary,\ell}|
 =
 2^{L-1}.
 $$
