@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.50
-date: 2026-10-07
+version: 0.1.51
+date: 2026-10-08
 created: 2026-06-01
-updated: 2026-10-07
+updated: 2026-10-08
 status: active
 priority: critical
 audience: LLM, Human
@@ -1526,14 +1526,22 @@ $$
 \operatorname{arity}(proteon)=0.
 $$
 
-The immediate subatoms ($\{sa_1,\ldots,sa_k\}$) of a hyperatom ($ha$) form a finite multiset:
+The immediate subatoms ($\{sa_1,\ldots,sa_k\}$) of a hyperatom ($ha$) form a finite multiset. The arity of the Deuterium-2 ($D-2-(1'1)$) hyperatom is two. The arity of the Helithreeum-3 ($Ht-3-(1'1'1)$) hyperatom is three:
 
 $$
 \operatorname{subatoms}(ha)
 =
 \{\!\{sa_1,\ldots,sa_k\}\!\},
 \qquad
-k=\operatorname{arity}(ha).
+k=\operatorname{arity}(ha)
+$$
+
+$$
+\operatorname{arity}(D-2-(1'1))=2
+$$
+
+$$
+\operatorname{arity}(Ht-3-(1'1'1))=3.
 $$
 
 The use of a multiset implies that the order of subatoms within a standard stable hyperatom has no fundamental physical or mathematical significance, whereas the multiplicity of identical subatoms does matter. Therefore:
