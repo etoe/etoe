@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.51
-date: 2026-10-08
+version: 0.1.52
+date: 2026-10-09
 created: 2026-06-01
-updated: 2026-10-08
+updated: 2026-10-09
 status: active
 priority: critical
 audience: LLM, Human
@@ -1510,11 +1510,13 @@ The following paragraph provides several examples of the structure of simple hyp
 
 Two Protium subatoms in a Deuterium hyperatom or two subatoms in a Deuterium subhyperatom are called "paired" Protium subatoms. If a Protium subatom in a hyperatom is not a subatom of a Deuterium hyperatom or a subatom of a Deuterium subhyperatom, then such a Protium subatom is called an "unpaired" Protium subatom.
 
+Usually, a hyperatom consists of two subatoms. In three subatoms of a hyperatom, a skew in the distribution of the binding spiral mass of the hyperatom usually arises toward one of the pairs of subatoms of the hyperatom, as a result of which this pair of subatoms of the hyperatom either forms a subhyperatom in this hyperatom or pushes out the third subatom from the hyperatom, transforming the original hyperatom with three subatoms into a molecule consisting of a hyperatom now with two subatoms and the former third subatom that has become a separate atom.
+
 A hyperatom configuration is a description of the hyperatom structure. A chemical element is a set of hyperatom configurations. A chemical subelement is a subset of a chemical element. A chemical number is the standard number of a chemical element. The designation of a chemical subelement consists of the designation of the chemical element, the ':' sign, and the conventional ordinal number of the subelement. For example, He:1 is the designation of the first chemical subelement of the chemical element Helium, and He:2 is the designation of the second chemical subelement of the chemical element Helium.
 
 Atomahedron is a general name for geometric shapes of hyperatoms and molecules. The basic atomahedrons are diatomahedron, triatomahedron, tetraatomahedron, pentaatomahedron. A diatomahedron is an atomahedron consisting of two atoms. A triatomahedron is a triangular atomahedron consisting of three atoms. A tetraatomahedron is an atomahedron-tetrahedron consisting of four atoms. A pentaatomahedron is an atomahedron in the form of a trigonal bipyramid consisting of five atoms. Hyperatomahedron is a general name for atomahedrons of the second and subsequent levels. Subatomahedron is a general name for atomahedrons in a hyperatomahedron. Subhyperatomahedron is a hyperatomahedron of the previous level in a hyperatomahedron of the next level. For example, the Deuterium hyperatom has the shape of a diatomahedron; The Helium hyperatom He-4 has the shape of a tetraatomahedron; the Zinc hyperatom Zn-64 has the shape of a third-level tetraatomahedron.
 
-The tetrahedron is considered a periodic geometric shape of hyperatoms. The tetraatomahedron is considered a completed atomahedron. The pentaatomahedron is considered an overfilled atomahedron. Subhyperatoms of a hyperatomahedron may have an unfinished atomahedron of the previous level. A filled hyperatomic configuration is the hyperatomic configuration of a hyperatom with a filled hyperatomic periodic form. An unfilled hyperatomic configuration is the hyperatomic configuration of a hyperatom with a partially filled hyperatomic periodic form. A hyperatomic sequence is a sequence of hyperatomic configurations becoming more complex. The arity of a hyperatomic sequence is the maximum number of subatoms of the preceding level contained within the hyperatoms of the hyperatomic sequence. The sequence of configurations of hyperatoms in the sequential hierarchical filling of a periodic hyperatomic geometric shape with Protium subatoms is considered "primary" and forms a "primary sequence of hyperatoms". The hierarchical filling of a periodic hyperatomic geometric shape means that a Protium subatom, when added to an unpaired Protium subatom, forms a Deuterium hyperatom or a Deuterium subhyperatom with it, and also means that subhyperatoms also form pairs. Hyperatoms of the primary sequence of hyperatoms are called primary. The atomic mass of a primary hyperatom can be used as a full designation for this hyperatom. For example, "1" is the designation for a Protium atom; "2" is the symbol for the hyperatom of Deuterium; "3" is the symbol for the hyperatom of Tritium; "4" is the symbol for the hyperatom of Helium; "5" is the symbol for the hyperatom of Helium-5.
+The tetrahedron is considered a periodic geometric shape of hyperatoms. The tetraatomahedron is considered a completed atomahedron. The pentaatomahedron is considered an overfilled atomahedron. Subhyperatoms of a hyperatomahedron may have an unfinished atomahedron of the previous level. A filled hyperatomic configuration is the hyperatomic configuration of a hyperatom with a filled hyperatomic periodic form. An unfilled hyperatomic configuration is the hyperatomic configuration of a hyperatom with a partially filled hyperatomic periodic form. A hyperatomic sequence is a sequence of hyperatomic configurations becoming more complex. The arity of a hyperatomic sequence is the maximum number of subatoms of the preceding level contained within the hyperatoms of the hyperatomic sequence. If the arity of a hyperatomic sequence is not explicitly specified, a binary hyperatomic sequence is implied. The sequence of configurations of hyperatoms in the sequential hierarchical filling of a periodic hyperatomic geometric shape with Protium subatoms is considered "primary" and forms a "primary binary sequence of hyperatoms". The hierarchical filling of a periodic hyperatomic geometric shape means that a Protium subatom, when added to an unpaired Protium subatom, forms a Deuterium hyperatom or a Deuterium subhyperatom with it, and also means that subhyperatoms also form pairs. Hyperatoms of the primary sequence of hyperatoms are called primary. The atomic mass of a primary hyperatom can be used as a full designation for this hyperatom. For example, "1" is the designation for a Protium atom; "2" is the symbol for the hyperatom of Deuterium; "3" is the symbol for the hyperatom of Tritium; "4" is the symbol for the hyperatom of Helium; "5" is the symbol for the hyperatom of Helium-5.
 
 A hyperatom is usually notated so that the structure of the hyperatom can be uniquely identified. A hyperatom notation may include the notation of the chemical element of the hyperatom, the atomic mass of the hyperatom, and the formula of the hyperatom. The parts of a hyperatom notation are separated from each other by the minus sign '-'. For example, "D" is the simplest symbol for the hyperatom of Deuterium. "D-2" is the symbol for the hyperatom of Deuterium with its atomic mass indicated. "2" is the symbol for the hyperatom of Deuterium with only its atomic mass indicated, which is the primary atomic mass. A hyperatom can be designated by indicating only its atomic mass only if the hyperatom is part of the primary sequence of hyperatoms.
 
@@ -1535,29 +1537,29 @@ Hyperatomic transformation is the transition of a hyperatom from one hyperatomic
 A hyperatom configuration is a structural description of a hyperatom in terms of its immediate subatoms. The arity ($arity(ha)$) of a hyperatom ($ha$) is equal to the number of immediate subatoms of the hyperatom. The arity of a proteon is zero:
 
 $$
-\operatorname{arity}(ha)=|\operatorname{subatoms}(ha)|
+\text{arity}(ha)=|\text{subatoms}(ha)|
 $$
 
 $$
-\operatorname{arity}(proteon)=0.
+\text{arity}(proteon)=0.
 $$
 
 The immediate subatoms ($\{sa_1,\ldots,sa_k\}$) of a hyperatom ($ha$) form a finite multiset. The arity of the Deuterium-2 ($D-2-(1'1)$) hyperatom is two. The arity of the Helithreeum-3 ($Ht-3-(1'1'1)$) hyperatom is three:
 
 $$
-\operatorname{subatoms}(ha)
+\text{subatoms}(ha)
 =
 \{\!\{sa_1,\ldots,sa_k\}\!\},
 \qquad
-k=\operatorname{arity}(ha)
+k=\text{arity}(ha)
 $$
 
 $$
-\operatorname{arity}(D-2-(1'1))=2
+\text{arity}(D-2-(1'1))=2
 $$
 
 $$
-\operatorname{arity}(Ht-3-(1'1'1))=3.
+\text{arity}(Ht-3-(1'1'1))=3.
 $$
 
 The use of a multiset implies that the order of subatoms within a standard stable hyperatom has no fundamental physical or mathematical significance, whereas the multiplicity of identical subatoms does matter. Therefore:
@@ -1593,7 +1595,7 @@ $$
 For a hyperatomic configuration ($ha$), an atomic mass $m_{atomic}(ha)$ can be defined. For hierarchical compositions in the simplest additive model:
 
 $$
-m_{atomic}\!\left(\operatorname{composition}(sa_1,\ldots,sa_k)\right)
+m_{atomic}\!\left(\text{composition}(sa_1,\ldots,sa_k)\right)
 =
 \sum_{j=1}^{k}m_{atomic}(sa_j).
 $$
@@ -1648,7 +1650,23 @@ $$
 
 where $P_{atomic}(n)=ha_n$, and $n$ is called the hyperatomic number of the sequence element.
 
-The hyperatomic number is the index of an element in a numbered hyperatomic sequence and should not be automatically equated with the atomic mass for all hyperatoms. For primary hyperatoms in the simplest primary sequence, the hyperatom number coincides with the atomic mass; however, for accessory hyperatoms, the same atomic mass may correspond to several distinct configurations.
+The hyperatomic number is the index of an element in a numbered hyperatomic sequence and should not be automatically equated with the atomic mass for all hyperatoms. For primary hyperatoms in the simplest primary sequence, the hyperatomic number coincides with the atomic mass; however, for all other hyperatoms, the same atomic mass can correspond to several different configurations.
+
+Binary hierarchical compositions of hyperatoms can be broadly categorized into three types: "primary", "secondary", and "tertiary". The type of hierarchical composition of a hyperatom does not indicate the depth of the hyperatom's nesting; rather, it constitutes a classification based on the numbering properties of both the hyperatom itself and its immediate subatoms. The terms "primary", "secondary", and "tertiary" denote types of hyperatom composition, not the depth of hyperatom nesting. "Primary" compositions are "numbered" hierarchical compositions of hyperatoms. "Secondary" compositions are "unnumbered compositions with numbered subatoms". "Tertiary" hyperatoms are "unnumbered and have at least one unnumbered subatom". "Primary" hyperatoms constitute a "primary" binary hyperatomic sequence. "Primary" and "secondary" hyperatoms together constitute a "double" binary hyperatomic sequence. "Primary", "secondary", and "tertiary" hyperatoms together constitute a "triple" binary hyperatomic sequence:
+
+$$C_1=\text{Primary Hyperatom Compositions}$$
+
+$$C_2=\text{Secondary Hyperatom Compositions}$$
+
+$$C_3=\text{Tertiary Hyperatom Compositions}$$
+
+$$S_1=C_1=\text{Primary Hyperatomic Sequence}$$
+
+$$S_2=C_1\cup C_2=\text{Double Hyperatomic Sequence}$$
+
+$$S_3=C_1\cup C_2\cup C_3=\text{Triple Hyperatomic Sequence}$$
+
+$$\text{Primary}\subset\text{Double}\subset\text{Triple}.$$
 
 The primary hyperatom sequence is a sequence of configurations obtained through the successive hierarchical filling of a periodic hyperatomic geometric shape with Protium subatoms.
 
@@ -1672,7 +1690,7 @@ after which the primary configuration is defined recursively:
 
 $$
 ha_n=
-\operatorname{canon}\!\left(ha_{p(n)},ha_{q(n)}\right).
+\text{canon}\!\left(ha_{p(n)},ha_{q(n)}\right).
 $$
 
 Consequently:
@@ -1719,7 +1737,7 @@ $$
 
 $$
 P_{atomic.primary,n}=
-\operatorname{canon}
+\text{canon}
 \left(
 P_{atomic.primary,2^{\lfloor\log_2(n-1)\rfloor}},
 P_{atomic.primary,n-2^{\lfloor\log_2(n-1)\rfloor}}
@@ -1728,15 +1746,15 @@ P_{atomic.primary,n-2^{\lfloor\log_2(n-1)\rfloor}}
 $$
 
 $$
-\operatorname{primary}(ha)
+\text{primary}(ha)
 \iff
-\operatorname{canon}(ha)=P_{atomic.primary,m_{atomic}(ha)}
+\text{canon}(ha)=P_{atomic.primary,m_{atomic}(ha)}
 $$
 
 $$
-\operatorname{ShortNotation}(ha)=m_{atomic}(ha)
+\text{ShortNotation}(ha)=m_{atomic}(ha)
 \iff
-\operatorname{primary}(ha).
+\text{primary}(ha).
 $$
 
 The atomic level of the primary hyperatom sequence containing the hyperatom with number $n$ is defined as:
@@ -1758,8 +1776,6 @@ $$
 =
 2^{L-1}.
 $$
-
-Usually, a hyperatom consists of two subatoms. In three subatoms of a hyperatom, a skew in the distribution of the binding spiral mass of the hyperatom usually arises toward one of the pairs of subatoms of the hyperatom, as a result of which this pair of subatoms of the hyperatom either forms a subhyperatom in this hyperatom or pushes out the third subatom from the hyperatom, transforming the original hyperatom with three subatoms into a molecule consisting of a hyperatom now with two subatoms and the former third subatom that has become a separate atom.
 
 A neutron is a protium subatom that for one reason or another left its hyperatom and lost part of its outer layer. The parameters of a neutron mainly depend on where in the hyperatom the protium subatom that became this neutron was located.
 
