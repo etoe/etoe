@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.53
+version: 0.1.54
 date: 2026-10-09
 created: 2026-06-01
 updated: 2026-10-09
@@ -1652,7 +1652,7 @@ where $P_{atomic}(n)=ha_n$, and $n$ is called the hyperatomic number of the sequ
 
 The hyperatomic number is the index of an element in a numbered hyperatomic sequence and should not be automatically equated with the atomic mass for all hyperatoms. For primary hyperatoms in the simplest primary sequence, the hyperatomic number coincides with the atomic mass; however, for all other hyperatoms, the same atomic mass can correspond to several different configurations.
 
-Binary hierarchical compositions of hyperatoms can be broadly categorized into three types: "primary", "secondary", and "tertiary". The type of hierarchical composition of a hyperatom does not indicate the depth of the hyperatom's nesting; rather, it constitutes a classification based on the numbering properties of both the hyperatom itself and its immediate subatoms. The terms "primary", "secondary", and "tertiary" denote types of hyperatom composition, not the depth of hyperatom nesting. "Primary" compositions are "numbered" hierarchical compositions of hyperatoms. "Secondary" compositions are "unnumbered compositions with numbered subatoms". "Tertiary" hyperatoms are "unnumbered and have at least one unnumbered subatom". "Primary" hyperatoms constitute a "primary" binary hyperatomic sequence. "Primary" and "secondary" hyperatoms together constitute a "double" binary hyperatomic sequence. "Primary", "secondary", and "tertiary" hyperatoms together constitute a "triple" binary hyperatomic sequence:
+Hierarchical compositions of hyperatoms can be broadly categorized into three types: "primary", "secondary", and "tertiary". The type of hierarchical composition of a hyperatom does not indicate the depth of the hyperatom's nesting; rather, it constitutes a classification based on the numbering properties of both the hyperatom itself and its immediate subatoms. The terms "primary", "secondary", and "tertiary" denote types of hyperatom composition, not the depth of hyperatom nesting. "Primary" compositions are "numbered" hierarchical compositions of hyperatoms. All primary hyperatoms are binary — that is, they have an arity of two. "Secondary" compositions are "unnumbered compositions with numbered subatoms". Secondary hyperatoms can have an arity greater than two. For example, the secondary hyperatom Helithreeum Ht-3-(1'1'1) has an arity of three; that is, it is a secondary ternary hyperatom. "Tertiary" hyperatoms are "unnumbered and have at least one unnumbered subatom". Tertiary hyperatoms can have an arity greater than two. "Primary" hyperatoms constitute a "primary" binary hyperatomic sequence. "Primary" and "secondary" hyperatoms together constitute a "double" hyperatomic sequence. "Primary", "secondary", and "tertiary" hyperatoms together constitute a "triple" hyperatomic sequence. In calculations and simulations, it usually makes sense to use "double" and "triple" sequences only with binary hyperatoms. If the arity of a "double" or "triple" hyperatomic sequence is not explicitly specified, the term refers to a binary hyperatomic sequence:
 
 $$C_1=\text{Primary Hyperatom Compositions}$$
 
