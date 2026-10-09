@@ -2,7 +2,7 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.52
+version: 0.1.53
 date: 2026-10-09
 created: 2026-06-01
 updated: 2026-10-09
@@ -1660,6 +1660,8 @@ $$C_2=\text{Secondary Hyperatom Compositions}$$
 
 $$C_3=\text{Tertiary Hyperatom Compositions}$$
 
+$$C=C_1\sqcup C_2\sqcup C_3 = \text{Hyperatom Compositions}$$
+
 $$S_1=C_1=\text{Primary Hyperatomic Sequence}$$
 
 $$S_2=C_1\cup C_2=\text{Double Hyperatomic Sequence}$$
@@ -1776,6 +1778,40 @@ $$
 =
 2^{L-1}.
 $$
+
+Hierarchical programmatic generation of hyperatomic sequences is performed according to the atomic levels of the hyperatoms:
+
+$$
+m_{atomic}(\text{composition}(sa_1,sa_2))=m_{atomic}(sa_1)+m_{atomic}(sa_2),
+$$
+
+$$
+L_{atomic}(\text{composition}(sa_1,sa_2))
+=1+\max(L_{atomic}(sa_1),L_{atomic}(sa_2)).
+$$
+
+The generator is not required to output elements in order of atomic mass. The primary generation order is hierarchical: at each structural level ($L$), all valid unordered pairs of previously formed subatoms are considered for which
+
+$$
+\max(L_{atomic}(sa_1),L_{atomic}(sa_2))=L-1.
+$$
+
+During generation, new structures are canonicalized and added only if no structural duplicate exists. The primary sequence is constructed according to a recursive rule:
+
+$$P_1=1,$$
+
+$$P_n=\text{composition}(P_{p(n)}, P_{q(n)}),$$
+
+где
+
+$$
+ p(n)=2^{\lfloor\log_2(n-1)\rfloor},
+\qquad
+ q(n)=n-p(n),
+\qquad n\ge2.
+$$
+
+The generation of a double hyperatomic sequence involves binary pairs of references to primary hyperatoms. If the result is novel and distinct from the corresponding primary configuration, it is classified as secondary. The generation of a triple sequence involves pairs containing previously formed configurations. If the result is neither primary nor secondary, it is classified as tertiary. The physical rule governing the admissibility of secondary and tertiary hyperatoms may be defined by specific predicates. The generation algorithm itself must not substitute an arbitrary heuristic filter for an unknown physical rule.
 
 A neutron is a protium subatom that for one reason or another left its hyperatom and lost part of its outer layer. The parameters of a neutron mainly depend on where in the hyperatom the protium subatom that became this neutron was located.
 
