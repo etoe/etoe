@@ -52,12 +52,49 @@ print(result.ok)
 
 ## Canonical source
 
-`EToE.md` (language: ru; version: 0.1.48; date: 2026-10-04) is the seed document used as the design basis for this package snapshot. The seed itself states version `0.1.48`, date `2026-10-04`, status `active`, and Apache-2.0 licensing.
+`EToE.md` (language: ru; version: last; date: current) is the seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
-The parser implements the core EBNF vocabulary in the 0.1.48 seed: `.etoe` files, comments, e-notation objects/ether/etherons, chemical notation, quantity expressions, constants and measurements.
+The parser implements the core EBNF vocabulary in the seed: `.etoe` files, comments, e-notation objects/ether/etherons, chemical notation, quantity expressions, constants and measurements.
 
 The STÆ simulator currently implements the discrete space/time primitives, SoA etheron storage, four microstates, wrapped coordinates and a conservative movement state machine. Higher matter stairs are represented as typed, extensible model metadata rather than being given invented numerical laws where the seed does not specify a complete executable algorithm.
 
 This repository therefore provides a **real locally installable reference implementation foundation** and an explicit place for subsequent theory-driven modules, while keeping the distinction between normative ÆToE and Python-specific implementation choices.
+
+## Experimental hyperatomic sequence generator
+
+The module `etoe.hyperatomic` contains the unified experimental implementation
+of two binary hyperatomic sequence generators:
+
+```python
+from etoe.hyperatomic import MassIndexedGenerator, RecursiveMassIndexedGenerator, LevelIndexedGenerator
+
+mass = RecursiveMassIndexedGenerator()
+level = LevelIndexedGenerator()
+
+print(mass.primary_sequence(16)[-1].designation)
+print(level.extra_new(12)[-1].designation)
+```
+
+`MassIndexedGenerator` preserves the earlier mass-indexed experiment. Its
+`recursive_extra=True` mode is exposed as `RecursiveMassIndexedGenerator` and
+generates Extra from all already-generated configurations. `LevelIndexedGenerator`
+is the level-major implementation of the old object-oriented traversal.
+
+All generators share one structural data model, canonical unordered sibling
+representation, mass/level properties, family and kind labels, and text tools.
+Use `short_designation()` for mass-qualified notation such as
+`5-((3'1)'1)`. `sort_hyperatom_text()` and `compare_text_lists()` normalize and
+compare textual lists independently of generation order.
+
+`combinatorial_counts()` and `validate_generated_counts()` provide the
+non-materializing combinatorial reference calculations. The canonical terminology
+is Primary/Secondary/Tertiary for composition classes and Primary/Double/Triple for
+sequence families. The `recursive` model corresponds to the old level traversal; the
+`double_only` model corresponds to the earlier non-recursive Triple experiment.
+Historical `basic`/`extra` method names remain available as compatibility aliases.
+
+`examples/hyperatomic_verification.py` runs the main equivalence and
+count checks.
+
