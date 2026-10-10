@@ -660,7 +660,7 @@ Ether is called transparent due to the possibility of several etherons being in 
 
 If an etheron is depicted as occupying the entire cell of absolute space, then in the image, oncoming etherons will pass through each other.
 
-Each etheron stores information about its state and about the parameters determining the position and motion of the etheron in space. In computer simulation programs of transparent inertial ether, information related to the etheron may include additional data that speeds up the simulation process and simplifies the simulation logic. In optimized computer simulations of space-time-ether models, it is preferable to use the "structure of arrays" (SoA) scheme to accommodate information about etherons.
+Each etheron stores information about its state and about the parameters determining the position and motion of the etheron in space. In computer simulation programs of transparent inertial ether, information related to the etheron may include additional data that speeds up the simulation process and simplifies the simulation logic. In optimized computer simulations of space-time-ether models, a "structure of arrays" (SoA) scheme can sometimes be used to store information about etherons. However, in standard object-oriented code for space-time-ether models, an "array of structures" (AoS) scheme should be used, as it is natural and familiar in most programming languages.
 
 The parameters of an etheron can change upon interaction with other etherons that are in the same space cell as the etheron itself.
 
