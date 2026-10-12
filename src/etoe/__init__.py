@@ -79,7 +79,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.55"
+__version__ = "0.1.58"
 
 __all__ = [
     "Aspect",

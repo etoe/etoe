@@ -4,20 +4,20 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "etoe"
-version = "0.1.48"
+version = "0.1.58"
 description = "Reference Python implementation of the ÆToE."
 readme = "README.md"
 requires-python = ">=3.11"
-license = {file = "LICENSE"}
 authors = [
-  {name = "EToE-Project Team"},
+    { name = "Aleksei Morozov", email = "aleksei.morozov.19730316.nn.ru@gmail.com" }
 ]
-keywords = ["etoe", "ether", "simulation", "open-science"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["etoe", "toe", "ether", "simulation", "open-science"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -25,8 +25,7 @@ classifiers = [
   "Topic :: Scientific/Engineering",
 ]
 dependencies = [
-  "lark>=1.3,<2",
-  "periodictable>=2.1"  
+  "lark>=1.3,<2"
 ]
 
 [project.optional-dependencies]
@@ -58,3 +57,6 @@ etoe = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+
+[project.urls]
+Homepage = "https://github.com/etoe/etoe"
