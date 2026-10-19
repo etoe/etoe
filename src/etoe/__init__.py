@@ -5,6 +5,7 @@ This package implements the specification layer; it is not itself the standard.
 
 from .ast import (
     Aspect,
+    ChemicalGroup,
     ChemicalNotation,
     ConstantExpression,
     ECompactObject,
@@ -79,10 +80,11 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.58"
+__version__ = "0.1.60"
 
 __all__ = [
     "Aspect",
+    "ChemicalGroup",
     "ChemicalNotation",
     "ConstantExpression",
     "ECompactObject",

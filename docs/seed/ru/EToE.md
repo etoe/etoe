@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.59
+version: 0.1.60
 date: 2026-10-19
 created: 2026-06-01
-updated: 2026-10-19
+updated: 2026-10-60
 status: active
 priority: critical
 audience: LLM, Human
@@ -204,7 +204,8 @@ object
 
 chemical-object 
   = object   
-  | chemical-mass-only 
+  | chemical-mass-only
+  | chemical-group 
   | protium-core  
   | proton
   | neutron ;
@@ -269,13 +270,18 @@ subsubpart = ident;
 chemical-notation 
   = chemical-full ;  
 
-chemical-full     
-  = element, [ ":", element-subsort ]
-  , [ "-", atomic_mass ], [ chemical-structure ]
-  | molecule, [ ":", molecule-subsort ]
-  , [ "-", atomic_mass ], [ chemical-structure ] ;
+chemical-full
+  = element, [ ":", element-subsort ],
+    [ "-", atomic_mass ],
+    [ "-", atomic_mass ],
+    [ chemical-structure ]
+  | molecule, [ ":", molecule-subsort ],
+    [ "-", atomic_mass ],
+    [ "-", atomic_mass ],
+    [ chemical-structure ] ;  
 
-chemical-mass-only = atomic_mass ;
+chemical-mass-only
+  = atomic_mass, [ chemical-structure ] ;
 
 proteon 
   = proton  
@@ -499,7 +505,11 @@ structure = "-", "(", [ object-list ], ")" ;
 
 object-list = object, { separator, object } ;
 
-chemical-object-list = chemical-object, { separator, chemical-object } ;
+chemical-group
+  = "(", [ chemical-object-list ], ")" ;
+
+chemical-object-list
+  = chemical-object, { separator, chemical-object } ;
 
 notation-list = notation, { separator, notation } ;
 

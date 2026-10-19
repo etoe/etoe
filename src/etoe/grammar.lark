@@ -37,9 +37,9 @@ object_context: PART ("." SUBPART ("." IDENT)?)?
                   | PROTON
                   | NEUTRON
 
-chemical_full: CHEM_SYMBOL (":" SUBSORT)? ("-" ATOMIC_MASS)? chemical_structure?
-             | MOLECULE_IDENT (":" SUBSORT)? ("-" ATOMIC_MASS)? chemical_structure?
-chemical_mass_only: ATOMIC_MASS
+chemical_full: CHEM_SYMBOL (":" SUBSORT)? ("-" ATOMIC_MASS)? ("-" ATOMIC_MASS)? chemical_structure?
+             | MOLECULE_IDENT (":" SUBSORT)? ("-" ATOMIC_MASS)? ("-" ATOMIC_MASS)? chemical_structure?
+chemical_mass_only: ATOMIC_MASS chemical_structure?
 
 chemical_structure: "-" "(" chemical_object_list? ")"
 
@@ -49,8 +49,10 @@ chemical_structure: "-" "(" chemical_object_list? ")"
                 | PROTIUM_CORE
                 | PROTON
                 | NEUTRON
+                | chemical_group
 
 chemical_object_list: chemical_object (separator chemical_object)*
+chemical_group: "(" chemical_object_list? ")"
 
 quantity_expression: QUANTITY_IDENT SCIENCE_PREFIX quantity_tail
                    | QUANTITY_IDENT quantity_tail
@@ -101,7 +103,7 @@ CHARACTER: /(parallel|par|perpendicular|perp|avg|max|min|inst|rms|tot|net|abs|re
 IDENT: /[A-Za-z][A-Za-z0-9_]*/
 QUANTITY_IDENT: /[A-Za-zΑ-ωϵϑϖϱϰϕℏℎℓℐℑℒℱℜℵ℘][A-Za-z0-9_Α-ωϵϑϖϱϰϕℏℎℓℐℑℒℱℜℵ℘]*/
 CONST_NAME: /[A-Za-z0-9_Α-ωϵϑϖϱϰϕℏℎℓℐℑℒℱℜℵ℘]+/
-CHEM_SYMBOL: /(?:Ds|Rg|Cn|Nh|Fl|Mc|Lv|Ts|Og|He|Li|Be|Ne|Na|Mg|Al|Si|Cl|Ar|Ca|Sc|Ti|Cr|Mn|Fe|Co|Ni|Cu|Zn|Ga|Ge|As|Se|Br|Kr|Rb|Sr|Zr|Nb|Mo|Tc|Ru|Rh|Pd|Ag|Cd|In|Sn|Sb|Te|Xe|Cs|Ba|La|Ce|Pr|Nd|Pm|Sm|Eu|Gd|Tb|Dy|Ho|Er|Tm|Yb|Lu|Hf|Ta|Re|Os|Ir|Pt|Au|Hg|Tl|Pb|Bi|Po|At|Rn|Fr|Ra|Ac|Th|Pa|Np|Pu|Am|Cm|Bk|Cf|Es|Fm|Md|No|Lr|Rf|Db|Sg|Bh|Hs|Mt|H|D|T|V|B|C|N|O|F|P|S|K|Y|I|W|U)/
+CHEM_SYMBOL: /(?:Ds|Rg|Cn|Nh|Fl|Mc|Lv|Ts|Og|He|Li|Be|Ne|Na|Mg|Al|Si|Cl|Ar|Ca|Sc|Ti|Cr|Mn|Fe|Co|Ni|Cu|Zn|Ga|Ge|As|Se|Br|Kr|Rb|Sr|Zr|Nb|Mo|Tc|Ru|Rh|Pd|Ag|Cd|In|Sn|Sb|Te|Xe|Cs|Ba|La|Ce|Pr|Nd|Pm|Sm|Eu|Gd|Tb|Dy|Ho|Er|Tm|Yb|Lu|Hf|Ta|Re|Os|Ir|Pt|Au|Hg|Tl|Pb|Bi|Po|At|Rn|Fr|Ra|Ac|Th|Pa|Np|Pu|Am|Cm|Bk|Cf|Es|Fm|Md|No|Lr|Rf|Db|Sg|Bh|Hs|Mt|H|D|T|V|B|C|N|O|F|P|S|K|Y|I|W|U|Ht)/
 MOLECULE_IDENT: /[A-Za-z][A-Za-z0-9_]*/
 ATOMIC_MASS: /[1-9][0-9]*/
 PROTIUM_CORE: "0"

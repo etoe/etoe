@@ -57,14 +57,17 @@ class Structure:
     objects: tuple[Notation, ...] = ()
     separators: tuple[str, ...] = ()
 
-    def to_canonical(self) -> str:
+    def to_parenthesized(self) -> str:
         if not self.objects:
-            return "-()"
+            return "()"
         chunks = [self.objects[0].to_canonical()]
         for sep, obj in zip(self.separators, self.objects[1:]):
             chunks.append(sep)
             chunks.append(obj.to_canonical())
-        return "-(" + "".join(chunks) + ")"
+        return "(" + "".join(chunks) + ")"
+
+    def to_canonical(self) -> str:
+        return "-" + self.to_parenthesized()
 
 
 @dataclass(frozen=True)
@@ -167,11 +170,15 @@ class ChemicalNotation(Notation):
     subsort: str | None = None
     atomic_mass: int | None = None
     structure: Structure | None = None
+    primary_mass: int | None = None
 
     def to_canonical(self) -> str:
         if self.kind == "mass":
             assert self.atomic_mass is not None
-            return str(self.atomic_mass)
+            out = str(self.atomic_mass)
+            if self.structure is not None:
+                out += self.structure.to_canonical()
+            return out
         if self.kind == "protium_core":
             return "0"
         if self.kind == "proton":
@@ -184,9 +191,21 @@ class ChemicalNotation(Notation):
             out += f":{self.subsort}"
         if self.atomic_mass is not None:
             out += f"-{self.atomic_mass}"
+        if self.primary_mass is not None:
+            out += f"-{self.primary_mass}"
         if self.structure is not None:
             out += self.structure.to_canonical()
         return out
+
+
+@dataclass(frozen=True)
+class ChemicalGroup(Notation):
+    """A parenthesized chemical substructure without an explicit mass label."""
+
+    structure: Structure
+
+    def to_canonical(self) -> str:
+        return self.structure.to_parenthesized()
 
 
 @dataclass(frozen=True)
