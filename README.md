@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`EToE.md` (language: ru; version: last; date: current) is the seed document used as the design basis for this package snapshot.
+`EToE.md` (language: ru; version: 0.1.60; date: 2026-10-19) is the seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -98,3 +98,40 @@ Historical `basic`/`extra` method names remain available as compatibility aliase
 `examples/hyperatomic_verification.py` runs the main equivalence and
 count checks.
 
+
+## Semantic hyperatom translation and Graphviz
+
+The `etoe.hyperatom_translation` module translates all chemical statements under
+`data/atom/element/**/**/*.etoe` into a `HyperatomRegistry` containing typed
+semantic definitions, source provenance, component references, reference
+ambiguity and mass-balance diagnostics. It uses the package's canonical parser;
+it does not introduce a second `.etoe` grammar. Structural components are
+matched as partial patterns, and ambiguous references are retained instead of
+being resolved by dictionary overwrite order.
+
+```python
+from etoe import HyperatomTranslator, hyperatom_graph_to_dot
+
+registry = HyperatomTranslator().translate_directory("data/atom/element")
+print(registry.statistics())
+
+# DOT text does not require the Graphviz Python package.
+dot_text = hyperatom_graph_to_dot(registry, include_templates=False)
+```
+
+CLI examples (run from the project root after installing the project):
+
+```bash
+python -m pip install -e .
+python -m etoe hyperatoms translate --data-root data/atom/element \
+  --output build/hyperatoms.semantic.json
+python -m etoe hyperatoms graph --data-root data/atom/element \
+  --output build/hyperatoms.svg
+python -m etoe hyperatoms graph --data-root data/atom/element \
+  --include-templates --output build/hyperatoms-with-templates.svg
+```
+
+Generating `.dot` source is pure Python. Rendering SVG/PNG/PDF requires the
+Graphviz system executable (`dot`, `neato`, `fdp`, `sfdp`, `circo` or `twopi`).
+See [the translator design and legacy-code audit](docs/hyperatom-translation.md)
+for semantics, diagnostics and limitations.

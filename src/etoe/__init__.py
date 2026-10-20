@@ -27,6 +27,21 @@ from .parser import EToEParser, parse_file, parse_statement
 from .serialization import decode_identifier, encode_identifier, encode_base64url_identifier, decode_base64url_identifier
 from .units import EtherUnit, UNIT_BY_SUFFIX
 from .validation import ValidationError, ValidationResult, validate
+from .hyperatom_translation import (
+    ELEMENT_SYMBOL_KIND,
+    ELEMENT_TEMPLATE_KIND,
+    HYPERATOM_KIND,
+    MOLECULE_KIND,
+    SourceAnnotation,
+    HyperatomRegistry,
+    HyperatomTranslationError,
+    HyperatomTranslator,
+    SemanticComponent,
+    SemanticHyperatom,
+    TranslationDiagnostic,
+    translate_hyperatoms,
+)
+from .hyperatom_graphviz import hyperatom_graph_to_dot, write_hyperatom_graph
 from .hyperatomic import (
     Admissibility,
     BaseHyperatomicGenerator,
@@ -80,7 +95,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.60"
+__version__ = "0.1.61"
 
 __all__ = [
     "Aspect",
@@ -113,6 +128,19 @@ __all__ = [
     "ValidationError",
     "ValidationResult",
     "validate",
+    "ELEMENT_SYMBOL_KIND",
+    "ELEMENT_TEMPLATE_KIND",
+    "HYPERATOM_KIND",
+    "MOLECULE_KIND",
+    "HyperatomRegistry",
+    "HyperatomTranslationError",
+    "HyperatomTranslator",
+    "SemanticComponent",
+    "SemanticHyperatom",
+    "TranslationDiagnostic",
+    "translate_hyperatoms",
+    "hyperatom_graph_to_dot",
+    "write_hyperatom_graph",
     "Admissibility",
     "BaseHyperatomicGenerator",
     "CombinatorialCountTable",

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.60 semantic hyperatom translation and graphing
+
+- Added a semantic translator over the canonical parser for `data/atom/element/**/*.etoe`.
+- Added provenance-aware hyperatom records, component resolution states, partial structure-pattern matching and mass-balance diagnostics.
+- Added deterministic DOT generation and Graphviz SVG/PNG/PDF rendering without a mandatory Python Graphviz dependency.
+- Documented findings from the legacy hyperatom binder/graphing scripts and made project seed references consistent with the supplied 0.1.60 seed metadata.
+- Preserved unresolved and ambiguous references rather than selecting an arbitrary candidate.
+
+
 ## 0.1.55 unified hyperatomic terminology
 
 - Canonicalized composition classes as Primary, Secondary, and Tertiary.

@@ -1,4 +1,4 @@
-"""Collision invariants explicitly stated by the 0.1.48 seed."""
+"""Collision invariants explicitly stated by the 0.1.60 seed."""
 
 from __future__ import annotations
 

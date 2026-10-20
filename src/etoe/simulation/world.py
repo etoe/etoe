@@ -1,7 +1,7 @@
 """Executable STÆ micro-dynamics scaffold.
 
 This module deliberately implements only rules that are sufficiently explicit
-in the 0.1.48 seed to be expressed as a deterministic reference kernel:
+in the 0.1.60 seed to be expressed as a deterministic reference kernel:
 wrapped discrete space/time, four etheron states, same-cell collision detection,
 and one-neighbor orthogonal movement toward the current target direction.
 """

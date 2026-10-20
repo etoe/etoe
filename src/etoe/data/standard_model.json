@@ -1,8 +1,8 @@
 {
   "implementation": "etoe",
   "standard_family": "ÆToE",
-  "seed_version": "0.1.48",
-  "seed_date": "2026-10-04",
+  "seed_version": "0.1.60",
+  "seed_date": "2026-10-19",
   "units": {
     "n": {"symbol": "æn", "kind": "quantity"},
     "c": {"symbol": "æc", "kind": "cell_count"},

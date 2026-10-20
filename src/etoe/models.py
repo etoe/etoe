@@ -1,6 +1,6 @@
 """Typed placeholders for higher matter stairs.
 
-The 0.1.48 seed defines qualitative organizations for all eight stairs, but
+The 0.1.60 seed defines qualitative organizations for all eight stairs, but
 not a complete executable numerical law set for every stair. These classes keep
 the model layer explicit without inventing equations absent from the source.
 """
