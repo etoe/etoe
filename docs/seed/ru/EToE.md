@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.61
-date: 2026-10-20
+version: 0.1.62
+date: 2026-10-21
 created: 2026-06-01
-updated: 2026-10-20
+updated: 2026-10-21
 status: active
 priority: critical
 audience: LLM, Human
@@ -326,7 +326,7 @@ element
   | "Lr" | "Rf" | "Db" | "Sg" | "Bh"
   | "Hs" | "Mt" | "Ds" | "Rg" | "Cn" 
   | "Nh" | "Fl" | "Mc" | "Lv" | "Ts" 
-  | "Og" ;
+  | "Og" | "Nm" | "X"  ;
 
 element-subsort = subelement ;
 

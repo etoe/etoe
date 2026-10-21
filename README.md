@@ -62,6 +62,10 @@ The STÆ simulator currently implements the discrete space/time primitives, SoA 
 
 This repository therefore provides a **real locally installable reference implementation foundation** and an explicit place for subsequent theory-driven modules, while keeping the distinction between normative ÆToE and Python-specific implementation choices.
 
+## Element metadata catalog
+
+`etoe.ElementCatalog` discovers element symbols from `data/atom/element/<SYMBOL>/` and reads optional per-element metadata from `<SYMBOL>.toml`. The TOML file can define localized names and the symbol role (`standard`, `custom` or `auxiliary`) without changing the parser grammar. See [the ElementCatalog guide](docs/element-catalog.md) for the schema and examples for `Nm` and `X`.
+
 ## Experimental hyperatomic sequence generator
 
 The module `etoe.hyperatomic` contains the unified experimental implementation

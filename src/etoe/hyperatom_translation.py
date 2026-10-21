@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, Iterable, Iterator, Sequence
 
 from .ast import ChemicalGroup, ChemicalNotation, EToEFile, Notation, SourceComment, Structure
+from .elements import ElementCatalog
 from .parser import EToEParser
 
 
@@ -182,6 +183,7 @@ class HyperatomRegistry:
     definitions: tuple[SemanticHyperatom, ...]
     diagnostics: tuple[TranslationDiagnostic, ...] = ()
     source_annotations: tuple[SourceAnnotation, ...] = ()
+    element_catalog: ElementCatalog | None = field(default=None, repr=False, compare=False)
     by_id: dict[str, SemanticHyperatom] = field(init=False, repr=False)
     by_symbol: dict[str, tuple[SemanticHyperatom, ...]] = field(init=False, repr=False)
     by_mass: dict[int, tuple[SemanticHyperatom, ...]] = field(init=False, repr=False)
@@ -239,6 +241,7 @@ class HyperatomRegistry:
             "statistics": self.statistics(),
             "diagnostics": [diagnostic.to_dict() for diagnostic in self.diagnostics],
             "source_annotations": [annotation.to_dict() for annotation in self.source_annotations],
+            "element_catalog": self.element_catalog.to_dict() if self.element_catalog is not None else None,
             "definitions": [definition.to_dict() for definition in self.definitions],
         }
 
@@ -250,8 +253,15 @@ class HyperatomTranslationError(ValueError):
 class HyperatomTranslator:
     """Parse ÆToE element files and resolve component definitions into an index."""
 
-    def __init__(self, parser: EToEParser | None = None) -> None:
+    def __init__(
+        self,
+        parser: EToEParser | None = None,
+        element_catalog: ElementCatalog | None = None,
+    ) -> None:
         self.parser = parser or EToEParser()
+        # When omitted, a fresh catalog is created for each translated root so
+        # filesystem changes and local project metadata are picked up naturally.
+        self.element_catalog = element_catalog
 
     def translate_directory(self, root: str | Path) -> HyperatomRegistry:
         root_argument = Path(root).expanduser()
@@ -263,6 +273,7 @@ class HyperatomTranslator:
         files = sorted(root_path.rglob("*.etoe"))
         if not files:
             raise HyperatomTranslationError(f"No .etoe files found under {root_path}")
+        element_catalog = self.element_catalog or ElementCatalog(root_path)
 
         diagnostics: list[TranslationDiagnostic] = []
         definitions: list[SemanticHyperatom] = []
@@ -356,6 +367,7 @@ class HyperatomTranslator:
             definitions=tuple(definitions),
             diagnostics=tuple(diagnostics),
             source_annotations=tuple(source_annotations),
+            element_catalog=element_catalog,
         )
         self._resolve_references(registry)
         self._check_mass_balance(registry)
@@ -714,6 +726,11 @@ def _resolution_diagnostic(definition: SemanticHyperatom, component: SemanticCom
     return TranslationDiagnostic(code, message, definition.source_path, definition.statement_index)
 
 
-def translate_hyperatoms(root: str | Path, *, parser: EToEParser | None = None) -> HyperatomRegistry:
-    """Convenience API for translating a directory of chemical `.etoe` files."""
-    return HyperatomTranslator(parser).translate_directory(root)
+def translate_hyperatoms(
+    root: str | Path,
+    *,
+    parser: EToEParser | None = None,
+    element_catalog: ElementCatalog | None = None,
+) -> HyperatomRegistry:
+    """Convenience API for translating chemical `.etoe` files and metadata."""
+    return HyperatomTranslator(parser, element_catalog=element_catalog).translate_directory(root)

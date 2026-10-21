@@ -1,0 +1,9 @@
+# Auxiliary element-like symbol used to select or compare structural variants.
+symbol = "X"
+kind = "auxiliary"
+role = "structure_selector"
+description = "Вспомогательный символ для подбора варианта структуры гиператома; не является стандартным химическим элементом."
+
+[names]
+en = "X"
+ru = "Икс"

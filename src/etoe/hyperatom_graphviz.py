@@ -12,6 +12,7 @@ import shutil
 import subprocess
 from typing import Iterable
 
+from .elements import ElementCatalog
 from .hyperatom_translation import (
     ELEMENT_SYMBOL_KIND,
     ELEMENT_TEMPLATE_KIND,
@@ -34,6 +35,8 @@ def hyperatom_graph_to_dot(
     include_templates: bool = False,
     symbols: Iterable[str] | None = None,
     title: str = "ÆToE semantic hyperatom graph",
+    show_element_names: bool = False,
+    language: str = "en",
 ) -> str:
     """Build a deterministic DOT graph from the translated registry.
 
@@ -78,7 +81,10 @@ def hyperatom_graph_to_dot(
 
     template_ordinals = _template_ordinals(included.values())
     for obj in sorted(included.values(), key=lambda value: (value.symbol or "", value.atomic_mass or -1, value.canonical, value.id)):
-        label = _node_label(obj, template_ordinals)
+        label = _node_label(
+            obj, template_ordinals, registry.element_catalog,
+            show_element_names=show_element_names, language=language,
+        )
         shape, fill, fontcolor = _node_style(obj)
         tooltip = f"{obj.canonical}\\nsource={obj.source_path} statement={obj.statement_index}\\nkind={obj.kind}"
         lines.append(
@@ -140,6 +146,8 @@ def write_hyperatom_graph(
     layout: str = "dot",
     format: str | None = None,
     title: str = "ÆToE semantic hyperatom graph",
+    show_element_names: bool = False,
+    language: str = "en",
 ) -> Path:
     """Write `.dot` source or render through Graphviz to the requested format."""
     output_path = Path(output)
@@ -149,7 +157,10 @@ def write_hyperatom_graph(
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
         raise ValueError(f"Unsupported Graphviz layout {layout!r}. Choose from {', '.join(SUPPORTED_LAYOUTS)}.")
-    dot = hyperatom_graph_to_dot(registry, include_templates=include_templates, symbols=symbols, title=title)
+    dot = hyperatom_graph_to_dot(
+        registry, include_templates=include_templates, symbols=symbols, title=title,
+        show_element_names=show_element_names, language=language,
+    )
     if chosen_format == "dot":
         if output_path.suffix.lower() != ".dot":
             output_path = output_path.with_suffix(".dot")
@@ -181,17 +192,33 @@ def _template_ordinals(objects: Iterable[SemanticHyperatom]) -> dict[str, int]:
     return result
 
 
-def _node_label(obj: SemanticHyperatom, template_ordinals: dict[str, int]) -> str:
+def _node_label(
+    obj: SemanticHyperatom,
+    template_ordinals: dict[str, int],
+    element_catalog: ElementCatalog | None = None,
+    *,
+    show_element_names: bool = False,
+    language: str = "en",
+) -> str:
     if obj.kind == HYPERATOM_KIND:
-        return obj.designation
-    if obj.kind == ELEMENT_TEMPLATE_KIND:
+        label = obj.designation
+    elif obj.kind == ELEMENT_TEMPLATE_KIND:
         ordinal = template_ordinals.get(obj.id, 1)
-        return f"{obj.symbol} · template {ordinal}"
-    if obj.kind == ELEMENT_SYMBOL_KIND:
-        return str(obj.symbol or obj.canonical)
-    if obj.kind == MOLECULE_KIND:
-        return obj.designation + " · molecule"
-    return obj.designation
+        label = f"{obj.symbol} · template {ordinal}"
+    elif obj.kind == ELEMENT_SYMBOL_KIND:
+        label = str(obj.symbol or obj.canonical)
+    elif obj.kind == MOLECULE_KIND:
+        label = obj.designation + " · molecule"
+    else:
+        label = obj.designation
+
+    if show_element_names and element_catalog is not None and obj.symbol:
+        element = element_catalog.get(obj.symbol)
+        if element is not None:
+            localized_name = element.name(language)
+            if localized_name and localized_name != obj.symbol:
+                label += f"\n{localized_name}"
+    return label
 
 
 def _node_style(obj: SemanticHyperatom) -> tuple[str, str, str]:

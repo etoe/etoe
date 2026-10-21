@@ -36,6 +36,8 @@ def build_parser() -> argparse.ArgumentParser:
     graph.add_argument("--include-templates", action="store_true", help="Include massless element/template statements")
     graph.add_argument("--symbols", default="", help="Optional comma-separated root element symbols, e.g. Fe,Co,Ni")
     graph.add_argument("--title", default="ÆToE semantic hyperatom graph")
+    graph.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
+    graph.add_argument("--language", default="en", help="Language tag for element names, e.g. en or ru")
 
     return p
 
@@ -82,6 +84,8 @@ def main(argv: list[str] | None = None) -> int:
                 layout=args.layout,
                 format=args.format,
                 title=args.title,
+                show_element_names=args.element_names,
+                language=args.language,
             )
             print(f"Wrote Graphviz graph to {output}")
             print(f"Registry source: {len(registry.definitions)} semantic definitions from {registry.source_file_count} files")

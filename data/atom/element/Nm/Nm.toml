@@ -1,0 +1,9 @@
+# Project-specific metadata for Sognesium (Согнезий).
+symbol = "Nm"
+kind = "custom"
+role = "theoretical_element"
+description = "Теоретический химический элемент ÆToE; его определения задаются файлами Nm.etoe."
+
+[names]
+en = "Sognesium"
+ru = "Согнезий"

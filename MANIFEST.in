@@ -3,7 +3,7 @@ include LICENSE
 include CHANGELOG.md
 include pyproject.toml
 recursive-include src/etoe *.lark *.json py.typed
-recursive-include data *.etoe
+recursive-include data *.etoe *.toml
 recursive-include spec *.md
 recursive-include docs *.md
 recursive-include examples *.etoe

@@ -1,0 +1,9 @@
+# Project-specific metadata for Helithreeum (Гелитрий).
+symbol = "Ht"
+kind = "custom"
+role = "theoretical_element"
+description = "Теоретический химический элемент ÆToE; его определения задаются файлами Ht.etoe."
+
+[names]
+en = "Helithreeum"
+ru = "Гелитрий"

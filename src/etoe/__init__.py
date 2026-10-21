@@ -24,6 +24,16 @@ from .ast import (
     Structure,
 )
 from .parser import EToEParser, parse_file, parse_statement
+from .elements import (
+    ELEMENT_KINDS,
+    STANDARD_ELEMENT_ATOMIC_NUMBERS,
+    STANDARD_ELEMENT_NAMES,
+    STANDARD_ELEMENT_SYMBOLS,
+    ElementCatalog,
+    ElementCatalogError,
+    ElementRecord,
+    default_element_catalog,
+)
 from .serialization import decode_identifier, encode_identifier, encode_base64url_identifier, decode_base64url_identifier
 from .units import EtherUnit, UNIT_BY_SUFFIX
 from .validation import ValidationError, ValidationResult, validate
@@ -95,7 +105,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.61"
+__version__ = "0.1.62"
 
 __all__ = [
     "Aspect",
@@ -117,6 +127,14 @@ __all__ = [
     "Statement",
     "Structure",
     "EToEParser",
+    "ELEMENT_KINDS",
+    "STANDARD_ELEMENT_ATOMIC_NUMBERS",
+    "STANDARD_ELEMENT_NAMES",
+    "STANDARD_ELEMENT_SYMBOLS",
+    "ElementCatalog",
+    "ElementCatalogError",
+    "ElementRecord",
+    "default_element_catalog",
     "parse_file",
     "parse_statement",
     "encode_identifier",
