@@ -2,10 +2,10 @@
 title: "Эфирная Теория Всего"
 description: "Основной документ, определяющий ключевые постулаты, открытые вопросы и правила сотрудничества для проекта EToE."
 language: ru
-version: 0.1.62
-date: 2026-10-21
+version: 0.1.63
+date: 2026-10-22
 created: 2026-06-01
-updated: 2026-10-21
+updated: 2026-10-22
 status: active
 priority: critical
 audience: LLM, Human

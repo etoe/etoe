@@ -178,6 +178,9 @@ class ElementCatalog:
             raise NotADirectoryError(self.root)
         self._elements: tuple[ElementRecord, ...] = ()
         self._by_symbol: dict[str, ElementRecord] = {}
+        # Runtime auxiliaries live only in this catalog instance. They are
+        # never materialized as folders or files under the user's data root.
+        self._runtime_elements: dict[str, ElementRecord] = {}
         self.refresh()
 
     @property
@@ -205,6 +208,61 @@ class ElementCatalog:
             raise ValueError(f"Unknown element kind {kind!r}; expected one of {', '.join(sorted(ELEMENT_KINDS))}.")
         return tuple(element for element in self._elements if element.kind == kind)
 
+    def register_runtime_auxiliary(
+        self,
+        symbol: str,
+        *,
+        atomic_level: int,
+        description: str | None = None,
+    ) -> ElementRecord:
+        """Register a virtual auxiliary hyperatom element in this catalog.
+
+        This method is intended for synthetic ``X<n>`` elements created by
+        automatic hyperatom-map patching. It updates lookup/serialization
+        immediately but does not write anything to disk.
+        """
+        normalized = symbol.strip() if isinstance(symbol, str) else ""
+        if not _SYMBOL_RE.fullmatch(normalized):
+            raise ElementCatalogError(f"Invalid runtime auxiliary symbol {symbol!r}.")
+        if atomic_level < 1:
+            raise ElementCatalogError("Runtime auxiliary atomic_level must be >= 1.")
+        existing = self._by_symbol.get(normalized)
+        if existing is not None:
+            if existing.metadata and existing.metadata.get("runtime") is True:
+                existing_level = existing.metadata.get("atomic_level")
+                if existing_level != atomic_level:
+                    raise ElementCatalogError(
+                        f"Runtime auxiliary {normalized!r} already has atomic level {existing_level}, "
+                        f"not {atomic_level}."
+                    )
+                return existing
+            raise ElementCatalogError(
+                f"Runtime auxiliary symbol {normalized!r} conflicts with an existing catalog element."
+            )
+
+        record = ElementRecord(
+            symbol=normalized,
+            kind="auxiliary",
+            names=MappingProxyType({
+                "en": f"Auxiliary hyperatom, atomic level {atomic_level}",
+                "ru": f"Вспомогательный гиператом, атомный уровень {atomic_level}",
+            }),
+            role="runtime_auxiliary_hyperatom",
+            directory=self.root / normalized,
+            metadata_file=None,
+            description=description or "Runtime-generated placeholder for a missing subatom hyperatom.",
+            atomic_number=None,
+            aliases=(),
+            metadata=MappingProxyType({
+                "runtime": True,
+                "atomic_level": atomic_level,
+                "generated_by": "etoe.hyperatom_map",
+            }),
+        )
+        self._runtime_elements[normalized] = record
+        self.refresh()
+        return self._by_symbol[normalized]
+
     def refresh(self) -> "ElementCatalog":
         """Rescan the directory, picking up newly created folders and TOML files."""
         found: list[ElementRecord] = []
@@ -226,6 +284,13 @@ class ElementCatalog:
         by_symbol = {element.symbol: element for element in found}
         if len(by_symbol) != len(found):  # Defensive; normal folder names are unique.
             raise ElementCatalogError(f"Duplicate element symbols discovered in {self.root}")
+
+        # Runtime definitions remain visible across refreshes unless a real
+        # on-disk definition has claimed the same symbol. Registration itself
+        # refuses such conflicts, so this only handles later filesystem edits.
+        for symbol, element in self._runtime_elements.items():
+            by_symbol.setdefault(symbol, element)
+        found = list(by_symbol.values())
 
         def sort_key(element: ElementRecord) -> tuple[int, int, str]:
             if element.kind == "standard" and element.atomic_number is not None:

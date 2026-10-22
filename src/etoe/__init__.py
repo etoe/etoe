@@ -52,6 +52,11 @@ from .hyperatom_translation import (
     translate_hyperatoms,
 )
 from .hyperatom_graphviz import hyperatom_graph_to_dot, write_hyperatom_graph
+from .hyperatom_map import (
+    CanonicalHyperatomMap,
+    HyperatomMapEdge,
+    build_canonical_hyperatom_map,
+)
 from .hyperatomic import (
     Admissibility,
     BaseHyperatomicGenerator,
@@ -105,7 +110,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.62"
+__version__ = "0.1.63"
 
 __all__ = [
     "Aspect",
@@ -159,6 +164,9 @@ __all__ = [
     "translate_hyperatoms",
     "hyperatom_graph_to_dot",
     "write_hyperatom_graph",
+    "CanonicalHyperatomMap",
+    "HyperatomMapEdge",
+    "build_canonical_hyperatom_map",
     "Admissibility",
     "BaseHyperatomicGenerator",
     "CombinatorialCountTable",

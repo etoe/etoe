@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`EToE.md` (language: ru; version: 0.1.60; date: 2026-10-19) is the seed document used as the design basis for this package snapshot.
+`EToE.md` (language: ru; version: 0.1.62; date: 2026-10-21) is the seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -129,8 +129,14 @@ CLI examples (run from the project root after installing the project):
 python -m pip install -e .
 python -m etoe hyperatoms translate --data-root data/atom/element \
   --output build/hyperatoms.semantic.json
+python -m etoe hyperatoms map --data-root data/atom/element \
+  --output build/hyperatoms.map.json
+python -m etoe hyperatoms map --data-root data/atom/element \
+  --auto-patch-missing --output build/hyperatoms.patched-map.json
 python -m etoe hyperatoms graph --data-root data/atom/element \
   --output build/hyperatoms.svg
+python -m etoe hyperatoms graph --data-root data/atom/element \
+  --auto-patch-missing --output build/hyperatoms.patched.svg
 python -m etoe hyperatoms graph --data-root data/atom/element \
   --include-templates --output build/hyperatoms-with-templates.svg
 ```

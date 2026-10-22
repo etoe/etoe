@@ -86,6 +86,17 @@ class SemanticComponent:
     def is_structural(self) -> bool:
         return bool(self.children)
 
+    @property
+    def canonical_structure(self) -> str:
+        """Return this component's deterministic structural token.
+
+        Element symbols are deliberately omitted when an explicit mass is
+        present: ``Be-8-(4'4)`` and ``X4-8-(4'4)`` describe the same structural
+        configuration for map/index purposes.  The original ``canonical``
+        field remains lossless and is never rewritten.
+        """
+        return _component_text(self)
+
     def walk(self) -> Iterator["SemanticComponent"]:
         yield self
         for child in self.children:
@@ -104,6 +115,7 @@ class SemanticComponent:
             "children": [child.to_dict() for child in self.children],
             "candidate_ids": list(self.candidate_ids),
             "resolution": self.resolution,
+            "canonical_structure": self.canonical_structure,
         }
 
 
@@ -130,6 +142,9 @@ class SemanticHyperatom:
     components: tuple[SemanticComponent, ...] = ()
     mass_sum: int | None = None
     mass_balance: str = "not_applicable"
+    atomic_level: int | None = None
+    atomic_level_source: str | None = None
+    structure_text_override: str | None = field(default=None, repr=False, compare=False)
     source_ast: ChemicalNotation | None = field(default=None, repr=False, compare=False)
 
     @property
@@ -150,6 +165,24 @@ class SemanticHyperatom:
     def is_composite(self) -> bool:
         return bool(self.components)
 
+    @property
+    def canonical_structure(self) -> str | None:
+        """Canonical text key for the hyperatom's own structure.
+
+        The outer parentheses are part of this representation.  A definition
+        without an explicit composition has no structure key (``None``),
+        rather than being conflated with an explicitly empty structure ``()``.
+        """
+        if self.structure_text_override is not None:
+            return self.structure_text_override
+        if self.source_ast is not None and self.source_ast.structure is None and not self.components:
+            return None
+        if self.source_ast is not None and self.source_ast.structure is not None and not self.components:
+            return "()"
+        if not self.components:
+            return None
+        return _components_structure_text(self.components)
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
@@ -168,6 +201,9 @@ class SemanticHyperatom:
             "matter_level": self.matter_level,
             "syntax_depth": self.syntax_depth,
             "components": [component.to_dict() for component in self.components],
+            "canonical_structure": self.canonical_structure,
+            "atomic_level": self.atomic_level,
+            "atomic_level_source": self.atomic_level_source,
             "mass_sum": self.mass_sum,
             "mass_balance": self.mass_balance,
         }
@@ -188,12 +224,18 @@ class HyperatomRegistry:
     by_symbol: dict[str, tuple[SemanticHyperatom, ...]] = field(init=False, repr=False)
     by_mass: dict[int, tuple[SemanticHyperatom, ...]] = field(init=False, repr=False)
     by_symbol_mass: dict[tuple[str, int], tuple[SemanticHyperatom, ...]] = field(init=False, repr=False)
+    by_structure: dict[str, tuple[SemanticHyperatom, ...]] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self._reindex()
+
+    def _reindex(self) -> None:
+        """Rebuild all indexes after adding runtime-generated definitions."""
         self.by_id = {obj.id: obj for obj in self.definitions}
         by_symbol: dict[str, list[SemanticHyperatom]] = defaultdict(list)
         by_mass: dict[int, list[SemanticHyperatom]] = defaultdict(list)
         by_symbol_mass: dict[tuple[str, int], list[SemanticHyperatom]] = defaultdict(list)
+        by_structure: dict[str, list[SemanticHyperatom]] = defaultdict(list)
         for obj in self.definitions:
             if obj.symbol:
                 by_symbol[obj.symbol].append(obj)
@@ -201,9 +243,19 @@ class HyperatomRegistry:
                     by_symbol_mass[(obj.symbol, obj.atomic_mass)].append(obj)
             if obj.atomic_mass is not None:
                 by_mass[obj.atomic_mass].append(obj)
+            if obj.canonical_structure is not None:
+                by_structure[obj.canonical_structure].append(obj)
         self.by_symbol = {key: tuple(value) for key, value in by_symbol.items()}
         self.by_mass = {key: tuple(value) for key, value in by_mass.items()}
         self.by_symbol_mass = {key: tuple(value) for key, value in by_symbol_mass.items()}
+        self.by_structure = {key: tuple(value) for key, value in by_structure.items()}
+
+    def add_definition(self, definition: SemanticHyperatom) -> None:
+        """Add a generated hyperatom and keep the registry indexes coherent."""
+        if definition.id in self.by_id:
+            raise ValueError(f"Duplicate semantic hyperatom id {definition.id!r}")
+        self.definitions = (*self.definitions, definition)
+        self._reindex()
 
     def get(self, object_id: str) -> SemanticHyperatom | None:
         return self.by_id.get(object_id)
@@ -229,6 +281,9 @@ class HyperatomRegistry:
             "definitions_by_kind": dict(sorted(kind_counts.items())),
             "definitions_by_matter_level": dict(sorted(Counter(str(obj.matter_level) for obj in self.definitions).items())),
             "max_syntax_depth": max((obj.syntax_depth for obj in self.definitions), default=0),
+            "definitions_by_atomic_level": dict(sorted(Counter(
+                str(obj.atomic_level) for obj in self.definitions if obj.atomic_level is not None
+            ).items())),
             "component_references_by_resolution": dict(sorted(mass_counts.items())),
             "mass_balance": dict(sorted(balances.items())),
             "diagnostics_by_code": dict(sorted(Counter(d.code for d in self.diagnostics).items())),
@@ -371,6 +426,7 @@ class HyperatomTranslator:
         )
         self._resolve_references(registry)
         self._check_mass_balance(registry)
+        _infer_atomic_levels(registry)
         return registry
 
     def _resolve_references(self, registry: HyperatomRegistry) -> None:
@@ -394,11 +450,17 @@ class HyperatomTranslator:
         if component.reference_kind in {"mass", "group"} and component.mass is not None:
             candidates = registry.by_mass.get(component.mass, ())
             if component.children:
-                candidates = tuple(
+                expected_structure = _components_structure_text(component.children)
+                # Fast exact match against canonical structure text. Fall back
+                # to recursive partial-pattern matching because omitted
+                # descendants intentionally act as wildcards in ÆToE.
+                exact = tuple(obj for obj in candidates if obj.canonical_structure == expected_structure)
+                partial = tuple(
                     obj for obj in candidates
                     if obj.source_ast is not None and obj.source_ast.structure is not None
                     and _pattern_matches_structure(component.children, obj.source_ast.structure)
                 )
+                candidates = tuple({obj.id: obj for obj in (*exact, *partial)}.values())
         elif component.reference_kind == "symbol" and component.symbol:
             candidates = tuple(
                 obj for obj in registry.by_symbol.get(component.symbol, ())
@@ -407,10 +469,13 @@ class HyperatomTranslator:
             if component.subsort is not None:
                 candidates = tuple(obj for obj in candidates if obj.subsort == component.subsort)
             if component.children:
-                candidates = tuple(
+                expected_structure = _components_structure_text(component.children)
+                exact = tuple(obj for obj in candidates if obj.canonical_structure == expected_structure)
+                partial = tuple(
                     obj for obj in candidates if obj.source_ast is not None and obj.source_ast.structure is not None
                     and _pattern_matches_structure(component.children, obj.source_ast.structure)
                 )
+                candidates = tuple({obj.id: obj for obj in (*exact, *partial)}.values())
             if not candidates and not component.children:
                 candidates = tuple(
                     obj for obj in registry.by_symbol.get(component.symbol, ())
@@ -420,10 +485,13 @@ class HyperatomTranslator:
         elif component.reference_kind == "explicit_object" and component.symbol and component.mass is not None:
             candidates = registry.by_symbol_mass.get((component.symbol, component.mass), ())
             if component.children:
-                candidates = tuple(
+                expected_structure = _components_structure_text(component.children)
+                exact = tuple(obj for obj in candidates if obj.canonical_structure == expected_structure)
+                partial = tuple(
                     obj for obj in candidates if obj.source_ast is not None and obj.source_ast.structure is not None
                     and _pattern_matches_structure(component.children, obj.source_ast.structure)
                 )
+                candidates = tuple({obj.id: obj for obj in (*exact, *partial)}.values())
         # Built-in primitives are retained as syntax but are not mapped to a fabricated atom.
         component.candidate_ids = tuple(sorted(obj.id for obj in candidates))
         if not candidates:
@@ -554,6 +622,54 @@ def _kind_for(node: ChemicalNotation, folder_symbol: str | None = None) -> str:
     return MOLECULE_KIND if node.kind == "molecule" else OTHER_KIND
 
 
+def _component_text(component: SemanticComponent) -> str:
+    """Serialize a component as a normalized, structure-oriented text token."""
+    nested = _components_structure_text(component.children) if component.children else None
+    if component.reference_kind == "group":
+        return nested or "()"
+    if component.reference_kind == "mass":
+        mass_text = str(component.mass) if component.mass is not None else component.canonical
+        return f"{mass_text}-{nested}" if nested else mass_text
+    if component.reference_kind == "explicit_object":
+        # A mass-qualified object is structurally comparable across element
+        # symbols. The symbol is kept in the lossless source field instead.
+        base = str(component.mass) if component.mass is not None else (component.symbol or component.canonical)
+        if component.mass is None and component.subsort is not None:
+            base += f":{component.subsort}"
+        return f"{base}-{nested}" if nested else base
+    if component.reference_kind == "symbol":
+        base = component.symbol or component.canonical
+        if component.subsort is not None:
+            base += f":{component.subsort}"
+        return f"{base}-{nested}" if nested else base
+    if component.reference_kind == "primitive":
+        base = str(component.mass) if component.mass is not None else component.canonical
+        return f"{base}-{nested}" if nested else base
+    return f"{component.canonical}-{nested}" if nested else component.canonical
+
+
+def _components_structure_text(components: Sequence[SemanticComponent]) -> str:
+    """Textual structural key with canonical sibling order and multiplicity."""
+    if not components:
+        return "()"
+    pieces: list[str] = []
+    for index, component in enumerate(components):
+        if index:
+            pieces.append(component.separator or "'")
+        pieces.append(_component_text(component))
+    return "(" + "".join(pieces) + ")"
+
+
+def _component_mass_sort_key(component: SemanticComponent) -> tuple[Any, ...]:
+    mass = component.mass
+    return (
+        mass is None,
+        -(mass or 0),
+        component.canonical_structure,
+        component.canonical,
+    )
+
+
 def _components_from_structure(structure: Structure | None) -> tuple[SemanticComponent, ...]:
     if structure is None:
         return ()
@@ -561,6 +677,15 @@ def _components_from_structure(structure: Structure | None) -> tuple[SemanticCom
     for index, notation in enumerate(structure.objects):
         separator = structure.separators[index - 1] if index > 0 and index - 1 < len(structure.separators) else None
         components.append(_component_from_notation(notation, index, separator))
+
+    # Apostrophe-joined siblings are an unordered multiset in ÆToE. Canonical
+    # storage sorts those siblings by descending known mass, while leaving
+    # mixed/other separators order-sensitive until their semantics are defined.
+    if len(components) <= 1 or all(separator == "'" for separator in structure.separators):
+        components.sort(key=_component_mass_sort_key)
+        for index, component in enumerate(components):
+            component.index = index
+            component.separator = None if index == 0 else "'"
     return tuple(components)
 
 
@@ -724,6 +849,82 @@ def _resolution_diagnostic(definition: SemanticHyperatom, component: SemanticCom
         message = f"Component '{component.canonical}' in {definition.canonical} has no matching definition."
         code = "unresolved-component-reference"
     return TranslationDiagnostic(code, message, definition.source_path, definition.statement_index)
+
+
+def _component_atomic_level(component: SemanticComponent, registry: HyperatomRegistry) -> int | None:
+    """Infer a component's atom level from explicit structure or resolved nodes."""
+    options = _component_atomic_level_options(component, registry)
+    return next(iter(options)) if options is not None and len(options) == 1 else None
+
+
+def _component_atomic_level_options(
+    component: SemanticComponent,
+    registry: HyperatomRegistry,
+) -> set[int] | None:
+    """Return possible levels without collapsing known ambiguity prematurely."""
+    candidates = [registry.by_id[candidate_id] for candidate_id in component.candidate_ids
+                  if candidate_id in registry.by_id]
+    if candidates and len(candidates) == len(component.candidate_ids):
+        levels = [candidate.atomic_level for candidate in candidates]
+        if all(level is not None for level in levels):
+            return {level for level in levels if level is not None}
+    if component.children:
+        child_options = [_component_atomic_level_options(child, registry) for child in component.children]
+        if child_options and all(options is not None for options in child_options):
+            maxima = _composition_max_level_options([options for options in child_options if options is not None])
+            return {level + 1 for level in maxima}
+    if component.mass == 1:
+        # Mass-1 atoms are the base objects in the primary atom hierarchy.
+        return {1}
+    return None
+
+
+def _composition_max_level_options(level_options: Sequence[set[int]]) -> set[int]:
+    """Possible values of max(child levels), without Cartesian-product growth."""
+    if not level_options:
+        return set()
+    candidates = set().union(*level_options)
+    return {
+        level for level in candidates
+        if all(min(options) <= level for options in level_options)
+        and any(level in options for options in level_options)
+    }
+
+
+def _infer_atomic_levels(registry: HyperatomRegistry) -> None:
+    """Infer atom levels using the seed's L(comp)=1+max(L(subatom)) rule.
+
+    Only levels entailed by the available composition are assigned.  A
+    mass-only component that has no definition does not magically acquire a
+    structural level here; the opt-in runtime patcher records its fallback
+    inference separately.
+    """
+    for definition in registry.definitions:
+        if definition.kind == HYPERATOM_KIND and definition.atomic_mass == 1 and not definition.components:
+            definition.atomic_level = 1
+            definition.atomic_level_source = "protium_base"
+
+    # Since definitions are not guaranteed to be listed by level or mass,
+    # iterate to a fixed point. In ordinary cases this converges in a handful
+    # of passes, while the bound also protects against malformed cycles.
+    for _ in range(len(registry.definitions) + 1):
+        changed = False
+        for definition in registry.definitions:
+            if definition.atomic_level is not None or not definition.components:
+                continue
+            component_options = [
+                _component_atomic_level_options(component, registry) for component in definition.components
+            ]
+            if component_options and all(options is not None for options in component_options):
+                possible_maxima = _composition_max_level_options(
+                    [options for options in component_options if options is not None]
+                )
+                if len(possible_maxima) == 1:
+                    definition.atomic_level = next(iter(possible_maxima)) + 1
+                    definition.atomic_level_source = "structure"
+                    changed = True
+        if not changed:
+            break
 
 
 def translate_hyperatoms(

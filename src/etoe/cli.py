@@ -28,12 +28,22 @@ def build_parser() -> argparse.ArgumentParser:
     translate.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
     translate.add_argument("--output", type=Path, default=Path("build/hyperatoms.semantic.json"))
 
+    hyper_map = hyper_sub.add_parser("map", help="Build a canonical text-indexed hyperatom map as JSON")
+    hyper_map.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
+    hyper_map.add_argument("--output", type=Path, default=Path("build/hyperatoms.map.json"))
+    hyper_map.add_argument("--auto-patch-missing", action="store_true", help="Add runtime X<n> placeholders for missing mass-bearing subatoms")
+
     graph = hyper_sub.add_parser("graph", help="Generate Graphviz DOT or render SVG/PNG/PDF")
     graph.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
     graph.add_argument("--output", type=Path, default=Path("build/hyperatoms.svg"))
     graph.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
     graph.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
     graph.add_argument("--include-templates", action="store_true", help="Include massless element/template statements")
+    graph.add_argument(
+        "--auto-patch-missing",
+        action="store_true",
+        help="Add runtime X<n> auxiliary hyperatoms for unresolved mass-bearing subatoms",
+    )
     graph.add_argument("--symbols", default="", help="Optional comma-separated root element symbols, e.g. Fe,Co,Ni")
     graph.add_argument("--title", default="ÆToE semantic hyperatom graph")
     graph.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
@@ -72,10 +82,31 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Wrote {len(registry.definitions)} semantic definition(s) to {args.output}")
             print(json.dumps(stats, ensure_ascii=False, indent=2))
             return 0
+        if args.hyperatoms_command == "map":
+            from .hyperatom_map import build_canonical_hyperatom_map
+
+            canonical_map = build_canonical_hyperatom_map(
+                registry,
+                auto_patch_missing=args.auto_patch_missing,
+            )
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(
+                json.dumps(canonical_map.to_dict(), ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            print(f"Wrote canonical hyperatom map with {len(canonical_map.nodes)} node(s) to {args.output}")
+            print(json.dumps(canonical_map.statistics(), ensure_ascii=False, indent=2))
+            return 0
         if args.hyperatoms_command == "graph":
             from .hyperatom_graphviz import write_hyperatom_graph
+            from .hyperatom_map import build_canonical_hyperatom_map
 
             symbols = [value.strip() for value in args.symbols.split(",") if value.strip()] or None
+            source_definition_count = len(registry.definitions)
+            canonical_map = build_canonical_hyperatom_map(
+                registry,
+                auto_patch_missing=args.auto_patch_missing,
+            )
             output = write_hyperatom_graph(
                 registry,
                 args.output,
@@ -88,6 +119,10 @@ def main(argv: list[str] | None = None) -> int:
                 language=args.language,
             )
             print(f"Wrote Graphviz graph to {output}")
-            print(f"Registry source: {len(registry.definitions)} semantic definitions from {registry.source_file_count} files")
+            print(
+                f"Registry source: {source_definition_count} semantic definitions from {registry.source_file_count} files; "
+                f"runtime additions: {len(registry.definitions) - source_definition_count}"
+            )
+            print(json.dumps(canonical_map.statistics(), ensure_ascii=False, indent=2))
             return 0
     return 2

@@ -1,7 +1,8 @@
 # EToE Seed Documents
 
 These documents contain the foundational concepts of the Ether Theory of Everything
-and serve as the initial prompt for AI collaborators. The supplied source files identify version 0.1.60 dated 2026-10-19; their `updated` field contains an invalid date and is noted in `docs/traceability.md`.
+and serve as the initial prompt for AI collaborators. The Russian source file identifies
+version 0.1.62 dated 2026-10-21. See `docs/traceability.md` for version/provenance notes.
 
 ## Available Languages
 
@@ -18,4 +19,5 @@ to understand the core postulates and assumptions of this project.
 ## Version History
 
 - v0.1.0 (2026-06-01): Initial seed
-- v0.1.60 (2026-10-19): Seed version supplied with this project snapshot
+- v0.1.60 (2026-10-19): Previous seed revision
+- v0.1.62 (2026-10-21): Seed revision supplied with this project snapshot
