@@ -2,12 +2,15 @@
 
 ## 0.1.63 canonical hyperatom map and runtime patching
 
+- Resolve primary references by atomic mass and explicitly non-primary structural references by `canonical_structure`; remove the redundant `candidate_scope` map and CLI option.
+- Classify primary definitions according to the seed's exact canonical-configuration rule; add `by_mass`, `by_primary_mass`, and `find_by_mass(int | str, primary_only=...)`.
+- Preserve explicit runtime-placeholder links and report placeholders consistently when rebuilding a map from the same registry.
 - Canonically sort apostrophe-joined sibling subatoms by descending mass, recursively; preserve source `.etoe` notation unchanged.
 - Add canonical structure text keys and a structure index for comparing structurally equivalent hyperatoms across element symbols.
 - Infer atomic levels from resolved structures using the seed's hierarchical level rule, separate from matter level `E5`.
 - Add `etoe.hyperatom_map` / `build_canonical_hyperatom_map()` and JSON CLI export via `etoe hyperatoms map`.
 - Add optional automatic patching of unresolved mass-bearing subatoms as runtime auxiliary elements `X<n>`; ambiguous references remain ambiguous, and runtime records do not write files to disk.
-- Add tests for recursive mass sorting, structural indexing, runtime catalog records, automatic patching, and ambiguity preservation.
+- Add tests for recursive mass sorting, hybrid primary/non-primary linking, structural indexing, runtime catalog records, automatic patching, and ambiguity preservation.
 
 ## 0.1.60 semantic hyperatom translation and graphing
 

@@ -76,12 +76,17 @@ def test_auto_patch_adds_missing_mass_hyperatoms_and_links_components(tmp_path):
     assert registry.element_catalog["X4"].metadata["runtime"] is True
     assert all(edge.auto_patched for edge in canonical_map.edges if edge.source_id == parent.id)
     assert canonical_map.statistics()["patched_hyperatoms"] == 2
+    # Rebuilding a map from the same in-memory registry preserves explicit
+    # runtime-patch links and reports the already-created placeholders.
+    second_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)
+    assert second_map.statistics()["patched_hyperatoms"] == 2
+    assert all(edge.auto_patched for edge in second_map.edges if edge.source_id == parent.id)
     assert not (tmp_path / "X4").exists()
 
 
-def test_auto_patch_does_not_replace_ambiguous_candidates(tmp_path):
-    _write_element(tmp_path, "Qq", "Qq-20-(8'12);")
-    _write_element(tmp_path, "Rr", "Rr-8-(4'4);")
+def test_auto_patch_does_not_replace_ambiguous_nonprimary_structural_candidates(tmp_path):
+    _write_element(tmp_path, "Qq", "Qq-20-(8-(5'3)'12);")
+    _write_element(tmp_path, "Rr", "Rr-8-(5'3);")
     _write_element(tmp_path, "Ss", "Ss-8-(5'3);")
     registry = HyperatomTranslator().translate_directory(tmp_path)
     parent = next(item for item in registry.definitions if item.symbol == "Qq")
@@ -105,6 +110,10 @@ def test_seed_atomic_level_rule_and_nested_patch_level_are_applied():
     assert by_canonical["T-3-(2'1)"].atomic_level == 3
     assert by_canonical["He-4-(2'2)"].atomic_level == 3
     assert by_canonical["He-5-(4'1)"].atomic_level == 4
+    assert by_canonical["O-16-(8'8)"].atomic_level == 5
+    assert by_canonical["S-32-(16'16)"].atomic_level == 6
+    assert by_canonical["Zn-64-(32'32)"].atomic_level == 7 
+    assert by_canonical["Te-128-(64'64)"].atomic_level == 8
 
     canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)
     runtime = {item.canonical: item for item in registry.definitions if item.source_path.startswith("<runtime:")}
@@ -117,3 +126,81 @@ def test_seed_atomic_level_rule_and_nested_patch_level_are_applied():
     }
     assert all(item.atomic_level == 9 and item.atomic_level_source == "nested_structure" for item in runtime.values())
     assert canonical_map.statistics()["patched_hyperatoms"] == 3
+
+
+
+def test_primary_links_use_mass_and_nonprimary_links_use_canonical_structure(tmp_path):
+    _write_element(tmp_path, "H", "H-1-1;")
+    _write_element(tmp_path, "D", "D-2-(1'1);")
+    _write_element(tmp_path, "He", "He-4-(2'2);")
+    _write_element(tmp_path, "Be", "Be-8-(4'4);")
+    _write_element(tmp_path, "C", "C-12-(8'4);")
+    _write_element(tmp_path, "Xx", "Xx-12-(6'6);")
+    _write_element(tmp_path, "Qq", "Qq-24-(12'12-(6'6));")
+    _write_element(tmp_path, "Pp", "Pp-24-(12-(8'4)'12-(6'6));")
+
+    registry = HyperatomTranslator().translate_directory(tmp_path)
+    canonical_map = build_canonical_hyperatom_map(registry)
+    q = next(item for item in registry.definitions if item.canonical.startswith("Qq-24-"))
+    bare_mass = next(component for component in q.components if component.canonical == "12")
+    structured_mass = next(component for component in q.components if "12-(6'6)" in component.canonical)
+
+    # Mass-only links denote the primary hyperatom for mass 12.
+    assert bare_mass.resolution == "unique"
+    assert [registry.by_id[item].canonical for item in bare_mass.candidate_ids] == ["C-12-(8'4)"]
+    # An explicit non-primary structure denotes the non-primary definition
+    # with that canonical_structure, even when its mass also has a primary.
+    assert structured_mass.resolution == "unique"
+    assert [registry.by_id[item].canonical for item in structured_mass.candidate_ids] == ["Xx-12-(6'6)"]
+
+    # Explicitly structured references to the primary configuration still link
+    # to the primary by mass, while the non-primary structure uses its own key.
+    pp = next(item for item in registry.definitions if item.canonical.startswith("Pp-24-"))
+    pp_primary = next(component for component in pp.components if "12-(8'4)" in component.canonical)
+    pp_non_primary = next(component for component in pp.components if "12-(6'6)" in component.canonical)
+    assert [registry.by_id[item].canonical for item in pp_primary.candidate_ids] == ["C-12-(8'4)"]
+    assert [registry.by_id[item].canonical for item in pp_non_primary.candidate_ids] == ["Xx-12-(6'6)"]
+
+    carbon = next(item for item in registry.definitions if item.canonical == "C-12-(8'4)")
+    assert [registry.by_id[item].canonical for item in carbon.components[0].candidate_ids] == ["Be-8-(4'4)"]
+    assert [registry.by_id[item].canonical for item in carbon.components[1].candidate_ids] == ["He-4-(2'2)"]
+    assert [item.canonical for item in canonical_map.find_by_mass("12")] == ["C-12-(8'4)"]
+    assert {item.canonical for item in canonical_map.find_by_mass(12, primary_only=False)} == {
+        "C-12-(8'4)", "Xx-12-(6'6)"
+    }
+    assert "candidate_scope" not in canonical_map.statistics()
+    assert "candidate_scope" not in canonical_map.to_dict()["canonicalization"]
+
+
+def test_primary_index_identifies_primary_by_canonical_configuration():
+    registry = HyperatomTranslator().translate_directory(DATA_ROOT)
+    canonical_map = build_canonical_hyperatom_map(registry)
+
+    carbon = next(item for item in registry.definitions if item.canonical == "C-12-(8'4)")
+    beryllium = next(item for item in registry.definitions if item.canonical == "Be-8-(4'4)")
+    helium = next(item for item in registry.definitions if item.canonical == "He-4-(2'2)")
+    assert carbon.id in canonical_map.by_primary_mass[12]
+    assert beryllium.id in canonical_map.by_primary_mass[8]
+    assert helium.id in canonical_map.by_primary_mass[4]
+    assert [item.canonical for item in canonical_map.find_by_mass("12")] == ["C-12-(8'4)"]
+
+
+def test_primary_classification_requires_primary_canonical_configuration(tmp_path):
+    _write_element(tmp_path, "H", "H-1-1;")
+    _write_element(tmp_path, "D", "D-2-(1'1);")
+    _write_element(tmp_path, "He", "He-4-(2'2);")
+    _write_element(tmp_path, "Be", "Be-8-(4'4);")
+    _write_element(tmp_path, "C", "C-12-(8'4);")
+    # The direct masses are 8 and 4, but the expanded child structure means
+    # this is not the canonical primary configuration for mass 12.
+    _write_element(tmp_path, "Yy", "Yy-12-(8-(4'4)'4);")
+
+    registry = HyperatomTranslator().translate_directory(tmp_path)
+    canonical_map = build_canonical_hyperatom_map(registry)
+
+    assert [item.canonical for item in canonical_map.find_by_mass(12)] == ["C-12-(8'4)"]
+    assert {item.canonical for item in canonical_map.find_by_mass(12, primary_only=False)} == {
+        "C-12-(8'4)", "Yy-12-(8-(4'4)'4)"
+    }
+    yy = next(item for item in registry.definitions if item.canonical == "Yy-12-(8-(4'4)'4)")
+    assert [registry.by_id[item].canonical for item in yy.components[0].candidate_ids] == ["Be-8-(4'4)"]
