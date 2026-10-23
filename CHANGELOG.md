@@ -9,7 +9,8 @@
 - Add canonical structure text keys and a structure index for comparing structurally equivalent hyperatoms across element symbols.
 - Infer atomic levels from resolved structures using the seed's hierarchical level rule, separate from matter level `E5`.
 - Add `etoe.hyperatom_map` / `build_canonical_hyperatom_map()` and JSON CLI export via `etoe hyperatoms map`.
-- Add optional automatic patching of unresolved mass-bearing subatoms as runtime auxiliary elements `X<n>`; ambiguous references remain ambiguous, and runtime records do not write files to disk.
+- Add recursive auto-patching for unresolved primary mass references: synthesize the exact primary configuration and its missing child masses recursively down to mass one (for example, `11` becomes `X5-11-(8'3)`); preserve explicitly non-primary structures and leave ambiguous references untouched.
+- Reuse already-defined primary candidates during recursive auto-patching, link generated primary nodes to their children immediately, and keep all runtime auxiliary records in memory only.
 - Add tests for recursive mass sorting, hybrid primary/non-primary linking, structural indexing, runtime catalog records, automatic patching, and ambiguity preservation.
 
 ## 0.1.60 semantic hyperatom translation and graphing

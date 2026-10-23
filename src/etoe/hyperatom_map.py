@@ -260,11 +260,14 @@ def _is_primary_hyperatom(definition: SemanticHyperatom) -> bool:
     structural comparison classifies nodes; the unified resolver uses mass
     lookups for primary references and canonical structures for non-primary ones.
     """
+    if definition.kind != HYPERATOM_KIND or definition.atomic_mass is None:
+        return False
     if (
-        definition.kind != HYPERATOM_KIND
-        or definition.atomic_mass is None
-        or definition.source_path.startswith("<runtime:")
+        definition.source_path.startswith("<runtime:")
+        and definition.atomic_level_source not in {"primary_sequence", "protium_base"}
     ):
+        # Runtime placeholders for explicitly non-primary structures must not
+        # become primary merely because their mass matches a primary mass.
         return False
     mass = definition.atomic_mass
     if mass == 1:
@@ -414,14 +417,21 @@ def _set_component_candidates(
 
 
 def _patch_missing_components(registry: HyperatomRegistry) -> list[str]:
-    """Create/reuse X<n> definitions for unresolved concrete subatoms."""
+    """Recursively materialize missing primary masses and patch other structures.
+
+    A missing mass-only reference denotes a primary hyperatom.  It is therefore
+    synthesized with the exact primary-sequence structure (for example,
+    ``11 -> 11-(8'3)``), and each child mass is resolved or synthesized
+    recursively down to mass one.  Explicit non-primary structures retain their
+    written structure and use the previous runtime-placeholder path.
+    """
     catalog = registry.element_catalog
     if catalog is None:
         catalog = ElementCatalog(registry.root)
         registry.element_catalog = catalog
 
-    # Work in reverse nesting order so the structure of an enclosing synthetic
-    # node already carries any runtime target IDs needed by its children.
+    # Work in reverse nesting order so explicitly nested non-primary nodes can
+    # reuse any runtime links already resolved for their child components.
     all_components: list[tuple[SemanticHyperatom, SemanticComponent, tuple[SemanticComponent, ...]]] = []
     for definition in registry.definitions:
         for component in _walk_component_context(definition.components):
@@ -429,11 +439,139 @@ def _patch_missing_components(registry: HyperatomRegistry) -> list[str]:
     all_components.sort(key=lambda entry: _component_depth(entry[1]), reverse=True)
 
     deduplicated: dict[tuple[int, int, str | None], SemanticHyperatom] = {}
+    primary_cache: dict[int, tuple[SemanticHyperatom, ...]] = {}
+    creating: set[int] = set()
     patched_ids: list[str] = []
     diagnostics = list(registry.diagnostics)
+
+    def primary_candidates(mass: int) -> tuple[SemanticHyperatom, ...]:
+        cached = primary_cache.get(mass)
+        if cached is not None:
+            return cached
+        values = tuple(sorted(
+            (item for item in registry.definitions
+             if item.atomic_mass == mass and _is_primary_hyperatom(item)),
+            key=_node_sort_key,
+        ))
+        primary_cache[mass] = values
+        return values
+
+    def assign_candidates(component: SemanticComponent, candidates: Iterable[SemanticHyperatom]) -> None:
+        values = tuple(candidates)
+        component.candidate_ids = tuple(sorted(item.id for item in values))
+        if not values:
+            component.resolution = "unresolved"
+        elif len(values) > 1:
+            component.resolution = "ambiguous"
+        elif values[0].source_path.startswith("<runtime:"):
+            component.resolution = "patched"
+        else:
+            component.resolution = "unique"
+
+    def ensure_primary(mass: int) -> tuple[tuple[SemanticHyperatom, ...], bool]:
+        """Return primary candidates for mass, creating the canonical chain if absent."""
+        existing = primary_candidates(mass)
+        if existing:
+            return existing, False
+        if mass in creating:
+            # Primary masses strictly decrease during decomposition, but retain
+            # an explicit guard in case the sequence rule changes later.
+            return (), False
+
+        creating.add(mass)
+        try:
+            config = primary_configuration(mass)
+            children: tuple[SemanticComponent, ...] = ()
+            if mass > 1:
+                child_masses = [child.mass for child in config.children]  # type: ignore[union-attr]
+                child_components: list[SemanticComponent] = []
+                for index, child_mass in enumerate(child_masses):
+                    child_candidates, _ = ensure_primary(child_mass)
+                    child = SemanticComponent(
+                        index=index,
+                        separator=None if index == 0 else "'",
+                        canonical=str(child_mass),
+                        reference_kind="mass",
+                        mass=child_mass,
+                        mass_origin="primary_sequence",
+                    )
+                    assign_candidates(child, child_candidates)
+                    child_components.append(child)
+                children = tuple(child_components)
+                structure_key = _components_structure_text(children)
+                atomic_level = config.atomic_level
+                level_source = "primary_sequence"
+                mass_sum = sum(child_masses)
+                mass_balance = "consistent" if mass_sum == mass else "mismatch"
+            else:
+                structure_key = None
+                atomic_level = 1
+                level_source = "protium_base"
+                mass_sum = None
+                mass_balance = "not_applicable"
+
+            symbol = f"X{atomic_level}"
+            catalog.register_runtime_auxiliary(
+                symbol,
+                atomic_level=atomic_level,
+                description=(f"Runtime-only primary hyperatom for atomic mass {mass} "
+                             f"at atomic level {atomic_level}."),
+            )
+            canonical = f"{symbol}-{mass}"
+            if structure_key is not None:
+                canonical += f"-{structure_key}"
+            digest = sha256(f"primary\0{mass}\0{structure_key or ''}".encode("utf-8")).hexdigest()[:16]
+            synthetic = SemanticHyperatom(
+                id=f"runtime_ha_primary_{digest}",
+                kind=HYPERATOM_KIND,
+                canonical=canonical,
+                source_path=f"<runtime:{symbol}>",
+                statement_index=-1,
+                symbol=symbol,
+                atomic_mass=mass,
+                primary_mass=None,
+                source_comments=(),
+                matter_level=5,
+                syntax_depth=1,
+                components=children,
+                mass_sum=mass_sum,
+                mass_balance=mass_balance,
+                atomic_level=atomic_level,
+                atomic_level_source=level_source,
+                structure_text_override=structure_key,
+                source_ast=None,
+            )
+            registry.add_definition(synthetic)
+            patched_ids.append(synthetic.id)
+            primary_cache[mass] = (synthetic,)
+            diagnostics.append(TranslationDiagnostic(
+                code="auto-patched-primary-sequence",
+                message=(f"Missing primary hyperatom of mass {mass} was recursively synthesized as "
+                         f"{canonical!r} using the primary sequence."),
+                source_path=synthetic.source_path,
+                statement_index=-1,
+                severity="info",
+            ))
+            return (synthetic,), True
+        finally:
+            creating.discard(mass)
+
     for parent, component, siblings in all_components:
         if component.candidate_ids or component.mass is None or component.reference_kind == "primitive":
             continue
+
+        if _component_requests_primary_by_mass(component):
+            candidates, created = ensure_primary(component.mass)
+            assign_candidates(component, candidates)
+            # A link to a newly synthesized primary node is explicitly marked
+            # as patched; recursive generated nodes mark their own runtime links
+            # in the same way.
+            if created and len(candidates) == 1:
+                component.resolution = "patched"
+            continue
+
+        # Non-primary references preserve their explicit configuration. Their
+        # children were visited first due to reverse nesting order.
         level, level_source = _infer_missing_level(component, parent, siblings, registry)
         symbol = f"X{level}"
         catalog.register_runtime_auxiliary(

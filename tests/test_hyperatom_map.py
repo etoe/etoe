@@ -65,23 +65,49 @@ def test_auto_patch_adds_missing_mass_hyperatoms_and_links_components(tmp_path):
 
     canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)
 
-    assert len(registry.definitions) == original_count + 2
+    # Both top-level missing masses are patched to fully structured primary
+    # hyperatoms, not mass-only placeholders. Their missing children are
+    # recursively synthesized down to the mass-one base object.
+    expected_runtime = {
+        "X1-1",
+        "X2-2-(1'1)",
+        "X3-3-(2'1)",
+        "X3-4-(2'2)",
+        "X4-8-(4'4)",
+        "X5-9-(8'1)",
+        "X5-11-(8'3)",
+    }
+    runtime = {item.canonical: item for item in registry.definitions if item.source_path.startswith("<runtime:")}
+    assert set(runtime) == expected_runtime
+    assert len(registry.definitions) == original_count + len(expected_runtime)
     assert all(component.resolution == "patched" for component in parent.components)
     patched = [registry.by_id[component.candidate_ids[0]] for component in parent.components]
-    assert {item.symbol for item in patched} == {"X4"}
-    assert {item.atomic_mass for item in patched} == {9, 11}
-    assert all(item.source_path.startswith("<runtime:X4>") for item in patched)
-    assert all(item.atomic_level == 4 for item in patched)
+    assert {item.canonical for item in patched} == {"X5-9-(8'1)", "X5-11-(8'3)"}
+    assert all(item.atomic_level == 5 for item in patched)
     assert registry.element_catalog is not None
-    assert registry.element_catalog["X4"].metadata["runtime"] is True
+    assert registry.element_catalog["X5"].metadata["runtime"] is True
     assert all(edge.auto_patched for edge in canonical_map.edges if edge.source_id == parent.id)
-    assert canonical_map.statistics()["patched_hyperatoms"] == 2
-    # Rebuilding a map from the same in-memory registry preserves explicit
-    # runtime-patch links and reports the already-created placeholders.
+    assert canonical_map.statistics()["patched_hyperatoms"] == 7
+
+    # The recursively synthesized primary links themselves are fully resolved.
+    mass11 = runtime["X5-11-(8'3)"]
+    assert [registry.by_id[component.candidate_ids[0]].canonical for component in mass11.components] == [
+        "X4-8-(4'4)", "X3-3-(2'1)"
+    ]
+    mass8 = runtime["X4-8-(4'4)"]
+    assert all(registry.by_id[component.candidate_ids[0]].canonical == "X3-4-(2'2)" for component in mass8.components)
+    mass4 = runtime["X3-4-(2'2)"]
+    assert all(registry.by_id[component.candidate_ids[0]].canonical == "X2-2-(1'1)" for component in mass4.components)
+    assert all(registry.by_id[component.candidate_ids[0]].canonical == "X1-1" for component in runtime["X2-2-(1'1)"].components)
+    assert {item.canonical for item in canonical_map.find_by_mass(11)} == {"X5-11-(8'3)"}
+
+    # Rebuilding a map from the same in-memory registry preserves recursive
+    # runtime-patch links and does not create duplicates.
     second_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)
-    assert second_map.statistics()["patched_hyperatoms"] == 2
+    assert second_map.statistics()["patched_hyperatoms"] == 7
+    assert len(registry.definitions) == original_count + 7
     assert all(edge.auto_patched for edge in second_map.edges if edge.source_id == parent.id)
-    assert not (tmp_path / "X4").exists()
+    assert not (tmp_path / "X5").exists()
 
 
 def test_auto_patch_does_not_replace_ambiguous_nonprimary_structural_candidates(tmp_path):
@@ -99,7 +125,21 @@ def test_auto_patch_does_not_replace_ambiguous_nonprimary_structural_candidates(
     assert mass8.resolution == "ambiguous"
     assert len(mass8.candidate_ids) == 2
     assert len(registry.definitions) >= before
-    assert not any(item.symbol == "X4" and item.atomic_mass == 8 for item in registry.definitions)
+    # The non-primary (5'3) structure remains ambiguous and untouched. A
+    # primary mass-8 node may still be synthesized as a prerequisite of the
+    # unrelated mass-only primary reference 12.
+    assert not any(
+        item.source_path.startswith("<runtime:")
+        and item.atomic_mass == 8
+        and item.canonical_structure == "(5'3)"
+        for item in registry.definitions
+    )
+    assert any(
+        item.source_path.startswith("<runtime:")
+        and item.atomic_mass == 8
+        and item.canonical_structure == "(4'4)"
+        for item in registry.definitions
+    )
 
 
 def test_seed_atomic_level_rule_and_nested_patch_level_are_applied():
