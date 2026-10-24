@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`EToE.md` (language: ru; version: 0.1.62; date: 2026-10-21) is the seed document used as the design basis for this package snapshot.
+`EToE.md` (language: ru; version: 0.1.65; date: 2026-10-23) is the seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -145,3 +145,37 @@ Generating `.dot` source is pure Python. Rendering SVG/PNG/PDF requires the
 Graphviz system executable (`dot`, `neato`, `fdp`, `sfdp`, `circo` or `twopi`).
 See [the translator design and legacy-code audit](docs/hyperatom-translation.md)
 for semantics, diagnostics and limitations.
+
+## Hyperatom selection catalogs
+
+`etoe.AtomSelectionCatalog` builds four related catalogs from `data/atom/element`
+and the sibling selection directories. Chemical categories are derived
+automatically for the standard periodic table; project-specific and auxiliary
+symbols are assigned to `unknowns`. To ensure each standard element has exactly
+one category, halogens and noble gases are separate from the `nonmetals` bucket.
+Element and semantic hyperatom records receive a runtime `chemical_category`
+object reference. The atomic-level catalog reuses `atomic_level` inferred by the
+semantic translator.
+
+```python
+from etoe import AtomSelectionCatalog
+
+selections = AtomSelectionCatalog("data/atom/element")
+alkali_metals = selections.categories["alkali-metals"]
+level_five = selections.levels[5]
+curated_atoms = selections.hyperatom_groups["X-40"]
+
+print(alkali_metals.symbols)
+print(level_five.symbols_for_graph())
+curated_atoms.write_graph(selections.registry, "X-40.dot")
+```
+
+Every selection item exposes `symbols` / `symbols_for_graph()` and `directory` /
+`output_dir`; `write_graph()` writes a DOT graph into that item's directory. In
+addition to element symbols, graph filters accept exact canonical hyperatom
+notations, designations, or semantic IDs. Custom element groups are read from
+`data/atom/groupel/<name>/groupel.toml` (`elements = ["Be", "B"]`); concrete
+hyperatom groups are read from `data/atom/group/<name>/group.toml`
+(`hyperatoms = ["K-40-(33'7)"]`). These folders are data-driven and can be
+extended without changing Python code. The project includes the example groups
+from the 0.1.65 seed request.

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Iterator, Mapping
@@ -83,6 +83,12 @@ class ElementRecord:
     atomic_number: int | None = None
     aliases: tuple[str, ...] = ()
     metadata: Mapping[str, Any] | None = None
+    chemical_category: "ChemicalCategory | None" = field(default=None, compare=False, repr=False)
+
+    @property
+    def category(self) -> "ChemicalCategory | None":
+        """Return the runtime chemical-category link, when a selection catalog is built."""
+        return self.chemical_category
 
     def name(self, language: str = "en") -> str:
         """Return the best available localized name, falling back to English/symbol.
@@ -148,6 +154,7 @@ class ElementRecord:
             "directory": directory_value,
             "metadata_file": metadata_value,
             "metadata": _plain_data(dict(self.metadata or {})),
+            "chemical_category": getattr(self.chemical_category, "slug", None),
         }
 
 

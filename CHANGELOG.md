@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.65 hyperatom selection catalogs
+
+- Added data-driven chemical categories, atomic-level indexes, custom element groups, and concrete hyperatom groups.
+- Linked element and semantic hyperatom records to their runtime chemical category; serialize those links by category slug.
+- Added stable output directories and a shared graph-selection API for all selection items.
+- Extended Graphviz selection filters to accept element symbols, hyperatom canonical notation, compact designations, or semantic IDs.
+- Added the example `groupel` TOML folders and the `X-40` hyperatom group; documented the new API and covered it with tests.
+
 ## 0.1.63 canonical hyperatom map and runtime patching
 
 - Resolve primary references by atomic mass and explicitly non-primary structural references by `canonical_structure`; remove the redundant `candidate_scope` map and CLI option.

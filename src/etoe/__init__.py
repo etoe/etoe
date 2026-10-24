@@ -52,6 +52,20 @@ from .hyperatom_translation import (
     translate_hyperatoms,
 )
 from .hyperatom_graphviz import hyperatom_graph_to_dot, write_hyperatom_graph
+from .selections import (
+    CATEGORY_DEFINITIONS,
+    AtomSelectionCatalog,
+    AtomicLevel,
+    AtomicLevelCatalog,
+    ChemicalCategory,
+    ChemicalCategoryCatalog,
+    ElementGroup,
+    ElementGroupCatalog,
+    GraphSelectionItem,
+    HyperatomGroup,
+    HyperatomGroupCatalog,
+    SelectionCatalogError,
+)
 from .hyperatom_map import (
     CanonicalHyperatomMap,
     HyperatomMapEdge,
@@ -110,7 +124,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.65"
+__version__ = "0.1.66"
 
 __all__ = [
     "Aspect",
@@ -164,6 +178,18 @@ __all__ = [
     "translate_hyperatoms",
     "hyperatom_graph_to_dot",
     "write_hyperatom_graph",
+    "CATEGORY_DEFINITIONS",
+    "AtomSelectionCatalog",
+    "AtomicLevel",
+    "AtomicLevelCatalog",
+    "ChemicalCategory",
+    "ChemicalCategoryCatalog",
+    "ElementGroup",
+    "ElementGroupCatalog",
+    "GraphSelectionItem",
+    "HyperatomGroup",
+    "HyperatomGroupCatalog",
+    "SelectionCatalogError",
     "CanonicalHyperatomMap",
     "HyperatomMapEdge",
     "build_canonical_hyperatom_map",

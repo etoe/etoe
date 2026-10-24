@@ -146,6 +146,12 @@ class SemanticHyperatom:
     atomic_level_source: str | None = None
     structure_text_override: str | None = field(default=None, repr=False, compare=False)
     source_ast: ChemicalNotation | None = field(default=None, repr=False, compare=False)
+    chemical_category: "ChemicalCategory | None" = field(default=None, repr=False, compare=False)
+
+    @property
+    def category(self) -> "ChemicalCategory | None":
+        """Return the runtime chemical-category link, when a selection catalog is built."""
+        return self.chemical_category
 
     @property
     def designation(self) -> str:
@@ -206,6 +212,7 @@ class SemanticHyperatom:
             "atomic_level_source": self.atomic_level_source,
             "mass_sum": self.mass_sum,
             "mass_balance": self.mass_balance,
+            "chemical_category": getattr(self.chemical_category, "slug", None),
         }
 
 

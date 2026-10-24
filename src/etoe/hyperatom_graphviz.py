@@ -53,7 +53,16 @@ def hyperatom_graph_to_dot(
 
     included = {obj.id: obj for obj in registry.definitions if obj.kind in allowed_kinds}
     if selected_symbols:
-        roots = {obj.id for obj in included.values() if obj.symbol in selected_symbols}
+        # A token may identify either an element (legacy behaviour), a full
+        # canonical hyperatom notation, its compact designation, or a semantic ID.
+        # This lets level and curated hyperatom-group items select exact objects.
+        roots = {
+            obj.id for obj in included.values()
+            if obj.symbol in selected_symbols
+            or obj.designation in selected_symbols
+            or obj.canonical in selected_symbols
+            or obj.id in selected_symbols
+        }
         closure = set(roots)
         queue = list(roots)
         while queue:
