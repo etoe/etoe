@@ -51,7 +51,18 @@ from .hyperatom_translation import (
     TranslationDiagnostic,
     translate_hyperatoms,
 )
-from .hyperatom_graphviz import hyperatom_graph_to_dot, write_hyperatom_graph
+from .hyperatom_graphviz import (
+    build_element_subelement_numbering,
+    hyperatom_graph_to_dot,
+    hyperatom_map_to_dot,
+    hyperatom_tree_to_dot,
+    number_element_subelements,
+    periodic_map_to_dot,
+    write_hyperatom_map,
+    write_hyperatom_graph,
+    write_hyperatom_tree,
+    write_periodic_map,
+)
 from .selections import (
     CATEGORY_DEFINITIONS,
     AtomSelectionCatalog,
@@ -124,7 +135,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.66"
+__version__ = "0.1.67"
 
 __all__ = [
     "Aspect",
@@ -177,7 +188,15 @@ __all__ = [
     "TranslationDiagnostic",
     "translate_hyperatoms",
     "hyperatom_graph_to_dot",
+    "hyperatom_map_to_dot",
     "write_hyperatom_graph",
+    "write_hyperatom_map",
+    "periodic_map_to_dot",
+    "write_periodic_map",
+    "build_element_subelement_numbering",
+    "number_element_subelements",
+    "hyperatom_tree_to_dot",
+    "write_hyperatom_tree",
     "CATEGORY_DEFINITIONS",
     "AtomSelectionCatalog",
     "AtomicLevel",

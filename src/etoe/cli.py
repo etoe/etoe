@@ -49,6 +49,42 @@ def build_parser() -> argparse.ArgumentParser:
     graph.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
     graph.add_argument("--language", default="en", help="Language tag for element names, e.g. en or ru")
 
+    periodic = hyper_sub.add_parser("periodic-map", help="Generate a vertically oriented periodic map with numbered subelements")
+    periodic.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
+    periodic.add_argument("--output", type=Path, default=Path("build/periodic-map.svg"))
+    periodic.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
+    periodic.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
+    periodic.add_argument("--symbols", default="", help="Optional comma-separated root element symbols, e.g. He,Li,Be")
+    periodic.add_argument("--title", default="ÆToE periodic map")
+    periodic.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
+    periodic.add_argument("--language", default="en", help="Language tag for element names, e.g. en or ru")
+    periodic.add_argument("--hide-subelement-numbers", dest="show_subelement_numbers", action="store_false", default=True,
+                          help="Hide nonzero subelement numbers in element labels")
+
+    hyperatom_map = hyper_sub.add_parser("hyperatom-map", help="Generate a map containing concrete hyperatoms only")
+    hyperatom_map.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
+    hyperatom_map.add_argument("--output", type=Path, default=Path("build/hyperatom-map.svg"))
+    hyperatom_map.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
+    hyperatom_map.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
+    hyperatom_map.add_argument("--symbols", default="", help="Optional comma-separated selectors, e.g. He or He-5-(4'1)")
+    hyperatom_map.add_argument("--title", default="ÆToE hyperatom map")
+    hyperatom_map.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
+    hyperatom_map.add_argument("--language", default="en", help="Language tag for element names, e.g. en or ru")
+    hyperatom_map.add_argument("--hide-subelement-numbers", dest="show_subelement_numbers", action="store_false", default=True,
+                               help="Hide nonzero subelement numbers in hyperatom labels")
+
+    tree = hyper_sub.add_parser("tree", help="Expand one concrete hyperatom into an occurrence tree")
+    tree.add_argument("hyperatom", help="Canonical hyperatom notation or semantic ID, e.g. He-5-(4'1)")
+    tree.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
+    tree.add_argument("--output", type=Path, default=Path("build/hyperatom-tree.svg"))
+    tree.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
+    tree.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
+    tree.add_argument("--title", default=None)
+    tree.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
+    tree.add_argument("--language", default="en", help="Language tag for element names, e.g. en or ru")
+    tree.add_argument("--hide-subelement-numbers", dest="show_subelement_numbers", action="store_false", default=True,
+                      help="Hide nonzero subelement numbers in hyperatom labels")
+
     return p
 
 
@@ -96,6 +132,58 @@ def main(argv: list[str] | None = None) -> int:
             )
             print(f"Wrote canonical hyperatom map with {len(canonical_map.nodes)} node(s) to {args.output}")
             print(json.dumps(canonical_map.statistics(), ensure_ascii=False, indent=2))
+            return 0
+        if args.hyperatoms_command == "periodic-map":
+            from .hyperatom_graphviz import write_periodic_map
+
+            symbols = [value.strip() for value in args.symbols.split(",") if value.strip()] or None
+            output = write_periodic_map(
+                registry,
+                args.output,
+                symbols=symbols,
+                layout=args.layout,
+                format=args.format,
+                title=args.title,
+                show_element_names=args.element_names,
+                language=args.language,
+                show_subelement_numbers=args.show_subelement_numbers,
+            )
+            print(f"Wrote Graphviz periodic map to {output}")
+            print(json.dumps(stats, ensure_ascii=False, indent=2))
+            return 0
+        if args.hyperatoms_command == "hyperatom-map":
+            from .hyperatom_graphviz import write_hyperatom_map
+
+            symbols = [value.strip() for value in args.symbols.split(",") if value.strip()] or None
+            output = write_hyperatom_map(
+                registry,
+                args.output,
+                symbols=symbols,
+                layout=args.layout,
+                format=args.format,
+                title=args.title,
+                show_element_names=args.element_names,
+                language=args.language,
+                show_subelement_numbers=args.show_subelement_numbers,
+            )
+            print(f"Wrote Graphviz hyperatom map to {output}")
+            print(json.dumps(stats, ensure_ascii=False, indent=2))
+            return 0
+        if args.hyperatoms_command == "tree":
+            from .hyperatom_graphviz import write_hyperatom_tree
+
+            output = write_hyperatom_tree(
+                registry,
+                args.hyperatom,
+                args.output,
+                layout=args.layout,
+                format=args.format,
+                title=args.title,
+                show_element_names=args.element_names,
+                language=args.language,
+                show_subelement_numbers=args.show_subelement_numbers,
+            )
+            print(f"Wrote Graphviz hyperatom tree to {output}")
             return 0
         if args.hyperatoms_command == "graph":
             from .hyperatom_graphviz import write_hyperatom_graph

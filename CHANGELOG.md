@@ -7,6 +7,22 @@
 - Added stable output directories and a shared graph-selection API for all selection items.
 - Extended Graphviz selection filters to accept element symbols, hyperatom canonical notation, compact designations, or semantic IDs.
 - Added the example `groupel` TOML folders and the `X-40` hyperatom group; documented the new API and covered it with tests.
+- Added top-to-bottom periodic maps with inferred subelement numbers and explicit
+  links from recursive subelements to the immediately lower same-symbol item.
+- Added occurrence-based hyperatom trees: repeated subatoms get distinct nodes,
+  while ambiguous and unresolved references remain visible without arbitrary resolution.
+- Added public map/tree writer functions and `etoe hyperatoms periodic-map` / `tree`
+  command-line subcommands; documented APIs and added structural regression tests.
+- Fixed periodic-map traversal so the special zero-index elements H, D, T, and Ht
+  retain their structural component edges; in particular, the He map now includes
+  `D -> H`, and a map rooted at D includes H. Added regression tests for these edges.
+- Preserved structural edge multiplicity in periodic maps: each subatom occurrence
+  creates its own edge, so `D-(H'H)` draws two `D -> H` edges and
+  `Ht-(H'H'H)` draws three `Ht -> H` edges. Added DOT and Graphviz SVG regressions.
+- Preserved structural edge multiplicity in hyperatom maps as well: each concrete
+  subatom occurrence creates its own outgoing edge (for example, `He-4-(2'2)` has
+  two edges to `D-2-(1'1)`, and each `D-2-(1'1)` has two edges to `H-1-1`).
+  Added DOT-level and Graphviz SVG regression tests.
 
 ## 0.1.63 canonical hyperatom map and runtime patching
 

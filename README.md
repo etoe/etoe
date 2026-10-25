@@ -146,6 +146,61 @@ Graphviz system executable (`dot`, `neato`, `fdp`, `sfdp`, `circo` or `twopi`).
 See [the translator design and legacy-code audit](docs/hyperatom-translation.md)
 for semantics, diagnostics and limitations.
 
+### Periodic maps and hyperatom occurrence trees
+
+Graph maps are oriented top-to-bottom and have distinct contracts:
+
+- `periodic_map_to_dot()` contains chemical-element definitions only, never
+  isotope-specific/concrete hyperatoms. It connects their element subelements.
+- `hyperatom_map_to_dot()` contains only concrete hyperatoms and connects each
+  parent hyperatom directly to the concrete hyperatom candidates for its
+  subatoms. Ambiguous references do not introduce proxy nodes.
+- `hyperatom_tree_to_dot()` unfolds one concrete hyperatom into an occurrence
+  tree: every concrete subatom occurrence gets its own node, even when the same
+  definition is used more than once. Non-concrete element templates are not
+  drawn as atom nodes.
+
+The three builders accept `show_subelement_numbers=True`; passing `False`
+suppresses nonzero `:n` subelement suffixes. Elements without a subelement have
+internal number `0`, shown without `:0`. ÆToE treats `H`, `D`, `T` and `Ht` as
+independently named chemical elements for numbering, so these labels never get
+an inferred `:n` suffix. This does **not** suppress structural edges when an
+element template contains components: every subatom occurrence yields an edge.
+Thus `D-(H'H)` contributes two parallel `D -> H` edges, and `Ht-(H'H'H)`
+contributes three `Ht -> H` edges. Their concrete hyperatom definitions can
+also be expanded as hyperatoms. For the other symbols, identical
+component-symbol signatures within one element share a number, and recursively
+defined subelements are placed after their lower same-symbol definitions. This
+is a deterministic indexing convention inferred from the current `.etoe` files,
+not an additional physical postulate of the seed.
+
+```python
+from etoe import (
+    HyperatomTranslator,
+    build_element_subelement_numbering,
+    hyperatom_map_to_dot,
+    hyperatom_tree_to_dot,
+    periodic_map_to_dot,
+    write_hyperatom_tree,
+    write_periodic_map,
+)
+
+registry = HyperatomTranslator().translate_directory("data/atom/element")
+numbers = build_element_subelement_numbering(registry)  # object ID -> integer
+
+periodic_dot = periodic_map_to_dot(registry, symbols=["He"])
+    hyperatom_map_dot = hyperatom_map_to_dot(registry, symbols=["He"])
+tree_dot = hyperatom_tree_to_dot(registry, "He-5-(4'1)")
+write_periodic_map(registry, "build/periodic-He.dot", symbols=["He"])
+write_hyperatom_tree(registry, "He-5-(4'1)", "build/He-5-tree.dot")
+```
+
+The equivalent command-line operations are available as
+`etoe hyperatoms periodic-map --symbols He --output build/periodic-He.svg`,
+`etoe hyperatoms hyperatom-map --symbols He --output build/hyperatom-He.svg`
+and `etoe hyperatoms tree "He-5-(4'1)" --output build/He-5-tree.svg`. Add
+`--hide-subelement-numbers` to any of these commands to hide nonzero suffixes.
+
 ## Hyperatom selection catalogs
 
 `etoe.AtomSelectionCatalog` builds four related catalogs from `data/atom/element`
