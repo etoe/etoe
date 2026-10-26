@@ -1,0 +1,109 @@
+schema_version = 1
+description = "Scene, mobject, label and edge tokens for Manim animations."
+
+[themes]
+
+[themes.Light]
+
+[themes.Light.scene]
+background_color = "#FFFFFF"
+camera_fill_opacity = 1.0
+
+[themes.Light.mobject]
+color = "#4578B5"
+fill_opacity = 0.88
+stroke_color = "#667085"
+stroke_width = 1.5
+opacity = 1.0
+
+[themes.Light.label]
+color = "#1F2937"
+font = "Inter"
+font_size = 24
+background_opacity = 0.0
+
+[themes.Light.edge]
+color = "#667085"
+stroke_width = 2.0
+opacity = 0.9
+
+[themes.Light.highlight]
+color = "#2563EB"
+stroke_width = 3.0
+opacity = 1.0
+
+
+[themes.Dark]
+
+[themes.Dark.scene]
+background_color = "#111827"
+camera_fill_opacity = 1.0
+
+[themes.Dark.mobject]
+color = "#1E3A5F"
+fill_opacity = 0.92
+stroke_color = "#9CA3AF"
+stroke_width = 1.5
+opacity = 1.0
+
+[themes.Dark.label]
+color = "#F9FAFB"
+font = "Inter"
+font_size = 24
+background_opacity = 0.0
+
+[themes.Dark.edge]
+color = "#9CA3AF"
+stroke_width = 2.0
+opacity = 0.85
+
+[themes.Dark.highlight]
+color = "#60A5FA"
+stroke_width = 3.0
+opacity = 1.0
+
+
+
+[[rules]]
+selector = "mobject.category-nonmetals"
+properties = { color = "$palette.nonmetals.border", fill_color = "$palette.nonmetals.fill" }
+
+[[rules]]
+selector = "mobject.category-alkali-metals"
+properties = { color = "$palette.alkali-metals.border", fill_color = "$palette.alkali-metals.fill" }
+
+[[rules]]
+selector = "mobject.category-alkaline-earth-metals"
+properties = { color = "$palette.alkaline-earth-metals.border", fill_color = "$palette.alkaline-earth-metals.fill" }
+
+[[rules]]
+selector = "mobject.category-lanthanoids"
+properties = { color = "$palette.lanthanoids.border", fill_color = "$palette.lanthanoids.fill" }
+
+[[rules]]
+selector = "mobject.category-actinoids"
+properties = { color = "$palette.actinoids.border", fill_color = "$palette.actinoids.fill" }
+
+[[rules]]
+selector = "mobject.category-transition-metals"
+properties = { color = "$palette.transition-metals.border", fill_color = "$palette.transition-metals.fill" }
+
+[[rules]]
+selector = "mobject.category-post-transition-metals"
+properties = { color = "$palette.post-transition-metals.border", fill_color = "$palette.post-transition-metals.fill" }
+
+[[rules]]
+selector = "mobject.category-metalloids"
+properties = { color = "$palette.metalloids.border", fill_color = "$palette.metalloids.fill" }
+
+[[rules]]
+selector = "mobject.category-halogens"
+properties = { color = "$palette.halogens.border", fill_color = "$palette.halogens.fill" }
+
+[[rules]]
+selector = "mobject.category-noble-gases"
+properties = { color = "$palette.noble-gases.border", fill_color = "$palette.noble-gases.fill" }
+
+[[rules]]
+selector = "mobject.category-unknowns"
+properties = { color = "$palette.unknowns.border", fill_color = "$palette.unknowns.fill" }

@@ -1,0 +1,17 @@
+schema_version = 1
+description = "Graphviz target-specific style overlay for Books."
+
+[target_overrides.Books]
+
+[target_overrides.Books.graph]
+fontname = "Liberation Serif"
+fontsize = 14
+pad = "0.25"
+
+[target_overrides.Books.node]
+fontname = "Liberation Serif"
+fontsize = 9
+
+[target_overrides.Books.edge]
+fontname = "Liberation Serif"
+fontsize = 8

@@ -1,0 +1,21 @@
+schema_version = 1
+description = "Graphviz target-specific style overlay for Manim."
+
+[target_overrides.Manim]
+
+[target_overrides.Manim.graph]
+fontname = "DejaVu Sans"
+fontsize = 16
+pad = "0.30"
+
+[target_overrides.Manim.node]
+fontname = "DejaVu Sans"
+fontsize = 10
+margin = "0.12,0.08"
+penwidth = 1.4
+
+[target_overrides.Manim.edge]
+fontname = "DejaVu Sans"
+fontsize = 9
+penwidth = 1.25
+arrowsize = 0.8

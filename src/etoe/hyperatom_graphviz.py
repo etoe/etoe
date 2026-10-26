@@ -25,6 +25,15 @@ from .hyperatom_translation import (
     SemanticComponent,
     SemanticHyperatom,
 )
+from .style import (
+    StyleElement,
+    StyleSettings,
+    chemical_category_slug,
+    get_style_settings,
+    normalize_mode,
+    normalize_target,
+)
+from .styles.graphviz import resolve_graphviz_style
 
 
 SUPPORTED_LAYOUTS = ("dot", "neato", "fdp", "sfdp", "circo", "twopi")
@@ -33,6 +42,69 @@ SUPPORTED_FORMATS = ("dot", "svg", "png", "pdf", "ps", "json")
 # ÆToE treats these as independently named chemical elements, not as
 # recursively decomposable element templates for numbering/periodic maps.
 _NON_INDEXED_ELEMENT_SYMBOLS = frozenset({"H", "D", "T", "Ht"})
+
+
+def _active_style_settings(mode: str | None = None, target: str | None = None) -> StyleSettings:
+    """Resolve explicit per-call overrides against the process-wide style settings."""
+    current = get_style_settings()
+    return StyleSettings(
+        mode=normalize_mode(mode, default=current.mode),
+        target=normalize_target(target, default=current.target),
+    )
+
+
+def _dot_value(value: object) -> str:
+    """Format a Graphviz attribute value without leaking raw quotes/newlines."""
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return '"' + _escape(str(value)) + '"'
+
+
+def _dot_attributes(attributes: dict[str, object]) -> str:
+    return ", ".join(f"{key}={_dot_value(value)}" for key, value in attributes.items() if value is not None)
+
+
+def _graphviz_header(
+    graph_name: str,
+    title: str,
+    graph_type: str,
+    *,
+    mode: str | None = None,
+    target: str | None = None,
+    nodesep: str | None = None,
+    ranksep: str | None = None,
+) -> list[str]:
+    """Build graph/node/edge defaults from the selected cascade stylesheet."""
+    settings = _active_style_settings(mode, target)
+    graph = resolve_graphviz_style(StyleElement.create("graph", classes={f"graph-{graph_type}"}), mode=settings.mode, target=settings.target)
+    node = resolve_graphviz_style(StyleElement.create("node"), mode=settings.mode, target=settings.target)
+    edge = resolve_graphviz_style(StyleElement.create("edge"), mode=settings.mode, target=settings.target)
+    graph["label"] = title
+    if nodesep is not None:
+        graph["nodesep"] = nodesep
+    if ranksep is not None:
+        graph["ranksep"] = ranksep
+    return [
+        f"digraph {graph_name} {{",
+        f"  graph [{_dot_attributes(graph)}];",
+        f"  node [{_dot_attributes(node)}];",
+        f"  edge [{_dot_attributes(edge)}];",
+    ]
+
+
+def _style_proxy_node(
+    *,
+    ambiguous: bool,
+    graph_type: str,
+    mode: str | None = None,
+    target: str | None = None,
+) -> dict[str, object]:
+    classes = {"proxy", "ambiguous" if ambiguous else "unresolved", f"graph-{graph_type}"}
+    return resolve_graphviz_style(
+        StyleElement.create("node", classes=classes),
+        mode=mode,
+        target=target,
+    )
 
 
 def hyperatom_graph_to_dot(
@@ -45,6 +117,8 @@ def hyperatom_graph_to_dot(
     language: str = "en",
     periodic: bool = False,
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> str:
     """Build a deterministic DOT graph from the translated registry.
 
@@ -62,6 +136,7 @@ def hyperatom_graph_to_dot(
             registry, symbols=symbols, title=title,
             show_element_names=show_element_names, language=language,
             show_subelement_numbers=show_subelement_numbers,
+            mode=mode, target=target,
         )
     selected_symbols = {item.strip() for item in symbols or () if item.strip()}
     allowed_kinds = {HYPERATOM_KIND}
@@ -98,12 +173,9 @@ def hyperatom_graph_to_dot(
         requested = ", ".join(sorted(selected_symbols)) if selected_symbols else "the requested registry"
         raise ValueError(f"No graphable hyperatom definitions found for {requested}.")
 
-    lines = [
-        f"digraph {'periodic_map' if periodic else 'hyperatoms'} {{",
-        f'  graph [rankdir="TB", bgcolor="white", pad="0.25", nodesep="0.22", ranksep="0.55", splines="spline", labelloc="t", label="{_escape(title)}", fontsize="15", fontname="Helvetica-Bold"];',
-        '  node [fontname="Helvetica", fontsize="9", margin="0.08,0.05", style="filled,rounded", color="#667085", penwidth="1.0"];',
-        '  edge [fontname="Helvetica", fontsize="8", color="#667085", arrowsize="0.65"];',
-    ]
+    lines = _graphviz_header(
+        "hyperatoms", title, "hyperatom-graph", mode=mode, target=target,
+    )
 
     template_ordinals = _template_ordinals(registry.definitions)
     subelement_numbers = build_element_subelement_numbering(registry) if periodic else {}
@@ -114,12 +186,10 @@ def hyperatom_graph_to_dot(
             periodic=periodic, subelement_number=subelement_numbers.get(obj.id, 0),
             periodic_registry=registry, subelement_numbers=subelement_numbers,
         )
-        shape, fill, fontcolor = _node_style(obj)
-        tooltip = f"{obj.canonical}\\nsource={obj.source_path} statement={obj.statement_index}\\nkind={obj.kind}"
-        lines.append(
-            f'  "{obj.id}" [label="{_escape(label)}", tooltip="{_escape(tooltip)}", '
-            f'shape="{shape}", fillcolor="{fill}", fontcolor="{fontcolor}"];'
-        )
+        style = _node_style(obj, graph_type="hyperatom-graph", mode=mode, target=target)
+        tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
+        attributes = {"label": label, "tooltip": tooltip, **style}
+        lines.append(f'  "{obj.id}" [{_dot_attributes(attributes)}];')
 
     proxy_nodes: dict[str, tuple[str, str]] = {}
     graph_edges: list[str] = []
@@ -166,11 +236,11 @@ def hyperatom_graph_to_dot(
 
     for proxy_id, (label, tooltip) in sorted(proxy_nodes.items()):
         ambiguous = "candidates=" in tooltip
-        fill = "#FFF2CC" if ambiguous else "#FEE4E2"
-        color = "#B54708" if ambiguous else "#B42318"
+        style = _style_proxy_node(
+            ambiguous=ambiguous, graph_type="hyperatom-graph", mode=mode, target=target,
+        )
         lines.append(
-            f'  "{proxy_id}" [label="{_escape(label)}", tooltip="{_escape(tooltip)}", '
-            f'shape="diamond", style="filled", fillcolor="{fill}", color="{color}", fontsize="8"];'
+            f'  "{proxy_id}" [{_dot_attributes({"label": label, "tooltip": tooltip, **style})}];'
         )
     lines.extend(graph_edges)
     lines.append("}")
@@ -190,6 +260,8 @@ def write_hyperatom_graph(
     language: str = "en",
     periodic: bool = False,
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> Path:
     """Write `.dot` source or render through Graphviz to the requested format."""
     output_path = Path(output)
@@ -202,7 +274,7 @@ def write_hyperatom_graph(
     dot = hyperatom_graph_to_dot(
         registry, include_templates=include_templates, symbols=symbols, title=title,
         show_element_names=show_element_names, language=language, periodic=periodic,
-        show_subelement_numbers=show_subelement_numbers,
+        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 
@@ -216,6 +288,8 @@ def periodic_map_to_dot(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> str:
     """Build a vertical map containing chemical-element definitions only.
 
@@ -258,12 +332,9 @@ def periodic_map_to_dot(
         raise ValueError(f"No chemical-element definitions found for {requested}.")
 
     numbers = build_element_subelement_numbering(registry)
-    lines = [
-        "digraph periodic_map {",
-        f'  graph [rankdir="TB", bgcolor="white", pad="0.25", nodesep="0.22", ranksep="0.55", splines="spline", labelloc="t", label="{_escape(title)}", fontsize="15", fontname="Helvetica-Bold"];',
-        '  node [fontname="Helvetica", fontsize="9", margin="0.08,0.05", style="filled,rounded", color="#667085", penwidth="1.0"];',
-        '  edge [fontname="Helvetica", fontsize="8", color="#667085", arrowsize="0.65"];',
-    ]
+    lines = _graphviz_header(
+        "periodic_map", title, "periodic-map", mode=mode, target=target,
+    )
     ordered = sorted(
         elements.values(),
         key=lambda obj: (obj.symbol or "", numbers.get(obj.id, 0), obj.canonical, obj.id),
@@ -280,12 +351,10 @@ def periodic_map_to_dot(
                 localized = element.name(language)
                 if localized and localized != obj.symbol:
                     label += f"\n{localized}"
-        shape, fill, fontcolor = _node_style(obj)
+        style = _node_style(obj, graph_type="periodic-map", mode=mode, target=target)
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
-        lines.append(
-            f'  "{obj.id}" [label="{_escape(label)}", tooltip="{_escape(tooltip)}", '
-            f'shape="{shape}", fillcolor="{fill}", fontcolor="{fontcolor}"];'
-        )
+        attributes = {"label": label, "tooltip": tooltip, **style}
+        lines.append(f'  "{obj.id}" [{_dot_attributes(attributes)}];')
 
     # Do not de-duplicate edges by (parent, child, symbol): each entry in
     # ``obj.components`` is a separate subatom occurrence. In particular,
@@ -336,6 +405,8 @@ def write_periodic_map(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> Path:
     """Write a periodic map as DOT or render it using an installed Graphviz layout."""
     output_path = Path(output)
@@ -347,7 +418,7 @@ def write_periodic_map(
     dot = periodic_map_to_dot(
         registry, symbols=symbols, title=title,
         show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers,
+        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 
@@ -360,6 +431,8 @@ def hyperatom_map_to_dot(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> str:
     """Build a vertical map whose graph nodes are concrete hyperatoms only.
 
@@ -390,12 +463,9 @@ def hyperatom_map_to_dot(
         raise ValueError(f"No concrete hyperatom definitions found for {requested}.")
 
     numbers = build_element_subelement_numbering(registry)
-    lines = [
-        "digraph hyperatom_map {",
-        f'  graph [rankdir="TB", bgcolor="white", pad="0.25", nodesep="0.22", ranksep="0.55", splines="spline", labelloc="t", label="{_escape(title)}", fontsize="15", fontname="Helvetica-Bold"];',
-        '  node [fontname="Helvetica", fontsize="9", margin="0.08,0.05", style="filled,rounded", color="#667085", penwidth="1.0"];',
-        '  edge [fontname="Helvetica", fontsize="8", color="#667085", arrowsize="0.65"];',
-    ]
+    lines = _graphviz_header(
+        "hyperatom_map", title, "hyperatom-map", mode=mode, target=target,
+    )
     ordered = sorted(atoms.values(), key=lambda obj: (obj.symbol or "", numbers.get(obj.id, 0), obj.atomic_mass or -1, obj.canonical, obj.id))
     for obj in ordered:
         label = _periodic_label(
@@ -408,17 +478,13 @@ def hyperatom_map_to_dot(
                 localized = element.name(language)
                 if localized and localized != obj.symbol:
                     label += f"\n{localized}"
-        shape, fill, fontcolor = _node_style(obj)
+        style = _node_style(obj, graph_type="hyperatom-map", mode=mode, target=target)
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
-        lines.append(
-            f'  "{obj.id}" [label="{_escape(label)}", tooltip="{_escape(tooltip)}", '
-            f'shape="{shape}", fillcolor="{fill}", fontcolor="{fontcolor}"];'
-        )
-    # As in periodic maps, every component occurrence contributes its own edge.
-    # Do not de-duplicate by source/target/canonical component: in a concrete
-    # hyperatom such as He-4-(2'2), both occurrences resolve to the same D-2
-    # node, but both outgoing edges are required to preserve the hyperatom's
-    # arity. A non-strict digraph preserves parallel edges in Graphviz.
+        attributes = {"label": label, "tooltip": tooltip, **style}
+        lines.append(f'  "{obj.id}" [{_dot_attributes(attributes)}];')
+
+    # Preserve every component occurrence, including parallel edges to the same
+    # child definition; the graph is deliberately non-strict.
     edges: list[tuple[str, str, str, int]] = []
     for obj in ordered:
         for component in obj.components:
@@ -445,6 +511,8 @@ def write_hyperatom_map(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> Path:
     """Write a hyperatom map as DOT or render it through Graphviz."""
     output_path = Path(output)
@@ -456,7 +524,7 @@ def write_hyperatom_map(
     dot = hyperatom_map_to_dot(
         registry, symbols=symbols, title=title,
         show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers,
+        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 
@@ -592,6 +660,8 @@ def hyperatom_tree_to_dot(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> str:
     """Build a vertical occurrence tree for one concrete hyperatom.
 
@@ -603,16 +673,21 @@ def hyperatom_tree_to_dot(
     root = _resolve_hyperatom(registry, hyperatom)
     tree_title = title or f"ÆToE hyperatom tree: {root.designation}"
     numbering = build_element_subelement_numbering(registry)
-    lines = [
-        "digraph hyperatom_tree {",
-        f'  graph [rankdir="TB", bgcolor="white", pad="0.25", nodesep="0.12", ranksep="0.28", splines="spline", labelloc="t", label="{_escape(tree_title)}", fontsize="15", fontname="Helvetica-Bold"];',
-        '  node [fontname="Helvetica", fontsize="9", margin="0.08,0.05", style="filled,rounded", color="#667085", penwidth="1.0"];',
-        '  edge [fontname="Helvetica", fontsize="8", color="#667085", arrowsize="0.65"];',
-    ]
+    lines = _graphviz_header(
+        "hyperatom_tree", tree_title, "hyperatom-tree",
+        mode=mode, target=target, nodesep="0.12", ranksep="0.28",
+    )
     counter = 0
     edge_lines: list[str] = []
 
-    def add_occurrence(obj: SemanticHyperatom, occurrence_id: str, ancestors: tuple[str, ...]) -> None:
+    def add_occurrence(
+        obj: SemanticHyperatom,
+        occurrence_id: str,
+        ancestors: tuple[str, ...],
+        *,
+        position: str = "tree-root",
+        parent_style: dict[str, object] | None = None,
+    ) -> None:
         nonlocal counter
         label = _periodic_label(
             obj, numbering.get(obj.id, 0), registry, numbering,
@@ -623,12 +698,14 @@ def hyperatom_tree_to_dot(
             if element is not None:
                 localized = element.name(language)
                 if localized and localized != obj.symbol:
-                    label += f"\\n{localized}"
-        shape, fill, fontcolor = _node_style(obj)
-        tooltip = f"{obj.canonical}\\nsource={obj.source_path} statement={obj.statement_index}"
+                    label += f"\n{localized}"
+        style = _node_style(
+            obj, graph_type="hyperatom-tree", position=position,
+            mode=mode, target=target, parent_style=parent_style,
+        )
+        tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}"
         lines.append(
-            f'  "{occurrence_id}" [label="{_escape(label)}", tooltip="{_escape(tooltip)}", '
-            f'shape="{shape}", fillcolor="{fill}", fontcolor="{fontcolor}"];'
+            f'  "{occurrence_id}" [{_dot_attributes({"label": label, "tooltip": tooltip, **style})}];'
         )
         for component in obj.components:
             # A hyperatom tree contains only concrete hyperatom occurrences.
@@ -638,25 +715,38 @@ def hyperatom_tree_to_dot(
                 for item in component.candidate_ids
                 if item in registry.by_id and registry.by_id[item].kind == HYPERATOM_KIND
             ]
-            for target in targets:
+            if len(obj.components) == 1:
+                child_position = "only-subatom"
+            elif component.index == 0:
+                child_position = "first-subatom"
+            elif component.index == 1:
+                child_position = "second-subatom"
+            else:
+                child_position = f"subatom-{component.index + 1}"
+            for child_obj in targets:
                 counter += 1
                 child_id = f"occ_{counter}"
                 edge_lines.append(
                     f'  "{occurrence_id}" -> "{child_id}" [tooltip="{_escape(component.canonical)}"];'
                 )
-                if target.id in ancestors:
+                if child_obj.id in ancestors:
                     # A pathological cyclic structure must not unfold forever.
                     cycle_label = _periodic_label(
-                        target, numbering.get(target.id, 0), registry, numbering,
+                        child_obj, numbering.get(child_obj.id, 0), registry, numbering,
                         show_subelement_numbers=show_subelement_numbers,
-                    ) + "\\n(cycle)"
-                    cycle_shape, cycle_fill, cycle_font = _node_style(target)
+                    ) + "\n(cycle)"
+                    cycle_style = _node_style(
+                        child_obj, graph_type="hyperatom-tree", position=child_position,
+                        mode=mode, target=target, parent_style=style,
+                    )
                     lines.append(
-                        f'  "{child_id}" [label="{_escape(cycle_label)}", tooltip="Cycle cut at {_escape(target.canonical)}", '
-                        f'shape="{cycle_shape}", fillcolor="{cycle_fill}", fontcolor="{cycle_font}"];'
+                        f'  "{child_id}" [{_dot_attributes({"label": cycle_label, "tooltip": f"Cycle cut at {child_obj.canonical}", **cycle_style})}];'
                     )
                 else:
-                    add_occurrence(target, child_id, (*ancestors, target.id))
+                    add_occurrence(
+                        child_obj, child_id, (*ancestors, child_obj.id),
+                        position=child_position, parent_style=style,
+                    )
 
     add_occurrence(root, "occ_0", (root.id,))
     lines.extend(edge_lines)
@@ -675,6 +765,8 @@ def write_hyperatom_tree(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    mode: str | None = None,
+    target: str | None = None,
 ) -> Path:
     """Write a hyperatom tree as DOT or render it using Graphviz."""
     output_path = Path(output)
@@ -686,7 +778,7 @@ def write_hyperatom_tree(
     dot = hyperatom_tree_to_dot(
         registry, hyperatom, title=title,
         show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers,
+        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 
@@ -899,17 +991,57 @@ def _periodic_label(
         return symbol + suffix + " · molecule"
     return obj.designation
 
-def _node_style(obj: SemanticHyperatom) -> tuple[str, str, str]:
-    if obj.kind == HYPERATOM_KIND:
-        return "box", "#E8F1FB", "#17365D"
-    if obj.kind == ELEMENT_TEMPLATE_KIND:
-        return "hexagon", "#E7F6EC", "#155B35"
-    if obj.kind == ELEMENT_SYMBOL_KIND:
-        return "ellipse", "#F2F4F7", "#344054"
-    if obj.kind == MOLECULE_KIND:
-        return "component", "#F4EBFF", "#5925DC"
-    return "box", "#F2F4F7", "#344054"
+def _node_style(
+    obj: SemanticHyperatom,
+    *,
+    graph_type: str,
+    position: str | None = None,
+    mode: str | None = None,
+    target: str | None = None,
+    parent_style: dict[str, object] | None = None,
+) -> dict[str, object]:
+    """Resolve a semantic node through the shared Graphviz cascade.
 
+    Chemical categories come from the translator's runtime category link when
+    available, falling back to the package's canonical periodic-table mapping.
+    Special Protium positional selectors are applied after category selectors.
+    """
+    classes: set[str] = {f"graph-{graph_type}"}
+    if obj.kind == HYPERATOM_KIND:
+        classes.add("hyperatom")
+    elif obj.kind == ELEMENT_TEMPLATE_KIND:
+        classes.update({"element", "element-template"})
+    elif obj.kind == ELEMENT_SYMBOL_KIND:
+        classes.update({"element", "element-symbol"})
+    elif obj.kind == MOLECULE_KIND:
+        classes.add("molecule")
+    else:
+        classes.add("other")
+
+    symbol = obj.symbol
+    if symbol:
+        classes.add(f"symbol-{symbol}")
+    category = getattr(getattr(obj, "chemical_category", None), "slug", None)
+    category = category or chemical_category_slug(symbol)
+    classes.update({"chemical", f"category-{category}"})
+    if position:
+        classes.add(f"position-{position}")
+
+    element = StyleElement.create(
+        "node",
+        classes=classes,
+        attributes={
+            "kind": obj.kind,
+            "symbol": symbol or "",
+            "chemical_category": category,
+            "graph_type": graph_type,
+            "position": position or "",
+            "atomic_mass": obj.atomic_mass if obj.atomic_mass is not None else "",
+        },
+    )
+    return resolve_graphviz_style(
+        element, mode=mode, target=target, parent=parent_style,
+    )
 
 def _needs_proxy(component: SemanticComponent, include_templates: bool) -> bool:
     if component.reference_kind == "symbol":

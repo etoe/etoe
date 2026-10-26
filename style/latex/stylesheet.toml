@@ -1,0 +1,117 @@
+schema_version = 1
+description = "Typography, math, code and figure tokens for ÆToE LaTeX output."
+
+[themes]
+
+[themes.Light]
+
+[themes.Light.page]
+background = "#FFFFFF"
+textcolor = "#202124"
+fontname = "Latin Modern Roman"
+fontsize = "10pt"
+lineheight = "1.18"
+margin = "25mm"
+
+[themes.Light.heading]
+textcolor = "#17365D"
+fontname = "Latin Modern Roman"
+weight = "bold"
+spacing_before = "1.2em"
+spacing_after = "0.45em"
+
+[themes.Light.math]
+textcolor = "#202124"
+accent = "#2563EB"
+display_spacing = "0.8em"
+
+[themes.Light.code]
+background = "#F3F4F6"
+textcolor = "#263238"
+fontname = "Latin Modern Mono"
+fontsize = "9pt"
+
+[themes.Light.figure]
+bordercolor = "#D1D5DB"
+background = "#FFFFFF"
+captioncolor = "#4B5563"
+
+
+[themes.Dark]
+
+[themes.Dark.page]
+background = "#111827"
+textcolor = "#F3F4F6"
+fontname = "Latin Modern Roman"
+fontsize = "10pt"
+lineheight = "1.18"
+margin = "25mm"
+
+[themes.Dark.heading]
+textcolor = "#93C5FD"
+fontname = "Latin Modern Roman"
+weight = "bold"
+spacing_before = "1.2em"
+spacing_after = "0.45em"
+
+[themes.Dark.math]
+textcolor = "#F3F4F6"
+accent = "#60A5FA"
+display_spacing = "0.8em"
+
+[themes.Dark.code]
+background = "#1F2937"
+textcolor = "#E5E7EB"
+fontname = "Latin Modern Mono"
+fontsize = "9pt"
+
+[themes.Dark.figure]
+bordercolor = "#4B5563"
+background = "#111827"
+captioncolor = "#D1D5DB"
+
+
+
+[[rules]]
+selector = "element.category-nonmetals"
+properties = { textcolor = "$palette.nonmetals.text" }
+
+[[rules]]
+selector = "element.category-alkali-metals"
+properties = { textcolor = "$palette.alkali-metals.text" }
+
+[[rules]]
+selector = "element.category-alkaline-earth-metals"
+properties = { textcolor = "$palette.alkaline-earth-metals.text" }
+
+[[rules]]
+selector = "element.category-lanthanoids"
+properties = { textcolor = "$palette.lanthanoids.text" }
+
+[[rules]]
+selector = "element.category-actinoids"
+properties = { textcolor = "$palette.actinoids.text" }
+
+[[rules]]
+selector = "element.category-transition-metals"
+properties = { textcolor = "$palette.transition-metals.text" }
+
+[[rules]]
+selector = "element.category-post-transition-metals"
+properties = { textcolor = "$palette.post-transition-metals.text" }
+
+[[rules]]
+selector = "element.category-metalloids"
+properties = { textcolor = "$palette.metalloids.text" }
+
+[[rules]]
+selector = "element.category-halogens"
+properties = { textcolor = "$palette.halogens.text" }
+
+[[rules]]
+selector = "element.category-noble-gases"
+properties = { textcolor = "$palette.noble-gases.text" }
+
+[[rules]]
+selector = "element.category-unknowns"
+properties = { textcolor = "$palette.unknowns.text" }

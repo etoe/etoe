@@ -1,0 +1,17 @@
+schema_version = 1
+description = "Graphviz target-specific style overlay for Articles."
+
+[target_overrides.Articles]
+
+[target_overrides.Articles.graph]
+fontname = "Liberation Serif"
+fontsize = 13
+pad = "0.20"
+
+[target_overrides.Articles.node]
+fontname = "Liberation Serif"
+fontsize = 8
+
+[target_overrides.Articles.edge]
+fontname = "Liberation Serif"
+fontsize = 7

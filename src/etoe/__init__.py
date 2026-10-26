@@ -82,6 +82,24 @@ from .hyperatom_map import (
     HyperatomMapEdge,
     build_canonical_hyperatom_map,
 )
+from .style import (
+    MODES as STYLE_MODES,
+    SOURCES as STYLE_SOURCES,
+    TARGETS as STYLE_TARGETS,
+    StyleElement,
+    StyleError,
+    StyleSettings,
+    StyleSheet,
+    chemical_category_slug,
+    configure_styles,
+    get_style_directory,
+    get_style_settings,
+    load_stylesheet,
+    normalize_source,
+    reset_styles,
+    resolve_style,
+    selector_specificity,
+)
 from .hyperatomic import (
     Admissibility,
     BaseHyperatomicGenerator,
@@ -135,7 +153,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.68"
+__version__ = "0.1.69"
 
 __all__ = [
     "Aspect",
@@ -262,4 +280,20 @@ __all__ = [
     "short_designation",
     "sort_hyperatom_text",
     "validate_generated_counts",
+    "STYLE_MODES",
+    "STYLE_SOURCES",
+    "STYLE_TARGETS",
+    "StyleElement",
+    "StyleError",
+    "StyleSettings",
+    "StyleSheet",
+    "chemical_category_slug",
+    "configure_styles",
+    "get_style_directory",
+    "get_style_settings",
+    "load_stylesheet",
+    "normalize_source",
+    "reset_styles",
+    "resolve_style",
+    "selector_specificity",
 ]

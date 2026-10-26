@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`EToE.md` (language: ru; version: 0.1.65; date: 2026-10-23) is the seed document used as the design basis for this package snapshot.
+`EToE.md` (language: ru; version: 0.1.68; date: 2026-10-25) is the seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -201,6 +201,29 @@ The equivalent command-line operations are available as
 and `etoe hyperatoms tree "He-5-(4'1)" --output build/He-5-tree.svg`. Add
 `--hide-subelement-numbers` to any of these commands to hide nonzero suffixes.
 
+## Cascading visualization styles
+
+`etoe.style` provides the renderer-neutral style engine. Declarative assets live in the project-level `style/` tree and provide shared Light/Dark style sheets and a deterministic cascade
+for Graphviz, 3D, LaTeX, Manim, books, articles and web presentation. The
+Graphviz adapter uses chemical-category colours and fixed-size circular
+Protium nodes, including position-specific blue/red/purple treatment in
+hyperatom occurrence trees.
+
+```python
+from etoe import configure_styles, hyperatom_tree_to_dot
+
+configure_styles(mode="Dark", source="GraphViz", target="Web")
+dot = hyperatom_tree_to_dot(registry, "He-5-(4'1)")
+```
+
+`target` selects typography/spacing overlays for the downstream context while
+`mode` selects the colour theme. The other media profiles are declarative
+foundations; actual rendering adapters for those media are not yet wired into
+this package. See [the visualization style guide](docs/visualization-styles.md)
+for the cascade priority, selector syntax and profile layout.
+
+Style configuration also accepts `Source`/`source`, which selects the source visualization environment. The environment variables `ETOE_STYLE_MODE`, `ETOE_STYLE_TARGET`, and `ETOE_STYLE_SOURCE` provide process defaults. Set `ETOE_STYLE_DIR` to override the location of the global style asset directory.
+
 ## Hyperatom selection catalogs
 
 `etoe.AtomSelectionCatalog` builds four related catalogs from `data/atom/element`
@@ -234,3 +257,4 @@ hyperatom groups are read from `data/atom/group/<name>/group.toml`
 (`hyperatoms = ["K-40-(33'7)"]`). These folders are data-driven and can be
 extended without changing Python code. The project includes the example groups
 from the 0.1.65 seed request.
+

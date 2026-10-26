@@ -1,0 +1,185 @@
+schema_version = 1
+description = "Shared semantic colour tokens used by all ÆToE visualization targets."
+
+[themes]
+
+[themes.Light]
+
+[themes.Light.palette]
+
+[themes.Light.palette.nonmetals]
+fill = "#DCEBFF"
+text = "#153E75"
+border = "#4578B5"
+
+[themes.Light.palette.alkali-metals]
+fill = "#FCE7F3"
+text = "#831843"
+border = "#DB2777"
+
+[themes.Light.palette.alkaline-earth-metals]
+fill = "#FDECC8"
+text = "#78350F"
+border = "#D97706"
+
+[themes.Light.palette.lanthanoids]
+fill = "#EDE9FE"
+text = "#4C1D95"
+border = "#8B5CF6"
+
+[themes.Light.palette.actinoids]
+fill = "#FFE4E6"
+text = "#9F1239"
+border = "#E11D48"
+
+[themes.Light.palette.transition-metals]
+fill = "#D1FAE5"
+text = "#065F46"
+border = "#059669"
+
+[themes.Light.palette.post-transition-metals]
+fill = "#E0F2FE"
+text = "#075985"
+border = "#0284C7"
+
+[themes.Light.palette.metalloids]
+fill = "#FEF3C7"
+text = "#92400E"
+border = "#B45309"
+
+[themes.Light.palette.halogens]
+fill = "#FFE4E6"
+text = "#9F1239"
+border = "#E11D48"
+
+[themes.Light.palette.noble-gases]
+fill = "#F3E8FF"
+text = "#6B21A8"
+border = "#9333EA"
+
+[themes.Light.palette.unknowns]
+fill = "#E5E7EB"
+text = "#374151"
+border = "#6B7280"
+
+[themes.Light.palette.protium]
+
+[themes.Light.palette.protium.first]
+fill = "#DBEAFE"
+text = "#1D4ED8"
+border = "#2563EB"
+
+[themes.Light.palette.protium.second]
+fill = "#FEE2E2"
+text = "#B91C1C"
+border = "#DC2626"
+
+[themes.Light.palette.protium.only]
+fill = "#F3E8FF"
+text = "#6B21A8"
+border = "#9333EA"
+
+
+[themes.Light.palette.proxy]
+
+[themes.Light.palette.proxy.ambiguous]
+fill = "#FEF3C7"
+text = "#92400E"
+border = "#B45309"
+
+[themes.Light.palette.proxy.unresolved]
+fill = "#FEE2E2"
+text = "#B91C1C"
+border = "#B42318"
+
+
+
+
+[themes.Dark]
+
+[themes.Dark.palette]
+
+[themes.Dark.palette.nonmetals]
+fill = "#1E3A5F"
+text = "#DBEAFE"
+border = "#60A5FA"
+
+[themes.Dark.palette.alkali-metals]
+fill = "#4A1735"
+text = "#FBCFE8"
+border = "#F472B6"
+
+[themes.Dark.palette.alkaline-earth-metals]
+fill = "#4A2A0A"
+text = "#FDE68A"
+border = "#FBBF24"
+
+[themes.Dark.palette.lanthanoids]
+fill = "#35245F"
+text = "#DDD6FE"
+border = "#A78BFA"
+
+[themes.Dark.palette.actinoids]
+fill = "#4B1D2A"
+text = "#FECDD3"
+border = "#FB7185"
+
+[themes.Dark.palette.transition-metals]
+fill = "#123F35"
+text = "#A7F3D0"
+border = "#34D399"
+
+[themes.Dark.palette.post-transition-metals]
+fill = "#12364B"
+text = "#BAE6FD"
+border = "#38BDF8"
+
+[themes.Dark.palette.metalloids]
+fill = "#49340B"
+text = "#FDE68A"
+border = "#F59E0B"
+
+[themes.Dark.palette.halogens]
+fill = "#4B1827"
+text = "#FECDD3"
+border = "#FB7185"
+
+[themes.Dark.palette.noble-gases]
+fill = "#3B1C58"
+text = "#E9D5FF"
+border = "#C084FC"
+
+[themes.Dark.palette.unknowns]
+fill = "#374151"
+text = "#F3F4F6"
+border = "#9CA3AF"
+
+[themes.Dark.palette.protium]
+
+[themes.Dark.palette.protium.first]
+fill = "#1E3A8A"
+text = "#DBEAFE"
+border = "#60A5FA"
+
+[themes.Dark.palette.protium.second]
+fill = "#7F1D1D"
+text = "#FEE2E2"
+border = "#F87171"
+
+[themes.Dark.palette.protium.only]
+fill = "#4C1D95"
+text = "#E9D5FF"
+border = "#A78BFA"
+
+
+[themes.Dark.palette.proxy]
+
+[themes.Dark.palette.proxy.ambiguous]
+fill = "#713F12"
+text = "#FEF3C7"
+border = "#FBBF24"
+
+[themes.Dark.palette.proxy.unresolved]
+fill = "#7F1D1D"
+text = "#FEE2E2"
+border = "#F87171"

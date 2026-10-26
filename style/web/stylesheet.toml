@@ -1,0 +1,141 @@
+schema_version = 1
+description = "Web-page design tokens for ÆToE interactive views and diagrams."
+
+[themes]
+
+[themes.Light]
+
+[themes.Light.page]
+background = "#FFFFFF"
+textcolor = "#111827"
+font = "Inter, system-ui, sans-serif"
+max_width = "80rem"
+spacing = "1rem"
+
+[themes.Light.body]
+font = "Inter, system-ui, sans-serif"
+fontsize = "1rem"
+lineheight = "1.6"
+textcolor = "#1F2937"
+
+[themes.Light.link]
+color = "#1D4ED8"
+hover_color = "#1E40AF"
+visited_color = "#6B21A8"
+underline = "auto"
+
+[themes.Light.panel]
+background = "#F9FAFB"
+bordercolor = "#E5E7EB"
+radius = "0.75rem"
+shadow = "0 1px 3px #00000012"
+
+[themes.Light.code]
+background = "#F3F4F6"
+textcolor = "#1F2937"
+font = "ui-monospace, monospace"
+fontsize = "0.9em"
+
+[themes.Light.node]
+background = "#DCEBFF"
+textcolor = "#153E75"
+bordercolor = "#4578B5"
+radius = "0.5rem"
+opacity = 1.0
+
+[themes.Light.edge]
+color = "#667085"
+width = "1.5px"
+opacity = 0.9
+
+
+[themes.Dark]
+
+[themes.Dark.page]
+background = "#111827"
+textcolor = "#F9FAFB"
+font = "Inter, system-ui, sans-serif"
+max_width = "80rem"
+spacing = "1rem"
+
+[themes.Dark.body]
+font = "Inter, system-ui, sans-serif"
+fontsize = "1rem"
+lineheight = "1.6"
+textcolor = "#E5E7EB"
+
+[themes.Dark.link]
+color = "#93C5FD"
+hover_color = "#BFDBFE"
+visited_color = "#D8B4FE"
+underline = "auto"
+
+[themes.Dark.panel]
+background = "#1F2937"
+bordercolor = "#374151"
+radius = "0.75rem"
+shadow = "0 1px 3px #00000040"
+
+[themes.Dark.code]
+background = "#1F2937"
+textcolor = "#E5E7EB"
+font = "ui-monospace, monospace"
+fontsize = "0.9em"
+
+[themes.Dark.node]
+background = "#1E3A5F"
+textcolor = "#DBEAFE"
+bordercolor = "#60A5FA"
+radius = "0.5rem"
+opacity = 1.0
+
+[themes.Dark.edge]
+color = "#9CA3AF"
+width = "1.5px"
+opacity = 0.85
+
+
+
+[[rules]]
+selector = "node.category-nonmetals"
+properties = { background = "$palette.nonmetals.fill", textcolor = "$palette.nonmetals.text", bordercolor = "$palette.nonmetals.border" }
+
+[[rules]]
+selector = "node.category-alkali-metals"
+properties = { background = "$palette.alkali-metals.fill", textcolor = "$palette.alkali-metals.text", bordercolor = "$palette.alkali-metals.border" }
+
+[[rules]]
+selector = "node.category-alkaline-earth-metals"
+properties = { background = "$palette.alkaline-earth-metals.fill", textcolor = "$palette.alkaline-earth-metals.text", bordercolor = "$palette.alkaline-earth-metals.border" }
+
+[[rules]]
+selector = "node.category-lanthanoids"
+properties = { background = "$palette.lanthanoids.fill", textcolor = "$palette.lanthanoids.text", bordercolor = "$palette.lanthanoids.border" }
+
+[[rules]]
+selector = "node.category-actinoids"
+properties = { background = "$palette.actinoids.fill", textcolor = "$palette.actinoids.text", bordercolor = "$palette.actinoids.border" }
+
+[[rules]]
+selector = "node.category-transition-metals"
+properties = { background = "$palette.transition-metals.fill", textcolor = "$palette.transition-metals.text", bordercolor = "$palette.transition-metals.border" }
+
+[[rules]]
+selector = "node.category-post-transition-metals"
+properties = { background = "$palette.post-transition-metals.fill", textcolor = "$palette.post-transition-metals.text", bordercolor = "$palette.post-transition-metals.border" }
+
+[[rules]]
+selector = "node.category-metalloids"
+properties = { background = "$palette.metalloids.fill", textcolor = "$palette.metalloids.text", bordercolor = "$palette.metalloids.border" }
+
+[[rules]]
+selector = "node.category-halogens"
+properties = { background = "$palette.halogens.fill", textcolor = "$palette.halogens.text", bordercolor = "$palette.halogens.border" }
+
+[[rules]]
+selector = "node.category-noble-gases"
+properties = { background = "$palette.noble-gases.fill", textcolor = "$palette.noble-gases.text", bordercolor = "$palette.noble-gases.border" }
+
+[[rules]]
+selector = "node.category-unknowns"
+properties = { background = "$palette.unknowns.fill", textcolor = "$palette.unknowns.text", bordercolor = "$palette.unknowns.border" }

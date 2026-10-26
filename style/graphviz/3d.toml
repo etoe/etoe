@@ -1,0 +1,102 @@
+schema_version = 1
+description = "Graphviz target-specific style overlay for 3D."
+
+[target_overrides.3D]
+
+[target_overrides.3D.graph]
+fontname = "DejaVu Sans"
+fontsize = 14
+
+[target_overrides.3D.node]
+fontname = "DejaVu Sans"
+fontsize = 9
+
+[target_overrides.3D.edge]
+fontname = "DejaVu Sans"
+fontsize = 8
+
+
+
+[[rules]]
+selector = "node.hyperatom"
+properties = { shape = "box", style = "filled,rounded" }
+
+[[rules]]
+selector = "node.element-template"
+properties = { shape = "hexagon", style = "filled" }
+
+[[rules]]
+selector = "node.element-symbol"
+properties = { shape = "ellipse", style = "filled" }
+
+[[rules]]
+selector = "node.molecule"
+properties = { shape = "component", style = "filled" }
+
+[[rules]]
+selector = "node.category-nonmetals"
+properties = { fillcolor = "$palette.nonmetals.fill", fontcolor = "$palette.nonmetals.text", color = "$palette.nonmetals.border" }
+
+[[rules]]
+selector = "node.category-alkali-metals"
+properties = { fillcolor = "$palette.alkali-metals.fill", fontcolor = "$palette.alkali-metals.text", color = "$palette.alkali-metals.border" }
+
+[[rules]]
+selector = "node.category-alkaline-earth-metals"
+properties = { fillcolor = "$palette.alkaline-earth-metals.fill", fontcolor = "$palette.alkaline-earth-metals.text", color = "$palette.alkaline-earth-metals.border" }
+
+[[rules]]
+selector = "node.category-lanthanoids"
+properties = { fillcolor = "$palette.lanthanoids.fill", fontcolor = "$palette.lanthanoids.text", color = "$palette.lanthanoids.border" }
+
+[[rules]]
+selector = "node.category-actinoids"
+properties = { fillcolor = "$palette.actinoids.fill", fontcolor = "$palette.actinoids.text", color = "$palette.actinoids.border" }
+
+[[rules]]
+selector = "node.category-transition-metals"
+properties = { fillcolor = "$palette.transition-metals.fill", fontcolor = "$palette.transition-metals.text", color = "$palette.transition-metals.border" }
+
+[[rules]]
+selector = "node.category-post-transition-metals"
+properties = { fillcolor = "$palette.post-transition-metals.fill", fontcolor = "$palette.post-transition-metals.text", color = "$palette.post-transition-metals.border" }
+
+[[rules]]
+selector = "node.category-metalloids"
+properties = { fillcolor = "$palette.metalloids.fill", fontcolor = "$palette.metalloids.text", color = "$palette.metalloids.border" }
+
+[[rules]]
+selector = "node.category-halogens"
+properties = { fillcolor = "$palette.halogens.fill", fontcolor = "$palette.halogens.text", color = "$palette.halogens.border" }
+
+[[rules]]
+selector = "node.category-noble-gases"
+properties = { fillcolor = "$palette.noble-gases.fill", fontcolor = "$palette.noble-gases.text", color = "$palette.noble-gases.border" }
+
+[[rules]]
+selector = "node.category-unknowns"
+properties = { fillcolor = "$palette.unknowns.fill", fontcolor = "$palette.unknowns.text", color = "$palette.unknowns.border" }
+
+[[rules]]
+selector = "node.symbol-H"
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.only.fill", fontcolor = "$palette.protium.only.text", color = "$palette.protium.only.border", penwidth = 1.5 }
+
+[[rules]]
+selector = "node.graph-hyperatom-tree.symbol-H.position-first-subatom"
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.first.fill", fontcolor = "$palette.protium.first.text", color = "$palette.protium.first.border", penwidth = 1.7 }
+
+[[rules]]
+selector = "node.graph-hyperatom-tree.symbol-H.position-second-subatom"
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.second.fill", fontcolor = "$palette.protium.second.text", color = "$palette.protium.second.border", penwidth = 1.7 }
+
+[[rules]]
+selector = "node.graph-hyperatom-tree.symbol-H.position-only-subatom"
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.only.fill", fontcolor = "$palette.protium.only.text", color = "$palette.protium.only.border", penwidth = 1.7 }
+
+[[rules]]
+selector = "node.proxy.ambiguous"
+properties = { shape = "diamond", style = "filled", fillcolor = "$palette.proxy.ambiguous.fill", fontcolor = "$palette.proxy.ambiguous.text", color = "$palette.proxy.ambiguous.border", fontsize = "8" }
+
+[[rules]]
+selector = "node.proxy.unresolved"
+properties = { shape = "diamond", style = "filled", fillcolor = "$palette.proxy.unresolved.fill", fontcolor = "$palette.proxy.unresolved.text", color = "$palette.proxy.unresolved.border", fontsize = "8" }

@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.68 cascading visualization styles
+
+- Added a renderer-neutral style cascade with global Light/Dark, Source and Target
+  settings, CSS-like selectors, property inheritance, specificity, source-order
+  resolution, and inline overrides.
+- Moved declarative TOML and TeX assets to the project-level `style/` tree, with
+  `style/shared/tokens.toml`, one primary stylesheet per source environment, and
+  source/target overlays such as `style/graphviz/latex.toml`.
+- Moved the cascade engine to `src/etoe/style.py` and added the renderer-specific
+  Graphviz adapter at `src/etoe/styles/graphviz.py`; the style tree is included in
+  source and wheel distributions.
+- Routed all Graphviz hyperatom, periodic-map, hyperatom-map, and occurrence-tree
+  styles through the adapter, including target-specific typography overlays.
+- Added chemical-category colouring and fixed-size circular Protium nodes: blue for
+  the first tree subatom, red for the second, purple for the sole/root subatom and
+  for Protium in maps.
+- Added the style guide and tests covering the cascade, category palette, modes,
+  targets, Graphviz integration, and Protium position rules.
+- Connected Graphviz end-to-end; 3D/LaTeX/Manim/book/article/web profiles are
+  declarative foundations for adapters that are not yet implemented.
+
 ## 0.1.65 hyperatom selection catalogs
 
 - Added data-driven chemical categories, atomic-level indexes, custom element groups, and concrete hyperatom groups.

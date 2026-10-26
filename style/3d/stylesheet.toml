@@ -1,0 +1,105 @@
+schema_version = 1
+description = "Shared material and scene tokens for ÆToE 3D renderers."
+
+[themes]
+
+[themes.Light]
+
+[themes.Light.scene]
+background = "#FFFFFF"
+ambient_light = 0.55
+key_light = 0.85
+exposure = 1.0
+
+[themes.Light.entity]
+color = "#DCEBFF"
+outline = "#4578B5"
+opacity = 1.0
+roughness = 0.68
+metalness = 0.05
+scale = 1.0
+
+[themes.Light.edge]
+color = "#667085"
+opacity = 0.82
+width = 1.2
+
+[themes.Light.label]
+color = "#1F2937"
+font = "Inter"
+size = 12
+opacity = 1.0
+
+
+[themes.Dark]
+
+[themes.Dark.scene]
+background = "#111827"
+ambient_light = 0.32
+key_light = 0.78
+exposure = 1.05
+
+[themes.Dark.entity]
+color = "#1E3A5F"
+outline = "#60A5FA"
+opacity = 1.0
+roughness = 0.52
+metalness = 0.1
+scale = 1.0
+
+[themes.Dark.edge]
+color = "#9CA3AF"
+opacity = 0.72
+width = 1.2
+
+[themes.Dark.label]
+color = "#F9FAFB"
+font = "Inter"
+size = 12
+opacity = 1.0
+
+
+
+[[rules]]
+selector = "entity.category-nonmetals"
+properties = { color = "$palette.nonmetals.fill", outline = "$palette.nonmetals.border" }
+
+[[rules]]
+selector = "entity.category-alkali-metals"
+properties = { color = "$palette.alkali-metals.fill", outline = "$palette.alkali-metals.border" }
+
+[[rules]]
+selector = "entity.category-alkaline-earth-metals"
+properties = { color = "$palette.alkaline-earth-metals.fill", outline = "$palette.alkaline-earth-metals.border" }
+
+[[rules]]
+selector = "entity.category-lanthanoids"
+properties = { color = "$palette.lanthanoids.fill", outline = "$palette.lanthanoids.border" }
+
+[[rules]]
+selector = "entity.category-actinoids"
+properties = { color = "$palette.actinoids.fill", outline = "$palette.actinoids.border" }
+
+[[rules]]
+selector = "entity.category-transition-metals"
+properties = { color = "$palette.transition-metals.fill", outline = "$palette.transition-metals.border" }
+
+[[rules]]
+selector = "entity.category-post-transition-metals"
+properties = { color = "$palette.post-transition-metals.fill", outline = "$palette.post-transition-metals.border" }
+
+[[rules]]
+selector = "entity.category-metalloids"
+properties = { color = "$palette.metalloids.fill", outline = "$palette.metalloids.border" }
+
+[[rules]]
+selector = "entity.category-halogens"
+properties = { color = "$palette.halogens.fill", outline = "$palette.halogens.border" }
+
+[[rules]]
+selector = "entity.category-noble-gases"
+properties = { color = "$palette.noble-gases.fill", outline = "$palette.noble-gases.border" }
+
+[[rules]]
+selector = "entity.category-unknowns"
+properties = { color = "$palette.unknowns.fill", outline = "$palette.unknowns.border" }

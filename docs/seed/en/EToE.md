@@ -2,10 +2,10 @@
 title: "Ether Theory of Everything"
 description: "Foundational seed document defining the core postulates, open questions, and collaboration rules for the EToE project."
 language: en
-version: 0.1.68
-date: 2026-10-25
+version: 0.1.69
+date: 2026-10-26
 created: 2026-06-01
-updated: 2026-10-25
+updated: 2026-10-26
 status: active
 priority: critical
 audience: LLM, Human

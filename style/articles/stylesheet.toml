@@ -1,0 +1,139 @@
+schema_version = 1
+description = "Compact typography, columns, captions and citations for ÆToE articles."
+
+[themes]
+
+[themes.Light]
+
+[themes.Light.page]
+background = "#FFFFFF"
+textcolor = "#202124"
+column_count = 2
+column_gap = "7mm"
+margin = "20mm"
+
+[themes.Light.body]
+fontname = "Libertinus Serif"
+fontsize = "9pt"
+lineheight = "1.18"
+textcolor = "#202124"
+paragraph_spacing = "0.35em"
+
+[themes.Light.heading]
+fontname = "Libertinus Sans"
+fontsize = "1.15em"
+textcolor = "#17365D"
+weight = "bold"
+spacing_before = "0.9em"
+spacing_after = "0.35em"
+
+[themes.Light.code]
+fontname = "JetBrains Mono"
+fontsize = "7.5pt"
+background = "#F3F4F6"
+textcolor = "#263238"
+
+[themes.Light.figure]
+bordercolor = "#D1D5DB"
+background = "#FFFFFF"
+padding = "0.25em"
+
+[themes.Light.caption]
+textcolor = "#4B5563"
+fontsize = "8pt"
+alignment = "center"
+
+[themes.Light.citation]
+textcolor = "#2563EB"
+style = "numeric"
+
+
+[themes.Dark]
+
+[themes.Dark.page]
+background = "#111827"
+textcolor = "#E5E7EB"
+column_count = 2
+column_gap = "7mm"
+margin = "20mm"
+
+[themes.Dark.body]
+fontname = "Libertinus Serif"
+fontsize = "9pt"
+lineheight = "1.18"
+textcolor = "#E5E7EB"
+paragraph_spacing = "0.35em"
+
+[themes.Dark.heading]
+fontname = "Libertinus Sans"
+fontsize = "1.15em"
+textcolor = "#93C5FD"
+weight = "bold"
+spacing_before = "0.9em"
+spacing_after = "0.35em"
+
+[themes.Dark.code]
+fontname = "JetBrains Mono"
+fontsize = "7.5pt"
+background = "#1F2937"
+textcolor = "#E5E7EB"
+
+[themes.Dark.figure]
+bordercolor = "#4B5563"
+background = "#111827"
+padding = "0.25em"
+
+[themes.Dark.caption]
+textcolor = "#9CA3AF"
+fontsize = "8pt"
+alignment = "center"
+
+[themes.Dark.citation]
+textcolor = "#60A5FA"
+style = "numeric"
+
+
+
+[[rules]]
+selector = "node.category-nonmetals"
+properties = { background = "$palette.nonmetals.fill", textcolor = "$palette.nonmetals.text", bordercolor = "$palette.nonmetals.border" }
+
+[[rules]]
+selector = "node.category-alkali-metals"
+properties = { background = "$palette.alkali-metals.fill", textcolor = "$palette.alkali-metals.text", bordercolor = "$palette.alkali-metals.border" }
+
+[[rules]]
+selector = "node.category-alkaline-earth-metals"
+properties = { background = "$palette.alkaline-earth-metals.fill", textcolor = "$palette.alkaline-earth-metals.text", bordercolor = "$palette.alkaline-earth-metals.border" }
+
+[[rules]]
+selector = "node.category-lanthanoids"
+properties = { background = "$palette.lanthanoids.fill", textcolor = "$palette.lanthanoids.text", bordercolor = "$palette.lanthanoids.border" }
+
+[[rules]]
+selector = "node.category-actinoids"
+properties = { background = "$palette.actinoids.fill", textcolor = "$palette.actinoids.text", bordercolor = "$palette.actinoids.border" }
+
+[[rules]]
+selector = "node.category-transition-metals"
+properties = { background = "$palette.transition-metals.fill", textcolor = "$palette.transition-metals.text", bordercolor = "$palette.transition-metals.border" }
+
+[[rules]]
+selector = "node.category-post-transition-metals"
+properties = { background = "$palette.post-transition-metals.fill", textcolor = "$palette.post-transition-metals.text", bordercolor = "$palette.post-transition-metals.border" }
+
+[[rules]]
+selector = "node.category-metalloids"
+properties = { background = "$palette.metalloids.fill", textcolor = "$palette.metalloids.text", bordercolor = "$palette.metalloids.border" }
+
+[[rules]]
+selector = "node.category-halogens"
+properties = { background = "$palette.halogens.fill", textcolor = "$palette.halogens.text", bordercolor = "$palette.halogens.border" }
+
+[[rules]]
+selector = "node.category-noble-gases"
+properties = { background = "$palette.noble-gases.fill", textcolor = "$palette.noble-gases.text", bordercolor = "$palette.noble-gases.border" }
+
+[[rules]]
+selector = "node.category-unknowns"
+properties = { background = "$palette.unknowns.fill", textcolor = "$palette.unknowns.text", bordercolor = "$palette.unknowns.border" }

@@ -1,0 +1,23 @@
+schema_version = 1
+description = "Graphviz target-specific style overlay for Web."
+
+[target_overrides.Web]
+
+[target_overrides.Web.graph]
+fontname = "Inter"
+fontsize = 16
+pad = "0.30"
+nodesep = "0.28"
+ranksep = "0.65"
+
+[target_overrides.Web.node]
+fontname = "Inter"
+fontsize = 10
+margin = "0.12,0.08"
+penwidth = 1.2
+
+[target_overrides.Web.edge]
+fontname = "Inter"
+fontsize = 9
+penwidth = 1.2
+arrowsize = 0.75

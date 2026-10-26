@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "etoe"
-version = "0.1.68"
+version = "0.1.69"
 description = "Reference Python implementation of the ÆToE."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -60,3 +60,13 @@ addopts = "-ra"
 
 [project.urls]
 Homepage = "https://github.com/etoe/etoe"
+
+[tool.setuptools.data-files]
+"style/shared" = ["style/shared/*.toml"]
+"style/graphviz" = ["style/graphviz/*.toml"]
+"style/3d" = ["style/3d/*.toml"]
+"style/latex" = ["style/latex/*.toml", "style/latex/*.tex"]
+"style/manim" = ["style/manim/*.toml"]
+"style/books" = ["style/books/*.toml"]
+"style/articles" = ["style/articles/*.toml"]
+"style/web" = ["style/web/*.toml"]

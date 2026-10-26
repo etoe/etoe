@@ -1,0 +1,19 @@
+schema_version = 1
+description = "Graphviz target-specific style overlay for LaTeX."
+
+[target_overrides.LaTeX]
+
+[target_overrides.LaTeX.graph]
+fontname = "CMU Serif"
+fontsize = 13
+ranksep = "0.62"
+
+[target_overrides.LaTeX.node]
+fontname = "CMU Serif"
+fontsize = 10
+margin = "0.10,0.06"
+
+[target_overrides.LaTeX.edge]
+fontname = "CMU Serif"
+fontsize = 9
+arrowsize = 0.72
