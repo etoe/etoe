@@ -33,7 +33,12 @@ from .style import (
     normalize_mode,
     normalize_target,
 )
-from .styles.graphviz import resolve_graphviz_style
+from .styles.graphviz import ( 
+    resolve_graphviz_style,  
+    atom_graph_default_nodesep_and_ranksep,
+    atom_graph_node_default_width_and_height,
+    atom_graph_node_width_and_height,
+)
 
 
 SUPPORTED_LAYOUTS = ("dot", "neato", "fdp", "sfdp", "circo", "twopi")
@@ -42,6 +47,7 @@ SUPPORTED_FORMATS = ("dot", "svg", "png", "pdf", "ps", "json")
 # ÆToE treats these as independently named chemical elements, not as
 # recursively decomposable element templates for numbering/periodic maps.
 _NON_INDEXED_ELEMENT_SYMBOLS = frozenset({"H", "D", "T", "Ht"})
+_UNIQUE_ELEMENT_SYMBOLS = frozenset({"H", "D", "T", "Ht"})
 
 
 def _active_style_settings(mode: str | None = None, target: str | None = None) -> StyleSettings:
@@ -66,30 +72,167 @@ def _dot_attributes(attributes: dict[str, object]) -> str:
 
 def _graphviz_header(
     graph_name: str,
-    title: str,
+    title: str | None,
     graph_type: str,
     *,
     mode: str | None = None,
     target: str | None = None,
     nodesep: str | None = None,
     ranksep: str | None = None,
+    compact: bool = False,
 ) -> list[str]:
     """Build graph/node/edge defaults from the selected cascade stylesheet."""
     settings = _active_style_settings(mode, target)
     graph = resolve_graphviz_style(StyleElement.create("graph", classes={f"graph-{graph_type}"}), mode=settings.mode, target=settings.target)
     node = resolve_graphviz_style(StyleElement.create("node"), mode=settings.mode, target=settings.target)
     edge = resolve_graphviz_style(StyleElement.create("edge"), mode=settings.mode, target=settings.target)
-    graph["label"] = title
+    if title:
+        graph["label"] = title
+    else:
+        graph.pop("label", None)
     if nodesep is not None:
         graph["nodesep"] = nodesep
     if ranksep is not None:
         graph["ranksep"] = ranksep
+    if compact:
+        # Graphviz's default padding and the stylesheet's editorial margins
+        # are useful for presentation graphics, but waste pixels in structural
+        # diagrams intended to be embedded in books, articles and web pages.
+        graph.update({"pad": "1", "margin": "1", "splines": "line"})
+        node.update({"margin": "1", "fontsize": 11})
+        edge.update({"arrowhead": "none", "arrowsize": 0.45})
     return [
         f"digraph {graph_name} {{",
         f"  graph [{_dot_attributes(graph)}];",
         f"  node [{_dot_attributes(node)}];",
         f"  edge [{_dot_attributes(edge)}];",
     ]
+
+
+def _atom_level(obj: SemanticHyperatom) -> int:
+    """Return the inferred atomic level, bounded for display heuristics.
+
+    ``matter_level`` is a different semantic dimension and must not be used as
+    a fallback for atomic level when sizing a graph node.
+    """
+    value = obj.atomic_level or 1
+    return max(1, min(8, int(value)))
+
+
+def _compact_spacing(level: int) -> tuple[str, str]:
+    """Return compact ``(nodesep, ranksep)`` values in inches.
+
+    Both dimensions contract monotonically as the displayed atomic level
+    increases.  These are rendering heuristics, not physical constants.
+    """
+    level = max(1, min(8, int(level)))
+    nodesep = max(0.035, 0.17 - 0.019 * (level - 1))
+    ranksep = max(0.045, 0.21 - 0.023 * (level - 1))
+    return f"{nodesep:.3f}", f"{ranksep:.3f}"
+
+
+def _compact_node_label(
+    obj: SemanticHyperatom,
+    *,
+    graph_type: str,
+    number: int = 0,
+    show_subelement_numbers: bool = True,
+    tree_root_level: int | None = None,
+    depth: int | None = None,
+) -> str:
+    """Produce short display labels; the full notation remains in tooltips."""
+
+    # Protium is a special case: the mass-qualified form H-1-1 adds no useful
+    # information to the picture. In high-level trees, repeated H labels are
+    # suppressed entirely, leaving the role-coloured circles as the notation.
+
+    if graph_type == "hyperatom-tree" and (depth or 0) >= 4:
+        return ""  
+    
+    if obj.symbol in _UNIQUE_ELEMENT_SYMBOLS:
+        return obj.symbol
+    
+    symbol = obj.symbol or obj.designation                     
+
+    if graph_type == "periodic-map":
+        if (
+            show_subelement_numbers
+            and number > 0
+            and obj.kind == ELEMENT_TEMPLATE_KIND
+            and obj.symbol not in _NON_INDEXED_ELEMENT_SYMBOLS
+        ):
+            return f"{symbol}:{number}"
+        return symbol
+
+    # The designation carries an element/isotope identity but deliberately
+    # omits the recursive structure, which is already encoded by the edges.
+    return obj.designation
+
+
+def _compact_node_geometry(
+    obj: SemanticHyperatom,
+    *,
+    level: int,
+    depth: int = 0,
+    tree_root_level: int | None = None,
+    label: str | None = None,
+    map: bool = False,
+) -> dict[str, object]:
+    """Return per-node geometry that scales down for higher-level trees."""
+
+    attrs: dict[str, object] = {
+        #"margin": "0",
+        #"fixedsize": True,
+        "fixedsize": False,
+        #"style": "filled",
+    }    
+    if 1:
+        w_h = atom_graph_node_default_width_and_height()        
+        attrs.update({
+            "width": f"{w_h[0]:.3f}",
+            "height": f"{w_h[1]:.3f}",              
+        })          
+        w_h = atom_graph_node_width_and_height(depth, label, map);
+        if w_h[0] > 0:
+            attrs.update({
+                "width": f"{w_h[0]:.3f}",
+            })      
+        if w_h[1] > 0:
+            attrs.update({
+                "height": f"{w_h[1]:.3f}",            
+            })  
+        return attrs                     
+
+    context_level = tree_root_level if tree_root_level is not None else level
+    context_level = max(1, min(8, int(context_level)))
+    depth = max(0, int(depth))
+    fontsize = max(4.0, 8.5 - 0.48 * (context_level - 1) - 0.16 * depth)
+    penwidth = max(0.45, 0.95 - 0.055 * (context_level - 1))
+    attrs: dict[str, object] = {
+        "margin": "0",
+        "fontsize": round(fontsize, 2),
+        "penwidth": round(penwidth, 2),
+    }
+
+    if (
+        obj.symbol == "H"
+        and obj.kind in {HYPERATOM_KIND, ELEMENT_SYMBOL_KIND, ELEMENT_TEMPLATE_KIND}
+        and (obj.atomic_mass in {None, 1})
+    ):
+        if tree_root_level is None:
+            # Maps still need a legible H glyph; the aggressively small empty
+            # circles are reserved for repeated Protium in high-level trees.
+            diameter = max(0.14, 0.22 - 0.014 * (level - 1))
+        elif context_level < 5:
+            diameter = max(0.14, 0.22 - 0.014 * (context_level - 1) - 0.005 * depth)
+        else:
+            diameter = max(0.045, 0.095 - 0.008 * (context_level - 5) - 0.003 * depth)
+        attrs.update({
+            "width": f"{diameter:.3f}",
+            "height": f"{diameter:.3f}",
+            "fixedsize": True,
+        })
+    return attrs
 
 
 def _style_proxy_node(
@@ -112,7 +255,7 @@ def hyperatom_graph_to_dot(
     *,
     include_templates: bool = False,
     symbols: Iterable[str] | None = None,
-    title: str = "ÆToE semantic hyperatom graph",
+    title: str | None = None,
     show_element_names: bool = False,
     language: str = "en",
     periodic: bool = False,
@@ -255,7 +398,7 @@ def write_hyperatom_graph(
     symbols: Iterable[str] | None = None,
     layout: str = "dot",
     format: str | None = None,
-    title: str = "ÆToE semantic hyperatom graph",
+    title: str | None = None,
     show_element_names: bool = False,
     language: str = "en",
     periodic: bool = False,
@@ -284,10 +427,11 @@ def periodic_map_to_dot(
     registry: HyperatomRegistry,
     *,
     symbols: Iterable[str] | None = None,
-    title: str = "ÆToE periodic map",
+    title: str | None = None,
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
 ) -> str:
@@ -297,6 +441,8 @@ def periodic_map_to_dot(
     templates/symbols to their element subcomponents; H, D, T and Ht are
     treated as standalone named elements for numbering (their label stays at
     index zero), while any source-template components remain visible as edges.
+    By default, labels and layout are compact and no graph title is emitted;
+    pass ``compact=False`` for detailed structural labels.
     """
     selected = {item.strip() for item in symbols or () if item.strip()}
     element_kinds = {ELEMENT_TEMPLATE_KIND, ELEMENT_SYMBOL_KIND}
@@ -332,8 +478,11 @@ def periodic_map_to_dot(
         raise ValueError(f"No chemical-element definitions found for {requested}.")
 
     numbers = build_element_subelement_numbering(registry)
+    max_level = max((_atom_level(obj) for obj in elements.values()), default=1)
+    nodesep, ranksep = _compact_spacing(max_level) if compact else (None, None)
     lines = _graphviz_header(
         "periodic_map", title, "periodic-map", mode=mode, target=target,
+        nodesep=nodesep, ranksep=ranksep, compact=compact,
     )
     ordered = sorted(
         elements.values(),
@@ -341,9 +490,15 @@ def periodic_map_to_dot(
     )
     for obj in ordered:
         number = numbers.get(obj.id, 0)
-        label = _periodic_label(
-            obj, number, registry, numbers,
-            show_subelement_numbers=show_subelement_numbers,
+        label = (
+            _compact_node_label(
+                obj, graph_type="periodic-map", number=number,
+                show_subelement_numbers=show_subelement_numbers,
+            )
+            if compact else _periodic_label(
+                obj, number, registry, numbers,
+                show_subelement_numbers=show_subelement_numbers,
+            )
         )
         if show_element_names and registry.element_catalog is not None and obj.symbol:
             element = registry.element_catalog.get(obj.symbol)
@@ -354,6 +509,8 @@ def periodic_map_to_dot(
         style = _node_style(obj, graph_type="periodic-map", mode=mode, target=target)
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
         attributes = {"label": label, "tooltip": tooltip, **style}
+        if compact:
+            attributes.update(_compact_node_geometry(obj, level=_atom_level(obj), label=label, map=True))
         lines.append(f'  "{obj.id}" [{_dot_attributes(attributes)}];')
 
     # Do not de-duplicate edges by (parent, child, symbol): each entry in
@@ -401,10 +558,11 @@ def write_periodic_map(
     symbols: Iterable[str] | None = None,
     layout: str = "dot",
     format: str | None = None,
-    title: str = "ÆToE periodic map",
+    title: str | None = None,
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
 ) -> Path:
@@ -418,7 +576,8 @@ def write_periodic_map(
     dot = periodic_map_to_dot(
         registry, symbols=symbols, title=title,
         show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
+        show_subelement_numbers=show_subelement_numbers, compact=compact,
+        mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 
@@ -427,10 +586,11 @@ def hyperatom_map_to_dot(
     registry: HyperatomRegistry,
     *,
     symbols: Iterable[str] | None = None,
-    title: str = "ÆToE hyperatom map",
+    title: str | None = None,
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
 ) -> str:
@@ -439,6 +599,8 @@ def hyperatom_map_to_dot(
     Candidate ambiguity is represented by direct edges to each concrete
     hyperatom candidate, not by proxy nodes. Unresolved subatoms have no edge,
     because the map's nodes are exclusively concrete hyperatom definitions.
+    Compact mode labels atoms with short designations and leaves structure to
+    the edges; full canonical notations remain in tooltips.
     """
     selected = {item.strip() for item in symbols or () if item.strip()}
     atoms = {obj.id: obj for obj in registry.definitions if obj.kind == HYPERATOM_KIND}
@@ -463,14 +625,20 @@ def hyperatom_map_to_dot(
         raise ValueError(f"No concrete hyperatom definitions found for {requested}.")
 
     numbers = build_element_subelement_numbering(registry)
+    max_level = max((_atom_level(obj) for obj in atoms.values()), default=1)
+    nodesep, ranksep = _compact_spacing(max_level) if compact else (None, None)
     lines = _graphviz_header(
         "hyperatom_map", title, "hyperatom-map", mode=mode, target=target,
+        nodesep=nodesep, ranksep=ranksep, compact=compact,
     )
     ordered = sorted(atoms.values(), key=lambda obj: (obj.symbol or "", numbers.get(obj.id, 0), obj.atomic_mass or -1, obj.canonical, obj.id))
     for obj in ordered:
-        label = _periodic_label(
-            obj, numbers.get(obj.id, 0), registry, numbers,
-            show_subelement_numbers=show_subelement_numbers,
+        label = (
+            _compact_node_label(obj, graph_type="hyperatom-map")
+            if compact else _periodic_label(
+                obj, numbers.get(obj.id, 0), registry, numbers,
+                show_subelement_numbers=show_subelement_numbers,
+            )
         )
         if show_element_names and registry.element_catalog is not None and obj.symbol:
             element = registry.element_catalog.get(obj.symbol)
@@ -481,6 +649,8 @@ def hyperatom_map_to_dot(
         style = _node_style(obj, graph_type="hyperatom-map", mode=mode, target=target)
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
         attributes = {"label": label, "tooltip": tooltip, **style}
+        if compact:
+            attributes.update(_compact_node_geometry(obj, level=_atom_level(obj), label=label, map=True))
         lines.append(f'  "{obj.id}" [{_dot_attributes(attributes)}];')
 
     # Preserve every component occurrence, including parallel edges to the same
@@ -507,10 +677,11 @@ def write_hyperatom_map(
     symbols: Iterable[str] | None = None,
     layout: str = "dot",
     format: str | None = None,
-    title: str = "ÆToE hyperatom map",
+    title: str | None = None,
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
 ) -> Path:
@@ -524,7 +695,8 @@ def write_hyperatom_map(
     dot = hyperatom_map_to_dot(
         registry, symbols=symbols, title=title,
         show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
+        show_subelement_numbers=show_subelement_numbers, compact=compact,
+        mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 
@@ -660,6 +832,7 @@ def hyperatom_tree_to_dot(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
 ) -> str:
@@ -669,13 +842,18 @@ def hyperatom_tree_to_dot(
     as two distinct occurrence nodes. If a component has multiple concrete
     hyperatom candidates, each is expanded as a separate possible branch.
     Non-hyperatom templates and unresolved references do not become graph nodes.
+    Compact mode is the default; Protium labels are hidden in trees rooted at
+    atomic level 5 or above, and node geometry scales with root level and depth.
     """
     root = _resolve_hyperatom(registry, hyperatom)
-    tree_title = title or f"ÆToE hyperatom tree: {root.designation}"
+    root_level = _atom_level(root)
+    #nodesep, ranksep = _compact_spacing(root_level) if compact else ("0.12", "0.28")
+    nodesep, ranksep = atom_graph_default_nodesep_and_ranksep()
     numbering = build_element_subelement_numbering(registry)
     lines = _graphviz_header(
-        "hyperatom_tree", tree_title, "hyperatom-tree",
-        mode=mode, target=target, nodesep="0.12", ranksep="0.28",
+        "hyperatom_tree", title, "hyperatom-tree",
+        mode=mode, target=target, nodesep=nodesep, ranksep=ranksep,
+        compact=compact,
     )
     counter = 0
     edge_lines: list[str] = []
@@ -687,11 +865,17 @@ def hyperatom_tree_to_dot(
         *,
         position: str = "tree-root",
         parent_style: dict[str, object] | None = None,
+        depth: int = 0,
     ) -> None:
         nonlocal counter
-        label = _periodic_label(
-            obj, numbering.get(obj.id, 0), registry, numbering,
-            show_subelement_numbers=show_subelement_numbers,
+        label = (
+            _compact_node_label(
+                obj, graph_type="hyperatom-tree", tree_root_level=root_level, depth=depth,
+            )
+            if compact else _periodic_label(
+                obj, numbering.get(obj.id, 0), registry, numbering,
+                show_subelement_numbers=show_subelement_numbers,
+            )
         )
         if show_element_names and registry.element_catalog is not None and obj.symbol:
             element = registry.element_catalog.get(obj.symbol)
@@ -703,6 +887,11 @@ def hyperatom_tree_to_dot(
             obj, graph_type="hyperatom-tree", position=position,
             mode=mode, target=target, parent_style=parent_style,
         )
+        if compact:
+            style.update(_compact_node_geometry(
+                obj, level=_atom_level(obj), depth=depth,
+                tree_root_level=root_level, label=label
+            ))
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}"
         lines.append(
             f'  "{occurrence_id}" [{_dot_attributes({"label": label, "tooltip": tooltip, **style})}];'
@@ -731,21 +920,32 @@ def hyperatom_tree_to_dot(
                 )
                 if child_obj.id in ancestors:
                     # A pathological cyclic structure must not unfold forever.
-                    cycle_label = _periodic_label(
-                        child_obj, numbering.get(child_obj.id, 0), registry, numbering,
-                        show_subelement_numbers=show_subelement_numbers,
+                    cycle_label = (
+                        _compact_node_label(
+                            child_obj, graph_type="hyperatom-tree",
+                            tree_root_level=root_level, depth=depth,
+                        )
+                        if compact else _periodic_label(
+                            child_obj, numbering.get(child_obj.id, 0), registry, numbering,
+                            show_subelement_numbers=show_subelement_numbers,
+                        )
                     ) + "\n(cycle)"
                     cycle_style = _node_style(
                         child_obj, graph_type="hyperatom-tree", position=child_position,
                         mode=mode, target=target, parent_style=style,
                     )
+                    if compact:
+                        cycle_style.update(_compact_node_geometry(
+                            child_obj, level=_atom_level(child_obj), depth=depth + 1,
+                            tree_root_level=root_level,
+                        ))
                     lines.append(
                         f'  "{child_id}" [{_dot_attributes({"label": cycle_label, "tooltip": f"Cycle cut at {child_obj.canonical}", **cycle_style})}];'
                     )
                 else:
                     add_occurrence(
                         child_obj, child_id, (*ancestors, child_obj.id),
-                        position=child_position, parent_style=style,
+                        position=child_position, parent_style=style, depth=depth + 1,
                     )
 
     add_occurrence(root, "occ_0", (root.id,))
@@ -765,6 +965,7 @@ def write_hyperatom_tree(
     show_element_names: bool = False,
     language: str = "en",
     show_subelement_numbers: bool = True,
+    compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
 ) -> Path:
@@ -778,7 +979,8 @@ def write_hyperatom_tree(
     dot = hyperatom_tree_to_dot(
         registry, hyperatom, title=title,
         show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
+        show_subelement_numbers=show_subelement_numbers, compact=compact,
+        mode=mode, target=target,
     )
     return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
 

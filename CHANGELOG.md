@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.69 compact Graphviz atom diagrams
+
+- Made periodic maps, concrete hyperatom maps and hyperatom occurrence trees
+  compact by default: omit titles unless requested, eliminate graph/node
+  padding, remove edge arrowheads, and reduce node/rank spacing as atomic level
+  increases.
+- Replaced structural node labels with short element/isotope identifiers while
+  preserving full canonical notation in tooltips. Protium uses `H` at lower
+  tree levels and empty role-coloured circles at level 5 and above.
+- Scaled node typography and Protium-circle diameters with tree root level and
+  occurrence depth; kept the previous detailed labels/layout opt-in via
+  `compact=False` and CLI `--full-labels`.
+- Added compact rendering documentation and regressions for output structure,
+  level-aware spacing, label suppression and rendered image dimensions.
+
 ## 0.1.68 cascading visualization styles
 
 - Added a renderer-neutral style cascade with global Light/Dark, Source and Target

@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`EToE.md` (language: ru; version: 0.1.68; date: 2026-10-25) is the seed document used as the design basis for this package snapshot.
+`docs/seed/ru/EToE.md` (language: ru; version: 0.1.69; date: 2026-10-26) is the Russian seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -174,6 +174,17 @@ defined subelements are placed after their lower same-symbol definitions. This
 is a deterministic indexing convention inferred from the current `.etoe` files,
 not an additional physical postulate of the seed.
 
+The periodic map, hyperatom map and occurrence tree use `compact=True` by
+default: no heading or outer padding, zero node margins, tight level-aware
+spacing, and short node labels without the recursive structural suffix. The
+full canonical notation is preserved in node tooltips. In occurrence trees,
+Protium is labelled `H` for roots through atomic level 4; for level 5 and above,
+repeated Protium labels are suppressed and only the position-coloured circle is
+shown. Both node typography and those circles shrink for higher-level trees.
+Set `compact=False` to recover detailed structural labels and the roomier
+layout, or pass `title="..."` to add a heading explicitly. CLI users can pass
+`--full-labels` for the detailed mode.
+
 ```python
 from etoe import (
     HyperatomTranslator,
@@ -189,7 +200,7 @@ registry = HyperatomTranslator().translate_directory("data/atom/element")
 numbers = build_element_subelement_numbering(registry)  # object ID -> integer
 
 periodic_dot = periodic_map_to_dot(registry, symbols=["He"])
-    hyperatom_map_dot = hyperatom_map_to_dot(registry, symbols=["He"])
+hyperatom_map_dot = hyperatom_map_to_dot(registry, symbols=["He"])
 tree_dot = hyperatom_tree_to_dot(registry, "He-5-(4'1)")
 write_periodic_map(registry, "build/periodic-He.dot", symbols=["He"])
 write_hyperatom_tree(registry, "He-5-(4'1)", "build/He-5-tree.dot")
@@ -199,15 +210,17 @@ The equivalent command-line operations are available as
 `etoe hyperatoms periodic-map --symbols He --output build/periodic-He.svg`,
 `etoe hyperatoms hyperatom-map --symbols He --output build/hyperatom-He.svg`
 and `etoe hyperatoms tree "He-5-(4'1)" --output build/He-5-tree.svg`. Add
-`--hide-subelement-numbers` to any of these commands to hide nonzero suffixes.
+`--hide-subelement-numbers` to any of these commands to hide nonzero suffixes;
+add `--title "..."` when a heading is needed, or `--full-labels` for the
+non-compact structural notation.
 
 ## Cascading visualization styles
 
 `etoe.style` provides the renderer-neutral style engine. Declarative assets live in the project-level `style/` tree and provide shared Light/Dark style sheets and a deterministic cascade
-for Graphviz, 3D, LaTeX, Manim, books, articles and web presentation. The
-Graphviz adapter uses chemical-category colours and fixed-size circular
-Protium nodes, including position-specific blue/red/purple treatment in
-hyperatom occurrence trees.
+for Graphviz, 3D, LaTeX, Manim, books, articles and web presentation. The Graphviz adapter uses chemical-category colours and circular Protium nodes,
+including position-specific blue/red/purple treatment in hyperatom occurrence
+trees. In compact mode, Protium node diameters scale with root atomic level and
+occurrence depth.
 
 ```python
 from etoe import configure_styles, hyperatom_tree_to_dot

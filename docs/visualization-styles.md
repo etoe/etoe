@@ -103,12 +103,35 @@ accept per-call overrides: `hyperatom_graph_to_dot()`, `periodic_map_to_dot()`,
 come from the Graphviz stylesheet, not from separate hard-coded Light/Dark
 branches.
 
+### Compact structural diagrams
+
+`periodic_map_to_dot()`, `hyperatom_map_to_dot()` and `hyperatom_tree_to_dot()`
+default to `compact=True`. In this mode, graph titles are omitted unless a
+`title=` is explicitly supplied; graph padding and node margins are zero;
+edges have no arrowheads; layout gaps contract as atomic level increases; and
+node labels omit recursively expanded structure. Periodic element templates
+retain only the element symbol and, where useful, the subelement index.
+Hyperatom maps use short designations (such as `He-5`), while occurrence trees
+use these designations without structural suffixes. Protium is labelled `H`
+for root atomic levels 1–4 and becomes an empty, role-coloured circle in trees
+rooted at level 5 or above. In those trees, node typography and Protium circles
+also shrink with root level and occurrence depth.
+
+Full structural labels and the previous roomy layout remain available with
+`compact=False`; this is useful for diagnostics and notation-focused figures.
+Passing `title="..."` adds a heading even when compact mode is enabled. The
+canonical notation remains available in node tooltips regardless of the label
+mode. The compact sizes and spacing are rendering heuristics, not additional
+physical postulates of ÆToE.
+
 Chemical categories reuse the category assignments already present in
 `etoe.selections`; unknown/custom symbols use the `unknowns` palette until a
 richer category is defined. These colours are stable visual encodings for
 reading graphs, not theoretical claims.
 
-Protium (`H`) is always emitted as a fixed-size Graphviz circle:
+Protium (`H`) is emitted as a Graphviz circle. The stylesheet supplies its
+base size; compact graph builders override its diameter using root atomic level
+and occurrence depth:
 
 - In periodic maps and hyperatom maps, its colour is the purple “only/base
   Protium” role.

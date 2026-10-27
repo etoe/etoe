@@ -11,16 +11,16 @@ bgcolor = "#FFFFFF"
 color = "#FFFFFF"
 fontcolor = "#152238"
 fontname = "Inter"
-fontsize = 15
+fontsize = 11
 pad = "0.25"
-nodesep = "0.22"
-ranksep = "0.55"
+nodesep = "0.03"
+ranksep = "0.015"
 splines = "spline"
 labelloc = "t"
 
 [themes.Light.node]
 fontname = "Inter"
-fontsize = 9
+fontsize = 11
 margin = "0.08,0.05"
 style = "filled,rounded"
 color = "#667085"

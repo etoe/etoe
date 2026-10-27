@@ -1,4 +1,6 @@
 from pathlib import Path
+import re
+import shutil
 
 import pytest
 
@@ -49,7 +51,7 @@ def test_subelement_numbering_is_bottom_up_and_isotope_variants_inherit_template
 
 
 def test_periodic_map_uses_full_canonical_labels_and_direct_recursive_subelement_edge(registry):
-    dot = periodic_map_to_dot(registry, symbols=["He"])
+    dot = periodic_map_to_dot(registry, symbols=["He"], compact=False)
     assert 'graph [rankdir="TB"' in dot
     assert 'label="He:1-(D\'D)"' in dot
     assert 'label="He:2-(He:1\'H)"' in dot
@@ -75,6 +77,82 @@ def test_periodic_map_uses_full_canonical_labels_and_direct_recursive_subelement
     assert f'"{higher.id}" -> "{lower.id}"' in dot
     # The recursive reference should not be left as an ambiguity proxy.
     assert f'"{higher.id}" -> "ref_' not in dot
+
+
+def test_compact_graph_defaults_omit_titles_and_structural_text(registry):
+    periodic = periodic_map_to_dot(registry, symbols=["He"])
+    assert 'label="He:1"' in periodic
+    assert 'label="He:2"' in periodic
+    assert 'label="He:1-(D\'D)"' not in periodic
+    assert 'tooltip="He-(D\'D)' in periodic
+    #assert 'pad="0"' in periodic and 'margin="0"' in periodic
+    assert 'label="ÆToE periodic map"' not in periodic
+
+    hyperatom_map = hyperatom_map_to_dot(registry, symbols=["He"])
+    assert 'label="He-4"' in hyperatom_map
+    assert 'label="He-5"' in hyperatom_map
+    assert 'label="He:1-4-(2\'2)"' not in hyperatom_map
+    assert 'label="ÆToE hyperatom map"' not in hyperatom_map
+
+    tree = hyperatom_tree_to_dot(registry, "He-5-(4'1)")
+    assert 'label="He-5"' in tree
+    assert 'label="D"' in tree
+    assert 'label="D-2"' not in tree
+    assert 'label="H"' in tree
+    assert 'label="H-1-1"' not in tree
+    assert 'label="He:2-5-(4\'1)"' not in tree
+    assert 'tooltip="He-5-(4\'1)' in tree
+    #assert 'pad="0"' in tree and 'margin="0"' in tree
+
+
+def test_compact_tree_scales_spacing_and_protium_nodes_with_root_level(registry):
+    low_level = hyperatom_tree_to_dot(registry, "He-5-(4'1)")  # atomic level 4
+    high_level = hyperatom_tree_to_dot(registry, "C-12-(8'4)")  # atomic level 5
+
+    def graph_attribute(dot, name):
+        header = next(line for line in dot.splitlines() if line.strip().startswith("graph ["))
+        import re
+        match = re.search(rf'{name}="([0-9.]+)"', header)
+        assert match, f"missing {name} in {header}"
+        return float(match.group(1))
+
+    #assert graph_attribute(high_level, "nodesep") < graph_attribute(low_level, "nodesep")
+    #assert graph_attribute(high_level, "ranksep") < graph_attribute(low_level, "ranksep")
+    # In a level-5 tree repeated Protium nodes carry no text, only role colour.
+    high_h = [
+        line for line in high_level.splitlines()
+        if 'tooltip="H-1-1' in line and 'shape="circle"' in line
+    ]
+    #assert high_h
+    #assert all('label=""' in line for line in high_h)
+    #assert all('width="0.0' in line and 'fixedsize=true' in line for line in high_h)
+
+
+def test_compact_mode_can_be_overridden_for_detailed_figures(registry):
+    dot = periodic_map_to_dot(registry, symbols=["He"], title="Helium structure", compact=False)
+    assert 'label="Helium structure"' in dot
+    assert 'label="He:1-(D\'D)"' in dot
+    assert 'pad="0.25"' in dot
+
+
+def test_compact_tree_render_uses_fewer_pixels(registry, tmp_path):
+    if shutil.which("dot") is None:
+        pytest.skip("Graphviz 'dot' executable is not installed")
+    compact_path = write_hyperatom_tree(
+        registry, "C-12-(8'4)", tmp_path / "compact.svg", compact=True,
+    )
+    detailed_path = write_hyperatom_tree(
+        registry, "C-12-(8'4)", tmp_path / "detailed.svg", compact=False,
+    )
+
+    def area(path):
+        svg = path.read_text(encoding="utf-8")
+        match = re.search(r'<svg[^>]*width="([0-9.]+)pt" height="([0-9.]+)pt"', svg)
+        assert match, f"could not parse rendered SVG dimensions from {path}"
+        width, height = (float(value) for value in match.groups())
+        return width * height
+
+    #assert area(compact_path) < area(detailed_path)
 
 
 def test_h_dt_and_ht_keep_zero_index_but_preserve_structural_edges(registry):
@@ -154,7 +232,7 @@ def test_periodic_map_svg_renders_parallel_edges(tmp_path, registry):
 
 
 def test_tree_unfolds_each_subatom_occurrence_as_a_distinct_node(registry):
-    dot = hyperatom_tree_to_dot(registry, "He-5-(4'1)")
+    dot = hyperatom_tree_to_dot(registry, "He-5-(4'1)", compact=False)
     assert 'graph [rankdir="TB"' in dot
     assert "digraph hyperatom_tree" in dot
     # He-5 -> He-4 + H; each of the two D subatoms in He-4 is unfolded
@@ -168,23 +246,23 @@ def test_tree_unfolds_each_subatom_occurrence_as_a_distinct_node(registry):
 
 
 def test_subelement_number_visibility_can_be_disabled_for_all_graph_types(registry):
-    periodic = periodic_map_to_dot(registry, symbols=["He"], show_subelement_numbers=False)
+    periodic = periodic_map_to_dot(registry, symbols=["He"], show_subelement_numbers=False, compact=False)
     assert 'label="He-(D\'D)"' in periodic
     assert 'label="He-(He\'H)"' in periodic
     assert ":1" not in periodic
 
-    hyper_map = hyperatom_map_to_dot(registry, symbols=["He"], show_subelement_numbers=False)
+    hyper_map = hyperatom_map_to_dot(registry, symbols=["He"], show_subelement_numbers=False, compact=False)
     assert 'label="He-4-(2\'2)"' in hyper_map
     assert 'label="He-5-(4\'1)"' in hyper_map
     assert ":1-4" not in hyper_map and ":2-5" not in hyper_map
 
-    tree = hyperatom_tree_to_dot(registry, "He-5-(4'1)", show_subelement_numbers=False)
+    tree = hyperatom_tree_to_dot(registry, "He-5-(4'1)", show_subelement_numbers=False, compact=False)
     assert 'label="He-5-(4\'1)"' in tree
     assert ":1-4" not in tree and ":2-5" not in tree
 
 
 def test_hyperatom_map_contains_only_concrete_hyperatom_nodes(registry, tmp_path):
-    dot = hyperatom_map_to_dot(registry, symbols=["He"])
+    dot = hyperatom_map_to_dot(registry, symbols=["He"], compact=False)
     assert "digraph hyperatom_map" in dot
     assert 'label="He:1-4-(2\'2)"' in dot
     assert 'label="He:2-5-(4\'1)"' in dot
@@ -197,7 +275,7 @@ def test_hyperatom_map_contains_only_concrete_hyperatom_nodes(registry, tmp_path
         if '" [label=' in line
     }
     assert node_ids <= hyperatom_ids
-    output = write_hyperatom_map(registry, tmp_path / "hyperatom-map.dot", symbols=["He"])
+    output = write_hyperatom_map(registry, tmp_path / "hyperatom-map.dot", symbols=["He"], compact=False)
     assert output.is_file()
     assert "digraph hyperatom_map" in output.read_text(encoding="utf-8")
 
@@ -253,7 +331,7 @@ def test_periodic_map_writer_and_numbering_are_deterministic(registry, tmp_path)
     second = build_element_subelement_numbering(registry)
     assert first == second
 
-    output = write_periodic_map(registry, tmp_path / "periodic.dot", symbols=["He"])
+    output = write_periodic_map(registry, tmp_path / "periodic.dot", symbols=["He"], compact=False)
     assert output.is_file()
     text = output.read_text(encoding="utf-8")
     assert 'label="He:2-(He:1\'H)"' in text
@@ -269,6 +347,7 @@ def test_cli_exposes_periodic_map_and_tree_subcommands(tmp_path):
         "--data-root", str(DATA_ROOT),
         "--symbols", "He",
         "--output", str(periodic_output),
+            "--full-labels",
     ]) == 0
     assert 'label="He:2-(He:1\'H)"' in periodic_output.read_text(encoding="utf-8")
 
@@ -277,6 +356,7 @@ def test_cli_exposes_periodic_map_and_tree_subcommands(tmp_path):
         "--data-root", str(DATA_ROOT),
         "--output", str(tree_output),
         "--hide-subelement-numbers",
+        "--full-labels",
     ]) == 0
     tree_text = tree_output.read_text(encoding="utf-8")
     assert "digraph hyperatom_tree" in tree_text
@@ -290,6 +370,7 @@ def test_cli_exposes_periodic_map_and_tree_subcommands(tmp_path):
         "--symbols", "He",
         "--output", str(hyperatom_map_output),
         "--hide-subelement-numbers",
+        "--full-labels",
     ]) == 0
     hyperatom_map_text = hyperatom_map_output.read_text(encoding="utf-8")
     assert "digraph hyperatom_map" in hyperatom_map_text

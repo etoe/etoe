@@ -1,8 +1,15 @@
 from etoe import (
+    configure_styles, 
     HyperatomTranslator,
     write_periodic_map,
     write_hyperatom_map,
     write_hyperatom_tree,
+)
+
+configure_styles(
+    Mode="Dark",
+    Source="GraphViz",
+    Target="GraphViz",
 )
 
 registry = HyperatomTranslator().translate_directory(
