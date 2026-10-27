@@ -10,7 +10,7 @@ rankdir = "TB"
 bgcolor = "#FFFFFF"
 color = "#FFFFFF"
 fontcolor = "#152238"
-fontname = "Inter"
+fontname = "sans-serif"
 fontsize = 11
 pad = "0.25"
 nodesep = "0.03"
@@ -19,7 +19,7 @@ splines = "spline"
 labelloc = "t"
 
 [themes.Light.node]
-fontname = "Inter"
+fontname = "sans-serif"
 fontsize = 11
 margin = "0.08,0.05"
 style = "filled,rounded"
@@ -28,7 +28,7 @@ fontcolor = "#1F2937"
 penwidth = 1.0
 
 [themes.Light.edge]
-fontname = "Inter"
+fontname = "sans-serif"
 fontsize = 8
 color = "#667085"
 fontcolor = "#667085"
@@ -43,7 +43,7 @@ rankdir = "TB"
 bgcolor = "#111827"
 color = "#111827"
 fontcolor = "#F9FAFB"
-fontname = "Inter"
+fontname = "sans-serif"
 fontsize = 15
 pad = "0.25"
 nodesep = "0.22"
@@ -52,7 +52,7 @@ splines = "spline"
 labelloc = "t"
 
 [themes.Dark.node]
-fontname = "Inter"
+fontname = "sans-serif"
 fontsize = 9
 margin = "0.08,0.05"
 style = "filled,rounded"
@@ -61,7 +61,7 @@ fontcolor = "#F9FAFB"
 penwidth = 1.1
 
 [themes.Dark.edge]
-fontname = "Inter"
+fontname = "sans-serif"
 fontsize = 8
 color = "#9CA3AF"
 fontcolor = "#D1D5DB"

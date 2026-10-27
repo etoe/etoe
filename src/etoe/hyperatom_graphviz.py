@@ -9,9 +9,11 @@ from __future__ import annotations
 from collections import defaultdict
 from hashlib import sha256
 from pathlib import Path
+import os
 import re
 import shutil
 import subprocess
+import tempfile
 from typing import Iterable
 
 from .elements import ElementCatalog
@@ -98,8 +100,9 @@ def _graphviz_header(
         # Graphviz's default padding and the stylesheet's editorial margins
         # are useful for presentation graphics, but waste pixels in structural
         # diagrams intended to be embedded in books, articles and web pages.
-        graph.update({"pad": "1", "margin": "1", "splines": "line"})
-        node.update({"margin": "1", "fontsize": 11})
+        #graph.update({"pad": "1", "margin": "0", "splines": "line"})
+        graph.update({"pad": "0.07", "margin": "0", "splines": "spline"})
+        node.update({"margin": "0", "fontsize": 11})
         edge.update({"arrowhead": "none", "arrowsize": 0.45})
     return [
         f"digraph {graph_name} {{",
@@ -182,8 +185,8 @@ def _compact_node_geometry(
 
     attrs: dict[str, object] = {
         #"margin": "0",
-        #"fixedsize": True,
-        "fixedsize": False,
+        "fixedsize": True,
+        #"fixedsize": False,
         #"style": "filled",
     }    
     if 1:
@@ -419,7 +422,7 @@ def write_hyperatom_graph(
         show_element_names=show_element_names, language=language, periodic=periodic,
         show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
     )
-    return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
+    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 
@@ -579,7 +582,7 @@ def write_periodic_map(
         show_subelement_numbers=show_subelement_numbers, compact=compact,
         mode=mode, target=target,
     )
-    return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
+    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 def hyperatom_map_to_dot(
@@ -698,7 +701,7 @@ def write_hyperatom_map(
         show_subelement_numbers=show_subelement_numbers, compact=compact,
         mode=mode, target=target,
     )
-    return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
+    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 def build_element_subelement_numbering(registry: HyperatomRegistry) -> dict[str, int]:
@@ -982,7 +985,7 @@ def write_hyperatom_tree(
         show_subelement_numbers=show_subelement_numbers, compact=compact,
         mode=mode, target=target,
     )
-    return _write_dot_or_render(dot, output_path, layout=layout, format=chosen_format)
+    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 def _write_dot_or_render(dot: str, output: Path, *, layout: str, format: str) -> Path:
@@ -998,6 +1001,90 @@ def _write_dot_or_render(dot: str, output: Path, *, layout: str, format: str) ->
         raise RuntimeError(
             f"Graphviz layout executable '{layout}' was not found. Install Graphviz or request format='dot'."
         )
+    command = [executable, f"-T{format}", "-o", str(output_path)]
+    result = subprocess.run(command, input=dot, text=True, capture_output=True, check=False)
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit code {result.returncode}"
+        raise RuntimeError(f"Graphviz rendering failed: {detail}")
+    return output_path
+
+def _write_dot_or_render_ex(dot: str, output: Path, *, layout: str, format: str) -> Path:
+    output_path = output
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    fmt = format.lower()
+    
+    if fmt == "dot":
+        if output_path.suffix.lower() != ".dot":
+            output_path = output_path.with_suffix(".dot")
+        output_path.write_text(dot, encoding="utf-8")
+        return output_path
+
+    executable = shutil.which(layout)
+    if executable is None:
+        raise RuntimeError(
+            f"Graphviz layout executable '{layout}' was not found. Install Graphviz or request format='dot'."
+        )
+
+    # Проверяем условие использования cairosvg для растровых форматов
+    val = os.environ.get("ETOE_GRAPHVIZ_CAIROSVG", "").lower()
+    use_cairosvg = ( 
+        val not in ("", "0", "false", "off")
+        and fmt in ("png", "jpg", "jpeg")
+    )
+    
+    cairosvg_available = False
+    if use_cairosvg:
+        try:
+            import cairosvg  # noqa: F401
+            cairosvg_available = True
+        except ImportError:
+            pass
+
+    if use_cairosvg and cairosvg_available:
+        import cairosvg
+        
+        # Создаем временный файл для SVG, сгенерированного через Graphviz
+        with tempfile.NamedTemporaryFile(suffix=".svg", delete=False) as tmp_svg:
+            tmp_svg_path = Path(tmp_svg.name)
+            
+        try:
+            # Рендерим dot в svg через Graphviz
+            command = [executable, "-Tsvg", "-o", str(tmp_svg_path)]
+            result = subprocess.run(command, input=dot, text=True, capture_output=True, check=False)
+            if result.returncode != 0:
+                detail = result.stderr.strip() or result.stdout.strip() or f"exit code {result.returncode}"
+                raise RuntimeError(f"Graphviz SVG rendering failed: {detail}")
+            
+            if fmt == "png":
+                # Конвертируем SVG во временный PNG через cairosvg
+                cairosvg.svg2png(url=str(tmp_svg_path), write_to=str(output_path))
+            else:
+                # Для jpg/jpeg конвертируем сначала в png-буфер/файл, затем сохраняем через Pillow в jpeg
+                from PIL import Image
+                with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_png:
+                    tmp_png_path = Path(tmp_png.name)
+                try:
+                    cairosvg.svg2png(url=str(tmp_svg_path), write_to=str(tmp_png_path))
+                    with Image.open(tmp_png_path) as img:
+                        # JPEG не поддерживает прозрачность, заменяем альфа-канал на белый фон
+                        if img.mode in ("RGBA", "LA") or (img.mode == "P" and "transparency" in img.info):
+                            background = Image.new("RGB", img.size, (255, 255, 255))
+                            background.paste(img, mask=img.convert("RGBA"))
+                            img = background
+                        else:
+                            img = img.convert("RGB")
+                        img.save(output_path, "JPEG")
+                finally:
+                    if tmp_png_path.exists():
+                        tmp_png_path.unlink()
+        finally:
+            if tmp_svg_path.exists():
+                tmp_svg_path.unlink()
+                
+        return output_path
+
+    # Стандартный путь прямой генерации через Graphviz
     command = [executable, f"-T{format}", "-o", str(output_path)]
     result = subprocess.run(command, input=dot, text=True, capture_output=True, check=False)
     if result.returncode != 0:

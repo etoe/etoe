@@ -1,18 +1,41 @@
 from etoe import configure_styles, HyperatomTranslator, hyperatom_tree_to_dot, write_hyperatom_tree
 
+import os
+import cairosvg
+
+os.environ["ETOE_GRAPHVIZ_CAIROSVG"] = "1"
+
 registry = HyperatomTranslator().translate_directory("data/atom/element")
 
 configure_styles(
-    Mode="Dark",
+    Mode="Light",
+    #Mode="Dark",
     Source="GraphViz",
     Target="GraphViz",
 )
+
 
 # Компактное дерево — режим по умолчанию
 write_hyperatom_tree(
     registry,
     "C-12-(8'4)",
     "build/C-12_compact.png"
+)
+
+write_hyperatom_tree(
+    registry,
+    "C-12-(8'4)",
+    "build/C-12_compact.svg"
+)
+
+cairosvg.svg2png(url="build/C-12_compact.svg", write_to="build/C-12_compact.svg.png")
+
+dot = hyperatom_tree_to_dot(registry, "C-12-(8'4)")
+
+write_hyperatom_tree(
+    registry,
+    "C-12-(8'4)",
+    "build/C-12_compact.dot"
 )
 
 write_hyperatom_tree(
@@ -27,13 +50,8 @@ write_hyperatom_tree(
     "build/U-235_compact.svg"
 )
 
-dot = hyperatom_tree_to_dot(registry, "C-12-(8'4)")
+cairosvg.svg2png(url="build/U-235_compact.svg", write_to="build/U-235_compact.svg.png")
 
-write_hyperatom_tree(
-    registry,
-    "C-12-(8'4)",
-    "build/C-12_compact.dot"
-)
 
 # Подробная структурная нотация
 write_hyperatom_tree(
