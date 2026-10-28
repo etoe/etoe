@@ -140,7 +140,10 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(canonical_map.statistics(), ensure_ascii=False, indent=2))
             return 0
         if args.hyperatoms_command == "periodic-map":
+            from .hyperatom_map import build_canonical_hyperatom_map
             from .hyperatom_graphviz import write_periodic_map
+
+            canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)            
 
             symbols = [value.strip() for value in args.symbols.split(",") if value.strip()] or None
             output = write_periodic_map(
@@ -159,7 +162,10 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(stats, ensure_ascii=False, indent=2))
             return 0
         if args.hyperatoms_command == "hyperatom-map":
+            from .hyperatom_map import build_canonical_hyperatom_map            
             from .hyperatom_graphviz import write_hyperatom_map
+
+            canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)                
 
             symbols = [value.strip() for value in args.symbols.split(",") if value.strip()] or None
             output = write_hyperatom_map(
@@ -178,7 +184,10 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(stats, ensure_ascii=False, indent=2))
             return 0
         if args.hyperatoms_command == "tree":
+            from .hyperatom_map import build_canonical_hyperatom_map            
             from .hyperatom_graphviz import write_hyperatom_tree
+
+            canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)                
 
             output = write_hyperatom_tree(
                 registry,

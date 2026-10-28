@@ -838,6 +838,7 @@ def hyperatom_tree_to_dot(
     compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
+    max_depth: int = 0,
 ) -> str:
     """Build a vertical occurrence tree for one concrete hyperatom.
 
@@ -971,6 +972,7 @@ def write_hyperatom_tree(
     compact: bool = True,
     mode: str | None = None,
     target: str | None = None,
+    max_depth: int = 0,
 ) -> Path:
     """Write a hyperatom tree as DOT or render it using Graphviz."""
     output_path = Path(output)
@@ -983,7 +985,8 @@ def write_hyperatom_tree(
         registry, hyperatom, title=title,
         show_element_names=show_element_names, language=language,
         show_subelement_numbers=show_subelement_numbers, compact=compact,
-        mode=mode, target=target,
+        mode=mode, target=target, 
+        max_depth=max_depth,
     )
     return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 

@@ -1,21 +1,42 @@
-from etoe import configure_styles, HyperatomTranslator, hyperatom_tree_to_dot, write_hyperatom_tree
-
 import os
 import cairosvg
+from etoe import ( 
+    configure_styles, 
+    HyperatomTranslator, build_canonical_hyperatom_map, 
+    hyperatom_tree_to_dot, write_hyperatom_tree, write_hyperatom_map 
+)
 
 os.environ["ETOE_GRAPHVIZ_CAIROSVG"] = "1"
 
-registry = HyperatomTranslator().translate_directory("data/atom/element")
-
 configure_styles(
-    Mode="Light",
-    #Mode="Dark",
+    #Mode="Light",
+    Mode="Dark",
     Source="GraphViz",
     Target="GraphViz",
 )
 
+registry = HyperatomTranslator().translate_directory("data/atom/element")
+canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)
 
 # Компактное дерево — режим по умолчанию
+write_hyperatom_tree(
+    registry,
+    "Li-7-(4'3)",
+    "build/Li-7_compact.png"
+)
+
+write_hyperatom_map(
+    registry,
+    "build/Li-7_map.png",
+    symbols=["Li-7-(4'3)"],    
+)
+
+write_hyperatom_tree(
+    registry,
+    "Na-23-(16'7)",
+    "build/Na-23_compact.png"
+)
+
 write_hyperatom_tree(
     registry,
     "C-12-(8'4)",
