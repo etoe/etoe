@@ -848,7 +848,12 @@ def hyperatom_tree_to_dot(
     Non-hyperatom templates and unresolved references do not become graph nodes.
     Compact mode is the default; Protium labels are hidden in trees rooted at
     atomic level 5 or above, and node geometry scales with root level and depth.
+    ``max_depth=0`` expands the complete tree; positive values limit expansion
+    from the root, whose depth is zero, while retaining nodes at the boundary.
     """
+    if not isinstance(max_depth, int) or isinstance(max_depth, bool) or max_depth < 0:
+        raise ValueError("max_depth must be a non-negative integer (0 means unlimited)")
+
     root = _resolve_hyperatom(registry, hyperatom)
     root_level = _atom_level(root)
     #nodesep, ranksep = _compact_spacing(root_level) if compact else ("0.12", "0.28")
@@ -900,6 +905,11 @@ def hyperatom_tree_to_dot(
         lines.append(
             f'  "{occurrence_id}" [{_dot_attributes({"label": label, "tooltip": tooltip, **style})}];'
         )
+        # Depth is measured from the root (depth 0). Keep nodes at the
+        # requested boundary, but do not expand their descendants.
+        if max_depth > 0 and depth >= max_depth:
+            return
+
         for component in obj.components:
             # A hyperatom tree contains only concrete hyperatom occurrences.
             # Element templates and unresolved references are not graph nodes.

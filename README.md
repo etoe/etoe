@@ -185,6 +185,13 @@ Set `compact=False` to recover detailed structural labels and the roomier
 layout, or pass `title="..."` to add a heading explicitly. CLI users can pass
 `--full-labels` for the detailed mode.
 
+Occurrence-tree builders also accept `max_depth`: `0` (the default) expands the
+whole tree, while a positive value limits nesting from the root at depth `0`.
+Nodes at the boundary remain visible, but their descendants are omitted. This
+is a display-only cutoff; it does not change hyperatom definitions or matter
+levels. For example, `etoe hyperatoms tree "C-12-(8'4)" --max-depth 2` draws
+the root and its descendants through depth 2.
+
 ```python
 from etoe import (
     HyperatomTranslator,
@@ -212,7 +219,8 @@ The equivalent command-line operations are available as
 and `etoe hyperatoms tree "He-5-(4'1)" --output build/He-5-tree.svg`. Add
 `--hide-subelement-numbers` to any of these commands to hide nonzero suffixes;
 add `--title "..."` when a heading is needed, or `--full-labels` for the
-non-compact structural notation.
+non-compact structural notation. For a narrower tree, add `--max-depth N`;
+`--max-depth 0` keeps the complete tree (the default).
 
 ## Cascading visualization styles
 

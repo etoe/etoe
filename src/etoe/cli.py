@@ -10,6 +10,17 @@ from .parser import EToEParser
 from .validation import validate
 
 
+def _non_negative_int(value: str) -> int:
+    """Parse a non-negative integer CLI option."""
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("must be an integer") from exc
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("must be zero or greater")
+    return parsed
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="etoe", description="Reference ÆToE parser/validator and hyperatom tools")
     sub = p.add_subparsers(dest="command", required=True)
@@ -90,6 +101,10 @@ def build_parser() -> argparse.ArgumentParser:
                       help="Hide nonzero subelement numbers in hyperatom labels")
     tree.add_argument("--full-labels", dest="compact", action="store_false", default=True,
                       help="Use full structural labels and non-compact spacing")
+    tree.add_argument(
+        "--max-depth", type=_non_negative_int, default=0, metavar="N",
+        help="Limit tree depth from the root (0 = unlimited; root depth is 0)",
+    )
 
     return p
 
@@ -200,6 +215,7 @@ def main(argv: list[str] | None = None) -> int:
                 language=args.language,
                 show_subelement_numbers=args.show_subelement_numbers,
                 compact=args.compact,
+                max_depth=args.max_depth,
             )
             print(f"Wrote Graphviz hyperatom tree to {output}")
             return 0

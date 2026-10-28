@@ -245,6 +245,69 @@ def test_tree_unfolds_each_subatom_occurrence_as_a_distinct_node(registry):
     assert not any('shape="diamond"' in line for line in node_lines)
 
 
+def test_tree_max_depth_limits_occurrence_expansion_and_keeps_boundary_nodes(registry):
+    def counts(max_depth):
+        dot = hyperatom_tree_to_dot(
+            registry, "He-5-(4'1)", compact=False,
+            show_subelement_numbers=False, max_depth=max_depth,
+        )
+        nodes = [
+            line for line in dot.splitlines()
+            if " [label=" in line and " -> " not in line
+        ]
+        edges = [line for line in dot.splitlines() if " -> " in line]
+        return dot, nodes, edges
+
+    # Root is depth 0. Depth 1 includes the root and its two direct children;
+    # depth 2 also includes both deuterium occurrences under the He-4 branch.
+    shallow_dot, shallow_nodes, shallow_edges = counts(1)
+    assert len(shallow_nodes) == 3
+    assert len(shallow_edges) == 2
+    assert 'label="He-5-(4\'1)"' in shallow_dot
+    assert 'label="He-4-(2\'2)"' in shallow_dot
+    assert not any('label="D-2-(1\'1)"' in line for line in shallow_nodes)
+
+    medium_dot, medium_nodes, medium_edges = counts(2)
+    assert len(medium_nodes) == 5
+    assert len(medium_edges) == 4
+    assert sum('label="D-2-(1\'1)"' in line for line in medium_nodes) == 2
+    assert sum('label="H-1-1"' in line for line in medium_nodes) == 1
+
+    # A sufficiently large limit and the default (0) retain the complete tree.
+    full_dot, full_nodes, full_edges = counts(0)
+    deeper_dot, deeper_nodes, deeper_edges = counts(3)
+    assert len(full_nodes) == len(deeper_nodes) == 9
+    assert len(full_edges) == len(deeper_edges) == 8
+    assert full_dot == deeper_dot
+
+
+def test_tree_max_depth_reduces_rendered_svg_width(registry, tmp_path):
+    if shutil.which("dot") is None:
+        pytest.skip("Graphviz 'dot' executable is not installed")
+
+    full_path = write_hyperatom_tree(
+        registry, "C-12-(8'4)", tmp_path / "full-tree.svg", max_depth=0,
+    )
+    shallow_path = write_hyperatom_tree(
+        registry, "C-12-(8'4)", tmp_path / "shallow-tree.svg", max_depth=1,
+    )
+
+    def dimensions(path):
+        svg = path.read_text(encoding="utf-8")
+        match = re.search(r'<svg[^>]*width="([0-9.]+)pt" height="([0-9.]+)pt"', svg)
+        assert match, f"could not parse rendered SVG dimensions from {path}"
+        return tuple(float(value) for value in match.groups())
+
+    full_width, _ = dimensions(full_path)
+    shallow_width, _ = dimensions(shallow_path)
+    assert shallow_width < full_width
+
+
+def test_tree_max_depth_must_be_non_negative(registry):
+    with pytest.raises(ValueError, match="max_depth must be a non-negative integer"):
+        hyperatom_tree_to_dot(registry, "He-5-(4'1)", max_depth=-1)
+
+
 def test_subelement_number_visibility_can_be_disabled_for_all_graph_types(registry):
     periodic = periodic_map_to_dot(registry, symbols=["He"], show_subelement_numbers=False, compact=False)
     assert 'label="He-(D\'D)"' in periodic
@@ -338,7 +401,12 @@ def test_periodic_map_writer_and_numbering_are_deterministic(registry, tmp_path)
 
 
 def test_cli_exposes_periodic_map_and_tree_subcommands(tmp_path):
-    from etoe.cli import main
+    from etoe.cli import build_parser, main
+
+    with pytest.raises(SystemExit):
+        build_parser().parse_args([
+            "hyperatoms", "tree", "He-5-(4'1)", "--max-depth", "-1",
+        ])
 
     periodic_output = tmp_path / "periodic-He.dot"
     tree_output = tmp_path / "He-5-tree.dot"
@@ -363,6 +431,23 @@ def test_cli_exposes_periodic_map_and_tree_subcommands(tmp_path):
     assert 'label="He-5-(4\'1)"' in tree_text
     assert ":2-5" not in tree_text
 
+    shallow_tree_output = tmp_path / "He-5-tree-shallow.dot"
+    assert main([
+        "hyperatoms", "tree", "He-5-(4'1)",
+        "--data-root", str(DATA_ROOT),
+        "--output", str(shallow_tree_output),
+        "--full-labels",
+        "--max-depth", "1",
+    ]) == 0
+    shallow_tree_text = shallow_tree_output.read_text(encoding="utf-8")
+    shallow_nodes = [
+        line for line in shallow_tree_text.splitlines()
+        if " [label=" in line and " -> " not in line
+    ]
+    assert len(shallow_nodes) == 3
+    assert not any('label="D-2-(1\'1)"' in line for line in shallow_nodes)
+
+    hyperatom_map_output = tmp_path / "hyperatom-map-He.dot"
     hyperatom_map_output = tmp_path / "hyperatom-map-He.dot"
     assert main([
         "hyperatoms", "hyperatom-map",
