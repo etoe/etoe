@@ -18,3 +18,8 @@ src/*.egg-info/
 .vscode/
 .DS_Store
 *.code-workspace
+data/**/*.t.???.*
+data/**/*.g.???.*
+data/**/*.m.???.*
+data/**/*.p.???.*
+data/**/*.s.???.*

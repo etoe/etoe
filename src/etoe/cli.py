@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .parser import EToEParser
 from .validation import validate
+from .style import MODES as STYLE_MODES, SOURCES as STYLE_SOURCES, TARGETS as STYLE_TARGETS, configure_styles
 
 
 def _non_negative_int(value: str) -> int:
@@ -46,7 +47,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     graph = hyper_sub.add_parser("graph", help="Generate Graphviz DOT or render SVG/PNG/PDF")
     graph.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
-    graph.add_argument("--output", type=Path, default=Path("build/hyperatoms.svg"))
+    graph.add_argument("--output", type=Path, default=None, help="Output path (defaults to the standard filename)")
+    graph.add_argument("--mode", choices=STYLE_MODES, default=None, help="Style mode (default follows ETOE_STYLE_MODE)")
+    graph.add_argument("--source", choices=STYLE_SOURCES, default=None, help="Style source (default follows ETOE_STYLE_SOURCE)")
+    graph.add_argument("--target", choices=STYLE_TARGETS, default=None, help="Style target (default follows ETOE_STYLE_TARGET)")
     graph.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
     graph.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
     graph.add_argument("--include-templates", action="store_true", help="Include massless element/template statements")
@@ -62,7 +66,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     periodic = hyper_sub.add_parser("periodic-map", help="Generate a vertically oriented periodic map with numbered subelements")
     periodic.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
-    periodic.add_argument("--output", type=Path, default=Path("build/periodic-map.svg"))
+    periodic.add_argument("--output", type=Path, default=None, help="Output path (defaults to the standard filename)")
+    periodic.add_argument("--mode", choices=STYLE_MODES, default=None, help="Style mode (default follows ETOE_STYLE_MODE)")
+    periodic.add_argument("--source", choices=STYLE_SOURCES, default=None, help="Style source (default follows ETOE_STYLE_SOURCE)")
+    periodic.add_argument("--target", choices=STYLE_TARGETS, default=None, help="Style target (default follows ETOE_STYLE_TARGET)")
     periodic.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
     periodic.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
     periodic.add_argument("--symbols", default="", help="Optional comma-separated root element symbols, e.g. He,Li,Be")
@@ -76,7 +83,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     hyperatom_map = hyper_sub.add_parser("hyperatom-map", help="Generate a map containing concrete hyperatoms only")
     hyperatom_map.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
-    hyperatom_map.add_argument("--output", type=Path, default=Path("build/hyperatom-map.svg"))
+    hyperatom_map.add_argument("--output", type=Path, default=None, help="Output path (defaults to the standard filename)")
+    hyperatom_map.add_argument("--mode", choices=STYLE_MODES, default=None, help="Style mode (default follows ETOE_STYLE_MODE)")
+    hyperatom_map.add_argument("--source", choices=STYLE_SOURCES, default=None, help="Style source (default follows ETOE_STYLE_SOURCE)")
+    hyperatom_map.add_argument("--target", choices=STYLE_TARGETS, default=None, help="Style target (default follows ETOE_STYLE_TARGET)")
     hyperatom_map.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
     hyperatom_map.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
     hyperatom_map.add_argument("--symbols", default="", help="Optional comma-separated selectors, e.g. He or He-5-(4'1)")
@@ -91,7 +101,10 @@ def build_parser() -> argparse.ArgumentParser:
     tree = hyper_sub.add_parser("tree", help="Expand one concrete hyperatom into an occurrence tree")
     tree.add_argument("hyperatom", help="Canonical hyperatom notation or semantic ID, e.g. He-5-(4'1)")
     tree.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
-    tree.add_argument("--output", type=Path, default=Path("build/hyperatom-tree.svg"))
+    tree.add_argument("--output", type=Path, default=None, help="Output path (defaults to the standard filename)")
+    tree.add_argument("--mode", choices=STYLE_MODES, default=None, help="Style mode (default follows ETOE_STYLE_MODE)")
+    tree.add_argument("--source", choices=STYLE_SOURCES, default=None, help="Style source (default follows ETOE_STYLE_SOURCE)")
+    tree.add_argument("--target", choices=STYLE_TARGETS, default=None, help="Style target (default follows ETOE_STYLE_TARGET)")
     tree.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
     tree.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
     tree.add_argument("--title", default=None, help="Optional graph title (omitted by default to save space)")
@@ -129,6 +142,9 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR [{issue.code}] {issue.message}")
         return 1
     if args.command == "hyperatoms":
+        if args.hyperatoms_command in {"graph", "periodic-map", "hyperatom-map", "tree"}:
+            # Keep visual rendering and generated filenames on the same style tuple.
+            configure_styles(mode=args.mode, source=args.source, target=args.target)
         from .hyperatom_translation import HyperatomTranslator
 
         registry = HyperatomTranslator(parser).translate_directory(args.data_root)
@@ -164,6 +180,7 @@ def main(argv: list[str] | None = None) -> int:
             output = write_periodic_map(
                 registry,
                 args.output,
+                element_root=args.data_root,
                 symbols=symbols,
                 layout=args.layout,
                 format=args.format,
@@ -186,6 +203,7 @@ def main(argv: list[str] | None = None) -> int:
             output = write_hyperatom_map(
                 registry,
                 args.output,
+                element_root=args.data_root,
                 symbols=symbols,
                 layout=args.layout,
                 format=args.format,
@@ -208,6 +226,7 @@ def main(argv: list[str] | None = None) -> int:
                 registry,
                 args.hyperatom,
                 args.output,
+                element_root=args.data_root,
                 layout=args.layout,
                 format=args.format,
                 title=args.title,
@@ -232,6 +251,7 @@ def main(argv: list[str] | None = None) -> int:
             output = write_hyperatom_graph(
                 registry,
                 args.output,
+                element_root=args.data_root,
                 include_templates=args.include_templates,
                 symbols=symbols,
                 layout=args.layout,

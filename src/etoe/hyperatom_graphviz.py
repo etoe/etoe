@@ -17,6 +17,12 @@ import tempfile
 from typing import Iterable
 
 from .elements import ElementCatalog
+from .filenames import (
+    DEFAULT_VISUAL_FORMAT,
+    standard_hyperatom_path,
+    standard_named_path,
+    standard_selection_tokens_path,
+)
 from .hyperatom_translation import (
     ELEMENT_SYMBOL_KIND,
     ELEMENT_TEMPLATE_KIND,
@@ -393,10 +399,67 @@ def hyperatom_graph_to_dot(
     return "\n".join(lines) + "\n"
 
 
+def _standard_element_root(registry: HyperatomRegistry, element_root: str | Path | None = None) -> Path:
+    """Resolve the element source root while preserving an explicit relative path."""
+    if element_root is not None:
+        return Path(element_root).expanduser()
+    # HyperatomRegistry.root preserves the caller's path spelling (typically
+    # the portable relative ``data/atom/element``); ElementCatalog.root is
+    # resolved to an absolute path and is therefore only a fallback.
+    if getattr(registry, "root", None):
+        return Path(registry.root).expanduser()
+    if registry.element_catalog is not None:
+        return Path(registry.element_catalog.root)
+    return Path("data/atom/element")
+
+
+def _default_visual_output(
+    registry: HyperatomRegistry,
+    *,
+    element_root: str | Path | None,
+    artifact: str,
+    stem: str,
+    symbols: Iterable[str] | None,
+    format: str | None,
+    mode: str | None,
+    target: str | None,
+) -> tuple[Path, str]:
+    """Resolve the standard output path and effective format for visual writers."""
+    root = _standard_element_root(registry, element_root)
+    chosen_format = (format or DEFAULT_VISUAL_FORMAT).lower().lstrip(".")
+    tokens = tuple(dict.fromkeys(str(item).strip() for item in symbols or () if str(item).strip()))
+
+    if tokens:
+        # A single exact hyperatom selector gets a per-hyperatom filename. Other
+        # selector sets are named deterministically as selection artifacts.
+        exact = [
+            obj for obj in registry.definitions
+            if obj.kind == HYPERATOM_KIND
+            and len(tokens) == 1
+            and tokens[0] in {obj.id, obj.canonical, obj.designation}
+        ]
+        if len(exact) == 1:
+            path = standard_hyperatom_path(
+                exact[0], element_root=root, artifact=artifact,
+                format=chosen_format, mode=mode, target=target,
+            )
+        else:
+            path = standard_selection_tokens_path(
+                tokens, root=root.parent / "selection", artifact="selection",
+                format=chosen_format, mode=mode, target=target,
+            )
+    else:
+        path = standard_named_path(
+            root, stem, artifact, format=chosen_format, mode=mode, target=target,
+        )
+    return path, chosen_format
+
+
 def write_hyperatom_graph(
     registry: HyperatomRegistry,
-    output: str | Path,
+    output: str | Path | None = None,
     *,
+    element_root: str | Path | None = None,
     include_templates: bool = False,
     symbols: Iterable[str] | None = None,
     layout: str = "dot",
@@ -409,10 +472,21 @@ def write_hyperatom_graph(
     mode: str | None = None,
     target: str | None = None,
 ) -> Path:
-    """Write `.dot` source or render through Graphviz to the requested format."""
-    output_path = Path(output)
+    """Write `.dot` source or render a standard-named Graphviz visualization.
+
+    When ``output`` is omitted, the output is written to the canonical filename
+    under ``element_root`` (or the registry's element root), using PNG by default.
+    """
+    symbols = tuple(symbols) if symbols is not None else None
+    if output is None:
+        output_path, chosen_format = _default_visual_output(
+            registry, element_root=element_root, artifact="graph", stem="hyperatoms",
+            symbols=symbols, format=format, mode=mode, target=target,
+        )
+    else:
+        output_path = Path(output)
+        chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
     if chosen_format not in SUPPORTED_FORMATS:
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
@@ -556,8 +630,9 @@ def periodic_map_to_dot(
 
 def write_periodic_map(
     registry: HyperatomRegistry,
-    output: str | Path,
+    output: str | Path | None = None,
     *,
+    element_root: str | Path | None = None,
     symbols: Iterable[str] | None = None,
     layout: str = "dot",
     format: str | None = None,
@@ -569,9 +644,16 @@ def write_periodic_map(
     mode: str | None = None,
     target: str | None = None,
 ) -> Path:
-    """Write a periodic map as DOT or render it using an installed Graphviz layout."""
-    output_path = Path(output)
-    chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
+    """Write a periodic map to an explicit or canonical filename."""
+    symbols = tuple(symbols) if symbols is not None else None
+    if output is None:
+        output_path, chosen_format = _default_visual_output(
+            registry, element_root=element_root, artifact="periodic-map", stem="periodic-map",
+            symbols=symbols, format=format, mode=mode, target=target,
+        )
+    else:
+        output_path = Path(output)
+        chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
     if chosen_format not in SUPPORTED_FORMATS:
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
@@ -675,8 +757,9 @@ def hyperatom_map_to_dot(
 
 def write_hyperatom_map(
     registry: HyperatomRegistry,
-    output: str | Path,
+    output: str | Path | None = None,
     *,
+    element_root: str | Path | None = None,
     symbols: Iterable[str] | None = None,
     layout: str = "dot",
     format: str | None = None,
@@ -688,9 +771,16 @@ def write_hyperatom_map(
     mode: str | None = None,
     target: str | None = None,
 ) -> Path:
-    """Write a hyperatom map as DOT or render it through Graphviz."""
-    output_path = Path(output)
-    chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
+    """Write a hyperatom map to an explicit or canonical filename."""
+    symbols = tuple(symbols) if symbols is not None else None
+    if output is None:
+        output_path, chosen_format = _default_visual_output(
+            registry, element_root=element_root, artifact="hyperatom-map", stem="hyperatom-map",
+            symbols=symbols, format=format, mode=mode, target=target,
+        )
+    else:
+        output_path = Path(output)
+        chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
     if chosen_format not in SUPPORTED_FORMATS:
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
@@ -971,8 +1061,9 @@ def hyperatom_tree_to_dot(
 def write_hyperatom_tree(
     registry: HyperatomRegistry,
     hyperatom: str | SemanticHyperatom,
-    output: str | Path,
+    output: str | Path | None = None,
     *,
+    element_root: str | Path | None = None,
     layout: str = "dot",
     format: str | None = None,
     title: str | None = None,
@@ -984,9 +1075,26 @@ def write_hyperatom_tree(
     target: str | None = None,
     max_depth: int = 0,
 ) -> Path:
-    """Write a hyperatom tree as DOT or render it using Graphviz."""
-    output_path = Path(output)
-    chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
+    """Write a hyperatom tree to an explicit or canonical filename.
+
+    When ``output`` is omitted, the default path is
+    ``<element-root>/<symbol>/<canonical>.t.<style>.<format>`` and the format
+    defaults to PNG. Use ``format="dot"`` to write only DOT source.
+    """
+    if output is None:
+        root_obj = _resolve_hyperatom(registry, hyperatom)
+        output_path = standard_hyperatom_path(
+            root_obj,
+            element_root=_standard_element_root(registry, element_root),
+            artifact="tree",
+            format=(format or DEFAULT_VISUAL_FORMAT),
+            mode=mode,
+            target=target,
+        )
+        chosen_format = (format or DEFAULT_VISUAL_FORMAT).lower().lstrip(".")
+    else:
+        output_path = Path(output)
+        chosen_format = (format or ("dot" if output_path.suffix.lower() == ".dot" else output_path.suffix.lower().lstrip("."))).lower()
     if chosen_format not in SUPPORTED_FORMATS:
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:

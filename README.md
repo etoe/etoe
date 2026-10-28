@@ -222,6 +222,17 @@ add `--title "..."` when a heading is needed, or `--full-labels` for the
 non-compact structural notation. For a narrower tree, add `--max-depth N`;
 `--max-depth 0` keeps the complete tree (the default).
 
+## Standard generated filenames
+
+The library uses one style-aware convention for generated hyperatom files and
+selection graphs. For example, a Dark/GraphViz/GraphViz tree for
+`C-12-(8'4)` defaults to
+`data/atom/element/C/C-12-(8'4).t.dgg.png`. The visual CLI commands now choose
+canonical output paths when `--output` is omitted; explicit output paths remain
+supported. The Python API also exposes shared path construction and lookup
+helpers. See [Standard generated filenames](docs/standard-filenames.md) for the
+artifact codes, style codes, directory rules, and examples.
+
 ## Cascading visualization styles
 
 `etoe.style` provides the renderer-neutral style engine. Declarative assets live in the project-level `style/` tree and provide shared Light/Dark style sheets and a deterministic cascade

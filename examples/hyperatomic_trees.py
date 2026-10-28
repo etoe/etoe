@@ -18,6 +18,13 @@ configure_styles(
 registry = HyperatomTranslator().translate_directory("data/atom/element")
 canonical_map = build_canonical_hyperatom_map(registry, auto_patch_missing=True)
 
+output = write_hyperatom_tree(
+    registry,
+    "C-12-(8'4)",
+    element_root="data/atom/element",
+)
+print(output)
+
 # Компактное дерево — режим по умолчанию
 write_hyperatom_tree(
     registry,

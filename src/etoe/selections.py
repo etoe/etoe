@@ -113,15 +113,32 @@ class GraphSelectionItem:
     def write_graph(
         self,
         registry: HyperatomRegistry,
-        filename: str = "hyperatoms.dot",
+        filename: str | Path | None = None,
         **kwargs: Any,
     ) -> Path:
-        """Generate this selection's graph in its own output directory."""
+        """Generate this selection's graph using its standard filename by default.
+
+        Unless ``filename`` is explicitly supplied, the output is
+        ``<selection-directory>/<selection-directory-name>.s.<style>.png``.
+        Pass ``format="dot"`` to emit DOT source instead of a rendered PNG.
+        """
+        from .filenames import DEFAULT_VISUAL_FORMAT, standard_selection_path
         from .hyperatom_graphviz import write_hyperatom_graph
 
+        if filename is None:
+            output = standard_selection_path(
+                self,
+                artifact="selection",
+                format=kwargs.get("format") or DEFAULT_VISUAL_FORMAT,
+                mode=kwargs.get("mode"),
+                target=kwargs.get("target"),
+            )
+        else:
+            selected_path = Path(filename).expanduser()
+            output = selected_path if selected_path.is_absolute() else self.output_dir / selected_path
         return write_hyperatom_graph(
             registry,
-            self.output_dir / filename,
+            output,
             symbols=self.symbols_for_graph(),
             **kwargs,
         )

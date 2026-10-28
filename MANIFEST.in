@@ -10,3 +10,4 @@ recursive-include examples *.etoe
 recursive-include examples *.py
 recursive-include tests *.py
 recursive-include style *.toml *.tex
+recursive-exclude data *.t.???.* *.g.???.* *.m.???.* *.p.???.* *.s.???.*
