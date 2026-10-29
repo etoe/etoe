@@ -422,6 +422,15 @@ def _deep_merge(base: dict[str, Any], overlay: Mapping[str, Any]) -> dict[str, A
     return base
 
 
+def _invalidate_stylesheet_cache() -> None:
+    """Discard compiled stylesheets so edited TOML resources are re-read.
+
+    The incremental visualization writer calls this before regenerating an
+    artifact after a dependency change.
+    """
+    _load_stylesheet_for_source.cache_clear()
+
+
 @lru_cache(maxsize=None)
 def _load_stylesheet_for_source(canonical_source: str) -> StyleSheet:
     """Compile the source base stylesheet and its target-specific overlays."""

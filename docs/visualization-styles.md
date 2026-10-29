@@ -165,3 +165,30 @@ membership, component resolution, or edge multiplicity.
 - `src/etoe/styles/graphviz.py`: Graphviz-specific adapter.
 
 The environment variables are `ETOE_STYLE_MODE`, `ETOE_STYLE_SOURCE`, and `ETOE_STYLE_TARGET`. `ETOE_STYLE_DIR` can point to a custom global style directory.
+
+## Incremental image generation
+
+Graphviz image writers (`write_hyperatom_tree`, `write_hyperatom_graph`,
+`write_hyperatom_map`, and `write_periodic_map`) use an adjacent TOML cache
+manifest. For example, generating
+`C-12-(8'4).t.dgg.png` also creates
+`C-12-(8'4).t.dgg.png.toml`.
+
+The manifest stores the effective render options, a fingerprint of the in-memory
+semantic registry, the output image hash, and each tracked dependency's path,
+role, byte size, UTC modification time, nanosecond timestamp and SHA-256 hash.
+Tracked inputs include `.etoe` element definitions, per-element metadata TOML,
+Graphviz and shared style TOML resources, ÆToE Python/grammar/data resources, and
+the selected Graphviz executable. SHA-256 hashes are authoritative, so content
+changes are detected even if a file's modification time is restored. The image
+is reused only while the sidecar, all inputs, render options and output hash
+remain valid. Otherwise the image is overwritten and the sidecar is refreshed.
+
+The implementation conservatively tracks all `.etoe` files under the registry
+root because resolving a symbol can depend on competing definitions elsewhere
+in that root. This favors correctness over avoiding every unrelated rebuild.
+DOT source output (`format="dot"`) is still written on every request and does
+not receive an image-cache sidecar. If an application changes `.etoe` files
+within a long-running process, it should translate the source directory again
+before generating the updated image so the in-memory registry reflects those
+source changes.

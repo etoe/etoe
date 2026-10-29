@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.72 incremental Graphviz image generation
+
+- Added adjacent TOML dependency manifests for generated Graphviz image artifacts.
+- Cache checks include SHA-256 hashes, mtime/size metadata, renderer and effective
+  render options, the in-memory registry fingerprint, stylesheet TOML assets,
+  element sources/metadata, and ÆToE implementation resources.
+- Unchanged image requests now skip DOT construction and Graphviz rendering;
+  changed dependencies or output files trigger a fresh render and manifest.
+- Invalidate the compiled stylesheet cache before regeneration so edited style
+  TOML is actually applied in long-running processes.
+- Documented the cache contract and added incremental-generation regressions.
+
 ## 0.1.69 compact Graphviz atom diagrams
 
 - Made periodic maps, concrete hyperatom maps and hyperatom occurrence trees

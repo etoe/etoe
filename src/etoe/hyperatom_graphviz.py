@@ -7,7 +7,9 @@ an installed Graphviz executable (for example `dot`).
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Callable
 from hashlib import sha256
+import json
 from pathlib import Path
 import os
 import re
@@ -36,11 +38,15 @@ from .hyperatom_translation import (
 from .style import (
     StyleElement,
     StyleSettings,
+    _invalidate_stylesheet_cache,
+    get_style_directory,
     chemical_category_slug,
     get_style_settings,
     normalize_mode,
     normalize_target,
 )
+from .incremental import is_cache_current, is_image_format, write_manifest
+
 from .styles.graphviz import ( 
     resolve_graphviz_style,  
     atom_graph_default_nodesep_and_ranksep,
@@ -413,6 +419,109 @@ def _standard_element_root(registry: HyperatomRegistry, element_root: str | Path
     return Path("data/atom/element")
 
 
+def _visualization_dependencies(
+    registry: HyperatomRegistry,
+    *,
+    element_root: str | Path | None,
+    layout: str,
+) -> list[tuple[Path, str]]:
+    """List source, metadata, stylesheet, implementation and renderer inputs.
+
+    All element definitions are dependencies because the registry resolves
+    symbol candidates across files; a definition outside the displayed root
+    atom can change an edge or ambiguity proxy. Element metadata TOML is only
+    included when it follows ``<symbol>/<symbol>.toml`` so generated
+    ``*.png.toml`` manifests never become their own inputs.
+    """
+    dependencies: list[tuple[Path, str]] = []
+    data_root = _standard_element_root(registry, element_root).expanduser().resolve()
+    if data_root.is_dir():
+        dependencies.extend((path, "ether-source") for path in sorted(data_root.rglob("*.etoe")) if path.is_file())
+        dependencies.extend(
+            (path, "element-metadata")
+            for path in sorted(data_root.rglob("*.toml"))
+            if path.is_file() and path.stem == path.parent.name
+        )
+
+    style_root = get_style_directory().resolve()
+    for subdirectory, role in (("shared", "shared-style-token"), ("graphviz", "graphviz-stylesheet")):
+        directory = style_root / subdirectory
+        if directory.is_dir():
+            dependencies.extend(
+                (path, role) for path in sorted(directory.rglob("*.toml")) if path.is_file()
+            )
+
+    # Implementation and parser resources are inputs too: a changed rendering
+    # algorithm, grammar or bundled metadata must invalidate older images.
+    package_root = Path(__file__).resolve().parent
+    tracked_suffixes = {".py", ".lark", ".json"}
+    dependencies.extend(
+        (path, "etoe-implementation")
+        for path in sorted(package_root.rglob("*"))
+        if path.is_file() and path.suffix.lower() in tracked_suffixes
+    )
+
+    executable = shutil.which(layout)
+    if executable:
+        dependencies.append((Path(executable), "graphviz-renderer"))
+    return dependencies
+
+
+def _registry_signature(registry: HyperatomRegistry) -> str:
+    """Hash the in-memory registry so runtime additions invalidate old images."""
+    payload = json.dumps(registry.to_dict(), ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _incremental_write(
+    dot_factory: Callable[[], str],
+    output_path: Path,
+    *,
+    registry: HyperatomRegistry,
+    element_root: str | Path | None,
+    layout: str,
+    format: str,
+    context: dict[str, object],
+) -> Path:
+    """Write or reuse a generated image using an adjacent TOML dependency manifest."""
+    # DOT is an editable source artifact, not an image; keep its historic
+    # write-on-every-request behavior and do not create a sidecar for it.
+    if not is_image_format(format):
+        _invalidate_stylesheet_cache()
+        return _write_dot_or_render_ex(dot_factory(), output_path, layout=layout, format=format)
+
+    dependencies = _visualization_dependencies(
+        registry, element_root=element_root, layout=layout,
+    )
+    current_settings = get_style_settings()
+    options = dict(context)
+    requested_mode = options.pop("mode", None)
+    requested_target = options.pop("target", None)
+    cache_context: dict[str, object] = {
+        "format": format,
+        "layout": layout,
+        "mode": normalize_mode(requested_mode, default=current_settings.mode),
+        "target": normalize_target(requested_target, default=current_settings.target),
+        "cairosvg_enabled": os.environ.get("ETOE_GRAPHVIZ_CAIROSVG", ""),
+        "registry_sha256": _registry_signature(registry),
+        **options,
+    }
+    if is_cache_current(output_path, context=cache_context, dependencies=dependencies):
+        return output_path
+
+    # The stylesheet loader is memoized. An invalidated artifact must resolve
+    # style TOML again, otherwise the newly edited file could render old rules.
+    _invalidate_stylesheet_cache()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    rendered = _write_dot_or_render_ex(
+        dot_factory(), output_path, layout=layout, format=format,
+    )
+    write_manifest(
+        rendered, context=cache_context, dependencies=dependencies,
+    )
+    return rendered
+
+
 def _default_visual_output(
     registry: HyperatomRegistry,
     *,
@@ -491,12 +600,21 @@ def write_hyperatom_graph(
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
         raise ValueError(f"Unsupported Graphviz layout {layout!r}. Choose from {', '.join(SUPPORTED_LAYOUTS)}.")
-    dot = hyperatom_graph_to_dot(
-        registry, include_templates=include_templates, symbols=symbols, title=title,
-        show_element_names=show_element_names, language=language, periodic=periodic,
-        show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
+    return _incremental_write(
+        lambda: hyperatom_graph_to_dot(
+            registry, include_templates=include_templates, symbols=symbols, title=title,
+            show_element_names=show_element_names, language=language, periodic=periodic,
+            show_subelement_numbers=show_subelement_numbers, mode=mode, target=target,
+        ),
+        output_path,
+        registry=registry, element_root=element_root, layout=layout, format=chosen_format,
+        context={
+            "writer": "hyperatom-graph", "mode": mode, "target": target,
+            "include_templates": include_templates, "symbols": symbols, "title": title,
+            "show_element_names": show_element_names, "language": language,
+            "periodic": periodic, "show_subelement_numbers": show_subelement_numbers,
+        },
     )
-    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 
@@ -658,13 +776,22 @@ def write_periodic_map(
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
         raise ValueError(f"Unsupported Graphviz layout {layout!r}. Choose from {', '.join(SUPPORTED_LAYOUTS)}.")
-    dot = periodic_map_to_dot(
-        registry, symbols=symbols, title=title,
-        show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers, compact=compact,
-        mode=mode, target=target,
+    return _incremental_write(
+        lambda: periodic_map_to_dot(
+            registry, symbols=symbols, title=title,
+            show_element_names=show_element_names, language=language,
+            show_subelement_numbers=show_subelement_numbers, compact=compact,
+            mode=mode, target=target,
+        ),
+        output_path,
+        registry=registry, element_root=element_root, layout=layout, format=chosen_format,
+        context={
+            "writer": "periodic-map", "mode": mode, "target": target,
+            "symbols": symbols, "title": title, "show_element_names": show_element_names,
+            "language": language, "show_subelement_numbers": show_subelement_numbers,
+            "compact": compact,
+        },
     )
-    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 def hyperatom_map_to_dot(
@@ -785,13 +912,22 @@ def write_hyperatom_map(
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
         raise ValueError(f"Unsupported Graphviz layout {layout!r}. Choose from {', '.join(SUPPORTED_LAYOUTS)}.")
-    dot = hyperatom_map_to_dot(
-        registry, symbols=symbols, title=title,
-        show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers, compact=compact,
-        mode=mode, target=target,
+    return _incremental_write(
+        lambda: hyperatom_map_to_dot(
+            registry, symbols=symbols, title=title,
+            show_element_names=show_element_names, language=language,
+            show_subelement_numbers=show_subelement_numbers, compact=compact,
+            mode=mode, target=target,
+        ),
+        output_path,
+        registry=registry, element_root=element_root, layout=layout, format=chosen_format,
+        context={
+            "writer": "hyperatom-map", "mode": mode, "target": target,
+            "symbols": symbols, "title": title, "show_element_names": show_element_names,
+            "language": language, "show_subelement_numbers": show_subelement_numbers,
+            "compact": compact,
+        },
     )
-    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
 
 
 def build_element_subelement_numbering(registry: HyperatomRegistry) -> dict[str, int]:
@@ -1099,14 +1235,28 @@ def write_hyperatom_tree(
         raise ValueError(f"Unsupported Graphviz format {chosen_format!r}. Choose from {', '.join(SUPPORTED_FORMATS)}.")
     if layout not in SUPPORTED_LAYOUTS:
         raise ValueError(f"Unsupported Graphviz layout {layout!r}. Choose from {', '.join(SUPPORTED_LAYOUTS)}.")
-    dot = hyperatom_tree_to_dot(
-        registry, hyperatom, title=title,
-        show_element_names=show_element_names, language=language,
-        show_subelement_numbers=show_subelement_numbers, compact=compact,
-        mode=mode, target=target, 
-        max_depth=max_depth,
+    selected_hyperatom = (
+        {"id": hyperatom.id, "canonical": hyperatom.canonical}
+        if isinstance(hyperatom, SemanticHyperatom) else str(hyperatom)
     )
-    return _write_dot_or_render_ex(dot, output_path, layout=layout, format=chosen_format)
+    return _incremental_write(
+        lambda: hyperatom_tree_to_dot(
+            registry, hyperatom, title=title,
+            show_element_names=show_element_names, language=language,
+            show_subelement_numbers=show_subelement_numbers, compact=compact,
+            mode=mode, target=target,
+            max_depth=max_depth,
+        ),
+        output_path,
+        registry=registry, element_root=element_root, layout=layout, format=chosen_format,
+        context={
+            "writer": "hyperatom-tree", "mode": mode, "target": target,
+            "hyperatom": selected_hyperatom, "title": title,
+            "show_element_names": show_element_names, "language": language,
+            "show_subelement_numbers": show_subelement_numbers, "compact": compact,
+            "max_depth": max_depth,
+        },
+    )
 
 
 def _write_dot_or_render(dot: str, output: Path, *, layout: str, format: str) -> Path:
