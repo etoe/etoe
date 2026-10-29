@@ -344,7 +344,10 @@ def hyperatom_graph_to_dot(
             periodic=periodic, subelement_number=subelement_numbers.get(obj.id, 0),
             periodic_registry=registry, subelement_numbers=subelement_numbers,
         )
-        style = _node_style(obj, graph_type="hyperatom-graph", mode=mode, target=target)
+        style = _node_style(
+            obj, graph_type="hyperatom-graph", mode=mode, target=target,
+            element_catalog=registry.element_catalog,
+        )
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
         attributes = {"label": label, "tooltip": tooltip, **style}
         lines.append(f'  "{obj.id}" [{_dot_attributes(attributes)}];')
@@ -701,7 +704,10 @@ def periodic_map_to_dot(
                 localized = element.name(language)
                 if localized and localized != obj.symbol:
                     label += f"\n{localized}"
-        style = _node_style(obj, graph_type="periodic-map", mode=mode, target=target)
+        style = _node_style(
+            obj, graph_type="periodic-map", mode=mode, target=target,
+            element_catalog=registry.element_catalog,
+        )
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
         attributes = {"label": label, "tooltip": tooltip, **style}
         if compact:
@@ -858,7 +864,10 @@ def hyperatom_map_to_dot(
                 localized = element.name(language)
                 if localized and localized != obj.symbol:
                     label += f"\n{localized}"
-        style = _node_style(obj, graph_type="hyperatom-map", mode=mode, target=target)
+        style = _node_style(
+            obj, graph_type="hyperatom-map", mode=mode, target=target,
+            element_catalog=registry.element_catalog,
+        )
         tooltip = f"{obj.canonical}\nsource={obj.source_path} statement={obj.statement_index}\nkind={obj.kind}"
         attributes = {"label": label, "tooltip": tooltip, **style}
         if compact:
@@ -1121,6 +1130,7 @@ def hyperatom_tree_to_dot(
         style = _node_style(
             obj, graph_type="hyperatom-tree", position=position,
             mode=mode, target=target, parent_style=parent_style,
+            element_catalog=registry.element_catalog,
         )
         if compact:
             style.update(_compact_node_geometry(
@@ -1173,6 +1183,7 @@ def hyperatom_tree_to_dot(
                     cycle_style = _node_style(
                         child_obj, graph_type="hyperatom-tree", position=child_position,
                         mode=mode, target=target, parent_style=style,
+                        element_catalog=registry.element_catalog,
                     )
                     if compact:
                         cycle_style.update(_compact_node_geometry(
@@ -1559,11 +1570,12 @@ def _node_style(
     mode: str | None = None,
     target: str | None = None,
     parent_style: dict[str, object] | None = None,
+    element_catalog: ElementCatalog | None = None,
 ) -> dict[str, object]:
     """Resolve a semantic node through the shared Graphviz cascade.
 
-    Chemical categories come from the translator's runtime category link when
-    available, falling back to the package's canonical periodic-table mapping.
+    An explicitly declared category in the element TOML takes precedence,
+    followed by the runtime category link and the canonical periodic-table map.
     Special Protium positional selectors are applied after category selectors.
     """
     classes: set[str] = {f"graph-{graph_type}"}
@@ -1581,8 +1593,16 @@ def _node_style(
     symbol = obj.symbol
     if symbol:
         classes.add(f"symbol-{symbol}")
-    category = getattr(getattr(obj, "chemical_category", None), "slug", None)
-    category = category or chemical_category_slug(symbol)
+    category = chemical_category_slug(symbol, element_catalog)
+    runtime_category = getattr(getattr(obj, "chemical_category", None), "slug", None)
+    # Keep explicit TOML metadata authoritative even when the semantic object
+    # retains a category link from an earlier catalog refresh.
+    if not (
+        symbol
+        and element_catalog is not None
+        and getattr(element_catalog.get(symbol), "declared_chemical_category", None)
+    ):
+        category = runtime_category or category
     classes.update({"chemical", f"category-{category}"})
     if position:
         classes.add(f"position-{position}")

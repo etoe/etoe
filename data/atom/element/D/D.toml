@@ -1,0 +1,9 @@
+# Project-specific metadata for Deuterium.
+symbol = "D"
+role = "chemical_element"
+chemical_category = "nonmetals"
+description = "Deuterium"
+
+[names]
+en = "Deuterium"
+ru = "Дейтерий"

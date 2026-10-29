@@ -537,10 +537,23 @@ def resolve_style(
     )
 
 
-def chemical_category_slug(symbol: str | None) -> str:
-    """Return the periodic-table category slug for an element symbol."""
+def chemical_category_slug(symbol: str | None, element_catalog: Any | None = None) -> str:
+    """Return an element's declared category, falling back to the built-in map.
+
+    ``element_catalog`` is optional to preserve the original public API. When
+    supplied, the category slug in the element's TOML metadata takes priority
+    over the package's default periodic-table classification. This also works
+    before a :class:`ChemicalCategoryCatalog` has linked runtime category objects.
+    """
     if not symbol:
         return "unknowns"
+
+    if element_catalog is not None:
+        element = element_catalog.get(symbol)
+        declared_slug = getattr(element, "declared_chemical_category", None)
+        if declared_slug:
+            return declared_slug
+
     try:
         # Lazy import avoids a module cycle: selections builds on the semantic
         # translator, while Graphviz calls this only after module initialization.

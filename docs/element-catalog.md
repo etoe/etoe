@@ -46,9 +46,10 @@ The metadata file is optional. Supported fields are:
 - `names`: a table of locale-to-name strings such as `[names]`, `en = "Sognesium"`, `ru = "Согнезий".
 - `name`: optional shorthand for a single English name.
 - `aliases`: optional array of strings.
+- `chemical_category`: optional category slug. When supplied, it overrides the built-in category for this element. The slug must match a category in `ChemicalCategoryCatalog` (for example `noble-gases`, `metalloids`, or `transition-metals`). If omitted, standard symbols use the built-in periodic-table mapping and custom/auxiliary symbols default to `unknowns`. For example: `chemical_category = "noble-gases"`.
 - `metadata`: an optional table of project-specific fields. Additional unrecognized top-level keys are also preserved under `metadata`.
 
-Malformed TOML, an unsupported `kind`, or a `symbol` that does not match the directory name raises `ElementCatalogError` rather than silently ignoring the metadata.
+Malformed TOML, an unsupported `kind`, a non-string or empty `chemical_category` value, or a `symbol` that does not match the directory name raises `ElementCatalogError` rather than silently ignoring the metadata. A category slug not present in `ChemicalCategoryCatalog` raises `SelectionCatalogError` when that catalog is refreshed.
 
 ## Example: Sognesium
 

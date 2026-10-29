@@ -230,11 +230,32 @@ class ChemicalCategoryCatalog:
             )
 
         elements_by_slug: dict[str, list[ElementRecord]] = defaultdict(list)
+        assignments: list[tuple[ElementRecord, str, ChemicalCategory]] = []
         for element in self.element_catalog.elements:
-            # All project-specific and auxiliary symbols intentionally fall
-            # into unknowns until a project explicitly defines richer metadata.
-            slug = _CATEGORY_BY_SYMBOL.get(element.symbol, "unknowns") if element.is_standard else "unknowns"
-            category = categories[slug]
+            # An explicit TOML declaration is authoritative. Otherwise retain
+            # the built-in periodic-table classification for standard elements
+            # and put custom/auxiliary symbols into "unknowns".
+            declared_slug = element.declared_chemical_category
+            if declared_slug is not None:
+                category = categories.get(declared_slug)
+                if category is None:
+                    source = element.metadata_file or element.directory
+                    known = ", ".join(sorted(categories))
+                    raise SelectionCatalogError(
+                        f"Invalid chemical_category {declared_slug!r} in {source}; "
+                        f"expected one of: {known}."
+                    )
+                slug = declared_slug
+            else:
+                slug = (
+                    _CATEGORY_BY_SYMBOL.get(element.symbol, "unknowns")
+                    if element.is_standard else "unknowns"
+                )
+                category = categories[slug]
+            assignments.append((element, slug, category))
+
+        # Validate all explicit slugs before mutating any ElementRecord links.
+        for element, slug, category in assignments:
             object.__setattr__(element, "chemical_category", category)
             elements_by_slug[slug].append(element)
         for slug, items in elements_by_slug.items():

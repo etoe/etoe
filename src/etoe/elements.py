@@ -83,7 +83,12 @@ class ElementRecord:
     atomic_number: int | None = None
     aliases: tuple[str, ...] = ()
     metadata: Mapping[str, Any] | None = None
+    # Runtime link populated by ChemicalCategoryCatalog.refresh().
     chemical_category: "ChemicalCategory | None" = field(default=None, compare=False, repr=False)
+    # Optional category slug explicitly declared in the element TOML.
+    # Kept separate from the runtime object so metadata works before any
+    # selection catalog has been constructed.
+    declared_chemical_category: str | None = None
 
     @property
     def category(self) -> "ChemicalCategory | None":
@@ -154,7 +159,10 @@ class ElementRecord:
             "directory": directory_value,
             "metadata_file": metadata_value,
             "metadata": _plain_data(dict(self.metadata or {})),
-            "chemical_category": getattr(self.chemical_category, "slug", None),
+            "chemical_category": (
+                self.declared_chemical_category
+                or getattr(self.chemical_category, "slug", None)
+            ),
         }
 
 
@@ -386,6 +394,19 @@ def _load_element_record(directory: Path, metadata_file: Path | None) -> Element
     if description is not None and not isinstance(description, str):
         raise ElementCatalogError(f"Field 'description' in {metadata_file} must be a string.")
 
+    chemical_category_value = raw.get("chemical_category")
+    if chemical_category_value is None:
+        declared_chemical_category = None
+    elif (
+        not isinstance(chemical_category_value, str)
+        or not chemical_category_value.strip()
+    ):
+        raise ElementCatalogError(
+            f"Field 'chemical_category' in {metadata_file} must be a non-empty category slug."
+        )
+    else:
+        declared_chemical_category = chemical_category_value.strip()
+
     names_value = raw.get("names", {})
     if not isinstance(names_value, dict):
         raise ElementCatalogError(f"Field 'names' in {metadata_file} must be a TOML table.")
@@ -410,7 +431,10 @@ def _load_element_record(directory: Path, metadata_file: Path | None) -> Element
     metadata_value = raw.get("metadata", {})
     if not isinstance(metadata_value, dict):
         raise ElementCatalogError(f"Field 'metadata' in {metadata_file} must be a TOML table.")
-    reserved = {"symbol", "kind", "role", "description", "names", "name", "aliases", "metadata"}
+    reserved = {
+        "symbol", "kind", "role", "description", "names", "name",
+        "aliases", "metadata", "chemical_category",
+    }
     metadata: dict[str, Any] = dict(metadata_value)
     # Preserve additional fields so projects can extend metadata incrementally.
     metadata.update({key: value for key, value in raw.items() if key not in reserved})
@@ -427,6 +451,7 @@ def _load_element_record(directory: Path, metadata_file: Path | None) -> Element
         atomic_number=atomic_number,
         aliases=tuple(alias.strip() for alias in aliases_value),
         metadata=MappingProxyType(metadata),
+        declared_chemical_category=declared_chemical_category,
     )
 
 

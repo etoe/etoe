@@ -1,0 +1,9 @@
+# Project-specific metadata for Tritium.
+symbol = "T"
+role = "chemical_element"
+chemical_category = "nonmetals"
+description = "Tritium"
+
+[names]
+en = "Tritium"
+ru = "Тритий"

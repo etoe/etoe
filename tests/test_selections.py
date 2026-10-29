@@ -2,7 +2,15 @@ from pathlib import Path
 
 import pytest
 
-from etoe import AtomSelectionCatalog, hyperatom_graph_to_dot
+from etoe import (
+    AtomSelectionCatalog,
+    ChemicalCategoryCatalog,
+    ElementCatalog,
+    HyperatomTranslator,
+    SelectionCatalogError,
+    chemical_category_slug,
+    hyperatom_graph_to_dot,
+)
 
 
 PROJECT_ELEMENT_ROOT = Path(__file__).resolve().parents[1] / "data" / "atom" / "element"
@@ -32,6 +40,65 @@ def test_chemical_categories_are_exclusive_and_link_elements_and_hyperatoms(sele
     selected_atom = next(atom for atom in potassium.hyperatoms if atom.canonical == "K-40-(33'7)")
     assert selected_atom.chemical_category is potassium
     assert selected_atom.category is potassium
+
+
+
+def test_element_toml_overrides_the_default_chemical_category(tmp_path):
+    element_root = tmp_path / "element"
+    carbon_dir = element_root / "C"
+    carbon_dir.mkdir(parents=True)
+    metadata_file = carbon_dir / "C.toml"
+    metadata_file.write_text(
+        'symbol = "C"\nkind = "standard"\nchemical_category = "noble-gases"\n',
+        encoding="utf-8",
+    )
+
+    elements = ElementCatalog(element_root)
+    carbon = elements.require("C")
+    assert carbon.declared_chemical_category == "noble-gases"
+    assert carbon.to_dict()["chemical_category"] == "noble-gases"
+    assert chemical_category_slug("C", elements) == "noble-gases"
+
+    categories = ChemicalCategoryCatalog(elements, root=tmp_path / "category")
+    assert carbon.chemical_category is categories.require("noble-gases")
+    assert carbon in categories.require("noble-gases").elements
+    assert carbon not in categories.require("nonmetals").elements
+
+
+def test_graphviz_uses_declared_category_without_building_selection_catalog(tmp_path):
+    element_root = tmp_path / "element"
+    carbon_dir = element_root / "C"
+    carbon_dir.mkdir(parents=True)
+    (carbon_dir / "C.toml").write_text(
+        'symbol = "C"\nkind = "standard"\nchemical_category = "noble-gases"\n',
+        encoding="utf-8",
+    )
+    (carbon_dir / "C.etoe").write_text(
+        (PROJECT_ELEMENT_ROOT / "C" / "C.etoe").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+
+    elements = ElementCatalog(element_root)
+    registry = HyperatomTranslator(element_catalog=elements).translate_directory(element_root)
+    dot = hyperatom_graph_to_dot(registry, symbols=["C"])
+
+    # Category selectors are resolved into concrete DOT styles; their internal
+    # selector classes are not emitted as DOT attributes.
+    assert 'fillcolor="#F3E8FF"' in dot
+
+
+def test_unknown_element_toml_chemical_category_is_rejected(tmp_path):
+    element_root = tmp_path / "element"
+    carbon_dir = element_root / "C"
+    carbon_dir.mkdir(parents=True)
+    (carbon_dir / "C.toml").write_text(
+        'symbol = "C"\nkind = "standard"\nchemical_category = "made-up-category"\n',
+        encoding="utf-8",
+    )
+
+    elements = ElementCatalog(element_root)
+    with pytest.raises(SelectionCatalogError, match="Invalid chemical_category"):
+        ChemicalCategoryCatalog(elements, root=tmp_path / "category")
 
 
 def test_atomic_level_catalog_reuses_inferred_levels_and_provides_graph_tokens(selection_catalog):
