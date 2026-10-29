@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from .parser import EToEParser
@@ -119,6 +120,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="Limit tree depth from the root (0 = unlimited; root depth is 0)",
     )
 
+    batch = hyper_sub.add_parser(
+        "batch", help="Batch-generate trees, per-symbol periodic maps, and selection hyperatom maps",
+    )
+    batch.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
+    batch.add_argument("--all", dest="all_artifacts", action="store_true",
+                       help="Generate all trees, all per-symbol periodic maps, and all hyperatom maps")
+    batch.add_argument("--all-trees", action="store_true",
+                       help="Generate a tree for every source-defined concrete hyperatom")
+    batch.add_argument("--all-periodic-maps", action="store_true",
+                       help="Generate a periodic map for every symbol in the element catalog")
+    batch.add_argument("--all-hyperatom-maps", action="store_true",
+                       help="Generate hyperatom maps for every symbol and every selection catalog")
+    batch.add_argument("--mode", choices=STYLE_MODES, default=None, help="Style mode")
+    batch.add_argument("--source", choices=STYLE_SOURCES, default=None, help="Style source")
+    batch.add_argument("--target", choices=STYLE_TARGETS, default=None, help="Style target")
+    batch.add_argument("--layout", choices=("dot", "neato", "fdp", "sfdp", "circo", "twopi"), default="dot")
+    batch.add_argument("--format", choices=("dot", "svg", "png", "pdf", "ps", "json"), default=None)
+    batch.add_argument("--title", default=None, help="Optional title applied to every generated graph")
+    batch.add_argument("--element-names", action="store_true", help="Append localized element names to node labels")
+    batch.add_argument("--language", default="en", help="Language tag for element names, e.g. en or ru")
+    batch.add_argument("--hide-subelement-numbers", dest="show_subelement_numbers", action="store_false", default=True,
+                       help="Hide nonzero subelement numbers in labels")
+    batch.add_argument("--full-labels", dest="compact", action="store_false", default=True,
+                       help="Use full structural labels and non-compact spacing")
+    batch.add_argument("--max-depth", type=_non_negative_int, default=0, metavar="N",
+                       help="Maximum depth for generated trees (0 = unlimited)")
+
     return p
 
 
@@ -142,13 +170,71 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR [{issue.code}] {issue.message}")
         return 1
     if args.command == "hyperatoms":
-        if args.hyperatoms_command in {"graph", "periodic-map", "hyperatom-map", "tree"}:
+        if args.hyperatoms_command in {"graph", "periodic-map", "hyperatom-map", "tree", "batch"}:
             # Keep visual rendering and generated filenames on the same style tuple.
             configure_styles(mode=args.mode, source=args.source, target=args.target)
         from .hyperatom_translation import HyperatomTranslator
 
         registry = HyperatomTranslator(parser).translate_directory(args.data_root)
         stats = registry.statistics()
+        if args.hyperatoms_command == "batch":
+            selected = (
+                args.all_artifacts or args.all_trees or args.all_periodic_maps or args.all_hyperatom_maps
+            )
+            if not selected:
+                print(
+                    "ERROR: choose --all, --all-trees, --all-periodic-maps, or --all-hyperatom-maps.",
+                    file=sys.stderr,
+                )
+                return 2
+
+            from .batch_visualization import execute_batch_visualizations, plan_batch_visualizations
+            from .hyperatom_map import build_canonical_hyperatom_map
+
+            # Plan from source-defined catalog entries before auto-patching adds
+            # synthetic X<n> records to the in-memory element catalog.
+            source_definition_count = len(registry.definitions)
+            all_artifacts = args.all_artifacts
+            plan = plan_batch_visualizations(
+                registry,
+                element_root=args.data_root,
+                all_trees=all_artifacts or args.all_trees,
+                all_periodic_maps=all_artifacts or args.all_periodic_maps,
+                all_hyperatom_maps=all_artifacts or args.all_hyperatom_maps,
+                format=args.format,
+                mode=args.mode,
+                target=args.target,
+            )
+            if not plan.jobs:
+                print("No visualizations were selected.")
+                return 0
+
+            # Resolve references / add in-memory placeholders once for the whole batch.
+            # The plan is already fixed, so runtime-only records do not become batch jobs.
+            build_canonical_hyperatom_map(registry, auto_patch_missing=True)
+
+            def _progress(index, total, job):
+                print(f"[{index}/{total}] {job.kind}: {job.selector} -> {job.output}")
+
+            outputs = execute_batch_visualizations(
+                registry,
+                plan,
+                element_root=args.data_root,
+                layout=args.layout,
+                format=args.format,
+                title=args.title,
+                show_element_names=args.element_names,
+                language=args.language,
+                show_subelement_numbers=args.show_subelement_numbers,
+                compact=args.compact,
+                mode=args.mode,
+                target=args.target,
+                max_depth=args.max_depth,
+                progress=_progress,
+            )
+            print(f"Batch complete: {len(outputs)} visualization(s) written or reused.")
+            print(json.dumps({**plan.counts(), "source_definitions": source_definition_count}, ensure_ascii=False, indent=2))
+            return 0
         if args.hyperatoms_command == "translate":
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(registry.to_dict(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

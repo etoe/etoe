@@ -146,6 +146,42 @@ Graphviz system executable (`dot`, `neato`, `fdp`, `sfdp`, `circo` or `twopi`).
 See [the translator design and legacy-code audit](docs/hyperatom-translation.md)
 for semantics, diagnostics and limitations.
 
+### Batch visualization generation
+
+The `hyperatoms batch` command discovers source-defined hyperatoms, element
+symbols, and selection catalogs under the directories adjacent to
+`--data-root`. It plans output paths before rendering, then calls the same
+incremental writers as the single-item commands. Existing images are reused
+when their dependency manifests are current.
+
+```bash
+# Generate every source-defined hyperatom tree, every per-symbol periodic map,
+# and hyperatom maps for every symbol plus all selection catalogs.
+python -m etoe hyperatoms batch --data-root data/atom/element --all
+
+# Generate only hyperatom occurrence trees for all concrete hyperatoms.
+python -m etoe hyperatoms batch --all-trees
+
+# Generate one periodic map per symbol in the element catalog.
+python -m etoe hyperatoms batch --all-periodic-maps
+
+# Generate hyperatom maps per element and per selection (categories, levels,
+# element groups, and concrete-hyperatom groups).
+python -m etoe hyperatoms batch --all-hyperatom-maps
+
+# Preview the entire batch as DOT source without launching Graphviz.
+python -m etoe hyperatoms batch --all --format dot
+```
+
+Generated trees go into their owning element directories. Per-symbol maps are
+named `<symbol>-periodic-map...` and `<symbol>-hyperatom-map...` under each
+symbol directory. Selection maps are stored in the corresponding
+`data/atom/category`, `data/atom/level`, `data/atom/groupel`, and
+`data/atom/group` folders. `--all` is equivalent to selecting all three batch
+families. Auxiliary and project-specific symbols present in the element catalog
+are included, so data-driven catalogs are covered without a hard-coded element
+list. Runtime-only placeholder atoms are excluded from tree jobs.
+
 ### Periodic maps and hyperatom occurrence trees
 
 Graph maps are oriented top-to-bottom and have distinct contracts:
