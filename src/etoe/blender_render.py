@@ -16,7 +16,8 @@ import os
 from pathlib import Path
 import sys
 import traceback
-from typing import Any, Iterable, Sequence
+from dataclasses import dataclass
+from typing import Any, Callable, Sequence
 
 
 # When Blender runs a package file directly, sys.path[0] is src/etoe rather
@@ -162,50 +163,72 @@ def _link_object(obj: Any, collection: Any) -> None:
     collection.objects.link(obj)
 
 
-def _make_uv_sphere(name: str, location: Sequence[float], radius: float, material: Any, collection: Any, *, segments: int = 40, rings: int = 24) -> Any:
-    import bpy
+@dataclass(frozen=True, slots=True)
+class ProtiumSite:
+    """A terminal Protium content site in root-hyperatom coordinates."""
 
-    mesh = bpy.data.meshes.new(name + "_mesh")
-    # bmesh creates proper pole topology and avoids context-sensitive operators.
-    import bmesh
-    bm = bmesh.new()
-    bmesh.ops.create_uvsphere(
-        bm,
-        u_segments=max(12, int(segments)),
-        v_segments=max(8, int(rings)),
-        radius=float(radius),
-    )
-    bm.to_mesh(mesh)
-    bm.free()
-    mesh.update()
-    from mathutils import Vector
-    obj = bpy.data.objects.new(name, mesh)
-    _link_object(obj, collection)
-    obj.location = Vector(location)
-    if material is not None:
-        obj.data.materials.append(material)
-    for polygon in obj.data.polygons:
-        polygon.use_smooth = True
-    return obj
+    center: tuple[float, float, float]
+    radius: float
+    depth: int
+    deformation: float
 
 
-def _make_wire_outline(name: str, location: Sequence[float], radius: float, color: str, collection: Any) -> None:
-    """Add a subtle wireframe outline to improve silhouette readability."""
-    import bpy
+@dataclass(frozen=True, slots=True)
+class HyperatomLayout:
+    """Bottom-up spatial envelope for one node in the semantic composition tree."""
 
-    material = _new_material(name + "_outline_material", color, 0.55, roughness=0.38, metalness=0.12)
-    obj = _make_uv_sphere(name, location, radius, material, collection, segments=24, rings=16)
-    modifier = obj.modifiers.new(name="Fine wire outline", type="WIREFRAME")
-    modifier.thickness = max(0.002, radius * 0.0025)
-    modifier.use_replace = True
+    node: Hyperatom3DNode
+    depth: int
+    center: tuple[float, float, float]
+    content_radius: float
+    atmosphere_thickness: float
+    outer_radius: float
+    deformation: float
+    atomahedron: str
+    children: tuple["HyperatomLayout", ...] = ()
+    protium_sites: tuple[ProtiumSite, ...] = ()
+    terminal: bool = False
+    is_protium: bool = False
+
+
+def _vec_sub(a: Sequence[float], b: Sequence[float]) -> tuple[float, float, float]:
+    return (float(a[0]) - float(b[0]), float(a[1]) - float(b[1]), float(a[2]) - float(b[2]))
+
+
+def _vec_dot(a: Sequence[float], b: Sequence[float]) -> float:
+    return float(a[0]) * float(b[0]) + float(a[1]) * float(b[1]) + float(a[2]) * float(b[2])
+
+
+def _vec_length(value: Sequence[float]) -> float:
+    return math.sqrt(_vec_dot(value, value))
+
+
+def _vec_scale(value: Sequence[float], factor: float) -> tuple[float, float, float]:
+    return (float(value[0]) * factor, float(value[1]) * factor, float(value[2]) * factor)
+
+
+def _atomahedron_kind(protium_count: int) -> str:
+    """Name the atomhedral form by terminal Protium count, not direct child arity.
+
+    This distinction is essential for T-3-(2'1): it has two immediate children
+    (D and H), but three Protium constituents and therefore a triatomahedron.
+    He-4-(2'2) similarly has two direct D children but four Protium vertices.
+    """
+    return {
+        1: "protium-body",
+        2: "diatomahedron",
+        3: "triatomahedron",
+        4: "tetraatomahedron",
+        5: "pentaatomahedron",
+    }.get(protium_count, "hypercentric-atomahedron")
 
 
 def _child_positions(arity: int) -> tuple[tuple[float, float, float], ...]:
-    """Deterministic normalized placement inspired by the seed's atomahedra.
+    """Return normalized vertices for an atomahedron with *terminal* atom sites.
 
-    2 = diatomahedron, 3 = triatomahedron, 4 = tetraatomahedron, 5 =
-    trigonal bipyramid. Higher arities use a deterministic Fibonacci sphere
-    distribution as a visualization fallback, not as a physical postulate.
+    For a composite such as tritium or helium-4, callers pass the total number
+    of Protium leaves, not ``len(node.children)``. Child sub-hyperatoms retain
+    their own nested grouping when those sites are assigned to the tree.
     """
     if arity <= 0:
         return ()
@@ -232,98 +255,288 @@ def _child_positions(arity: int) -> tuple[tuple[float, float, float], ...]:
     points = []
     for index in range(arity):
         z = 1.0 - 2.0 * (index + 0.5) / arity
-        radius = math.sqrt(max(0.0, 1.0 - z * z))
+        radial = math.sqrt(max(0.0, 1.0 - z * z))
         angle = golden_angle * index
-        points.append((radius * math.cos(angle), radius * math.sin(angle), z))
+        points.append((radial * math.cos(angle), radial * math.sin(angle), z))
     return tuple(points)
 
 
-def _child_radius(parent_radius: float, arity: int) -> float:
-    scale = {1: 0.54, 2: 0.48, 3: 0.43, 4: 0.38, 5: 0.34}.get(arity, max(0.22, 0.31 / math.sqrt(max(1, arity - 4))))
-    return parent_radius * scale
+def _terminal_count(node: Hyperatom3DNode, depth: int = 0, max_depth: int = 0) -> int:
+    if not node.children or (max_depth > 0 and depth >= max_depth):
+        return 1
+    return sum(_terminal_count(child, depth + 1, max_depth) for child in node.children)
 
 
-def _render_node(
+def _protium_depths(node: Hyperatom3DNode, depth: int = 0) -> tuple[int, ...]:
+    """Return the hierarchy depths of all terminal Protium nodes, in tree order."""
+    if not node.children:
+        return (depth,)
+    return tuple(value for child in node.children for value in _protium_depths(child, depth + 1))
+
+
+def build_hyperatom_layout(
     node: Hyperatom3DNode,
-    center: tuple[float, float, float],
-    radius: float,
+    *,
+    max_depth: int = 0,
+) -> HyperatomLayout:
+    """Build a bottom-up geometric plan while preserving the semantic tree.
+
+    Terminal Protium sites are first assigned vertices of the appropriate
+    atomahedron. The recursive reduction then encloses already measured child
+    layouts in each parent's atmospheric envelope. Thus D, T, Ht and He-4 are
+    laid out as 2-, 3-, 3- and 4-Protium structures respectively, even though
+    T and He-4 each have only two immediate semantic children.
+    """
+    total_sites = _terminal_count(node, max_depth=max_depth)
+    positions = _child_positions(total_sites)
+    # Scale the normalized atomhedral vertices to a compact but visible unit.
+    span = {1: 0.0, 2: 0.62, 3: 0.74, 4: 0.78, 5: 0.82}.get(total_sites, 0.88)
+    target_centers = tuple(_vec_scale(point, span) for point in positions)
+    cursor = 0
+    base_protium_radius = 0.42 / math.sqrt(max(1.0, total_sites / 2.0))
+
+    def measure(current: Hyperatom3DNode, depth: int) -> HyperatomLayout:
+        nonlocal cursor
+        terminal = not current.children or (max_depth > 0 and depth >= max_depth)
+        if terminal:
+            center = target_centers[cursor]
+            cursor += 1
+            # Protium is progressively compressed with hierarchy depth. The
+            # deformation grows at the same time, so inner Protia are neither
+            # rigid nor geometrically interchangeable with outer ones.
+            radius = base_protium_radius * (0.92 ** depth)
+            deformation = min(0.48, 0.105 + 0.075 * depth)
+            atmosphere = max(0.035, radius * 0.36)
+            return HyperatomLayout(
+                node=current,
+                depth=depth,
+                center=center,
+                content_radius=radius,
+                atmosphere_thickness=atmosphere,
+                outer_radius=(radius * (1.0 + deformation * 1.10 + 0.02) + atmosphere) * 1.045,
+                deformation=deformation,
+                atomahedron="protium-body",
+                children=(),
+                protium_sites=(ProtiumSite(center, radius, depth, deformation),),
+                terminal=True,
+                is_protium=not current.children,
+            )
+
+        # Bottom-up: fully measure every sub-hyperatom before sizing the parent.
+        children = tuple(measure(child, depth + 1) for child in current.children)
+        weight_total = sum(len(child.protium_sites) for child in children) or len(children)
+        center = tuple(
+            sum(child.center[axis] * (len(child.protium_sites) or 1) for child in children) / weight_total
+            for axis in range(3)
+        )
+        content_radius = max(
+            (_vec_length(_vec_sub(child.center, center)) + child.outer_radius for child in children),
+            default=base_protium_radius,
+        )
+        atmosphere = max(0.055, content_radius * (0.105 + 0.012 * min(depth, 6)))
+        sites = tuple(site for child in children for site in child.protium_sites)
+        deformation = min(0.34, 0.065 + 0.028 * depth + 0.012 * len(children))
+        return HyperatomLayout(
+            node=current,
+            depth=depth,
+            center=center,
+            content_radius=content_radius,
+            atmosphere_thickness=atmosphere,
+            outer_radius=(content_radius + atmosphere) * 1.045,
+            deformation=deformation,
+            atomahedron=_atomahedron_kind(len(sites)),
+            children=children,
+            protium_sites=sites,
+            terminal=False,
+            is_protium=False,
+        )
+
+    return measure(node, 0)
+
+
+def _surface_warp(direction: Sequence[float], phase: float, amount: float) -> float:
+    """Smooth deterministic angular deformation for organic, non-spherical surfaces."""
+    x, y, z = (float(direction[0]), float(direction[1]), float(direction[2]))
+    wave_a = math.sin(3.1 * x + 2.3 * y - 1.7 * z + phase)
+    wave_b = math.cos(2.4 * x - 3.6 * y + 2.8 * z - phase * 0.73)
+    wave_c = math.sin(5.0 * z + 1.8 * x * y + phase * 1.31)
+    return amount * (0.42 * wave_a + 0.33 * wave_b + 0.25 * wave_c)
+
+
+def _make_deformed_surface(
+    name: str,
+    center: Sequence[float],
+    radius_at: Callable[[Sequence[float]], float],
+    material: Any,
     collection: Any,
     *,
-    mode: str,
-    shell_layers: int,
-    depth: int,
-    max_depth: int,
-    labels: bool,
-) -> None:
+    deformation: float,
+    phase: float,
+    subdivisions: int = 3,
+) -> Any:
+    """Create a smooth but deliberately non-spherical organic icosphere mesh."""
     import bpy
+    import bmesh
+    from mathutils import Vector
 
-    # Atmosphere: translucent nested envelopes and a fine outer contour.
-    for layer_index in range(shell_layers):
-        layer_radius = radius * (1.0 - layer_index * 0.075)
-        material = _material_for_node(node, mode, layer_index, shell_layers)
-        _make_uv_sphere(
-            f"{_safe_id(node.canonical)}_L{depth}_shell{layer_index + 1}",
-            center,
-            layer_radius,
-            material,
-            collection,
-        )
+    mesh = bpy.data.meshes.new(name + "_mesh")
+    bm = bmesh.new()
+    bmesh.ops.create_icosphere(bm, subdivisions=max(2, int(subdivisions)), radius=1.0)
+    for vertex in bm.verts:
+        direction = vertex.co.normalized()
+        unit = (float(direction.x), float(direction.y), float(direction.z))
+        base_radius = max(0.001, float(radius_at(unit)))
+        warp = _surface_warp(unit, phase, deformation)
+        # A small directional squeeze makes every body anisotropic in addition
+        # to the smooth harmonic deformation; no generated body is a strict sphere.
+        squeeze = 1.0 + 0.035 * deformation * (unit[0] * unit[1] - 0.5 * unit[2])
+        vertex.co = direction * (base_radius * (1.0 + warp) * squeeze)
+    bm.to_mesh(mesh)
+    bm.free()
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    _link_object(obj, collection)
+    obj.location = Vector(center)
+    if material is not None:
+        obj.data.materials.append(material)
+    for polygon in obj.data.polygons:
+        polygon.use_smooth = True
+    return obj
+
+
+def _support_radius(layout: HyperatomLayout, direction: Sequence[float]) -> float:
+    """Directional support of the already-built child envelopes."""
+    if not layout.children:
+        # Bound the deformed terminal body, not its undeformed base radius.
+        return layout.content_radius * (1.0 + layout.deformation * 1.10 + 0.02)
+    return max(
+        _vec_dot(direction, _vec_sub(child.center, layout.center)) + child.outer_radius
+        for child in layout.children
+    )
+
+
+def _material_for_content(node: Hyperatom3DNode, mode: str) -> Any:
     style = resolve_style(
         "3D", "entity", classes=(f"category-{node.chemical_category or 'unknowns'}",),
         mode=mode, source="3D", target="3D",
     )
-    _make_wire_outline(
-        f"{_safe_id(node.canonical)}_L{depth}_outline",
-        center,
-        radius,
-        str(style.get("outline", "#60A5FA")),
-        collection,
+    color = str(style.get("outline", style.get("color", "#60A5FA")))
+    return _new_material(
+        f"ÆToE_{_safe_id(node.canonical)}_deformable_content",
+        color,
+        0.64,
+        float(style.get("roughness", 0.52)),
+        float(style.get("metalness", 0.08)),
     )
 
-    # A small denser center emphasizes the hierarchical core without asserting
-    # an electron-shell or conventional nuclear model.
-    core_material = _new_material(
-        f"{_safe_id(node.canonical)}_L{depth}_core_material",
-        str(style.get("outline", "#60A5FA")),
-        0.62 if node.arity else 0.78,
-        roughness=0.32,
-        metalness=0.12,
-    )
-    _make_uv_sphere(
-        f"{_safe_id(node.canonical)}_L{depth}_core",
-        center,
-        radius * (0.105 if node.arity else 0.19),
-        core_material,
-        collection,
-        segments=32,
-        rings=20,
-    )
 
-    if labels:
-        _make_label(node.designation, center, radius, depth, mode, collection)
+def _make_node_collection(node: Hyperatom3DNode, parent: Any, layout: HyperatomLayout) -> Any:
+    import bpy
 
-    if not node.children or (max_depth > 0 and depth >= max_depth):
-        return
+    label = f"{node.canonical} [{layout.atomahedron}]"
+    collection = bpy.data.collections.new(label)
+    parent.children.link(collection)
+    collection["etoe.canonical"] = node.canonical
+    collection["etoe.designation"] = node.designation
+    collection["etoe.depth"] = int(layout.depth)
+    collection["etoe.atomahedron"] = layout.atomahedron
+    collection["etoe.protium_count"] = len(layout.protium_sites)
+    collection["etoe.construction"] = "bottom-up"
+    return collection
 
-    positions = _child_positions(len(node.children))
-    child_radius = _child_radius(radius, len(node.children))
-    # Placement factors are compact enough to keep all children within the
-    # parent atmosphere while retaining a visible tetrahedral/axial pattern.
-    offset = radius * (0.33 if len(node.children) == 2 else 0.31 if len(node.children) <= 4 else 0.34)
-    for index, (child, position) in enumerate(zip(node.children, positions)):
-        child_center = tuple(center[axis] + position[axis] * offset for axis in range(3))
-        _render_node(
-            child,
-            child_center,
-            child_radius,
-            collection,
+
+def _render_node_bottom_up(
+    layout: HyperatomLayout,
+    parent_collection: Any,
+    *,
+    mode: str,
+    shell_layers: int,
+    labels: bool,
+) -> Any:
+    """Build descendants first, then wrap their finished envelopes in this node."""
+    node = layout.node
+    node_collection = _make_node_collection(node, parent_collection, layout)
+
+    # Child collections are nested directly below this hyperatom's collection.
+    # Their meshes are generated before the current node's atmospheric meshes.
+    child_collections = []
+    for child_layout in layout.children:
+        child_collections.append(_render_node_bottom_up(
+            child_layout,
+            node_collection,
             mode=mode,
             shell_layers=shell_layers,
-            depth=depth + 1,
-            max_depth=max_depth,
             labels=labels,
-        )
+        ))
 
+    phase = sum((index + 1) * ord(char) for index, char in enumerate(node.canonical)) * 0.017
+
+    if layout.terminal:
+        # Every terminal component is a deformable body with its own atmosphere.
+        content_material = _material_for_content(node, mode)
+        content_obj = _make_deformed_surface(
+            f"{_safe_id(node.canonical)}_L{layout.depth}_content",
+            layout.center,
+            lambda _direction: layout.content_radius,
+            content_material,
+            node_collection,
+            deformation=layout.deformation,
+            phase=phase,
+            subdivisions=3,
+        )
+        content_obj["etoe.role"] = (
+            "deformable-protium-content" if layout.is_protium
+            else "deformable-truncated-subhyperatom-content"
+        )
+        content_obj["etoe.hierarchy_depth"] = layout.depth
+        content_obj["etoe.compression_factor"] = round(0.92 ** layout.depth, 6)
+
+    # For a composite node, the support function follows the already-built
+    # child envelopes. For a Protium node it follows that Protium's deformable
+    # body. Every atmospheric layer is an irregular mesh around that content.
+    outermost_shell = None
+    for layer_index in range(shell_layers):
+        fraction = (layer_index + 1) / shell_layers
+        layer_margin = layout.atmosphere_thickness * (0.45 + 0.55 * fraction)
+        material = _material_for_node(node, mode, layer_index, shell_layers)
+        shell = _make_deformed_surface(
+            f"{_safe_id(node.canonical)}_L{layout.depth}_atmosphere_{layer_index + 1}",
+            layout.center,
+            lambda direction, margin=layer_margin: _support_radius(layout, direction) + margin,
+            material,
+            node_collection,
+            # Parent atmospheres must remain outside the finished child shells;
+            # they deform, but less aggressively than the contents they wrap.
+            deformation=min(0.035, layout.deformation * 0.12),
+            phase=phase + (layer_index + 1) * 0.41,
+            subdivisions=3,
+        )
+        shell["etoe.role"] = "atmospheric-layer"
+        shell["etoe.layer_index"] = layer_index + 1
+        shell["etoe.hierarchy_depth"] = layout.depth
+        shell["etoe.atomahedron"] = layout.atomahedron
+        outermost_shell = shell
+
+    # Object parenting mirrors the collection hierarchy: direct subatom objects
+    # inherit the enclosing hyperatom's outer atmospheric object transform.
+    # Their world matrices are restored so the measured arrangement is unchanged.
+    if outermost_shell is not None:
+        for child_collection in child_collections:
+            for child_object in list(child_collection.objects):
+                world_matrix = child_object.matrix_world.copy()
+                child_object.parent = outermost_shell
+                child_object.matrix_world = world_matrix
+
+    if labels:
+        _make_label(
+            node.designation,
+            layout.center,
+            layout.outer_radius,
+            layout.depth,
+            mode,
+            node_collection,
+        )
+    return node_collection
 
 def _make_label(text: str, center: tuple[float, float, float], radius: float, depth: int, mode: str, collection: Any) -> None:
     import bpy
@@ -349,15 +562,28 @@ def _clear_scene(bpy: Any) -> Any:
             if item.users == 0:
                 datablock.remove(item)
     scene = bpy.context.scene
-    for collection in list(bpy.data.collections):
-        if collection != scene.collection:
-            bpy.data.collections.remove(collection)
+    for old_collection in reversed(list(bpy.data.collections)):
+        if old_collection != scene.collection:
+            bpy.data.collections.remove(old_collection, do_unlink=True)
     collection = bpy.data.collections.new("ÆToE_Hyperatom_Structure")
+    collection["etoe.geometry_revision"] = "bottom-up-v2"
+    collection["etoe.has_core"] = False
     scene.collection.children.link(collection)
     return collection
 
 
-def _configure_scene(bpy: Any, node: Hyperatom3DNode, *, mode: str, engine: str, resolution: int, samples: int, transparent: bool) -> float:
+def _configure_scene(
+    bpy: Any,
+    node: Hyperatom3DNode,
+    *,
+    mode: str,
+    engine: str,
+    resolution: int,
+    samples: int,
+    transparent: bool,
+    frame_radius: float,
+    frame_center: Sequence[float],
+) -> float:
     from mathutils import Vector
 
     scene = bpy.context.scene
@@ -404,23 +630,23 @@ def _configure_scene(bpy: Any, node: Hyperatom3DNode, *, mode: str, engine: str,
         background.inputs["Color"].default_value = (*bg, 1.0)
         background.inputs["Strength"].default_value = 0.45
 
-    root_radius = 3.0
-    # Orthographic camera framing is independent of hierarchy arity; the outer
-    # envelope is the root unit sphere at this scale.
+    root_radius = max(0.8, float(frame_radius))
+    # Frame the measured bottom-up envelope rather than assuming a unit sphere.
     camera_data = bpy.data.cameras.new("ÆToE_Camera")
     camera = bpy.data.objects.new("ÆToE_Camera", camera_data)
     scene.collection.objects.link(camera)
-    camera.location = Vector((root_radius * 2.8, -root_radius * 3.4, root_radius * 2.45))
-    direction = Vector((0.0, 0.0, 0.0)) - camera.location
+    target = Vector(frame_center)
+    camera.location = target + Vector((root_radius * 2.8, -root_radius * 3.4, root_radius * 2.45))
+    direction = target - camera.location
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
     camera_data.type = "ORTHO"
-    camera_data.ortho_scale = root_radius * 3.05
+    camera_data.ortho_scale = root_radius * 2.85
     scene.camera = camera
 
     for name, location, energy, size in (
-        ("ÆToE_Key", (5.5, -4.0, 7.0), 1450, 5.0),
-        ("ÆToE_Fill", (-5.0, -1.5, 2.5), 780, 4.5),
-        ("ÆToE_Rim", (0.0, 6.0, 4.0), 1050, 3.5),
+        ("ÆToE_Key", (root_radius * 1.85, -root_radius * 1.35, root_radius * 2.35), 1450, root_radius * 1.65),
+        ("ÆToE_Fill", (-root_radius * 1.7, -root_radius * 0.5, root_radius * 0.85), 780, root_radius * 1.45),
+        ("ÆToE_Rim", (0.0, root_radius * 2.0, root_radius * 1.35), 1050, root_radius * 1.15),
     ):
         light_data = bpy.data.lights.new(name=name, type="AREA")
         light_data.energy = energy * float(scene_style.get("key_light", 0.8))
@@ -428,8 +654,8 @@ def _configure_scene(bpy: Any, node: Hyperatom3DNode, *, mode: str, engine: str,
         light_data.size = size
         light = bpy.data.objects.new(name, light_data)
         scene.collection.objects.link(light)
-        light.location = Vector(location)
-        light.rotation_euler = (Vector((0, 0, 0)) - light.location).to_track_quat("-Z", "Y").to_euler()
+        light.location = target + Vector(location)
+        light.rotation_euler = (target - light.location).to_track_quat("-Z", "Y").to_euler()
 
     # Turn on ambient occlusion where the Blender version exposes it.
     eevee = getattr(scene, "eevee", None)
@@ -438,9 +664,21 @@ def _configure_scene(bpy: Any, node: Hyperatom3DNode, *, mode: str, engine: str,
     return root_radius
 
 
-def _artifact_metadata(node: Hyperatom3DNode, blend_path: Path, *, mode: str, engine: str, resolution: int, samples: int, shell_layers: int, max_depth: int, artifact: str) -> dict[str, object]:
+def _artifact_metadata(
+    node: Hyperatom3DNode,
+    layout: HyperatomLayout,
+    blend_path: Path,
+    *,
+    mode: str,
+    engine: str,
+    resolution: int,
+    samples: int,
+    shell_layers: int,
+    max_depth: int,
+    artifact: str,
+) -> dict[str, object]:
     return {
-        "schema": "etoe.hyperatom-3d-artifact.v1",
+        "schema": "etoe.hyperatom-3d-artifact.v2",
         "artifact": artifact,
         "hyperatom": {
             "canonical": node.canonical,
@@ -449,7 +687,9 @@ def _artifact_metadata(node: Hyperatom3DNode, blend_path: Path, *, mode: str, en
             "atomic_mass": node.atomic_mass,
             "atomic_level": node.atomic_level,
             "chemical_category": node.chemical_category,
-            "arity": node.arity,
+            "direct_subatom_arity": node.arity,
+            "protium_count": len(layout.protium_sites),
+            "atomahedron": layout.atomahedron,
             "resolved": node.resolved,
         },
         "renderer": {
@@ -463,11 +703,29 @@ def _artifact_metadata(node: Hyperatom3DNode, blend_path: Path, *, mode: str, en
             "max_depth": max_depth,
             "blend_file": str(blend_path),
         },
+        "geometry": {
+            "construction_order": "bottom-up",
+            "scene_collection_structure": "nested hyperatom collections; each child collection is inside its parent collection",
+            "protium_hierarchy_depths": [site.depth for site in layout.protium_sites],
+            "protium_compression_factors": [round(0.92 ** site.depth, 6) for site in layout.protium_sites],
+            "protium_deformation_factors": [round(site.deformation, 6) for site in layout.protium_sites],
+            "has_core": False,
+            "body_geometry": "deterministically deformed icosphere meshes; no strict UV spheres",
+            "atmosphere": "nested deformed envelope meshes wrapping child contents",
+        },
         "model": {
-            "kind": "recursive hyperatom composition visualization",
-            "physical_status": "structural visualization; shell radii, opacity and placement are renderer conventions, not derived physical constants",
+            "kind": "bottom-up nested hyperatom and atomahedron visualization",
+            "physical_status": "structural visualization; geometry, compression, deformation, shell thickness and opacity are renderer conventions, not derived physical constants",
         },
     }
+
+def _artifacts_use_current_geometry(paths: dict[str, Path]) -> bool:
+    """Avoid treating pre-bottom-up v1 renders as up-to-date cache entries."""
+    expected = 'schema = "etoe.hyperatom-3d-artifact.v2"'
+    try:
+        return all(expected in paths[key].read_text(encoding="utf-8") for key in ("blend_toml", "png_toml"))
+    except OSError:
+        return False
 
 
 def render_one(
@@ -487,12 +745,14 @@ def render_one(
     if (
         not args.overwrite
         and all(path.is_file() for path in paths.values())
+        and _artifacts_use_current_geometry(paths)
     ):
-        print(f"SKIP {definition.canonical}: scene, snapshot, and both TOML sidecars already exist")
+        print(f"SKIP {definition.canonical}: current bottom-up scene, snapshot, and TOML sidecars already exist")
         return blend_path, png_path
 
     blend_path.parent.mkdir(parents=True, exist_ok=True)
-    collection = _clear_scene(bpy)
+    layout = build_hyperatom_layout(node, max_depth=args.max_depth)
+    scene_root = _clear_scene(bpy)
     _configure_scene(
         bpy, node,
         mode=args.mode,
@@ -500,16 +760,14 @@ def render_one(
         resolution=args.resolution,
         samples=args.samples,
         transparent=args.transparent_background,
+        frame_radius=layout.outer_radius,
+        frame_center=layout.center,
     )
-    _render_node(
-        node,
-        (0.0, 0.0, 0.0),
-        3.0,
-        collection,
+    _render_node_bottom_up(
+        layout,
+        scene_root,
         mode=args.mode,
         shell_layers=args.shell_layers,
-        depth=0,
-        max_depth=args.max_depth,
         labels=args.labels,
     )
 
@@ -523,7 +781,7 @@ def render_one(
     bpy.ops.render.render(write_still=True)
 
     common = _artifact_metadata(
-        node, blend_path,
+        node, layout, blend_path,
         mode=args.mode,
         engine=args.engine,
         resolution=args.resolution,

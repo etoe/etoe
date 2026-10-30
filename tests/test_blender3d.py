@@ -27,6 +27,8 @@ def registry(tmp_path):
     root = tmp_path / "data" / "atom" / "element"
     _write_element(root, "H", "H-1")
     _write_element(root, "D", "D-2-(1'1)")
+    _write_element(root, "T", "T-3-(2'1)")
+    _write_element(root, "Ht", "Ht-3-(1'1'1)")
     _write_element(root, "He", "He-4-(2'2)")
     _write_element(root, "Be", "Be-8-(4'4)")
     _write_element(root, "C", "C-12-(8'4)")
@@ -58,7 +60,7 @@ def test_select_hyperatoms_by_exact_symbol_category_and_all(registry):
     assert {item.canonical for item in by_category} == {"Li-6-(4'2)"}
 
     all_items = select_hyperatoms(registry, all_elements=True)
-    assert len(all_items) == 6
+    assert len(all_items) == 8
 
 
 def test_select_hyperatoms_rejects_missing_or_unknown_selectors(registry):
@@ -144,3 +146,110 @@ def test_atomahedron_position_layouts_are_deterministic_and_unit_normalized():
         assert first == _child_positions(arity)
         for point in first:
             assert sum(value * value for value in point) == pytest.approx(1.0)
+
+
+def test_bottom_up_atomahedron_layout_uses_protium_leaves_and_preserves_hierarchy(registry):
+    from etoe.blender_render import build_hyperatom_layout, _protium_depths
+
+    def layout(canonical):
+        definition = next(item for item in registry.definitions if item.canonical == canonical)
+        tree = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+        return build_hyperatom_layout(tree)
+
+    deuterium = layout("D-2-(1'1)")
+    tritium = layout("T-3-(2'1)")
+    helitrium = layout("Ht-3-(1'1'1)")
+    helium4 = layout("He-4-(2'2)")
+
+    assert (deuterium.atomahedron, len(deuterium.protium_sites)) == ("diatomahedron", 2)
+    assert (tritium.atomahedron, len(tritium.protium_sites)) == ("triatomahedron", 3)
+    assert (helitrium.atomahedron, len(helitrium.protium_sites)) == ("triatomahedron", 3)
+    assert (helium4.atomahedron, len(helium4.protium_sites)) == ("tetraatomahedron", 4)
+
+    # Tritium is a D sub-hyperatom plus one Protium: its three Protia occupy
+    # different hierarchy depths. Helitrium's three Protia are co-level.
+    assert _protium_depths(tritium.node) == (2, 2, 1)
+    assert _protium_depths(helitrium.node) == (1, 1, 1)
+    assert _protium_depths(helium4.node) == (2, 2, 2, 2)
+
+    # Semantic containment is preserved: D stays nested inside T; He-4 has
+    # two D sub-hyperatoms, each containing a pair of Protium sites.
+    assert len(tritium.children) == 2
+    assert tritium.children[0].atomahedron == "diatomahedron"
+    assert len(tritium.children[0].protium_sites) == 2
+    assert len(tritium.children[1].protium_sites) == 1
+    assert len(helium4.children) == 2
+    assert all(child.atomahedron == "diatomahedron" for child in helium4.children)
+    assert all(len(child.protium_sites) == 2 for child in helium4.children)
+
+
+def test_deeper_protium_is_more_compressed_and_more_deformed(registry):
+    from etoe.blender_render import build_hyperatom_layout
+
+    definition = next(item for item in registry.definitions if item.canonical == "T-3-(2'1)")
+    tree = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    layout = build_hyperatom_layout(tree)
+    deeper_pair = layout.protium_sites[:2]
+    upper_protium = layout.protium_sites[2]
+
+    assert all(site.depth == 2 for site in deeper_pair)
+    assert upper_protium.depth == 1
+    assert all(site.radius < upper_protium.radius for site in deeper_pair)
+    assert all(site.deformation > upper_protium.deformation for site in deeper_pair)
+
+
+def test_bottom_up_layout_centers_proton_groups_on_atomahedron_vertices(registry):
+    from etoe.blender_render import build_hyperatom_layout
+
+    definition = next(item for item in registry.definitions if item.canonical == "Ht-3-(1'1'1)")
+    tree = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    layout = build_hyperatom_layout(tree)
+    sites = [site.center for site in layout.protium_sites]
+
+    # Three same-level Protia are at the vertices of an equilateral triangle.
+    distances = []
+    for index in range(3):
+        left, right = sites[index], sites[(index + 1) % 3]
+        distances.append(sum((left[axis] - right[axis]) ** 2 for axis in range(3)) ** 0.5)
+    assert distances[0] == pytest.approx(distances[1])
+    assert distances[1] == pytest.approx(distances[2])
+
+
+def test_renderer_metadata_describes_bottom_up_geometry_without_a_core(registry, tmp_path):
+    from etoe.blender_render import _artifact_metadata, build_hyperatom_layout
+
+    definition = next(item for item in registry.definitions if item.canonical == "T-3-(2'1)")
+    tree = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    layout = build_hyperatom_layout(tree)
+    metadata = _artifact_metadata(
+        tree,
+        layout,
+        tmp_path / "T-3-(2'1).blend",
+        mode="Dark",
+        engine="eevee",
+        resolution=1200,
+        samples=64,
+        shell_layers=3,
+        max_depth=0,
+        artifact="blender-scene",
+    )
+    assert metadata["schema"] == "etoe.hyperatom-3d-artifact.v2"
+    assert metadata["hyperatom"]["atomahedron"] == "triatomahedron"
+    assert metadata["geometry"]["construction_order"] == "bottom-up"
+    assert metadata["geometry"]["protium_hierarchy_depths"] == [2, 2, 1]
+    assert metadata["geometry"]["has_core"] is False
+
+
+def test_old_flat_renderer_sidecars_are_not_treated_as_current(tmp_path):
+    from etoe.blender_render import _artifacts_use_current_geometry
+
+    paths = {
+        "blend_toml": tmp_path / "scene.blend.toml",
+        "png_toml": tmp_path / "scene.blend.png.toml",
+    }
+    for path in paths.values():
+        path.write_text('schema = "etoe.hyperatom-3d-artifact.v1"\n', encoding="utf-8")
+    assert not _artifacts_use_current_geometry(paths)
+    for path in paths.values():
+        path.write_text('schema = "etoe.hyperatom-3d-artifact.v2"\n', encoding="utf-8")
+    assert _artifacts_use_current_geometry(paths)

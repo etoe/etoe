@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.73 bottom-up Blender geometry revision
+
+- Replaced the flat recursive sphere list with a nested Blender Collection tree
+  and an object-parent hierarchy that mirrors semantic hyperatom containment.
+- Rebuilt geometry bottom-up: terminal Protium bodies and their atmospheric
+  layers are created first; each parent then wraps the complete child envelopes.
+- Removed the central core and all strict UV-sphere geometry. Bodies and
+  atmospheric layers now use deterministically deformed organic meshes.
+- Made atomhedral forms depend on terminal Protium constituents rather than
+  immediate child count: Tritium is a three-Protium triatomahedron and He-4 is
+  a four-Protium tetraatomahedron while preserving nested Deuterium clusters.
+- Added depth-dependent Protium compression and deformation, v2 TOML metadata,
+  and automatic regeneration of artifacts made by the previous flat renderer.
+- Added regressions for D, T, Ht and He-4 atomhedral layouts and updated the
+  [Blender rendering guide](docs/blender-3d.md).
+
 ## 0.1.73 Blender background rendering for hyperatoms
 
 - Added `etoe hyperatoms render-3d` / `3d` to delegate 3D scene generation and
