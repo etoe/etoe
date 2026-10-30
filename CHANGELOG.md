@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.73 Blender background rendering for hyperatoms
+
+- Added `etoe hyperatoms render-3d` / `3d` to delegate 3D scene generation and
+  rendering to Blender's background Python runtime.
+- Added selection by concrete hyperatom, element symbol(s), chemical category,
+  or all source-defined element entries, with union/deduplication semantics.
+- Reused the canonical semantic hyperatom map to unfold recursive subatom
+  references and preserve unresolved/ambiguous references without guessing.
+- Added translucent hierarchical shell scenes, PNG snapshots, and TOML
+  metadata companions using the `<notation>.3.b33.blend[.png]` path convention.
+- Added renderer options, Blender process/environment bridge, tests, and the
+  [Blender rendering guide](docs/blender-3d.md). Documented that spatial
+  placement and optical properties are visualization conventions, not
+  calibrated physical constants from the seed.
+
 ## 0.1.72 incremental Graphviz image generation
 
 - Added adjacent TOML dependency manifests for generated Graphviz image artifacts.

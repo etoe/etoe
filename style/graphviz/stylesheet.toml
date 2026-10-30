@@ -131,19 +131,31 @@ properties = { fillcolor = "$palette.unknowns.fill", fontcolor = "$palette.unkno
 
 [[rules]]
 selector = "node.symbol-H"
-properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.only.fill", fontcolor = "$palette.protium.only.text", color = "$palette.protium.only.border", penwidth = 1.5 }
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.only.fill", fontcolor = "$palette.protium.only.text", color = "$palette.protium.only.border", penwidth = 0.1 }
 
 [[rules]]
 selector = "node.graph-hyperatom-tree.symbol-H.position-first-subatom"
-properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.first.fill", fontcolor = "$palette.protium.first.text", color = "$palette.protium.first.border", penwidth = 1.7 }
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.first.fill", fontcolor = "$palette.protium.first.text", color = "$palette.protium.first.border", penwidth = 0.1 }
 
 [[rules]]
 selector = "node.graph-hyperatom-tree.symbol-H.position-second-subatom"
-properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.second.fill", fontcolor = "$palette.protium.second.text", color = "$palette.protium.second.border", penwidth = 1.7 }
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.second.fill", fontcolor = "$palette.protium.second.text", color = "$palette.protium.second.border", penwidth = 0.1 }
+
+[[rules]]
+selector = "node.graph-hyperatom-tree.symbol-H.position-third-subatom"
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.third.fill", fontcolor = "$palette.protium.third.text", color = "$palette.protium.third.border", penwidth = 0.1 }
 
 [[rules]]
 selector = "node.graph-hyperatom-tree.symbol-H.position-only-subatom"
-properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.only.fill", fontcolor = "$palette.protium.only.text", color = "$palette.protium.only.border", penwidth = 1.7 }
+properties = { shape = "circle", style = "filled", fixedsize = true, width = 0.58, height = 0.58, fillcolor = "$palette.protium.only.fill", fontcolor = "$palette.protium.only.text", color = "$palette.protium.only.border", penwidth = 0.1 }
+
+[[rules]]
+selector = "node.symbol-D"
+properties = { fillcolor = "$palette.deuterium.fill", fontcolor = "$palette.deuterium.text", color = "$palette.deuterium.border"}
+
+[[rules]]
+selector = "node.symbol-T"
+properties = { fillcolor = "$palette.tritium.fill", fontcolor = "$palette.tritium.text", color = "$palette.tritium.border" }
 
 [[rules]]
 selector = "node.proxy.ambiguous"

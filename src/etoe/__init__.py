@@ -24,6 +24,19 @@ from .ast import (
     Structure,
 )
 from .parser import EToEParser, parse_file, parse_statement
+from .blender3d import (
+    BLENDER_ARTIFACT_CODE,
+    BLENDER_STYLE_CODE,
+    BlenderRenderError,
+    Hyperatom3DNode,
+    build_blender_command,
+    build_hyperatom_3d_tree,
+    blender_python_environment,
+    hyperatom_3d_paths,
+    run_blender,
+    select_hyperatoms,
+    write_toml_sidecar,
+)
 from .elements import (
     ELEMENT_KINDS,
     STANDARD_ELEMENT_ATOMIC_NUMBERS,
@@ -166,7 +179,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.72"
+__version__ = "0.1.73"
 
 __all__ = [
     "Aspect",
@@ -187,6 +200,17 @@ __all__ = [
     "SourceComment",
     "Statement",
     "Structure",
+    "BLENDER_ARTIFACT_CODE",
+    "BLENDER_STYLE_CODE",
+    "BlenderRenderError",
+    "Hyperatom3DNode",
+    "build_blender_command",
+    "build_hyperatom_3d_tree",
+    "blender_python_environment",
+    "hyperatom_3d_paths",
+    "run_blender",
+    "select_hyperatoms",
+    "write_toml_sidecar",
     "EToEParser",
     "ELEMENT_KINDS",
     "STANDARD_ELEMENT_ATOMIC_NUMBERS",

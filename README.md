@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`docs/seed/ru/EToE.md` (language: ru; version: 0.1.69; date: 2026-10-26) is the Russian seed document used as the design basis for this package snapshot.
+`docs/seed/ru/EToE.md` (language: ru; version: 0.1.73; date: 2026-10-30) is the Russian seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -326,3 +326,54 @@ hyperatom groups are read from `data/atom/group/<name>/group.toml`
 extended without changing Python code. The project includes the example groups
 from the 0.1.65 seed request.
 
+
+### Blender 3D hyperatom structures
+
+The `hyperatoms render-3d` command delegates all scene construction and rendering
+to Blender's background Python runtime. The ordinary `etoe` process only builds
+a Blender command; the library script `etoe/blender_render.py` then loads the
+`.etoe` registry, resolves recursive subatom references using the canonical
+hyperatom map, builds translucent hierarchical shells, and writes a `.blend`
+scene, PNG snapshot, and TOML sidecars. Blender must be installed separately.
+
+```bash
+# One concrete hyperatom
+etoe hyperatoms render-3d --hyperatom "C-12-(8'4)"
+
+# All defined hyperatoms for one element, or a comma-separated element list
+etoe hyperatoms render-3d --element C
+etoe hyperatoms render-3d --elements C,He,Be
+
+# All elements in a chemical category, or the whole element catalog
+etoe hyperatoms render-3d --category alkali-metals
+etoe hyperatoms render-3d --category transition-metals --category noble-gases
+etoe hyperatoms render-3d --all-elements
+
+# Optional theme, rendering quality, output root, and overwrite behavior
+etoe hyperatoms render-3d --element C --mode Dark --resolution 1600 --samples 128 --overwrite
+```
+
+Default output paths use the Blender/3D style code `b33`, for example:
+
+- `data/atom/element/C/C-12-(8'4).3.b33.blend`
+- `data/atom/element/C/C-12-(8'4).3.b33.blend.toml`
+- `data/atom/element/C/C-12-(8'4).3.b33.blend.png`
+- `data/atom/element/C/C-12-(8'4).3.b33.blend.png.toml`
+
+`--output` can override the `.blend` path for exactly one `--hyperatom`;
+`--output-root` preserves the per-element subdirectory layout under a different
+root. Existing scene/image pairs are skipped unless `--overwrite` is supplied.
+The `--max-depth` option controls visual expansion only and does not modify
+source definitions.
+See [the Blender 3D rendering guide](docs/blender-3d.md) for requirements, all selectors, and renderer options.
+
+The generated geometry is a structural visualization, not a numerical
+simulation of etheron trajectories. The seed does not yet specify calibrated
+3D coordinates, shell radii, or optical material constants for hyperatoms.
+Accordingly, the atomahedron-inspired placement for arities 2–5, higher-arity
+fallback placement, translucent shell count, and material opacity are explicit
+renderer conventions. The scene metadata records this limitation in both TOML
+sidecars. Style colours and scene settings are resolved from `style/3d` and the
+shared style cascade. Blender's embedded Python must be able to import the
+installed `etoe` package and its pure-Python `lark` dependency; the CLI passes
+its active Python paths using Blender's `--python-use-system-env` option.

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "etoe"
-version = "0.1.72"
+version = "0.1.73"
 description = "Reference Python implementation of the ÆToE."
 readme = "README.md"
 requires-python = ">=3.11"

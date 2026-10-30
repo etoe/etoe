@@ -4,11 +4,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
-from .parser import EToEParser
-from .validation import validate
 from .style import MODES as STYLE_MODES, SOURCES as STYLE_SOURCES, TARGETS as STYLE_TARGETS, configure_styles
 
 
@@ -147,21 +146,57 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("--max-depth", type=_non_negative_int, default=0, metavar="N",
                        help="Maximum depth for generated trees (0 = unlimited)")
 
+    render_3d = hyper_sub.add_parser(
+        "render-3d", aliases=["3d"],
+        help="Generate hierarchical hyperatom .blend scenes and PNG snapshots in Blender",
+    )
+    render_3d.add_argument("--data-root", type=Path, default=Path("data/atom/element"))
+    render_3d.add_argument("--hyperatom", action="append", default=[], metavar="NOTATION",
+                           help="Render one concrete hyperatom; repeat for several (canonical notation or semantic id)")
+    render_3d.add_argument("--element", action="append", default=[], metavar="SYMBOL",
+                           help="Render every source-defined hyperatom of this element; repeatable")
+    render_3d.add_argument("--elements", default="", metavar="SYMBOLS",
+                           help="Comma-separated list of chemical element symbols")
+    render_3d.add_argument("--category", action="append", default=[], metavar="SLUG",
+                           help="Render all hyperatoms of a chemical category; repeatable (e.g. alkali-metals)")
+    render_3d.add_argument("--all-elements", action="store_true",
+                           help="Render every source-defined hyperatom in data/atom/element")
+    render_3d.add_argument("--output", type=Path, default=None,
+                           help="Explicit .blend path (only with exactly one --hyperatom)")
+    render_3d.add_argument("--output-root", type=Path, default=None,
+                           help="Override output root; symbol subdirectories are preserved")
+    render_3d.add_argument("--blender", default=os.environ.get("BLENDER", "blender"),
+                           help="Blender executable name or path (default: $BLENDER or blender)")
+    render_3d.add_argument("--mode", choices=STYLE_MODES, default=None,
+                           help="3D theme (default follows ETOE_STYLE_MODE or Light)")
+    render_3d.add_argument("--engine", choices=("eevee", "cycles"), default="eevee")
+    render_3d.add_argument("--resolution", type=int, default=1200, help="Square PNG resolution in pixels")
+    render_3d.add_argument("--samples", type=int, default=64, help="Render samples")
+    render_3d.add_argument("--shell-layers", type=int, default=3, help="Illustrative translucent atmosphere layers (1-8)")
+    render_3d.add_argument("--max-depth", type=_non_negative_int, default=0, metavar="N",
+                           help="Maximum recursive hyperatom depth (0 = unlimited)")
+    render_3d.add_argument("--labels", action="store_true", help="Add labels at all hierarchy levels")
+    render_3d.add_argument("--transparent-background", action="store_true",
+                           help="Render PNG with transparent background")
+    render_3d.add_argument("--overwrite", action="store_true", help="Regenerate existing .blend and PNG files")
+
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    parser = EToEParser()
     if args.command == "parse":
-        doc = parser.parse_path(args.path, preserve_comments=args.comments)
+        from .parser import EToEParser
+        doc = EToEParser().parse_path(args.path, preserve_comments=args.comments)
         for stmt in doc.statements:
             print(stmt.to_canonical() + ";")
         if args.comments:
             print(f"# comments: {len(doc.comments)}")
         return 0
     if args.command == "check":
-        doc = parser.parse_path(args.path)
+        from .parser import EToEParser
+        from .validation import validate
+        doc = EToEParser().parse_path(args.path)
         result = validate(doc)
         if result.ok:
             print(f"OK: {len(doc.statements)} statement(s)")
@@ -170,12 +205,55 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR [{issue.code}] {issue.message}")
         return 1
     if args.command == "hyperatoms":
+        if args.hyperatoms_command in {"render-3d", "3d"}:
+            from .blender3d import BlenderRenderError, run_blender
+            from .style import get_style_directory, get_style_settings
+
+            selected_mode = args.mode or get_style_settings().mode
+            script_path = Path(__file__).resolve().with_name("blender_render.py")
+            script_args = [
+                "--data-root", str(args.data_root.expanduser().resolve()),
+                "--style-dir", str(get_style_directory()),
+                "--mode", selected_mode,
+                "--engine", args.engine,
+                "--resolution", str(args.resolution),
+                "--samples", str(args.samples),
+                "--shell-layers", str(args.shell_layers),
+                "--max-depth", str(args.max_depth),
+            ]
+            for selector in args.hyperatom:
+                script_args.extend(("--hyperatom", selector))
+            for symbol in args.element:
+                script_args.extend(("--element", symbol))
+            if args.elements:
+                script_args.extend(("--elements", args.elements))
+            for category in args.category:
+                script_args.extend(("--category", category))
+            if args.all_elements:
+                script_args.append("--all-elements")
+            if args.output is not None:
+                script_args.extend(("--output", str(args.output.expanduser().resolve())))
+            if args.output_root is not None:
+                script_args.extend(("--output-root", str(args.output_root.expanduser().resolve())))
+            if args.labels:
+                script_args.append("--labels")
+            if args.transparent_background:
+                script_args.append("--transparent-background")
+            if args.overwrite:
+                script_args.append("--overwrite")
+            try:
+                return run_blender(args.blender, script_path, script_args)
+            except BlenderRenderError as exc:
+                print(f"ERROR: {exc}", file=sys.stderr)
+                return 2
+
         if args.hyperatoms_command in {"graph", "periodic-map", "hyperatom-map", "tree", "batch"}:
             # Keep visual rendering and generated filenames on the same style tuple.
             configure_styles(mode=args.mode, source=args.source, target=args.target)
+        from .parser import EToEParser
         from .hyperatom_translation import HyperatomTranslator
 
-        registry = HyperatomTranslator(parser).translate_directory(args.data_root)
+        registry = HyperatomTranslator(EToEParser()).translate_directory(args.data_root)
         stats = registry.statistics()
         if args.hyperatoms_command == "batch":
             selected = (

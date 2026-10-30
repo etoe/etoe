@@ -7,88 +7,126 @@ description = "Shared semantic colour tokens used by all ÆToE visualization tar
 
 [themes.Light.palette]
 
-[themes.Light.palette.nonmetals]
-fill = "#DCEBFF"
-text = "#153E75"
-border = "#4578B5"
+[themes.Light.palette.proton]
+fill = "#0000FF"
+text = "#FFFFFF"
+border = "#000000"
 
-[themes.Light.palette.alkali-metals]
-fill = "#FCE7F3"
-text = "#831843"
-border = "#DB2777"
-
-[themes.Light.palette.alkaline-earth-metals]
-fill = "#FDECC8"
-text = "#78350F"
-border = "#D97706"
-
-[themes.Light.palette.lanthanoids]
-fill = "#EDE9FE"
-text = "#4C1D95"
-border = "#8B5CF6"
-
-[themes.Light.palette.actinoids]
-fill = "#FFE4E6"
-text = "#9F1239"
-border = "#E11D48"
-
-[themes.Light.palette.transition-metals]
-fill = "#D1FAE5"
-text = "#065F46"
-border = "#059669"
-
-[themes.Light.palette.post-transition-metals]
-fill = "#E0F2FE"
-text = "#075985"
-border = "#0284C7"
-
-[themes.Light.palette.metalloids]
-fill = "#FEF3C7"
-text = "#92400E"
-border = "#B45309"
-
-[themes.Light.palette.halogens]
-fill = "#FFE4E6"
-text = "#9F1239"
-border = "#E11D48"
-
-[themes.Light.palette.noble-gases]
-fill = "#F3E8FF"
-text = "#6B21A8"
-border = "#9333EA"
-
-[themes.Light.palette.unknowns]
-fill = "#E5E7EB"
-text = "#374151"
-border = "#6B7280"
+[themes.Light.palette.neutron]
+fill = "#FF0000"
+text = "#FFFFFF"
+border = "#000000"
 
 [themes.Light.palette.protium]
 
 [themes.Light.palette.protium.first]
-fill = "#DBEAFE"
-text = "#1D4ED8"
-border = "#2563EB"
+fill = "#bebefd"
+text = "#000000"
+border = "#000000"
 
 [themes.Light.palette.protium.second]
-fill = "#FEE2E2"
-text = "#B91C1C"
-border = "#DC2626"
+fill = "#fc9393"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.protium.third]
+fill = "#ff7676"
+text = "#000000"
+border = "#000000"
 
 [themes.Light.palette.protium.only]
-fill = "#F3E8FF"
-text = "#6B21A8"
-border = "#9333EA"
+fill = "#dd9cdd"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.deuterium]
+fill = "#cafcfc"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.tritium]
+fill = "#ff8686"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.helithreeum]
+fill = "#22bfff"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.nonmetals]
+fill = "#00ff00"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.polyatomic-nonmetal]
+fill = "#A1FFC3"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.alkali-metals]
+fill = "#ff6666"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.alkaline-earth-metals]
+fill = "#ffa500"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.lanthanoids]
+fill = "#f498b7"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.actinoids]
+fill = "#d16ab9"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.transition-metals]
+fill = "#ffefab"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.post-transition-metals]
+fill = "#ffdd55"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.metalloids]
+fill = "#c5e1a5"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.halogens]
+fill = "#3fe0c0"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.noble-gases]
+fill = "#22bfff"
+text = "#000000"
+border = "#000000"
+
+[themes.Light.palette.unknowns]
+fill = "#c9c9c9"
+text = "#000000"
+border = "#000000"
+
+
+
 
 
 [themes.Light.palette.proxy]
 
 [themes.Light.palette.proxy.ambiguous]
-fill = "#FEF3C7"
-text = "#92400E"
-border = "#B45309"
+fill = "#FFFFFF"
+text = "#7F1D1D"
+border = "#7F1D1D"
 
 [themes.Light.palette.proxy.unresolved]
-fill = "#FEE2E2"
+fill = "#FFFFFF"
 text = "#B91C1C"
 border = "#B42318"
 
