@@ -61,8 +61,9 @@ The geometry is constructed bottom-up:
 Meshes use an icosphere topology only as a tessellation starting point; their
 vertices are deterministically displaced with smooth angular deformation and
 anisotropic compression. Atmospheric layers are separate deformed surfaces
-around the contained body or child-cluster support envelope. A wireframe outline
-and a central core are not generated.
+around the contained body or child-cluster support envelope. In the default `surface` representation no wireframe is overlaid; a central
+core is never generated. Select `wireframe` or `point-cloud` explicitly with
+`--representation` when an alternate display is required.
 
 ## Atomahedron geometry follows Protium leaves
 
@@ -106,38 +107,115 @@ calibrated physical constants derived from ÆToE.
 
 ## Output and options
 
-For `C-12-(8'4)`, the four default files are:
+For `C-12-(8'4)` in the default Light style, the standard rough result set is:
 
 ```text
-data/atom/element/C/C-12-(8'4).3.b33.blend
-data/atom/element/C/C-12-(8'4).3.b33.blend.toml
-data/atom/element/C/C-12-(8'4).3.b33.blend.png
-data/atom/element/C/C-12-(8'4).3.b33.blend.png.toml
+data/atom/element/C/C-12-(8'4).rough.toml
+data/atom/element/C/C-12-(8'4).rough.3.l33.blend
+data/atom/element/C/C-12-(8'4).rough.3.l33.blend.toml
+data/atom/element/C/C-12-(8'4).rough.3.l33.blend.png
+data/atom/element/C/C-12-(8'4).rough.3.l33.blend.png.toml
 ```
 
-`--output-root DIR` changes the output root while preserving per-element
-folders. `--output FILE.blend` is allowed only for one explicitly selected
-hyperatom. A complete existing v2 set is reused unless `--overwrite` is
-supplied. Files created by the earlier flat-sphere renderer have v1 sidecars
-and are regenerated automatically, even when `--overwrite` is omitted.
+Use `--quality strict` for the `strict` simulation and geometry profile. The
+quality name is part of every output filename, so rough and strict products do
+not overwrite one another. `--representation point-cloud` and
+`--representation wireframe` select alternative renderable geometry styles;
+the default `surface` keeps the exact compact filename above, while alternate
+representations get their own filename suffix. Point-cloud mode emits a
+deterministically sampled bead cloud from mesh vertices; wireframe mode uses a
+Blender Wireframe modifier. `--output-root DIR` changes the output root while
+preserving per-element folders. `--output FILE.blend` is allowed only for one
+explicitly selected hyperatom.
+
+The synthesis manifest and both artifact sidecars record source/style
+fingerprints, Blender version, simulation settings and the SHA-256 hashes of
+the generated files. Inputs include each transitive `.etoe` definition, available element metadata
+TOML files, the seed specification `docs/seed/ru/EToE.md`,
+`style/shared/tokens.toml`, `style/3d/stylesheet.toml`, and the synthesis,
+renderer, adapter, translation, selection, element-map, and style-resolution
+modules. When those dependencies and all result hashes are unchanged,
+the complete result bundle is reused; `--rebuild` forces a new simulation and
+render. A parent job is not permitted to substitute a placeholder for a child:
+it requires the child simulation manifest, `.blend`, and successful metadata
+sidecar, then instances that saved child collection into its own nested
+collection. Child jobs are run first in dependency order.
+
 The TOML sidecars record the hyperatom, renderer settings, construction order,
 collection hierarchy, atomahedron kind, Protium hierarchy depths, compression
-factors, deformation factors, and the explicit fact that no core is generated.
+factors, deformation factors, layer parameters, simulation attempts/residual,
+and the explicit fact that no core is generated.
 
 Rendering options:
 
 ```text
 --mode Light|Dark              3D style theme
+--quality rough|strict         simulation profile (rough is the default)
+--representation surface|point-cloud|wireframe
+                                Blender geometry representation
 --engine eevee|cycles           render engine
 --resolution N                  square PNG dimension
---samples N                     render samples
---shell-layers N                atmospheric layers (1–8; default: 3)
+--samples N                     render samples (profile default: rough 16, strict 64)
+--shell-layers N                atmospheric layers (profile default: rough 3, strict 5)
+--attempts N                    initial arrangement retries (profile default: rough 3, strict 12)
 --max-depth N                   recursion depth; 0 means unlimited
 --labels                       annotate hierarchy levels
 --transparent-background       save RGBA PNG with transparent background
---overwrite                    regenerate existing output files
+--rebuild                      force simulation and rendering (alias: --overwrite)
 --blender PATH                 Blender executable
 ```
+
+## CLI selection examples
+
+The normal `etoe` process only resolves the command-line options and starts
+Blender in background mode. The package script `etoe/blender_render.py`
+performs registry selection, dependency planning, synthesis, scene construction,
+saving and rendering inside Blender. All script-specific arguments are passed
+after Blender's `--` separator.
+
+```bash
+# One hyperatom and its complete subatom dependency closure
+etoe hyperatoms render-3d --hyperatom "C-12-(8'4)"
+
+# Every source-defined hyperatom of one element
+etoe hyperatoms render-3d --element C --quality strict
+
+# A comma-separated element list (repeat --element is also supported)
+etoe hyperatoms render-3d --elements "C,Be,He" --representation point-cloud
+
+# All hyperatoms of a chemical category
+etoe hyperatoms render-3d --category noble-gases --representation wireframe
+
+# Every source-defined hyperatom from every element directory
+etoe hyperatoms render-3d --all-elements --rebuild
+```
+
+Multiple selectors are unioned and duplicate definitions are removed.
+
+## Incremental synthesis and quality profiles
+
+`rough` performs a shorter, lower-resolution geometric-relaxation sequence;
+`strict` uses more steps, more initial orientation attempts, more surface
+subdivisions, more atmospheric layers and more render samples. Both profiles
+start from a stable levitation arrangement whose nearest-neighbour Protium
+spacing is normalized to exactly two model units (one minimum Protium gabarit
+is one model unit). The simulated sequence progressively increases the
+spiral-coupling parameter and contracts the sites toward the source-defined
+composition.
+
+The dependency plan is postorder. For example, selecting `C-12-(8'4)` creates
+or reuses `H-1-1`, then `D-2-(1'1)`, then `He-4-(2'2)` and
+`Be-8-(4'4)`, and only then builds carbon. The helium scene instantiates two
+Deuterium scene collections; the deuterium scene instantiates two Protium
+collections. Carbon instantiates the pre-synthesized Beryllium and Helium
+collections. Repeated child occurrences remain repeated in the Outliner even
+though each distinct dependency file is generated only once per quality/style.
+
+The current seed defines composition and hierarchy but not calibrated
+interaction forces or etheron constitutive equations. The relaxation and
+spiral-coupling sequence is therefore an explicit deterministic geometric
+surrogate. Etheron counts, etheron mass and spin are left unresolved in model
+metadata rather than invented.
 
 The recursive tree is built from the semantic registry and canonical
 hyperatom map. A reference is followed only when it resolves uniquely; missing

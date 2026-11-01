@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`docs/seed/ru/EToE.md` (language: ru; version: 0.1.73; date: 2026-10-30) is the Russian seed document used as the design basis for this package snapshot.
+`docs/seed/ru/EToE.md` (language: ru; version: 0.1.74; date: 2026-11-01) is the Russian seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 

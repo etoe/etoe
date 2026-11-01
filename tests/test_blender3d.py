@@ -39,8 +39,9 @@ def registry(tmp_path):
 def test_hyperatom_3d_paths_follow_requested_blend_and_png_convention(registry, tmp_path):
     atom = next(item for item in registry.definitions if item.canonical == "C-12-(8'4)")
     paths = hyperatom_3d_paths(atom, element_root=registry.root)
-    expected = Path(registry.root) / "C" / f"C-12-(8'4).3.{BLENDER_STYLE_CODE}.blend"
+    expected = Path(registry.root) / "C" / f"C-12-(8'4).rough.3.l33.blend"
     assert paths["blend"] == expected
+    assert paths["simulation"] == Path(registry.root) / "C" / f"C-12-(8'4).rough.toml"
     assert str(paths["png"]) == str(expected) + ".png"
     assert str(paths["blend_toml"]) == str(expected) + ".toml"
     assert str(paths["png_toml"]) == str(expected) + ".png.toml"
@@ -233,11 +234,30 @@ def test_renderer_metadata_describes_bottom_up_geometry_without_a_core(registry,
         max_depth=0,
         artifact="blender-scene",
     )
-    assert metadata["schema"] == "etoe.hyperatom-3d-artifact.v2"
+    assert metadata["schema"] == "etoe.hyperatom-3d-artifact.v3"
     assert metadata["hyperatom"]["atomahedron"] == "triatomahedron"
     assert metadata["geometry"]["construction_order"] == "bottom-up"
     assert metadata["geometry"]["protium_hierarchy_depths"] == [2, 2, 1]
     assert metadata["geometry"]["has_core"] is False
+
+
+def test_toml_sidecar_writes_human_readable_dependency_array_of_tables(tmp_path):
+    import tomllib
+
+    path = tmp_path / "result.toml"
+    write_toml_sidecar(path, {
+        "schema": "test.v1",
+        "dependencies": [
+            {"path": "data/atom/element/H/H.etoe", "role": "hyperatom-source", "exists": True, "sha256": "abc"},
+            {"path": "style/shared/tokens.toml", "role": "shared-style-tokens", "exists": True, "sha256": "def"},
+        ],
+        "cache": {"schema": "cache.v1"},
+    })
+    parsed = tomllib.loads(path.read_text(encoding="utf-8"))
+    assert [item["role"] for item in parsed["dependencies"]] == [
+        "hyperatom-source", "shared-style-tokens"
+    ]
+    assert parsed["dependencies"][0]["path"] == "data/atom/element/H/H.etoe"
 
 
 def test_old_flat_renderer_sidecars_are_not_treated_as_current(tmp_path):

@@ -137,87 +137,125 @@ border = "#B42318"
 
 [themes.Dark.palette]
 
-[themes.Dark.palette.nonmetals]
-fill = "#1E3A5F"
-text = "#DBEAFE"
-border = "#60A5FA"
+[themes.Dark.palette.proton]
+fill = "#0000FF"
+text = "#FFFFFF"
+border = "#000000"
 
-[themes.Dark.palette.alkali-metals]
-fill = "#4A1735"
-text = "#FBCFE8"
-border = "#F472B6"
-
-[themes.Dark.palette.alkaline-earth-metals]
-fill = "#4A2A0A"
-text = "#FDE68A"
-border = "#FBBF24"
-
-[themes.Dark.palette.lanthanoids]
-fill = "#35245F"
-text = "#DDD6FE"
-border = "#A78BFA"
-
-[themes.Dark.palette.actinoids]
-fill = "#4B1D2A"
-text = "#FECDD3"
-border = "#FB7185"
-
-[themes.Dark.palette.transition-metals]
-fill = "#123F35"
-text = "#A7F3D0"
-border = "#34D399"
-
-[themes.Dark.palette.post-transition-metals]
-fill = "#12364B"
-text = "#BAE6FD"
-border = "#38BDF8"
-
-[themes.Dark.palette.metalloids]
-fill = "#49340B"
-text = "#FDE68A"
-border = "#F59E0B"
-
-[themes.Dark.palette.halogens]
-fill = "#4B1827"
-text = "#FECDD3"
-border = "#FB7185"
-
-[themes.Dark.palette.noble-gases]
-fill = "#3B1C58"
-text = "#E9D5FF"
-border = "#C084FC"
-
-[themes.Dark.palette.unknowns]
-fill = "#374151"
-text = "#F3F4F6"
-border = "#9CA3AF"
+[themes.Dark.palette.neutron]
+fill = "#FF0000"
+text = "#FFFFFF"
+border = "#000000"
 
 [themes.Dark.palette.protium]
 
 [themes.Dark.palette.protium.first]
-fill = "#1E3A8A"
-text = "#DBEAFE"
-border = "#60A5FA"
+fill = "#bebefd"
+text = "#000000"
+border = "#000000"
 
 [themes.Dark.palette.protium.second]
-fill = "#7F1D1D"
-text = "#FEE2E2"
-border = "#F87171"
+fill = "#fc9393"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.protium.third]
+fill = "#ff7676"
+text = "#000000"
+border = "#000000"
 
 [themes.Dark.palette.protium.only]
-fill = "#4C1D95"
-text = "#E9D5FF"
-border = "#A78BFA"
+fill = "#dd9cdd"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.deuterium]
+fill = "#cafcfc"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.tritium]
+fill = "#ff8686"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.helithreeum]
+fill = "#22bfff"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.nonmetals]
+fill = "#00ff00"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.polyatomic-nonmetal]
+fill = "#A1FFC3"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.alkali-metals]
+fill = "#ff6666"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.alkaline-earth-metals]
+fill = "#ffa500"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.lanthanoids]
+fill = "#f498b7"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.actinoids]
+fill = "#d16ab9"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.transition-metals]
+fill = "#ffefab"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.post-transition-metals]
+fill = "#ffdd55"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.metalloids]
+fill = "#c5e1a5"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.halogens]
+fill = "#3fe0c0"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.noble-gases]
+fill = "#22bfff"
+text = "#000000"
+border = "#000000"
+
+[themes.Dark.palette.unknowns]
+fill = "#c9c9c9"
+text = "#000000"
+border = "#000000"
+
+
+
 
 
 [themes.Dark.palette.proxy]
 
 [themes.Dark.palette.proxy.ambiguous]
-fill = "#713F12"
-text = "#FEF3C7"
-border = "#FBBF24"
+fill = "#FFFFFF"
+text = "#7F1D1D"
+border = "#7F1D1D"
 
 [themes.Dark.palette.proxy.unresolved]
-fill = "#7F1D1D"
-text = "#FEE2E2"
-border = "#F87171"
+fill = "#FFFFFF"
+text = "#B91C1C"
+border = "#B42318"

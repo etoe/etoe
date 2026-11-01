@@ -13,11 +13,14 @@ from __future__ import annotations
 import argparse
 import math
 import os
-from pathlib import Path
 import sys
 import traceback
+import hashlib
+import json
+import tomllib
 from dataclasses import dataclass
-from typing import Any, Callable, Sequence
+from pathlib import Path
+from typing import Any, Callable, Mapping, Sequence
 
 
 # When Blender runs a package file directly, sys.path[0] is src/etoe rather
@@ -32,10 +35,13 @@ from etoe.blender3d import (  # noqa: E402
     build_hyperatom_3d_tree,
     hyperatom_3d_paths,
     select_hyperatoms,
+    hyperatom_dependency_order,
     write_toml_sidecar,
 )
 from etoe.hyperatom_translation import HyperatomTranslator  # noqa: E402
 from etoe.style import configure_styles, chemical_category_slug, resolve_style  # noqa: E402
+from etoe.hyperatom_synthesis import PROFILES, HyperatomSynthesis, simulate_hyperatom_synthesis, simulation_fingerprint  # noqa: E402
+from etoe.incremental import snapshot_dependencies  # noqa: E402
 
 
 def _parse_list(value: str) -> list[str]:
@@ -50,18 +56,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--elements", default="", help="Comma-separated element symbols")
     parser.add_argument("--category", action="append", default=[], help="Chemical category slug (repeatable)")
     parser.add_argument("--all-elements", action="store_true", help="Render all source-defined hyperatoms for every element")
+    parser.add_argument("--quality", choices=("rough", "strict"), default="rough")
+    parser.add_argument("--representation", choices=("surface", "point-cloud", "wireframe"), default="surface")
     parser.add_argument("--output", type=Path, default=None, help="Explicit .blend path (only for one hyperatom)")
     parser.add_argument("--output-root", type=Path, default=None, help="Override the standard element-directory output root")
     parser.add_argument("--style-dir", type=Path, default=None)
     parser.add_argument("--mode", choices=("Light", "Dark"), default="Dark")
     parser.add_argument("--engine", choices=("eevee", "cycles"), default="eevee")
     parser.add_argument("--resolution", type=int, default=1200)
-    parser.add_argument("--samples", type=int, default=64)
-    parser.add_argument("--shell-layers", type=int, default=3)
+    parser.add_argument("--samples", type=int, default=None)
+    parser.add_argument("--shell-layers", type=int, default=None)
+    parser.add_argument("--attempts", type=int, default=None)
     parser.add_argument("--max-depth", type=int, default=0, help="Maximum recursive atom depth (0 = unlimited)")
     parser.add_argument("--labels", action="store_true", help="Add small labels to all hierarchy levels")
     parser.add_argument("--transparent-background", action="store_true")
-    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--rebuild", "--overwrite", dest="rebuild", action="store_true")
     return parser
 
 
@@ -373,6 +382,7 @@ def _make_deformed_surface(
     deformation: float,
     phase: float,
     subdivisions: int = 3,
+    toroidality: float = 0.0,
 ) -> Any:
     """Create a smooth but deliberately non-spherical organic icosphere mesh."""
     import bpy
@@ -387,6 +397,9 @@ def _make_deformed_surface(
         unit = (float(direction.x), float(direction.y), float(direction.z))
         base_radius = max(0.001, float(radius_at(unit)))
         warp = _surface_warp(unit, phase, deformation)
+        # A low-amplitude equatorial waist/bulge makes the body "doughnut-like"
+        # without opening a mathematically toroidal hole or losing a closed shell.
+        warp += max(0.0, min(0.22, toroidality)) * (0.55 - 0.95 * unit[2] * unit[2])
         # A small directional squeeze makes every body anisotropic in addition
         # to the smooth harmonic deformation; no generated body is a strict sphere.
         squeeze = 1.0 + 0.035 * deformation * (unit[0] * unit[1] - 0.5 * unit[2])
@@ -415,7 +428,7 @@ def _support_radius(layout: HyperatomLayout, direction: Sequence[float]) -> floa
     )
 
 
-def _material_for_content(node: Hyperatom3DNode, mode: str) -> Any:
+def _material_for_content(node: Hyperatom3DNode, mode: str, layer_index: int = 0) -> Any:
     style = resolve_style(
         "3D", "entity", classes=(f"category-{node.chemical_category or 'unknowns'}",),
         mode=mode, source="3D", target="3D",
@@ -424,7 +437,7 @@ def _material_for_content(node: Hyperatom3DNode, mode: str) -> Any:
     return _new_material(
         f"ÆToE_{_safe_id(node.canonical)}_deformable_content",
         color,
-        0.64,
+        max(0.12, 0.58 / (1.0 + 0.45 * layer_index)),
         float(style.get("roughness", 0.52)),
         float(style.get("metalness", 0.08)),
     )
@@ -445,6 +458,53 @@ def _make_node_collection(node: Hyperatom3DNode, parent: Any, layout: HyperatomL
     return collection
 
 
+def _instantiate_subatom_result(
+    bpy: Any,
+    blend_path: Path,
+    child_layout: HyperatomLayout,
+    parent_collection: Any,
+    library_cache: dict[str, Any],
+) -> Any:
+    """Instantiate the already-synthesized child .blend as one encapsulated node."""
+    from mathutils import Vector
+
+    key = str(blend_path.resolve())
+    collection = library_cache.get(key)
+    if collection is None:
+        with bpy.data.libraries.load(key, link=False) as (data_from, data_to):
+            requested = "ÆToE_Hyperatom_Structure"
+            if requested not in data_from.collections:
+                raise BlenderRenderError(f"Subatom result {blend_path} has no structural collection.")
+            data_to.collections = [requested]
+        collection = data_to.collections[0]
+        if collection is None:
+            raise BlenderRenderError(f"Could not load structural collection from {blend_path}.")
+        library_cache[key] = collection
+
+    sub_collection = bpy.data.collections.new(
+        f"{child_layout.node.canonical} [synthesized dependency]"
+    )
+    parent_collection.children.link(sub_collection)
+    sub_collection["etoe.canonical"] = child_layout.node.canonical
+    sub_collection["etoe.consumed_simulation_result"] = True
+    sub_collection["etoe.source_blend"] = key
+
+    empty = bpy.data.objects.new(
+        f"subatom_{_safe_id(child_layout.node.canonical)}_instance", None
+    )
+    sub_collection.objects.link(empty)
+    empty.instance_type = "COLLECTION"
+    empty.instance_collection = collection
+    empty.location = Vector(child_layout.center)
+    source_radius = float(collection.get("etoe.outer_radius", child_layout.outer_radius))
+    target_scale = child_layout.outer_radius / max(source_radius, 1e-9)
+    empty.scale = (target_scale, target_scale, target_scale)
+    empty["etoe.role"] = "synthesized-subatom-instance"
+    empty["etoe.source_blend"] = key
+    empty["etoe.canonical"] = child_layout.node.canonical
+    return empty
+
+
 def _render_node_bottom_up(
     layout: HyperatomLayout,
     parent_collection: Any,
@@ -452,48 +512,83 @@ def _render_node_bottom_up(
     mode: str,
     shell_layers: int,
     labels: bool,
+    mesh_subdivisions: int = 3,
+    clump_layers: int = 2,
+    dependency_paths: Mapping[str, Path] | None = None,
+    library_cache: dict[str, Any] | None = None,
+    animation_tracks: list[tuple[Any, int, int, float]] | None = None,
+    site_offset: int = 0,
+    max_depth: int = 0,
 ) -> Any:
-    """Build descendants first, then wrap their finished envelopes in this node."""
+    """Build descendants bottom-up, reusing saved child synthesis artifacts."""
+    import bpy
     node = layout.node
     node_collection = _make_node_collection(node, parent_collection, layout)
+    dependency_paths = dependency_paths or {}
+    library_cache = library_cache if library_cache is not None else {}
+    animation_tracks = animation_tracks if animation_tracks is not None else []
 
-    # Child collections are nested directly below this hyperatom's collection.
-    # Their meshes are generated before the current node's atmospheric meshes.
     child_collections = []
+    child_offset = site_offset
     for child_layout in layout.children:
-        child_collections.append(_render_node_bottom_up(
-            child_layout,
-            node_collection,
-            mode=mode,
-            shell_layers=shell_layers,
-            labels=labels,
-        ))
+        child_count = len(child_layout.protium_sites)
+        dependency_path = dependency_paths.get(child_layout.node.canonical)
+        can_reuse_result = (
+            dependency_path is not None
+            and dependency_path.is_file()
+            and child_layout.node.resolved
+            and not (max_depth > 0 and child_layout.depth >= max_depth)
+        )
+        if can_reuse_result:
+            instance = _instantiate_subatom_result(
+                bpy, dependency_path, child_layout, node_collection, library_cache,
+            )
+            animation_tracks.append((instance, child_offset, child_count, 1.0))
+            child_collections.append(instance.users_collection[0] if instance.users_collection else None)
+        else:
+            child_collections.append(_render_node_bottom_up(
+                child_layout,
+                node_collection,
+                mode=mode,
+                shell_layers=shell_layers,
+                labels=labels,
+                mesh_subdivisions=mesh_subdivisions,
+                clump_layers=clump_layers,
+                dependency_paths=dependency_paths,
+                library_cache=library_cache,
+                animation_tracks=animation_tracks,
+                site_offset=child_offset,
+                max_depth=max_depth,
+            ))
+        child_offset += child_count
 
     phase = sum((index + 1) * ord(char) for index, char in enumerate(node.canonical)) * 0.017
 
     if layout.terminal:
-        # Every terminal component is a deformable body with its own atmosphere.
-        content_material = _material_for_content(node, mode)
-        content_obj = _make_deformed_surface(
-            f"{_safe_id(node.canonical)}_L{layout.depth}_content",
-            layout.center,
-            lambda _direction: layout.content_radius,
-            content_material,
-            node_collection,
-            deformation=layout.deformation,
-            phase=phase,
-            subdivisions=3,
-        )
-        content_obj["etoe.role"] = (
-            "deformable-protium-content" if layout.is_protium
-            else "deformable-truncated-subhyperatom-content"
-        )
-        content_obj["etoe.hierarchy_depth"] = layout.depth
-        content_obj["etoe.compression_factor"] = round(0.92 ** layout.depth, 6)
+        # Every terminal Protium contains several nested, deformable clump
+        # layers. The outer layer is denser; inner layers remain translucent.
+        for clump_index in range(clump_layers):
+            factor = 1.0 - 0.19 * clump_index
+            content_material = _material_for_content(node, mode, clump_index)
+            content_obj = _make_deformed_surface(
+                f"{_safe_id(node.canonical)}_L{layout.depth}_clump_{clump_index + 1}",
+                layout.center,
+                lambda _direction, radius=layout.content_radius * factor: radius,
+                content_material,
+                node_collection,
+                deformation=min(0.55, layout.deformation + 0.035 * clump_index),
+                phase=phase + clump_index * 0.29,
+                subdivisions=mesh_subdivisions,
+                toroidality=0.055 + 0.025 * clump_index,
+            )
+            content_obj["etoe.role"] = "deformable-protium-clumping-layer" if layout.is_protium else "deformable-truncated-subhyperatom-layer"
+            content_obj["etoe.layer_index"] = clump_index + 1
+            content_obj["etoe.hierarchy_depth"] = layout.depth
+            content_obj["etoe.compression_factor"] = round(0.92 ** layout.depth, 6)
+            if clump_index == 0:
+                animation_tracks.append((content_obj, site_offset, 1, 1.0))
 
-    # For a composite node, the support function follows the already-built
-    # child envelopes. For a Protium node it follows that Protium's deformable
-    # body. Every atmospheric layer is an irregular mesh around that content.
+    # Each composite atmosphere encloses the already-created child results.
     outermost_shell = None
     for layer_index in range(shell_layers):
         fraction = (layer_index + 1) / shell_layers
@@ -505,11 +600,10 @@ def _render_node_bottom_up(
             lambda direction, margin=layer_margin: _support_radius(layout, direction) + margin,
             material,
             node_collection,
-            # Parent atmospheres must remain outside the finished child shells;
-            # they deform, but less aggressively than the contents they wrap.
             deformation=min(0.035, layout.deformation * 0.12),
             phase=phase + (layer_index + 1) * 0.41,
-            subdivisions=3,
+            subdivisions=mesh_subdivisions,
+            toroidality=0.018,
         )
         shell["etoe.role"] = "atmospheric-layer"
         shell["etoe.layer_index"] = layer_index + 1
@@ -517,12 +611,15 @@ def _render_node_bottom_up(
         shell["etoe.atomahedron"] = layout.atomahedron
         outermost_shell = shell
 
-    # Object parenting mirrors the collection hierarchy: direct subatom objects
-    # inherit the enclosing hyperatom's outer atmospheric object transform.
-    # Their world matrices are restored so the measured arrangement is unchanged.
+    # Preserve local transform inheritance for generated (non-instanced) child
+    # objects. Collection instances remain separate nested synthesis artifacts.
     if outermost_shell is not None:
         for child_collection in child_collections:
+            if child_collection is None:
+                continue
             for child_object in list(child_collection.objects):
+                if child_object.get("etoe.role") == "synthesized-subatom-instance":
+                    continue
                 world_matrix = child_object.matrix_world.copy()
                 child_object.parent = outermost_shell
                 child_object.matrix_world = world_matrix
@@ -537,6 +634,96 @@ def _render_node_bottom_up(
             node_collection,
         )
     return node_collection
+
+
+def _apply_geometry_representation(bpy: Any, root_collection: Any, representation: str) -> None:
+    """Apply a renderable surface, sampled point-cloud, or wireframe style.
+
+    Point-cloud mode represents a bounded, deterministic subset of the surface
+    vertices as joined low-poly beads. Wireframe mode adds Blender's native
+    Wireframe modifier, so the saved file remains editable.
+    """
+    normalized = str(representation).casefold()
+    if normalized == "surface":
+        return
+    import bmesh
+    from mathutils import Matrix
+
+    collections = [root_collection]
+    while collections:
+        collection = collections.pop()
+        collections.extend(list(collection.children))
+        for obj in list(collection.objects):
+            if obj.type != "MESH":
+                continue
+            if normalized == "wireframe":
+                modifier = obj.modifiers.new(name="ÆToE_Wireframe", type="WIREFRAME")
+                extent = max(float(value) for value in obj.dimensions) if obj.dimensions else 1.0
+                modifier.thickness = max(0.0015, extent * 0.006)
+                modifier.use_even_offset = True
+                modifier.use_replace = True
+                continue
+            if normalized != "point-cloud":
+                raise BlenderRenderError(f"Unsupported geometry representation {representation!r}.")
+            vertices = list(obj.data.vertices)
+            if not vertices:
+                continue
+            stride = max(1, math.ceil(len(vertices) / 320))
+            extent = max((float(value) for value in obj.dimensions), default=1.0)
+            point_radius = max(0.002, extent * 0.012)
+            bm = bmesh.new()
+            try:
+                for vertex in vertices[::stride]:
+                    bmesh.ops.create_icosphere(
+                        bm, subdivisions=1, radius=point_radius,
+                        matrix=Matrix.Translation(vertex.co),
+                    )
+                cloud_mesh = bpy.data.meshes.new(obj.data.name + "_point_cloud")
+                bm.to_mesh(cloud_mesh)
+                cloud_mesh.update()
+            finally:
+                bm.free()
+            old_mesh = obj.data
+            for material in old_mesh.materials:
+                cloud_mesh.materials.append(material)
+            obj.data = cloud_mesh
+            obj.name = obj.name + "_point_cloud"
+            if old_mesh.users == 0:
+                bpy.data.meshes.remove(old_mesh)
+
+
+def _animate_synthesis(
+    bpy: Any,
+    synthesis: HyperatomSynthesis,
+    animation_tracks: Sequence[tuple[Any, int, int, float]],
+) -> None:
+    """Keyframe subatom instances and primitive bodies along the simulated path."""
+    from mathutils import Vector
+
+    scene = bpy.context.scene
+    scene.frame_start = 1
+    scene.frame_end = max((frame.frame for frame in synthesis.frames), default=synthesis.steps + 1)
+    for obj, offset, count, base_scale in animation_tracks:
+        for frame in synthesis.frames:
+            group = frame.positions[offset:offset + count]
+            if not group:
+                continue
+            world_center = tuple(
+                sum(point[axis] for point in group) / len(group)
+                for axis in range(3)
+            )
+            world_vector = Vector(world_center)
+            if obj.parent is not None:
+                local_vector = obj.parent.matrix_world.inverted() @ world_vector
+                obj.location = local_vector
+            else:
+                obj.location = world_vector
+            contraction = float(frame.compression)
+            obj.scale = (base_scale * contraction,) * 3
+            obj.keyframe_insert(data_path="location", frame=frame.frame)
+            obj.keyframe_insert(data_path="scale", frame=frame.frame)
+    scene.frame_set(scene.frame_end)
+
 
 def _make_label(text: str, center: tuple[float, float, float], radius: float, depth: int, mode: str, collection: Any) -> None:
     import bpy
@@ -568,6 +755,7 @@ def _clear_scene(bpy: Any) -> Any:
     collection = bpy.data.collections.new("ÆToE_Hyperatom_Structure")
     collection["etoe.geometry_revision"] = "bottom-up-v2"
     collection["etoe.has_core"] = False
+    collection["etoe.hyperatom_root"] = True
     scene.collection.children.link(collection)
     return collection
 
@@ -669,16 +857,20 @@ def _artifact_metadata(
     layout: HyperatomLayout,
     blend_path: Path,
     *,
+    synthesis: HyperatomSynthesis | None = None,
     mode: str,
+    quality: str = "rough",
+    representation: str = "surface",
     engine: str,
     resolution: int,
     samples: int,
     shell_layers: int,
     max_depth: int,
     artifact: str,
+    dependency_artifacts: Sequence[str] = (),
 ) -> dict[str, object]:
     return {
-        "schema": "etoe.hyperatom-3d-artifact.v2",
+        "schema": "etoe.hyperatom-3d-artifact.v3",
         "artifact": artifact,
         "hyperatom": {
             "canonical": node.canonical,
@@ -695,6 +887,8 @@ def _artifact_metadata(
         "renderer": {
             "name": "Blender",
             "mode": mode,
+            "quality": quality,
+            "representation": representation,
             "engine": engine,
             "resolution_x": resolution,
             "resolution_y": resolution,
@@ -702,30 +896,237 @@ def _artifact_metadata(
             "shell_layers": shell_layers,
             "max_depth": max_depth,
             "blend_file": str(blend_path),
+            "simulation_steps": synthesis.steps if synthesis is not None else 0,
+            "simulation_attempts": synthesis.attempt_count if synthesis is not None else 0,
+            "simulation_success": synthesis.success if synthesis is not None else False,
         },
         "geometry": {
             "construction_order": "bottom-up",
-            "scene_collection_structure": "nested hyperatom collections; each child collection is inside its parent collection",
+            "scene_collection_structure": "nested hyperatom collections with synthesized subatom collection instances",
             "protium_hierarchy_depths": [site.depth for site in layout.protium_sites],
             "protium_compression_factors": [round(0.92 ** site.depth, 6) for site in layout.protium_sites],
             "protium_deformation_factors": [round(site.deformation, 6) for site in layout.protium_sites],
             "has_core": False,
-            "body_geometry": "deterministically deformed icosphere meshes; no strict UV spheres",
-            "atmosphere": "nested deformed envelope meshes wrapping child contents",
+            "body_geometry": "deformed torus-like closed meshes with multiple clumping layers; no strict UV spheres",
+            "atmosphere": "nested deformed envelope meshes wrapping child synthesis results",
+            "dependency_artifacts": list(dependency_artifacts),
+            "animation": "keyframed synthesis sequence from initial levitation through spiral addition and compression",
+        },
+        "simulation": {
+            "quality": quality,
+            "success": synthesis.success if synthesis is not None else False,
+            "expected_structure": synthesis.expected_structure if synthesis is not None else node.canonical,
+            "expected_atomahedron": synthesis.expected_atomahedron if synthesis is not None else layout.atomahedron,
+            "attempt_count": synthesis.attempt_count if synthesis is not None else 0,
+            "steps": synthesis.steps if synthesis is not None else 0,
+            "residual": round(synthesis.residual, 10) if synthesis is not None else 0.0,
+            "fingerprint": simulation_fingerprint(synthesis.to_dict()) if synthesis is not None else "",
+            "physical_scope": "phenomenological geometric surrogate; source seed does not define calibrated force laws",
         },
         "model": {
-            "kind": "bottom-up nested hyperatom and atomahedron visualization",
-            "physical_status": "structural visualization; geometry, compression, deformation, shell thickness and opacity are renderer conventions, not derived physical constants",
+            "kind": "bottom-up hierarchical hyperatom synthesis model",
+            "physical_status": "unvalidated model parameters are explicitly marked; known atomic mass comes from source notation; spin and etheron-based quantities remain null until specified",
         },
     }
 
-def _artifacts_use_current_geometry(paths: dict[str, Path]) -> bool:
-    """Avoid treating pre-bottom-up v1 renders as up-to-date cache entries."""
-    expected = 'schema = "etoe.hyperatom-3d-artifact.v2"'
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _source_dependencies(
+    registry: Any,
+    definition: Any,
+    dependency_definitions: Sequence[Any],
+    style_dir: Path,
+) -> list[tuple[Path, str]]:
+    root = Path(registry.root).expanduser().resolve()
+    dependencies: list[tuple[Path, str]] = []
+    symbols: set[str] = set()
+    for item in (definition, *dependency_definitions):
+        dependencies.append((root / item.source_path, "hyperatom-source"))
+        if item.symbol:
+            symbols.add(item.symbol)
+    for symbol in sorted(symbols):
+        element_metadata = root / symbol / f"{symbol}.toml"
+        if element_metadata.is_file():
+            dependencies.append((element_metadata, "element-metadata"))
+    repository_root = root.parents[2] if len(root.parents) >= 3 else root
+    seed_specification = repository_root / "docs" / "seed" / "ru" / "EToE.md"
+    if seed_specification.is_file():
+        dependencies.append((seed_specification, "etoe-seed-specification"))
+    dependencies.extend([
+        (style_dir / "shared" / "tokens.toml", "shared-style-tokens"),
+        (style_dir / "3d" / "stylesheet.toml", "3d-stylesheet"),
+        (Path(__file__).resolve(), "blender-render-script"),
+        (Path(__file__).with_name("hyperatom_synthesis.py").resolve(), "synthesis-model"),
+        (Path(__file__).with_name("blender3d.py").resolve(), "blender-adapter"),
+        (Path(__file__).with_name("hyperatom_translation.py").resolve(), "semantic-translator"),
+        (Path(__file__).with_name("hyperatom_map.py").resolve(), "canonical-reference-map"),
+        (Path(__file__).with_name("elements.py").resolve(), "element-catalog"),
+        (Path(__file__).with_name("selections.py").resolve(), "chemical-category-catalog"),
+        (Path(__file__).with_name("style.py").resolve(), "style-resolver"),
+    ])
+    return dependencies
+
+
+def _cache_context(
+    args: argparse.Namespace,
+    synthesis: HyperatomSynthesis,
+    blender_version: str,
+) -> dict[str, Any]:
+    return {
+        "schema": "etoe.hyperatom-synthesis-cache.v1",
+        "quality": args.quality,
+        "representation": args.representation,
+        "mode": args.mode,
+        "engine": args.engine,
+        "resolution": args.resolution,
+        "samples": args.samples,
+        "shell_layers": args.shell_layers,
+        "max_depth": args.max_depth,
+        "attempts": args.attempts,
+        "labels": bool(args.labels),
+        "transparent_background": bool(args.transparent_background),
+        "simulation_fingerprint": simulation_fingerprint(synthesis.to_dict()),
+        "blender_version": blender_version,
+    }
+
+
+def _json_compact(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def _artifacts_use_current_geometry(paths: Mapping[str, Path]) -> bool:
+    """Compatibility probe for callers that only inspect renderer sidecars.
+
+    The hierarchical renderer introduced schema v2; schema v3 adds explicit
+    synthesis/cache metadata. Both describe the current non-flat geometry.
+    """
+    accepted = {"etoe.hyperatom-3d-artifact.v2", "etoe.hyperatom-3d-artifact.v3"}
     try:
-        return all(expected in paths[key].read_text(encoding="utf-8") for key in ("blend_toml", "png_toml"))
-    except OSError:
+        for key in ("blend_toml", "png_toml"):
+            if key not in paths or not paths[key].is_file():
+                return False
+            metadata = tomllib.loads(paths[key].read_text(encoding="utf-8"))
+            if metadata.get("schema") not in accepted:
+                return False
+        return True
+    except (OSError, ValueError, tomllib.TOMLDecodeError):
         return False
+
+
+def _bundle_cache_current(
+    paths: Mapping[str, Path],
+    *,
+    context: Mapping[str, Any],
+    dependencies: Sequence[tuple[Path, str]],
+) -> bool:
+    """Validate every result file against the exact model/style/source inputs."""
+    required = ("simulation", "blend", "blend_toml", "png", "png_toml")
+    if any(not paths[key].is_file() for key in required):
+        return False
+    try:
+        manifest = tomllib.loads(paths["simulation"].read_text(encoding="utf-8"))
+        cache = manifest.get("cache", {})
+        if cache.get("schema") != "etoe.hyperatom-synthesis-cache.v1":
+            return False
+        if cache.get("context_json") != _json_compact(context):
+            return False
+        expected_dependencies = snapshot_dependencies(dependencies)
+        if cache.get("dependencies_json") != _json_compact(expected_dependencies):
+            return False
+        if manifest.get("dependencies") != expected_dependencies:
+            return False
+        artifact_hashes = json.loads(cache.get("artifact_hashes_json", "{}"))
+        for key in ("blend", "png", "blend_toml", "png_toml"):
+            if artifact_hashes.get(key) != _file_sha256(paths[key]):
+                return False
+            sidecar = tomllib.loads(paths[key].read_text(encoding="utf-8")) if key.endswith("toml") else None
+            if sidecar is not None:
+                sidecar_cache = sidecar.get("cache", {})
+                output_key = "blend" if key == "blend_toml" else "png"
+                if (
+                    sidecar_cache.get("schema") != cache.get("schema")
+                    or sidecar_cache.get("context_json") != cache.get("context_json")
+                    or sidecar_cache.get("dependencies_json") != cache.get("dependencies_json")
+                    or sidecar.get("dependencies") != expected_dependencies
+                    or sidecar_cache.get("output_sha256") != _file_sha256(paths[output_key])
+                ):
+                    return False
+        return True
+    except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError, tomllib.TOMLDecodeError):
+        return False
+
+
+def _validate_dependency_artifacts(
+    dependency_definitions: Sequence[Any],
+    dependency_paths: Mapping[str, Path],
+    *,
+    args: argparse.Namespace,
+) -> None:
+    """Refuse parent synthesis unless every required child result is present.
+
+    A placeholder or locally re-created child would break the invariant that
+    parents consume already-synthesized subatom artifacts.
+    """
+    for dependency in dependency_definitions:
+        paths = hyperatom_3d_paths(
+            dependency, element_root=args.data_root, output_root=args.output_root,
+            quality=args.quality, mode=args.mode, representation=args.representation,
+        )
+        blend_path = Path(dependency_paths.get(dependency.canonical, paths["blend"]))
+        sidecar_path = Path(str(blend_path) + ".toml")
+        simulation_path = paths["simulation"]
+        if not blend_path.is_file() or not sidecar_path.is_file() or not simulation_path.is_file():
+            raise BlenderRenderError(
+                f"Missing synthesized subatom result for {dependency.canonical}; "
+                f"expected {blend_path}, {sidecar_path}, and {simulation_path}. "
+                "The dependency must complete successfully before its parent can be synthesized."
+            )
+        try:
+            artifact = tomllib.loads(sidecar_path.read_text(encoding="utf-8"))
+            simulation = tomllib.loads(simulation_path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as exc:
+            raise BlenderRenderError(
+                f"Invalid TOML metadata for synthesized dependency {dependency.canonical}: {exc}"
+            ) from exc
+        if (
+            artifact.get("schema") != "etoe.hyperatom-3d-artifact.v3"
+            or artifact.get("hyperatom", {}).get("canonical") != dependency.canonical
+            or artifact.get("renderer", {}).get("quality") != args.quality
+            or artifact.get("renderer", {}).get("simulation_success") is not True
+            or artifact.get("cache", {}).get("output_sha256") != _file_sha256(blend_path)
+            or simulation.get("schema") != "etoe.hyperatom-synthesis.v1"
+            or simulation.get("hyperatom", {}).get("canonical") != dependency.canonical
+            or simulation.get("synthesis", {}).get("quality") != args.quality
+            or simulation.get("synthesis", {}).get("success") is not True
+        ):
+            raise BlenderRenderError(
+                f"The subatom artifact for {dependency.canonical} is stale, incompatible, or unsuccessful; "
+                "rerun the dependency synthesis before building its parent."
+            )
+
+
+def _assert_fully_resolved(node: Hyperatom3DNode, *, root: str) -> None:
+    """Reject an incomplete semantic tree instead of synthesizing placeholders."""
+    unresolved: list[str] = []
+    stack = [node]
+    while stack:
+        current = stack.pop()
+        if not current.resolved:
+            unresolved.append(current.canonical)
+        stack.extend(current.children)
+    if unresolved:
+        names = ", ".join(dict.fromkeys(unresolved))
+        raise BlenderRenderError(
+            f"Cannot synthesize {root}: unresolved subatom reference(s): {names}. "
+            "Add or correct the source-defined hyperatom before running the parent synthesis."
+        )
 
 
 def render_one(
@@ -733,26 +1134,61 @@ def render_one(
     registry: Any,
     definition: Any,
     args: argparse.Namespace,
+    *,
+    dependency_definitions: Sequence[Any] = (),
+    dependency_paths: Mapping[str, Path] | None = None,
 ) -> tuple[Path, Path]:
     node = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    _assert_fully_resolved(node, root=definition.canonical)
     paths = hyperatom_3d_paths(
         definition,
         element_root=args.data_root,
         output_root=args.output_root,
         output=args.output,
+        quality=args.quality,
+        mode=args.mode,
+        representation=args.representation,
     )
     blend_path, png_path = paths["blend"], paths["png"]
-    if (
-        not args.overwrite
-        and all(path.is_file() for path in paths.values())
-        and _artifacts_use_current_geometry(paths)
+    layout = build_hyperatom_layout(node, max_depth=args.max_depth)
+    synthesis = simulate_hyperatom_synthesis(
+        node, layout, quality=args.quality, attempts=args.attempts,
+    )
+    if not synthesis.success:
+        raise BlenderRenderError(
+            f"Synthesis failed for {definition.canonical}: no accepted configuration after "
+            f"{synthesis.attempt_count} orientation attempt(s); residual={synthesis.residual:.6g}."
+        )
+
+    style_dir = args.style_dir.resolve() if args.style_dir is not None else Path(os.environ.get("ETOE_STYLE_DIR", "style")).resolve()
+    dependencies = _source_dependencies(registry, definition, dependency_definitions, style_dir)
+    dependency_paths = dict(dependency_paths or {})
+    _validate_dependency_artifacts(dependency_definitions, dependency_paths, args=args)
+    # Child scene files are true inputs: parent geometry instantiates those
+    # saved structures instead of independently rebuilding their subatoms.
+    for dependency in dependency_definitions:
+        child_paths = hyperatom_3d_paths(
+            dependency, element_root=args.data_root, output_root=args.output_root,
+            quality=args.quality, mode=args.mode, representation=args.representation,
+        )
+        dependencies.extend([
+            (child_paths["simulation"], "synthesized-subatom-simulation-manifest"),
+            (child_paths["blend"], "synthesized-subatom-blend"),
+            (child_paths["blend_toml"], "synthesized-subatom-metadata"),
+        ])
+    blender_version = getattr(bpy.app, "version_string", "unknown")
+    context = _cache_context(args, synthesis, blender_version)
+    if not args.rebuild and _bundle_cache_current(
+        paths, context=context, dependencies=dependencies,
     ):
-        print(f"SKIP {definition.canonical}: current bottom-up scene, snapshot, and TOML sidecars already exist")
+        print(f"SKIP {definition.canonical}: source/style/dependency fingerprints are current")
         return blend_path, png_path
 
     blend_path.parent.mkdir(parents=True, exist_ok=True)
-    layout = build_hyperatom_layout(node, max_depth=args.max_depth)
     scene_root = _clear_scene(bpy)
+    scene_root["etoe.canonical"] = node.canonical
+    scene_root["etoe.outer_radius"] = float(layout.outer_radius)
+    scene_root["etoe.protium_count"] = len(layout.protium_sites)
     _configure_scene(
         bpy, node,
         mode=args.mode,
@@ -760,52 +1196,119 @@ def render_one(
         resolution=args.resolution,
         samples=args.samples,
         transparent=args.transparent_background,
-        frame_radius=layout.outer_radius,
+        frame_radius=max(
+            layout.outer_radius,
+            max((math.dist(point, layout.center) for point in synthesis.initial_positions), default=0.0),
+        ),
         frame_center=layout.center,
     )
+    animation_tracks: list[tuple[Any, int, int, float]] = []
     _render_node_bottom_up(
         layout,
         scene_root,
         mode=args.mode,
         shell_layers=args.shell_layers,
         labels=args.labels,
+        mesh_subdivisions=PROFILES[args.quality].mesh_subdivisions,
+        clump_layers=PROFILES[args.quality].clump_layers,
+        dependency_paths=dependency_paths,
+        library_cache={},
+        animation_tracks=animation_tracks,
+        max_depth=args.max_depth,
     )
+    _apply_geometry_representation(bpy, scene_root, args.representation)
+    _animate_synthesis(bpy, synthesis, animation_tracks)
 
     scene = bpy.context.scene
     scene.render.filepath = str(png_path)
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA" if args.transparent_background else "RGB"
-    # Save before rendering so the .blend is still available if the renderer
-    # exits unexpectedly while writing the PNG.
+    # Save the complete animated .blend before rendering the final frame.
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path), check_existing=False)
     bpy.ops.render.render(write_still=True)
 
+    dependency_artifacts = [str(path) for path in dependency_paths.values()]
     common = _artifact_metadata(
-        node, layout, blend_path,
-        mode=args.mode,
-        engine=args.engine,
-        resolution=args.resolution,
-        samples=args.samples,
-        shell_layers=args.shell_layers,
-        max_depth=args.max_depth,
-        artifact="blender-scene",
+        node, layout, blend_path, synthesis=synthesis,
+        mode=args.mode, quality=args.quality, representation=args.representation, engine=args.engine,
+        resolution=args.resolution, samples=args.samples,
+        shell_layers=args.shell_layers, max_depth=args.max_depth,
+        artifact="blender-scene", dependency_artifacts=dependency_artifacts,
     )
-    common["renderer"]["blender_version"] = getattr(bpy.app, "version_string", "unknown")
-    write_toml_sidecar(paths["blend_toml"], common)
+    common["renderer"]["blender_version"] = blender_version
+    dependency_snapshot = snapshot_dependencies(dependencies)
+    common["dependencies"] = dependency_snapshot
+    context_json = _json_compact(context)
+    dependencies_json = _json_compact(dependency_snapshot)
+
+    def attach_cache(metadata: dict[str, object], output_path: Path) -> None:
+        metadata["cache"] = {
+            "schema": "etoe.hyperatom-synthesis-cache.v1",
+            "context_json": context_json,
+            "dependencies_json": dependencies_json,
+            "output_sha256": _file_sha256(output_path),
+        }
+
+    blend_metadata = dict(common)
+    attach_cache(blend_metadata, blend_path)
+    write_toml_sidecar(paths["blend_toml"], blend_metadata)
     image_metadata = dict(common)
     image_metadata["artifact"] = "png-snapshot"
     image_metadata["snapshot"] = {"path": str(png_path), "format": "PNG"}
+    attach_cache(image_metadata, png_path)
     write_toml_sidecar(paths["png_toml"], image_metadata)
-    print(f"WROTE {definition.canonical}: {blend_path} + {png_path}")
+
+    artifact_hashes = {
+        key: _file_sha256(paths[key]) for key in ("blend", "png", "blend_toml", "png_toml")
+    }
+    simulation_payload = synthesis.to_dict()
+    simulation_metadata = {
+        "schema": "etoe.hyperatom-synthesis.v1",
+        "hyperatom": {
+            "canonical": definition.canonical,
+            "designation": definition.designation,
+            "symbol": definition.symbol or "",
+            "atomic_mass": definition.atomic_mass,
+            "source_path": definition.source_path,
+        },
+        "synthesis": {
+            "quality": args.quality,
+            "success": synthesis.success,
+            "expected_structure": synthesis.expected_structure,
+            "expected_atomahedron": synthesis.expected_atomahedron,
+            "attempt_count": synthesis.attempt_count,
+            "steps": synthesis.steps,
+            "residual": round(synthesis.residual, 10),
+            "fingerprint": simulation_fingerprint(simulation_payload),
+            "payload_json": _json_compact(simulation_payload),
+        },
+        "dependencies": dependency_snapshot,
+        "cache": {
+            "schema": "etoe.hyperatom-synthesis-cache.v1",
+            "context_json": context_json,
+            "dependencies_json": dependencies_json,
+            "artifact_hashes_json": _json_compact(artifact_hashes),
+        },
+    }
+    write_toml_sidecar(paths["simulation"], simulation_metadata)
+    print(f"WROTE {definition.canonical} [{args.quality}]: {paths['simulation']} + {blend_path} + {png_path}")
     return blend_path, png_path
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(blender_script_args() if argv is None else argv)
+    if args.quality not in PROFILES:
+        raise BlenderRenderError("--quality must be rough or strict.")
+    profile = PROFILES[args.quality]
+    args.samples = profile.render_samples if args.samples is None else args.samples
+    args.shell_layers = profile.atmosphere_layers if args.shell_layers is None else args.shell_layers
+    args.attempts = profile.attempts if args.attempts is None else args.attempts
     if args.resolution < 64:
         raise BlenderRenderError("--resolution must be at least 64 pixels.")
     if args.samples < 1 or args.shell_layers < 1 or args.shell_layers > 8:
         raise BlenderRenderError("--samples must be positive and --shell-layers must be between 1 and 8.")
+    if args.attempts < 1:
+        raise BlenderRenderError("--attempts must be positive.")
     if args.max_depth < 0:
         raise BlenderRenderError("--max-depth must be zero or greater.")
     if args.output is not None and (
@@ -817,39 +1320,78 @@ def main(argv: Sequence[str] | None = None) -> int:
     configure_styles(mode=args.mode, source="3D", target="3D")
 
     from etoe.hyperatom_map import build_canonical_hyperatom_map
+    from etoe.style import get_style_directory
 
     registry = HyperatomTranslator().translate_directory(args.data_root)
-    # This applies the seed's primary-by-mass and non-primary-by-structure
-    # reference rules before the 3D tree is unfolded.
+    # Apply the seed's primary-by-mass and non-primary-by-structure links once.
     build_canonical_hyperatom_map(registry, auto_patch_missing=False)
     elements = [*args.element, *_parse_list(args.elements)]
-    definitions = select_hyperatoms(
+    selected = select_hyperatoms(
         registry,
         hyperatoms=args.hyperatom,
         elements=elements,
         categories=args.category,
         all_elements=args.all_elements,
     )
-    if not definitions:
+    if not selected:
         print("No source-defined hyperatoms matched the requested selection.")
         return 0
-    if args.output is not None and len(definitions) != 1:
+    if args.output is not None and len(selected) != 1:
         raise BlenderRenderError("An explicit --output path requires exactly one matched hyperatom.")
 
+    # Build each selected atom's complete dependency closure. The union is a
+    # stable postorder: primitive Protium first, then D/He/Be, then the root.
+    build_order = hyperatom_dependency_order(registry, selected)
+    if not build_order:
+        raise BlenderRenderError("The selected hyperatom set produced an empty dependency plan.")
+    print(f"Synthesis plan ({args.quality}): {len(selected)} selected root(s), {len(build_order)} unique atom job(s).")
+
+    style_dir = get_style_directory()
+    # Use a single Blender process, and ensure each parent consumes the saved
+    # .blend result of its uniquely resolved child hyperatoms.
     import bpy
 
     failures: list[tuple[str, str]] = []
-    total = len(definitions)
-    for index, definition in enumerate(definitions, start=1):
-        print(f"[{index}/{total}] {definition.canonical}")
-        # Avoid Blender process termination on one bad output; keep batch jobs
-        # independent and report a non-zero exit status after all were attempted.
+    failed_ids: set[str] = set()
+    selected_ids = {item.id for item in selected}
+    for index, definition in enumerate(build_order, start=1):
+        dependency_order = hyperatom_dependency_order(registry, [definition])
+        dependency_definitions = dependency_order[:-1]
+        blocked = [item.canonical for item in dependency_definitions if item.id in failed_ids]
+        if blocked:
+            message = "dependency synthesis failed: " + ", ".join(blocked)
+            failures.append((definition.canonical, message))
+            failed_ids.add(definition.id)
+            print(f"SKIP {definition.canonical}: {message}", file=sys.stderr)
+            continue
+        dependency_paths: dict[str, Path] = {}
+        for dependency in dependency_definitions:
+            dependency_paths[dependency.canonical] = hyperatom_3d_paths(
+                dependency, element_root=args.data_root, output_root=args.output_root,
+                quality=args.quality, mode=args.mode, representation=args.representation,
+            )["blend"]
+        item_args = argparse.Namespace(**vars(args))
+        # An explicit output path belongs only to the selected root, never to
+        # its automatically synthesized child dependencies.
+        if definition.id not in selected_ids:
+            item_args.output = None
+        item_args.style_dir = style_dir
+        print(f"[{index}/{len(build_order)}] synthesize {definition.canonical}")
         try:
-            render_one(bpy, registry, definition, args)
-        except Exception as exc:  # noqa: BLE001 - batch must isolate per-item failures
+            render_one(
+                bpy, registry, definition, item_args,
+                dependency_definitions=dependency_definitions,
+                dependency_paths=dependency_paths,
+            )
+        except Exception as exc:  # noqa: BLE001 - isolate each dependency/root job
             failures.append((definition.canonical, str(exc)))
+            failed_ids.add(definition.id)
             traceback.print_exc()
-    print(f"3D batch finished: {total - len(failures)} succeeded/reused, {len(failures)} failed.")
+
+    print(
+        f"3D synthesis batch finished: {len(build_order) - len(failures)} succeeded/reused, "
+        f"{len(failures)} failed."
+    )
     for canonical, message in failures:
         print(f"FAILED {canonical}: {message}", file=sys.stderr)
     return 1 if failures else 0

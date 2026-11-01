@@ -19,8 +19,8 @@ from typing import Iterable, Sequence
 from .hyperatom_translation import HYPERATOM_KIND, HyperatomRegistry, SemanticComponent, SemanticHyperatom
 
 
-BLENDER_STYLE_CODE = "b33"  # Blender backend, 3D source profile, 3D target profile.
 BLENDER_ARTIFACT_CODE = "3"
+BLENDER_STYLE_CODE = "b33"  # Legacy fixed suffix retained for API compatibility.
 
 
 class BlenderRenderError(ValueError):
@@ -58,12 +58,25 @@ def hyperatom_3d_paths(
     element_root: str | Path = "data/atom/element",
     output_root: str | Path | None = None,
     output: str | Path | None = None,
+    quality: str = "rough",
+    mode: str = "Light",
+    representation: str = "surface",
 ) -> dict[str, Path]:
     """Return canonical .blend, PNG, and TOML sidecar paths for a hyperatom.
 
-    The default file convention is ``<notation>.3.b33.blend``; the PNG is
-    appended to the blend filename, so all four expected paths stay together.
+    The default file convention is ``<notation>.<quality>.3.<style>.blend``.
+    The simulation manifest is stored as ``<notation>.<quality>.toml``.
     """
+    normalized_quality = str(quality).strip().casefold()
+    if normalized_quality not in {"rough", "strict"}:
+        raise BlenderRenderError("quality must be 'rough' or 'strict'.")
+    from .filenames import style_filename_code
+    style_code = style_filename_code(mode=mode, source="3D", target="3D")
+    normalized_representation = str(representation).strip().casefold()
+    representation_suffixes = {"surface": "", "point-cloud": ".point-cloud", "wireframe": ".wireframe"}
+    if normalized_representation not in representation_suffixes:
+        raise BlenderRenderError("representation must be 'surface', 'point-cloud', or 'wireframe'.")
+    representation_suffix = representation_suffixes[normalized_representation]
     if not hyperatom.symbol:
         raise BlenderRenderError(
             f"Hyperatom {hyperatom.canonical!r} has no element symbol; cannot choose its output directory."
@@ -75,10 +88,27 @@ def hyperatom_3d_paths(
     else:
         base = Path(output_root).expanduser() if output_root is not None else Path(element_root).expanduser()
         directory = base / hyperatom.symbol
-        blend_path = directory / f"{_safe_stem(hyperatom.canonical)}.{BLENDER_ARTIFACT_CODE}.{BLENDER_STYLE_CODE}.blend"
+        blend_path = directory / (
+            f"{_safe_stem(hyperatom.canonical)}.{normalized_quality}.{BLENDER_ARTIFACT_CODE}."
+            f"{style_code}{representation_suffix}.blend"
+        )
 
     png_path = Path(str(blend_path) + ".png")
+    if output is not None:
+        manifest_style_suffix = ""
+    else:
+        # Preserve the requested canonical default name while keeping the
+        # simulation/metadata bundles distinct for alternate themes and
+        # geometry representations.
+        manifest_style_suffix = (
+            "" if normalized_representation == "surface" and style_code == "l33"
+            else f".{style_code}{representation_suffix}"
+        )
+    simulation_path = blend_path.parent / (
+        f"{_safe_stem(hyperatom.canonical)}.{normalized_quality}{manifest_style_suffix}.toml"
+    )
     return {
+        "simulation": simulation_path,
         "blend": blend_path,
         "blend_toml": Path(str(blend_path) + ".toml"),
         "png": png_path,
@@ -174,6 +204,43 @@ def select_hyperatoms(
                 selected[item.canonical] = item
 
     return tuple(sorted(selected.values(), key=_definition_sort_key))
+
+
+def hyperatom_dependency_order(
+    registry: HyperatomRegistry,
+    hyperatoms: Iterable[SemanticHyperatom],
+) -> tuple[SemanticHyperatom, ...]:
+    """Return source-defined sub-hyperatoms in dependency-first postorder.
+
+    Only uniquely resolved semantic references become build dependencies.
+    Repeated occurrences are emitted once, while the occurrence tree itself
+    retains their multiplicity for the Blender hierarchy.
+    """
+    definitions_by_key: dict[tuple[str | None, str], list[SemanticHyperatom]] = {}
+    for definition in registry.definitions:
+        if definition.kind == HYPERATOM_KIND and not definition.source_path.startswith("<runtime:"):
+            definitions_by_key.setdefault((definition.symbol, definition.canonical), []).append(definition)
+
+    ordered: list[SemanticHyperatom] = []
+    visited: set[str] = set()
+
+    def visit_node(node: Hyperatom3DNode) -> None:
+        for child in node.children:
+            visit_node(child)
+        if not node.resolved:
+            return
+        candidates = definitions_by_key.get((node.symbol, node.canonical), [])
+        if len(candidates) != 1:
+            return
+        definition = candidates[0]
+        if definition.id not in visited:
+            visited.add(definition.id)
+            ordered.append(definition)
+
+    for root in hyperatoms:
+        tree = build_hyperatom_3d_tree(registry, root, resolve_references=False)
+        visit_node(tree)
+    return tuple(ordered)
 
 
 def _placeholder_node(component: SemanticComponent, registry: HyperatomRegistry, visiting: frozenset[str]) -> Hyperatom3DNode:
@@ -288,6 +355,17 @@ def write_toml_sidecar(path: str | Path, metadata: dict[str, object]) -> Path:
     output.parent.mkdir(parents=True, exist_ok=True)
     lines: list[str] = []
     for section, values in metadata.items():
+        if isinstance(values, list) and values and all(isinstance(item, dict) for item in values):
+            for item in values:
+                lines.append("")
+                lines.append(f"[[{section}]]")
+                for key, value in item.items():
+                    if isinstance(value, (tuple, list)):
+                        encoded = "[" + ", ".join(_toml_value(part) for part in value) + "]"
+                    else:
+                        encoded = _toml_value(value)
+                    lines.append(f"{key} = {encoded}")
+            continue
         if not isinstance(values, dict):
             lines.append(f"{section} = {_toml_value(values)}")
             continue
@@ -374,6 +452,7 @@ __all__ = [
     "build_hyperatom_3d_tree",
     "blender_python_environment",
     "hyperatom_3d_paths",
+    "hyperatom_dependency_order",
     "run_blender",
     "select_hyperatoms",
     "write_toml_sidecar",

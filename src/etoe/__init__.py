@@ -33,9 +33,18 @@ from .blender3d import (
     build_hyperatom_3d_tree,
     blender_python_environment,
     hyperatom_3d_paths,
+    hyperatom_dependency_order,
     run_blender,
     select_hyperatoms,
     write_toml_sidecar,
+)
+from .hyperatom_synthesis import (
+    PROFILES as HYPERATOM_SYNTHESIS_PROFILES,
+    HyperatomSynthesis,
+    SynthesisFrame,
+    SynthesisProfile,
+    simulate_hyperatom_synthesis,
+    simulation_fingerprint,
 )
 from .elements import (
     ELEMENT_KINDS,
@@ -179,7 +188,7 @@ from .hyperatomic import (
     validate_generated_counts,
 )
 
-__version__ = "0.1.73"
+__version__ = "0.1.74"
 
 __all__ = [
     "Aspect",
@@ -204,10 +213,17 @@ __all__ = [
     "BLENDER_STYLE_CODE",
     "BlenderRenderError",
     "Hyperatom3DNode",
+    "HYPERATOM_SYNTHESIS_PROFILES",
+    "HyperatomSynthesis",
+    "SynthesisFrame",
+    "SynthesisProfile",
+    "simulate_hyperatom_synthesis",
+    "simulation_fingerprint",
     "build_blender_command",
     "build_hyperatom_3d_tree",
     "blender_python_environment",
     "hyperatom_3d_paths",
+    "hyperatom_dependency_order",
     "run_blender",
     "select_hyperatoms",
     "write_toml_sidecar",

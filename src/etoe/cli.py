@@ -22,6 +22,17 @@ def _non_negative_int(value: str) -> int:
     return parsed
 
 
+def _positive_int(value: str) -> int:
+    """Parse a positive integer CLI option."""
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("must be an integer") from exc
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("must be greater than zero")
+    return parsed
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="etoe", description="Reference ÆToE parser/validator and hyperatom tools")
     sub = p.add_subparsers(dest="command", required=True)
@@ -169,16 +180,23 @@ def build_parser() -> argparse.ArgumentParser:
                            help="Blender executable name or path (default: $BLENDER or blender)")
     render_3d.add_argument("--mode", choices=STYLE_MODES, default=None,
                            help="3D theme (default follows ETOE_STYLE_MODE or Light)")
+    render_3d.add_argument("--quality", choices=("rough", "strict"), default="rough",
+                           help="Synthesis/geometry profile (rough is quicker; strict is more finely sampled)")
+    render_3d.add_argument("--representation", choices=("surface", "point-cloud", "wireframe"),
+                           default="surface", help="Blender geometry representation")
     render_3d.add_argument("--engine", choices=("eevee", "cycles"), default="eevee")
     render_3d.add_argument("--resolution", type=int, default=1200, help="Square PNG resolution in pixels")
-    render_3d.add_argument("--samples", type=int, default=64, help="Render samples")
-    render_3d.add_argument("--shell-layers", type=int, default=3, help="Illustrative translucent atmosphere layers (1-8)")
+    render_3d.add_argument("--samples", type=int, default=None, help="Render samples (default depends on --quality)")
+    render_3d.add_argument("--shell-layers", type=int, default=None, help="Atmosphere layers (default depends on --quality; range 1-8)")
+    render_3d.add_argument("--attempts", type=_positive_int, default=None,
+                           help="Maximum initial-orientation attempts (default depends on --quality)")
     render_3d.add_argument("--max-depth", type=_non_negative_int, default=0, metavar="N",
                            help="Maximum recursive hyperatom depth (0 = unlimited)")
     render_3d.add_argument("--labels", action="store_true", help="Add labels at all hierarchy levels")
     render_3d.add_argument("--transparent-background", action="store_true",
                            help="Render PNG with transparent background")
-    render_3d.add_argument("--overwrite", action="store_true", help="Regenerate existing .blend and PNG files")
+    render_3d.add_argument("--rebuild", "--overwrite", dest="rebuild", action="store_true",
+                           help="Force regeneration even when source/style fingerprints are unchanged")
 
     return p
 
@@ -215,12 +233,18 @@ def main(argv: list[str] | None = None) -> int:
                 "--data-root", str(args.data_root.expanduser().resolve()),
                 "--style-dir", str(get_style_directory()),
                 "--mode", selected_mode,
+                "--quality", args.quality,
+                "--representation", args.representation,
                 "--engine", args.engine,
                 "--resolution", str(args.resolution),
-                "--samples", str(args.samples),
-                "--shell-layers", str(args.shell_layers),
                 "--max-depth", str(args.max_depth),
             ]
+            if args.samples is not None:
+                script_args.extend(("--samples", str(args.samples)))
+            if args.shell_layers is not None:
+                script_args.extend(("--shell-layers", str(args.shell_layers)))
+            if args.attempts is not None:
+                script_args.extend(("--attempts", str(args.attempts)))
             for selector in args.hyperatom:
                 script_args.extend(("--hyperatom", selector))
             for symbol in args.element:
@@ -239,8 +263,8 @@ def main(argv: list[str] | None = None) -> int:
                 script_args.append("--labels")
             if args.transparent_background:
                 script_args.append("--transparent-background")
-            if args.overwrite:
-                script_args.append("--overwrite")
+            if args.rebuild:
+                script_args.append("--rebuild")
             try:
                 return run_blender(args.blender, script_path, script_args)
             except BlenderRenderError as exc:
