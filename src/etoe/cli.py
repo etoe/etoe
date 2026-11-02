@@ -182,6 +182,16 @@ def build_parser() -> argparse.ArgumentParser:
                            help="3D theme (default follows ETOE_STYLE_MODE or Light)")
     render_3d.add_argument("--quality", choices=("rough", "strict"), default="rough",
                            help="Synthesis/geometry profile (rough is quicker; strict is more finely sampled)")
+    render_3d.add_argument("--physics", choices=("surrogate", "classic", "vanguard", "natural"),
+                           default="surrogate", help="Physical interaction model (vanguard/natural are reserved)")
+    render_3d.add_argument("--gravity-weight", type=float, default=0.85,
+                           help="Dimensionless gravity/antigravity interaction weight (default: 0.85)")
+    render_3d.add_argument("--magnetic-weight", type=float, default=0.15,
+                           help="Dimensionless magnetic dipole interaction weight (default: 0.15)")
+    render_3d.add_argument("--show-protium-axis", action="store_true",
+                           help="Show the standalone Protium spin axis in Blender")
+    render_3d.add_argument("--show-protium-spin", action="store_true",
+                           help="Show the standalone Protium equatorial spin direction")
     render_3d.add_argument("--representation", choices=("surface", "point-cloud", "wireframe"),
                            default="surface", help="Blender geometry representation")
     render_3d.add_argument("--engine", choices=("eevee", "cycles"), default="eevee")
@@ -234,6 +244,9 @@ def main(argv: list[str] | None = None) -> int:
                 "--style-dir", str(get_style_directory()),
                 "--mode", selected_mode,
                 "--quality", args.quality,
+                "--physics", args.physics,
+                "--gravity-weight", str(args.gravity_weight),
+                "--magnetic-weight", str(args.magnetic_weight),
                 "--representation", args.representation,
                 "--engine", args.engine,
                 "--resolution", str(args.resolution),
@@ -261,6 +274,10 @@ def main(argv: list[str] | None = None) -> int:
                 script_args.extend(("--output-root", str(args.output_root.expanduser().resolve())))
             if args.labels:
                 script_args.append("--labels")
+            if args.show_protium_axis:
+                script_args.append("--show-protium-axis")
+            if args.show_protium_spin:
+                script_args.append("--show-protium-spin")
             if args.transparent_background:
                 script_args.append("--transparent-background")
             if args.rebuild:

@@ -239,6 +239,9 @@ def test_renderer_metadata_describes_bottom_up_geometry_without_a_core(registry,
     assert metadata["geometry"]["construction_order"] == "bottom-up"
     assert metadata["geometry"]["protium_hierarchy_depths"] == [2, 2, 1]
     assert metadata["geometry"]["has_core"] is False
+    assert metadata["simulation"]["physics"] == "not-applicable"
+    assert metadata["simulation"]["gravity_weight"] is None
+    assert metadata["simulation"]["magnetic_weight"] is None
 
 
 def test_toml_sidecar_writes_human_readable_dependency_array_of_tables(tmp_path):

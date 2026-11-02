@@ -103,3 +103,9 @@ properties = { color = "$palette.noble-gases.fill", outline = "$palette.noble-ga
 [[rules]]
 selector = "entity.category-unknowns"
 properties = { color = "$palette.unknowns.fill", outline = "$palette.unknowns.border" }
+
+# Standalone H-1-1 angular-momentum visualization. Geometry is optional and
+# is only emitted when --show-protium-axis / --show-protium-spin is supplied.
+[[rules]]
+selector = "protium-spin"
+properties = { axis_color = "$palette.protium-spin-axis.fill", axis_width = 0.018, equator_color = "$palette.protium-spin-equator.fill", equator_width = 0.022, arrow_size = 0.075 }

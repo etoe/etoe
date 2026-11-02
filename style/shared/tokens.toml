@@ -259,3 +259,24 @@ border = "#7F1D1D"
 fill = "#FFFFFF"
 text = "#B91C1C"
 border = "#B42318"
+
+# Optional standalone-Protium spin visualization guides.
+[themes.Light.palette.protium-spin-axis]
+fill = "#D97706"
+text = "#FFFFFF"
+border = "#92400E"
+
+[themes.Light.palette.protium-spin-equator]
+fill = "#0891B2"
+text = "#FFFFFF"
+border = "#155E75"
+
+[themes.Dark.palette.protium-spin-axis]
+fill = "#FBBF24"
+text = "#111827"
+border = "#F59E0B"
+
+[themes.Dark.palette.protium-spin-equator]
+fill = "#67E8F9"
+text = "#111827"
+border = "#06B6D4"

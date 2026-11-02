@@ -134,12 +134,12 @@ the generated files. Inputs include each transitive `.etoe` definition, availabl
 TOML files, the seed specification `docs/seed/ru/EToE.md`,
 `style/shared/tokens.toml`, `style/3d/stylesheet.toml`, and the synthesis,
 renderer, adapter, translation, selection, element-map, and style-resolution
-modules. When those dependencies and all result hashes are unchanged,
-the complete result bundle is reused; `--rebuild` forces a new simulation and
-render. A parent job is not permitted to substitute a placeholder for a child:
-it requires the child simulation manifest, `.blend`, and successful metadata
-sidecar, then instances that saved child collection into its own nested
-collection. Child jobs are run first in dependency order.
+modules. When those dependencies, simulation options and result hashes are
+unchanged, the numerical simulation is skipped before the solver runs and the
+complete result bundle is reused; `--rebuild` forces a new simulation and
+render. A parent requires successful child simulation TOML manifests and
+consumes their physical parameter models; child `.blend` files are not
+required or loaded. Child jobs are run first in dependency order.
 
 The TOML sidecars record the hyperatom, renderer settings, construction order,
 collection hierarchy, atomahedron kind, Protium hierarchy depths, compression
@@ -151,6 +151,12 @@ Rendering options:
 ```text
 --mode Light|Dark              3D style theme
 --quality rough|strict         simulation profile (rough is the default)
+--physics surrogate|classic|vanguard|natural
+                                interaction model (surrogate is default; vanguard/natural reserved)
+--gravity-weight FLOAT         gravity/antigravity coupling (default: 0.85)
+--magnetic-weight FLOAT        magnetic dipole coupling (default: 0.15)
+--show-protium-axis            draw H-1-1 spin axis
+--show-protium-spin            draw H-1-1 equatorial direction and arrow
 --representation surface|point-cloud|wireframe
                                 Blender geometry representation
 --engine eevee|cycles           render engine
@@ -196,26 +202,69 @@ Multiple selectors are unioned and duplicate definitions are removed.
 
 `rough` performs a shorter, lower-resolution geometric-relaxation sequence;
 `strict` uses more steps, more initial orientation attempts, more surface
-subdivisions, more atmospheric layers and more render samples. Both profiles
-start from a stable levitation arrangement whose nearest-neighbour Protium
-spacing is normalized to exactly two model units (one minimum Protium gabarit
-is one model unit). The simulated sequence progressively increases the
-spiral-coupling parameter and contracts the sites toward the source-defined
-composition.
+subdivisions, more atmospheric layers and more render samples. Both profiles start from a stable levitation arrangement whose nearest
+Protium centre spacing is one model unit: each Protium contributes half of its
+unit maximum gabarit. The geometry target may be larger (for example, a 1.15
+unit D-2 pair spacing) so the final meshes retain clearance. The simulated
+sequence progressively increases the spiral-coupling parameter and contracts
+the sites toward the source-defined composition.
 
 The dependency plan is postorder. For example, selecting `C-12-(8'4)` creates
 or reuses `H-1-1`, then `D-2-(1'1)`, then `He-4-(2'2)` and
-`Be-8-(4'4)`, and only then builds carbon. The helium scene instantiates two
-Deuterium scene collections; the deuterium scene instantiates two Protium
-collections. Carbon instantiates the pre-synthesized Beryllium and Helium
-collections. Repeated child occurrences remain repeated in the Outliner even
-though each distinct dependency file is generated only once per quality/style.
+`Be-8-(4'4)`, and only then builds carbon. The helium scene rebuilds the two Deuterium child meshes from their saved
+physical parameter manifests; the deuterium scene rebuilds its Protium bodies
+from the standalone H-1-1 parameter model or the documented fallback. Carbon
+similarly rebuilds Beryllium and Helium descendants in its own nested
+Collections. Child `.blend` files are never imported or instanced into a parent
+scene. Repeated child occurrences remain repeated in the Outliner even though
+each distinct dependency simulation is generated only once per quality/style.
 
-The current seed defines composition and hierarchy but not calibrated
-interaction forces or etheron constitutive equations. The relaxation and
-spiral-coupling sequence is therefore an explicit deterministic geometric
-surrogate. Etheron counts, etheron mass and spin are left unresolved in model
-metadata rather than invented.
+### Physical interaction modes
+
+`--physics` selects the interaction model:
+
+```bash
+# Deterministic geometric baseline (default)
+etoe hyperatoms render-3d --hyperatom "C-12-(8'4)" --physics surrogate
+
+# Gravity/antigravity-dominant classical interaction
+etoe hyperatoms render-3d --hyperatom "C-12-(8'4)" --physics classic \
+  --gravity-weight 0.85 --magnetic-weight 0.15
+```
+
+The `classic` integrator ramps the binding-coupling parameter from 0.20 to
+1.0, applies a dimensionless attractive inverse-square / repulsive inverse-
+fourth-power term, a magnetic point-dipole force and spin-axis torque, viscous
+damping, and a short-range contact penalty. It starts from unit-gabarit
+levitation and accepts a result only when its hierarchy-derived pair distances
+meet the selected quality tolerance and no Protium centres cross the unit
+contact threshold. Initial orientation attempts are deterministic and
+repeatable. The current candidate policy accepts only the source-defined
+pair-distance topology; it does not infer a different nuclear composition
+from the final configuration.
+
+The modes `vanguard` and `natural` are reserved CLI values and fail explicitly
+until corresponding force laws and parameters are specified. The seed defines
+composition, hierarchy and qualitative spiral/magnetic interactions, but it
+does not provide calibrated force equations, etheron mass or constitutive
+coefficients. Thus the `classic` force constants and weights are dimensionless
+phenomenological assumptions, not experimentally established physical
+constants. The surrogate mode remains available as the deterministic baseline.
+
+### Standalone Protium
+
+`H-1-1` is treated as an elementary atom, not as a one-body hyperatom
+synthesis. Its Blender job saves a separate physical parameter model and its
+own `.blend`, PNG and TOML companions. A parent uses that saved parameter model
+when available, otherwise it uses explicit dimensionless defaults; it always
+constructs the Protium meshes again in the parent scene. The maximum Protium
+gabarit is normalized to one model unit. Optional spin guides are enabled by
+`--show-protium-axis` and `--show-protium-spin`; their colors and widths are
+resolved from `style/shared/tokens.toml` and `style/3d/stylesheet.toml`.
+
+The seed defines qualitative layer composition but not calibrated etheron
+counts, etheron mass, spin magnitude, or constitutive equations. Those unknowns
+remain `null` in model metadata rather than being filled with invented values.
 
 The recursive tree is built from the semantic registry and canonical
 hyperatom map. A reference is followed only when it resolves uniquely; missing

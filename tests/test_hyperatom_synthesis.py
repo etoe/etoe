@@ -35,14 +35,14 @@ def _definition(registry, canonical: str):
     return next(item for item in registry.definitions if item.canonical == canonical)
 
 
-def test_initial_levitation_configuration_uses_two_unit_nearest_neighbour_spacing():
+def test_initial_levitation_configuration_uses_unit_gabarit_nearest_neighbour_spacing():
     for count in (2, 3, 4, 5, 8, 12):
-        points = _levitation_vertices(count, minimum_pair_distance=2.0)
+        points = _levitation_vertices(count, minimum_pair_distance=1.0)
         nearest = min(
             math.dist(points[left], points[right])
             for left in range(count) for right in range(left + 1, count)
         )
-        assert nearest == pytest.approx(2.0, abs=1e-9)
+        assert nearest == pytest.approx(1.0, abs=1e-9)
 
 
 def test_dependency_order_is_bottom_up_and_deduplicates_artifacts(registry):
@@ -136,3 +136,111 @@ def test_unresolved_subatom_reference_blocks_parent_synthesis():
     )
     with pytest.raises(BlenderRenderError, match="unresolved subatom reference"):
         _assert_fully_resolved(root, root=root.canonical)
+
+
+def test_classic_interaction_converges_without_interpenetration_and_records_force_terms(registry):
+    for canonical in ("D-2-(1'1)", "He-4-(2'2)", "C-12-(8'4)"):
+        definition = _definition(registry, canonical)
+        node = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+        layout = build_hyperatom_layout(node)
+        for quality in ("rough", "strict"):
+            result = simulate_hyperatom_synthesis(
+                node, layout, quality=quality, physics="classic",
+                gravity_weight=0.85, magnetic_weight=0.15,
+            )
+            assert result.success
+            assert result.residual <= PROFILES[quality].tolerance
+            force_model = result.model["simulation"]
+            assert force_model["physics"] == "classic"
+            assert force_model["gravity_antigravity"]["weight"] == pytest.approx(0.85)
+            assert force_model["magnetic_dipole"]["weight"] == pytest.approx(0.15)
+            assert force_model["minimum_final_pair_distance"] >= 1.0 - 1e-5
+            assert force_model["accepted_atomahedron"] == layout.atomahedron
+            assert force_model["source_atomahedron_geometry_match"] is True
+            assert result.frames[-1].spin_axes
+            def terminal_protia(current):
+                children = current.get("children", [])
+                if children:
+                    for child in children:
+                        yield from terminal_protia(child)
+                elif current.get("symbol") == "H":
+                    yield current
+            leaves = list(terminal_protia(result.model["root"]))
+            assert len(leaves) == len(layout.protium_sites)
+            assert all(
+                leaf["protium_parameters"]["spin"]["status"].startswith("final axis")
+                for leaf in leaves
+            )
+
+
+def test_classic_initial_state_uses_unit_gabarit_and_geometry_target_is_separate(registry):
+    definition = _definition(registry, "D-2-(1'1)")
+    node = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    layout = build_hyperatom_layout(node)
+    result = simulate_hyperatom_synthesis(node, layout, physics="classic")
+    initial_distance = math.dist(*result.initial_positions)
+    final_distance = math.dist(*result.final_positions)
+    assert initial_distance == pytest.approx(1.0, abs=1e-8)
+    assert final_distance >= 1.0
+    assert final_distance == pytest.approx(1.15, abs=0.02)
+
+
+def test_protium_parameter_retrieval_is_separate_from_hyperatom_synthesis(registry):
+    from etoe.hyperatom_synthesis import build_protium_parameter_result, default_protium_parameters
+
+    definition = _definition(registry, "H-1-1")
+    node = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    parameters = default_protium_parameters("strict")
+    layout = build_hyperatom_layout(node, parameter_models={"H-1-1": parameters})
+    result = build_protium_parameter_result(node, layout, quality="strict")
+    assert result.success
+    assert result.steps == 0
+    assert result.attempt_count == 0
+    assert result.expected_atomahedron == "protium-body"
+    assert result.model["protium_parameters"]["maximum_gabarit_size_model_units"] == 1.0
+    assert result.model["root"]["outer_radius_model_units"] == pytest.approx(0.5, abs=1e-6)
+    assert len(result.model["protium_parameters"]["clumping_layers"]) == PROFILES["strict"].clump_layers
+    assert len(result.model["protium_parameters"]["atmospheric_layers"]) == PROFILES["strict"].atmosphere_layers
+    assert result.model["simulation"]["physics"] == "not-applicable"
+    assert result.model["root"]["protium_parameters"]["spin"]["axis"] == [0.0, 0.0, 1.0]
+
+
+def test_reserved_physics_models_fail_explicitly_until_force_laws_exist(registry):
+    definition = _definition(registry, "D-2-(1'1)")
+    node = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    layout = build_hyperatom_layout(node)
+    for physics in ("vanguard", "natural"):
+        with pytest.raises(NotImplementedError, match="reserved"):
+            simulate_hyperatom_synthesis(node, layout, physics=physics)
+
+
+def test_cli_exposes_physics_weights_and_protium_guides():
+    from etoe.cli import build_parser
+
+    args = build_parser().parse_args([
+        "hyperatoms", "render-3d", "--hyperatom", "D-2-(1'1)",
+        "--physics", "classic", "--gravity-weight", "0.9", "--magnetic-weight", "0.1",
+        "--show-protium-axis", "--show-protium-spin",
+    ])
+    assert args.physics == "classic"
+    assert args.gravity_weight == pytest.approx(0.9)
+    assert args.magnetic_weight == pytest.approx(0.1)
+    assert args.show_protium_axis is True
+    assert args.show_protium_spin is True
+
+
+def test_protium_spin_guide_style_is_resolved_from_shared_tokens():
+    from etoe.style import resolve_style
+
+    style = resolve_style("3D", "protium-spin", mode="Dark", source="3D", target="3D")
+    assert style["axis_color"] == "#FBBF24"
+    assert style["equator_color"] == "#67E8F9"
+    assert style["axis_width"] > 0
+    assert style["equator_width"] > 0
+
+
+def test_standalone_protium_has_unit_maximum_gabarit(registry):
+    definition = _definition(registry, "H-1-1")
+    node = build_hyperatom_3d_tree(registry, definition, resolve_references=False)
+    layout = build_hyperatom_layout(node)
+    assert 2.0 * layout.outer_radius == pytest.approx(1.0, abs=1e-5)

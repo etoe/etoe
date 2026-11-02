@@ -52,7 +52,7 @@ print(result.ok)
 
 ## Canonical source
 
-`docs/seed/ru/EToE.md` (language: ru; version: 0.1.74; date: 2026-11-01) is the Russian seed document used as the design basis for this package snapshot.
+`docs/seed/ru/EToE.md` (language: ru; version: 0.1.75; date: 2026-11-02) is the Russian seed document used as the design basis for this package snapshot.
 
 ## Scope of this first package skeleton
 
@@ -349,31 +349,45 @@ etoe hyperatoms render-3d --category alkali-metals
 etoe hyperatoms render-3d --category transition-metals --category noble-gases
 etoe hyperatoms render-3d --all-elements
 
-# Optional theme, rendering quality, output root, and overwrite behavior
-etoe hyperatoms render-3d --element C --mode Dark --resolution 1600 --samples 128 --overwrite
+# Classic force interaction; gravity/antigravity dominates the magnetic term
+etoe hyperatoms render-3d --hyperatom "He-4-(2'2)" --physics classic \
+  --gravity-weight 0.85 --magnetic-weight 0.15
+
+# Render the standalone Protium spin guides
+etoe hyperatoms render-3d --hyperatom H-1-1 --show-protium-axis --show-protium-spin
+
+# Optional theme, rendering quality, output root, and forced rebuild
+etoe hyperatoms render-3d --element C --mode Dark --quality strict --resolution 1600 --samples 128 --rebuild
 ```
 
-Default output paths use the Blender/3D style code `b33`, for example:
+Default output paths distinguish `rough` and `strict` results and use the
+Light/3D/3D style code `l33`, for example:
 
-- `data/atom/element/C/C-12-(8'4).3.b33.blend`
-- `data/atom/element/C/C-12-(8'4).3.b33.blend.toml`
-- `data/atom/element/C/C-12-(8'4).3.b33.blend.png`
-- `data/atom/element/C/C-12-(8'4).3.b33.blend.png.toml`
+- `data/atom/element/C/C-12-(8'4).rough.toml`
+- `data/atom/element/C/C-12-(8'4).rough.3.l33.blend`
+- `data/atom/element/C/C-12-(8'4).rough.3.l33.blend.toml`
+- `data/atom/element/C/C-12-(8'4).rough.3.l33.blend.png`
+- `data/atom/element/C/C-12-(8'4).rough.3.l33.blend.png.toml`
 
 `--output` can override the `.blend` path for exactly one `--hyperatom`;
 `--output-root` preserves the per-element subdirectory layout under a different
-root. Existing scene/image pairs are skipped unless `--overwrite` is supplied.
+root. Complete current result bundles are skipped before simulation unless `--rebuild` (alias: `--overwrite`) is supplied.
 The `--max-depth` option controls visual expansion only and does not modify
 source definitions.
 See [the Blender 3D rendering guide](docs/blender-3d.md) for requirements, all selectors, and renderer options.
 
-The generated geometry is a structural visualization, not a numerical
-simulation of etheron trajectories. The seed does not yet specify calibrated
-3D coordinates, shell radii, or optical material constants for hyperatoms.
-Accordingly, the atomahedron-inspired placement for arities 2–5, higher-arity
-fallback placement, translucent shell count, and material opacity are explicit
-renderer conventions. The scene metadata records this limitation in both TOML
-sidecars. Style colours and scene settings are resolved from `style/3d` and the
-shared style cascade. Blender's embedded Python must be able to import the
-installed `etoe` package and its pure-Python `lark` dependency; the CLI passes
-its active Python paths using Blender's `--python-use-system-env` option.
+The `surrogate` physics mode is a deterministic geometric relaxation. The
+`classic` mode adds a dimensionless gravity/antigravity pair potential, a
+magnetic point-dipole force and spin-axis torque, damping, and a short-range
+contact penalty. Its default weights are 0.85 gravity/antigravity and 0.15
+magnetic. `vanguard` and `natural` are reserved CLI choices and currently fail
+explicitly because their force laws are not yet defined. The seed does not
+supply calibrated interaction coefficients, etheron masses, or constitutive
+laws; the classic coefficients are therefore phenomenological model
+parameters, not experimentally established constants. See
+[the Blender 3D rendering guide](docs/blender-3d.md) for the model scope and
+current limitations. Style colours and scene settings are resolved from
+`style/3d` and the shared style cascade. Blender's embedded Python must be able
+to import the installed `etoe` package and its pure-Python `lark` dependency;
+the CLI passes its active Python paths using Blender's `--python-use-system-env`
+option.
